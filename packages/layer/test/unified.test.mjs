@@ -17,7 +17,7 @@ import { loadCorpora, runSet, CONFIGS, SETS, TR, lib, bindingRefusals, unifiedCo
 import { combinedDoc } from './unified-docs.mjs';
 import { box, shell, move, rotate, hole, pocket, rect, combine, prim } from './docs.mjs';
 
-const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove' };
+const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove', fc: 'fillet-chamfer' };
 // UNIFIED_CORPORA=bool-cases,bool-generated runs only those corpora (a development switch: the acceptance run is the whole set)
 const CORPORA = process.env.UNIFIED_CORPORA ? new Set(process.env.UNIFIED_CORPORA.split(',')) : null;
 const items = (await loadCorpora({ combined: 600 })).filter((i) => !CORPORA || CORPORA.has(i.corpus));
@@ -27,7 +27,7 @@ test('createTranslator: unified exists, is not a member of a composition, the de
   const U = lib.tr.createTranslator({ planners: 'unified' });
   assert.equal(U.planners, 'unified');
   assert.equal(lib.tr.createTranslator().planners, 'base');
-  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove']);
+  assert.deepStrictEqual(Object.keys(lib.tr.PROFILES), ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove', 'fillet-chamfer']);
   assert.throws(() => lib.tr.createTranslator({ planners: ['unified', 'holes'] }), /not composed/);
   assert.throws(() => lib.tr.createTranslator({ planners: ['holes', 'unified'] }), /not composed/);
   // a hole, a shell and a draft are planned asynchronously by the loop: planFeature cannot do it synchronously and must not fall back to the unguarded planner
@@ -115,6 +115,41 @@ test('revolve-groove: a spin and a groove are guarded in the one loop, in a docu
   assert.ok(lib.un.domainOf({ features: bad }).rg && lib.un.routeOf({ id: 'g1', kind: 'groove', target: 's1', into: 'b1', angle: 90 }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {}, shellDraft: { voided: {} }, unified: { domain: lib.un.domainOf({ features: bad }) } }) === 'revolve-groove');
 });
 
+test('fillet-chamfer: a blend, a whole-shape round and a hollow after a round are guarded in the one loop, in a document of any other group, and a run of blends is one call', async () => {
+  const E = (host, a, b) => ({ cause: 'between', feature: host, kind: 'edge', of: [prim(host, a), prim(host, b)] });
+  const blend = (id, target, host, a, b, size, style = 'fillet') => ({ id, kind: 'fillet', target, edge: E(host, a, b), size, style });
+  // a blend as big as the face it cuts into (FC-TOO-BIG), alone, after a hole and after a hollow: the group's own set and unified agree
+  for (const head of [[], [hole('h0', 'b1', { diameter: 2, depth: 4, center: [15, 10, 0] })], [shell('s0', 'b1', prim('b1', '+z'), 2)]]) {
+    const feats = [box('b1', [40, 30, 6]), ...head, blend('round1', head.length ? head[0].id : 'b1', 'b1', '+z', '-y', 6)];
+    const u = await runDoc('unified', feats); const g = await runDoc('fillet-chamfer', feats);
+    if (head.length) assert.notEqual(statusOf(u, 'round1').status, 'built', `the blend after ${head[0].kind} builds`);
+    else { assert.equal(statusOf(u, 'round1').guard, 'FC-TOO-BIG'); assert.deepStrictEqual(u.result.features, g.result.features); }
+  }
+  // the whole-shape round of a box (zero, negative): the plain box stands, the note is a refusal with the group's sentence, in a document that also drills; a bevelled box is G-CHAMFER (shell-draft) whichever set sees it
+  for (const [round, guard] of [[0, 'FC-TOO-SMALL'], [-1, 'FC-NEGATIVE']]) {
+    const r = await runDoc('unified', [box('b1', [30, 24, 20], [0, 0, 0], { round }), hole('h1', 'b1', {})]);
+    assert.equal(statusOf(r, 'b1').status, 'refused'); assert.equal(statusOf(r, 'b1').guard, guard); assert.equal(statusOf(r, 'b1').partial, true);
+    assert.ok(statusOf(r, 'b1').commands.length > 0, 'the plain box is built');
+    assert.notEqual(statusOf(r, 'h1').status, 'refused', 'the hole is drilled in the plain box');
+  }
+  assert.equal(statusOf(await runDoc('unified', [box('b1', [30, 24, 20], [0, 0, 0], { round: 2, roundStyle: 'chamfer' })]), 'b1').guard, 'G-CHAMFER');
+  // a hollow whose open edge was rounded with a radius as large as the wall: refused in unified (the shell-draft group's G-RIM; the fillet-chamfer set's own FC-KNIFE-RIM says the same)
+  const rim = [box('b1', [30, 24, 20]), blend('round1', 'b1', 'b1', '+z', '+x', 2), shell('s1', 'round1', prim('b1', '+z'), 2)];
+  assert.equal(statusOf(await runDoc('unified', rim), 's1').status, 'refused');
+  assert.equal(statusOf(await runDoc('fillet-chamfer', rim), 's1').guard, 'FC-KNIFE-RIM');
+  // a run of blends of one size is ONE call, and the document's other loops see every blend of the run as built
+  const run = [box('b1', [30, 24, 20]), blend('round1', 'b1', 'b1', '+z', '+x', 1), blend('round2', 'round1', 'b1', '+z', '+y', 1), blend('round3', 'round2', 'b1', '+z', '-x', 1), hole('h1', 'round3', {})];
+  const ru = await runDoc('unified', run);
+  assert.deepStrictEqual(statusOf(ru, 'round1').group, ['round1', 'round2', 'round3']);
+  assert.equal(ru.result.commands.filter((c) => c.command === 'solid.fillet').length, 1);
+  assert.deepStrictEqual(['round1', 'round2', 'round3', 'h1'].map((id) => statusOf(ru, id).status), ['built', 'built', 'built', 'built']);
+  // the sentence of a refused blend is what a feature of another group says it depends on
+  const dep = await runDoc('unified', [box('b1', [30, 24, 20]), blend('round1', 'b1', 'b1', '+z', '+x', 9), hole('h1', 'round1', {})]);
+  assert.equal(statusOf(dep, 'h1').status, 'refused');
+  assert.ok(!/GUARD/.test(statusOf(dep, 'h1').refusal), statusOf(dep, 'h1').refusal);
+  assert.ok(lib.un.domainOf({ features: run }).fc);
+});
+
 // ---- the two invariants over every corpus -------------------------------------------------------------------------------------------------------------------------------
 const T = {
   docs: items.length, byCorpus: {}, runs: 0,
@@ -129,7 +164,7 @@ for (const it of items) bump(T.byCorpus, it.corpus);
 test('invariants 1 and 2, and the sentence lint: every corpus x four engine configurations, unified against each single set', { timeout: 3_000_000 }, async () => {
   for (const it of items) {
     const d = lib.un.domainOf(it.doc);
-    const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg'].filter((k) => d[k]);
+    const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg', 'fc'].filter((k) => d[k]);
     const zone = present.length === 1 ? present[0] : present.length === 0 ? 'none' : 'mixed';
     if (zone === 'mixed') { T.inv2.mixedDocs++; bump(T.inv2.byCorpusMixed, it.corpus); }
     for (const cfg of CONFIGS) {

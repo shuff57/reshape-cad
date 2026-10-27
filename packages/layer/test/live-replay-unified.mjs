@@ -2,7 +2,10 @@
 //
 //   ulimit -v 2097152   # 2 GB memory cap (the rig holds the kernel in this process and in the budgeted child processes)
 //   SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg \
-//     node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json [--only=id,id] [--corpus=ep,holes,sd,pm,bool,rg,combined,rgcombined] [--combined=600] [--rg-combined=400] [--ep-join=cheap|full|off]
+//     node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json [--only=id,id] [--corpus=ep,holes,sd,pm,bool,rg,fc,combined,rgcombined,fccombined] [--combined=600] [--rg-combined=400] [--fc-combined=400] [--ep-join=cheap|full|off]
+//   The fillet-chamfer corpora ('fc': the group's case files; 'fccombined': combined documents with blends) need the topology wasm too (a blend names an edge, and the stock rig cannot report topology):
+//     SOLIDCRAFT_TOPOLOGY_PKG=<wrapper2 pkg dir, default $HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology>   (test/topology-upstream.mjs; the topology reply gets the measure of the same run, as the group's host gave it)
+//   They run in-process (no budgeted child process, which has no topology): run them first with --corpus=fc under `timeout`, then --corpus=fccombined.
 //   (BREP_PKG=<dir> overrides archive/brep-rs/pkg, the shell-draft group's pick source; without its wasm the replay runs without ctx.resolveAt, as the layer's own pick
 //    path does when the host gives none, and the node rig answers sc.run with measures only, no topology, so a hollow or a draft that NAMES a face is refused by both sides alike.)
 //   Packages sketch, script and layer must be built (dist/). Run one replay at a time. `--only` takes case ids ("hc2-then-join") and combined doc names ("combined seed 57").
@@ -40,10 +43,11 @@ const PKG = process.env.SOLIDCRAFT_REFEREE_PKG;
 if (!PKG) { console.error('FATAL: SOLIDCRAFT_REFEREE_PKG is unset'); process.exit(2); }
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
 const only = arg('only').split(',').filter(Boolean);
-const corpora = (arg('corpus') || 'ep,holes,sd,pm,bool,rg,combined,rgcombined').split(',');
+const corpora = (arg('corpus') || 'ep,holes,sd,pm,bool,rg,fc,combined,rgcombined,fccombined').split(',');
 const EP_JOIN = arg('ep-join') || 'cheap';
 const N_COMBINED = Number(arg('combined') || 600);
 const N_RG_COMBINED = Number(arg('rg-combined') || 400);
+const N_FC_COMBINED = Number(arg('fc-combined') || 400);
 const OUT = path.resolve(arg('out') || 'live-replay-unified.json');
 mkdirSync(path.dirname(OUT), { recursive: true });
 for (const k of ['H4_BUDGET_S', 'H4_DOC_BUDGET_S']) if (process.env[k] !== undefined) { console.error(`FATAL: ${k} is set; the layer uses the group's default budget (45 s per run, 180 s per document)`); process.exit(2); }
@@ -58,10 +62,11 @@ const { solveDoc } = await load('packages/script/dist/model-codegen.js');
 const { createTranslator, domainOf, draftFromUsage } = await load('packages/layer/dist/index.js');
 const { combinedDoc } = await imp(path.join(HERE, 'unified-docs.mjs'));
 const { rgCombinedDoc } = await imp(path.join(HERE, 'rg-docs.mjs'));
+const { fcCombinedDoc } = await imp(path.join(HERE, 'fc-docs.mjs'));
 const { bindingRefusals, unifiedCovers } = await imp(path.join(HERE, 'unified-harness.mjs'));
-const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove'];
+const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove', 'fillet-chamfer'];
 const TR = Object.fromEntries([...SETS, 'unified'].map((p) => [p, createTranslator({ planners: p })]));
-const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove' };
+const GROUP = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove', fc: 'fillet-chamfer' };
 const ACCEPTED_GUARDS = ['PM-SNAPCUT', 'PM-WEB', 'EP-JOIN'];
 
 // ---- engines ---------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +75,12 @@ const inProcess = (cmds) => { try { return JSON.parse(sc.run(JSON.stringify({ co
 const { runBudgeted } = await imp(path.join(CONTRACT, 'holes4-sc.mjs'));
 const budgeted = (cmds, opts) => runBudgeted(cmds, opts ?? { budgetS: 60 });
 // the patterns-mirror and booleans corpora hold cases that hang or trap the kernel (their groups ran them in a child process under a time limit): they go through the budgeted engine, one child process per run
-const ENGINE = { ep: inProcess, sd: inProcess, holes: budgeted, pm: budgeted, bool: budgeted, rg: budgeted, combined: budgeted, rgcombined: budgeted };
+// the fillet-chamfer corpora need the topology (a blend names an edge): the upstream adapter of test/topology-upstream.mjs, in-process; its topology reply gets the measure of the same run (the group's host did that; both sides get the same reply)
+const TOPO_CORPORA = ['fc', 'fccombined'];
+let up = null;
+if (corpora.some((c) => TOPO_CORPORA.includes(c))) up = (await imp(path.join(HERE, 'topology-upstream.mjs'))).loadUpstream();
+const topologyWithMeasure = async (cmds) => { const t = await up.topologyOf(cmds); if (!t.ok) return t; const m = await up.runSC(cmds); return m.ok ? { ...t, measure: m.measure } : t; };
+const ENGINE = { ep: inProcess, sd: inProcess, holes: budgeted, pm: budgeted, bool: budgeted, rg: budgeted, combined: budgeted, rgcombined: budgeted, fc: (cmds) => up.runSC(cmds), fccombined: (cmds) => up.runSC(cmds) };
 
 // the shell-draft group's pick source, when its (retired) wasm is there
 const brepDir = process.env.BREP_PKG ?? path.join(REPO, 'archive', 'brep-rs', 'pkg');
@@ -154,10 +164,31 @@ if (corpora.includes('combined')) for (let i = 0; i < N_COMBINED; i++) add('comb
 // the combined documents with a groove cut into the part they end with (test/rg-docs.mjs rgCombinedDoc)
 if (corpora.includes('rgcombined')) for (let i = 0; i < N_RG_COMBINED; i++) add('rgcombined', `rg combined seed ${i}`, rgCombinedDoc(i));
 
+if (corpora.includes('fc')) {
+  // the fillet-chamfer group's case files and the three fuzz kinds of its generator (as test/fillet-chamfer.differential.test.mjs selects them), 600 generated docs of test/fc-docs.mjs
+  const FC = path.join(CONTRACT, 'fillet-chamfer-evidence');
+  const fSeen = new Set();
+  const addFc = (c) => {
+    const key = `${c.id}\u0000${c.script ?? JSON.stringify(c.doc)}`; if (fSeen.has(key)) return; fSeen.add(key);
+    if (c.doc) { add('fc', c.id, solveDoc({ version: 1, features: c.doc.features ?? c.doc })); return; }
+    if (typeof c.script !== 'string') return;
+    const r = runScript(c.script); if (r.errors.length) return;
+    add('fc', c.id, solveDoc(r.doc));
+  };
+  for (const f of ['cases.mjs', 'cases-r2.mjs', 'cases-r2b.mjs', 'cases-r2c.mjs', 'cases-r3.mjs', 'cases-r3f.mjs', 'cases-seq.mjs', 'cases-fc.mjs', 'live/fc4-cases-a.mjs', 'live/fc4-cases-b.mjs', 'live/fc4-cases-c.mjs', 'live/fc4-cases-regress.mjs']) { try { for (const c of (await imp(path.join(FC, f))).CASES) addFc(c); } catch { /* a case file that does not load is skipped */ } }
+  const keep = { FZ: process.env.FZ, SEED: process.env.SEED, N: process.env.N };
+  for (const fz of ['single', 'group', 'pocket']) { process.env.FZ = fz; process.env.SEED = '2027'; process.env.N = '100'; for (const c of (await import(`${pathToFileURL(path.join(FC, 'live/fc4-cases-fuzz.mjs')).href}?fz=${fz}`)).CASES) addFc(c); }
+  for (const [k, v] of Object.entries(keep)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  const { fcDoc } = await imp(path.join(HERE, 'fc-docs.mjs'));
+  for (let i = 0; i < 600; i++) add('fc', `fc seed ${i}`, fcDoc(i));
+}
+// the combined documents with blends of an edge of a box among the parts, on the part they end with (test/fc-docs.mjs fcCombinedDoc)
+if (corpora.includes('fccombined')) for (let i = 0; i < N_FC_COMBINED; i++) add('fccombined', `fc combined seed ${i}`, fcCombinedDoc(i));
+
 // ---- one run ---------------------------------------------------------------------------------------------------------------------------------------------
 const feats = (tr) => tr.features.map((x) => ({ id: x.id, kind: x.kind, status: x.status, refusal: x.refusal ?? null, guard: x.guard ?? null }));
-function sceneOf(engine, commands) {
-  const all = engine(commands, { budgetS: 200 });
+async function sceneOf(engine, commands) {
+  const all = await engine(commands, { budgetS: 200 });
   if (!all.ok) return { ok: false, timedOut: !!all.timedOut };
   const bs = all.measure.bodies;
   return { ok: true, volume: bs.reduce((s, b) => s + b.volume_mm3, 0), faces: bs.reduce((s, b) => s + b.faces, 0), bodies: bs.length, bbox: bs.map((b) => [b.bbox.min, b.bbox.max]) };
@@ -165,10 +196,10 @@ function sceneOf(engine, commands) {
 async function outcome(set, it) {
   const engine = ENGINE[it.corpus];
   let tr;
-  try { tr = await TR[set].translateDoc(structuredClone(it.doc), { arc, mt, runSC: async (cmds, o) => engine(cmds, o), soups: {}, ...(resolveAt ? { resolveAt } : {}), ...(it.fromUsage ? { fromUsage: it.fromUsage } : {}), ...(set === 'unified' ? { unifiedEpJoinChecks: EP_JOIN } : {}) }); } catch (e) { return { threw: String(e?.message ?? e) }; }
+  try { tr = await TR[set].translateDoc(structuredClone(it.doc), { arc, mt, runSC: async (cmds, o) => engine(cmds, o), soups: {}, ...(TOPO_CORPORA.includes(it.corpus) ? { topologyOf: topologyWithMeasure } : {}), ...(resolveAt ? { resolveAt } : {}), ...(it.fromUsage ? { fromUsage: it.fromUsage } : {}), ...(set === 'unified' ? { unifiedEpJoinChecks: EP_JOIN } : {}) }); } catch (e) { return { threw: String(e?.message ?? e) }; }
   const out = { feats: feats(tr), commands: tr.commands, notes: tr.features };
   const last = [...tr.features].reverse().find((x) => x.kind !== 'sketch' && x.kind !== 'datum' && x.status !== 'noop');
-  if (last?.status === 'built') out.scene = sceneOf(engine, tr.commands);
+  if (last?.status === 'built') out.scene = await sceneOf(engine, tr.commands);
   return out;
 }
 const canon = (o) => JSON.stringify({ feats: o.feats, commands: o.commands, scene: o.scene, threw: o.threw }, (k, v) => (typeof v === 'number' ? Number(v.toPrecision(12)) : v));
@@ -181,12 +212,12 @@ const save = (partial) => writeFileSync(OUT, JSON.stringify({ partial, pkg: PKG,
 for (const it of items) {
   T.docs++;
   const dom = domainOf(it.doc);
-  const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg'].filter((k) => dom[k]);
+  const present = ['ep', 'holes', 'sd', 'pm', 'bool', 'rg', 'fc'].filter((k) => dom[k]);
   const zone = present.length === 1 ? present[0] : present.length === 0 ? 'none' : 'mixed';
   const ref = zone === 'none' ? 'extrude-pocket' : zone === 'mixed' ? null : GROUP[zone];
-  const own = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove', combined: null, rgcombined: null }[it.corpus];
+  const own = { ep: 'extrude-pocket', holes: 'holes', sd: 'shell-draft', pm: 'patterns-mirror', bool: 'booleans', rg: 'revolve-groove', fc: 'fillet-chamfer', combined: null, rgcombined: null, fccombined: null }[it.corpus];
   const need = new Set([own, ref].filter(Boolean));
-  if (zone === 'mixed' || it.corpus === 'combined' || it.corpus === 'rgcombined') for (const s of SETS) need.add(s); // the safety check reads every set
+  if (zone === 'mixed' || it.corpus === 'combined' || it.corpus === 'rgcombined' || it.corpus === 'fccombined') for (const s of SETS) need.add(s); // the safety check reads every set
   let u = await outcome('unified', it);
   const single = {}; for (const s of need) single[s] = await outcome(s, it);
   const row = { corpus: it.corpus, id: it.id, zone };
@@ -219,7 +250,7 @@ for (const it of items) {
     row.literal = [...new Set(literal)];
     T.literalBuiltWhereASetRefused += row.literal.length;
     if (violated.length) { row.violated = violated; T.unifiedBuiltWhereASetRefused.push({ id: it.id, features: violated }); }
-    if (it.corpus === 'combined' || it.corpus === 'rgcombined') {
+    if (it.corpus === 'combined' || it.corpus === 'rgcombined' || it.corpus === 'fccombined') {
       row.unified = { feats: u.feats.map((f) => `${f.id}:${f.status}${f.guard ? `/${f.guard}` : ''}`), scene: u.scene ?? null };
       if (u.scene?.ok) T.combinedBuilt++;
     }

@@ -109,3 +109,30 @@ export function fcDoc(seed) {
   }
   return { version: 1, features: feats };
 }
+
+// ---- the combined documents (several groups' kinds) with blends of an edge of a box among the parts, on the part they end with -------------------------------------------------
+import { combinedDoc } from './unified-docs.mjs';
+const SOLIDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 'wedge', 'extrude', 'combine', 'revolve', 'blend', 'move', 'rotate', 'mirror', 'pattern', 'hole', 'pocket', 'shell', 'draft', 'groove', 'fillet'];
+
+/** A combined document of the earlier groups' corpus with one to three blends (round or bevel, a run of the same size half of the time) of an edge of its first box on the part it ends with, and sometimes a hollow after them. */
+export function fcCombinedDoc(seed) {
+  const r = mulberry32(seed * 104729 + 31);
+  const pick = (a) => a[Math.floor(r() * a.length)];
+  const doc = combinedDoc(9000 + seed);
+  const feats = doc.features.slice();
+  let into = null; for (let i = feats.length - 1; i >= 0; i--) if (SOLIDS.includes(feats[i].kind)) { into = feats[i].id; break; }
+  const root = feats.find((f) => f.kind === 'box');
+  let n = 0;
+  if (into && root) {
+    const style = pick(['fillet', 'chamfer']); const size = pick([0.5, 1, 2, 3, 6]);
+    const k = 1 + Math.floor(r() * 3);
+    let prev = into;
+    for (let i = 0; i < k; i++) {
+      const e = pick(EDGES);
+      const f = fillet(`${style === 'chamfer' ? 'bevel' : 'round'}z${++n}`, prev, between(root.id, prim(root.id, e[0]), prim(root.id, e[1])), r() < 0.5 ? size : pick([0.5, 1, 2, 3, 6]), r() < 0.7 ? style : pick(['fillet', 'chamfer']));
+      feats.push(f); prev = f.id;
+    }
+    if (r() < 0.25) feats.push(shell(`sz${++n}`, prev, prim(root.id, '+z'), pick([1, 2, 3])));
+  }
+  return { version: 1, features: feats };
+}

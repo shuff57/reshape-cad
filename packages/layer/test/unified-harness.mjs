@@ -13,6 +13,7 @@ import { combinedDoc } from './unified-docs.mjs';
 import { pmDoc } from './pm-docs.mjs';
 import { boolDoc } from './bool-docs.mjs';
 import { rgDoc, rgCombinedDoc } from './rg-docs.mjs';
+import { fcDoc, fcCombinedDoc } from './fc-docs.mjs';
 
 export const here = path.dirname(fileURLToPath(import.meta.url));
 export const root = path.resolve(here, '../../..');
@@ -33,25 +34,28 @@ export const lib = {
 const { runScript } = lib.script;
 const { solveDoc } = lib.codegen;
 
-export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove'];
+export const SETS = ['extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove', 'fillet-chamfer'];
 export const TR = Object.fromEntries([...SETS, 'unified', 'base'].map((p) => [p, lib.tr.createTranslator({ planners: p })]));
 
 // ---- the four engine configurations (as the earlier differentials: the models on, the default fake, a failing engine, a CPU budget) -------------------------------
 const cutCount = (cmds) => cmds.filter((c) => c.command === 'solid.hole' || (c.command === 'solid.cylinder' && c.params?.operation === 'cut')).length;
 export const CONFIGS = [
-  { name: 'all models, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models, mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true }, useMt: true, resolver: fakeResolveAt },
   { name: 'default fake, mt, no resolver', fake: {}, useMt: true, resolver: null },
-  { name: 'all models, every 5th call fails, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, failEvery: 5 }, useMt: false, resolver: fakeResolveAt },
-  { name: 'all models, cpu budget (20 s per cut command), mt, resolver down', fake: { holeModel: true, boxBool: true, shellDraft: true, cpuMs: (cmds) => 50 + 20000 * cutCount(cmds) }, useMt: true, resolver: () => null },
+  { name: 'all models, every 5th call fails, no mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, failEvery: 5 }, useMt: false, resolver: fakeResolveAt },
+  { name: 'all models, cpu budget (20 s per cut command), mt, resolver down', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, cpuMs: (cmds) => 50 + 20000 * cutCount(cmds) }, useMt: true, resolver: () => null },
   // the patterns-mirror group's fusing model on top of the others (copies that touch along an edge, a gap that closes, an aligned sliver), and a pattern of five or more copies that runs past its time limit
-  { name: 'all models + pmModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true }, useMt: true, resolver: fakeResolveAt },
-  { name: 'all models + pmModel, a pattern of 5 or more copies runs past the time limit, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, cpuMs: (cmds) => (cmds.some((c) => c.command.startsWith('solid.pattern') && (c.params.count ?? c.params.count1) >= 5) ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
+  { name: 'all models + pmModel, mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, pmModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + pmModel, a pattern of 5 or more copies runs past the time limit, no mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, pmModel: true, cpuMs: (cmds) => (cmds.some((c) => c.command.startsWith('solid.pattern') && (c.params.count ?? c.params.count1) >= 5) ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
   // the booleans group's model on top (pieces, keep_tools, coincident faces, a sliver the engine ignores, a keep that overshoots), and a bridge that dies on every 7th call (the executor's WASM TRAP path)
-  { name: 'all models + pmModel + boolModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true }, useMt: true, resolver: fakeResolveAt },
-  { name: 'all models + boolModel, the bridge dies on every 7th call, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, boolModel: true, throwWhen: (cmds, k) => k % 7 === 0 }, useMt: false, resolver: fakeResolveAt },
+  { name: 'all models + pmModel + boolModel, mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + boolModel, the bridge dies on every 7th call, no mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, boolModel: true, throwWhen: (cmds, k) => k % 7 === 0 }, useMt: false, resolver: fakeResolveAt },
   // the revolve-groove group's model on top (a ring that cuts nothing, a cut that leaves pieces, cylinders and spins with their closed-form volumes), and a groove run that goes past its time limit
-  { name: 'all models + pmModel + boolModel + rgModel, mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true, rgModel: true }, useMt: true, resolver: fakeResolveAt },
-  { name: 'all models + rgModel, a groove run past its time limit, no mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, boolModel: true, rgModel: true, cpuMs: (cmds) => (cmds[cmds.length - 1].command === 'solid.revolve' && cmds[cmds.length - 1].params?.operation === 'cut' ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
+  { name: 'all models + pmModel + boolModel + rgModel, mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, pmModel: true, boolModel: true, rgModel: true }, useMt: true, resolver: fakeResolveAt },
+  { name: 'all models + rgModel, a groove run past its time limit, no mt, resolver', fake: { fcModel: true, holeModel: true, boxBool: true, shellDraft: true, boolModel: true, rgModel: true, cpuMs: (cmds) => (cmds[cmds.length - 1].command === 'solid.revolve' && cmds[cmds.length - 1].params?.operation === 'cut' ? 700000 : 10) }, useMt: false, resolver: fakeResolveAt },
+
+  // the fillet-chamfer group's model: a blend that adds no face (the post-build net), with the measure in the topology reply; the default fake above has no measure in the reply and no face added (the missing-measure fail-open the port closes)
+  { name: 'all models + fcModel noface (a blend adds no face), mt, resolver', fake: { holeModel: true, boxBool: true, shellDraft: true, fcModel: 'noface' }, useMt: true, resolver: fakeResolveAt },
 ];
 
 /** which of the extrude-pocket group's join checks unified applies to a combine ('cheap' is the default of the set; UNIFIED_EP_JOIN=full|off measures the other readings) */
@@ -138,6 +142,24 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
   for (let i = 0; i < 600; i++) add('rg-generated', `rg seed ${i}`, rgDoc(i));
   // the combined documents (several groups' kinds) with a groove cut into the part they end with, a spin before it, a second groove after
   for (let i = 0; i < 400; i++) add('rg-combined', `rg combined seed ${i}`, rgCombinedDoc(i));
+  // fillet-chamfer: its case files (every round of the group's evidence), the three fuzz kinds of its generator, 600 generated docs, 400 combined docs with blends
+  {
+    const fcDir = path.join(contract, 'fillet-chamfer-evidence');
+    const fSeen = new Set();
+    const addFc = (c) => {
+      const key = `${c.id}\u0000${c.script ?? JSON.stringify(c.doc)}`; if (fSeen.has(key)) return; fSeen.add(key);
+      if (c.doc) { add('fc-cases', `case ${c.id}`, solveDoc({ version: 1, features: c.doc.features ?? c.doc })); return; }
+      if (typeof c.script !== 'string') return;
+      const r = runScript(c.script); if (r.errors.length) return;
+      add('fc-cases', `case ${c.id}`, solveDoc(r.doc));
+    };
+    for (const f of ['cases.mjs', 'cases-r2.mjs', 'cases-r2b.mjs', 'cases-r2c.mjs', 'cases-r3.mjs', 'cases-r3f.mjs', 'cases-seq.mjs', 'cases-fc.mjs', 'live/fc4-cases-a.mjs', 'live/fc4-cases-b.mjs', 'live/fc4-cases-c.mjs', 'live/fc4-cases-regress.mjs']) { try { for (const c of (await imp(path.join(fcDir, f))).CASES) addFc(c); } catch { /* a case file that does not load is skipped */ } }
+    const keep = { FZ: process.env.FZ, SEED: process.env.SEED, N: process.env.N };
+    for (const fz of ['single', 'group', 'pocket']) { process.env.FZ = fz; process.env.SEED = '2027'; process.env.N = '100'; for (const c of (await import(`${pathToFileURL(path.join(fcDir, 'live/fc4-cases-fuzz.mjs')).href}?fz=${fz}`)).CASES) addFc(c); }
+    for (const [k, v] of Object.entries(keep)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  }
+  for (let i = 0; i < 600; i++) add('fc-generated', `fc seed ${i}`, fcDoc(i));
+  for (let i = 0; i < 400; i++) add('fc-combined', `fc combined seed ${i}`, fcCombinedDoc(i));
   // the shared hand docs, the base generator
   for (const [name, doc] of handDocs()) add('hand', `hand ${name}`, doc);
   for (let i = 0; i < 160; i++) add('base-generated', `generated seed ${1000 + i}`, generatedDoc(1000 + i));
@@ -148,10 +170,10 @@ export async function loadCorpora({ combined = 600, only = null } = {}) {
 
 // ---- the two invariants -------------------------------------------------------------------------------------------------------------------------------------
 /** Which kinds each set OWNS (has a planner of its own for). A kind no set owns is a base kind. */
-export const OWNS = { 'extrude-pocket': ['extrude', 'pocket'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'], booleans: ['combine'], 'revolve-groove': ['revolve', 'groove'] };
+export const OWNS = { 'extrude-pocket': ['extrude', 'pocket'], holes: ['hole'], 'shell-draft': ['shell', 'draft'], 'patterns-mirror': ['pattern', 'mirror'], booleans: ['combine'], 'revolve-groove': ['revolve', 'groove'], 'fillet-chamfer': ['fillet'] };
 const ALL_OWNED = Object.values(OWNS).flat();
 /** The guards that look at kinds their set does not own (the shell-draft loop's G-VOID and G-CHAMFER, the execution budget of the holes and patterns-mirror loops, the patterns-mirror cut guards on a pocket / hole, the revolve-groove chain: a refused groove refuses a later feature on the same part). */
-export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB', 'RG-CHAIN'];
+export const CROSS_KIND_GUARDS = ['G-VOID', 'G-CHAMFER', 'G-BUDGET', 'PM-SNAPCUT', 'PM-WEB', 'RG-CHAIN', 'FC-KNIFE-RIM', 'FC-WHOLE-CHAMFER', 'FC-NEGATIVE', 'FC-TOO-SMALL'];
 
 /** UNIFIED_NO_CHAIN_TAINT=1 measures what the chain taint of bindingRefusals changes (NOTES.md Fold 6) */
 const CHAIN_TAINT = process.env.UNIFIED_NO_CHAIN_TAINT !== '1';

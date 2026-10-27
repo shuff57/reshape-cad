@@ -20,6 +20,9 @@
 //   * the revolve-groove group's spin (revolve) and groove go to its step (the guards that decide a groove from its target's measure, the chain that refuses a later feature on a part whose groove was refused, its
 //     time limit on the runs of a groove); a part another step built is read through the measure of kind E (pieces counted);
 //
+//   * the fillet-chamfer group's blend (every `fillet`: the guard on the topology, the grouped blend, the plain sentences) and the whole-shape round of a primitive its guard refuses (a zero, a negative or a tiny size: the plain
+//     primitive stands and the note is a refusal) go to its step; a hollow whose open edge was rounded with a radius as large as the wall is judged by the shell-draft step (G-RIM), which owns the shell (NOTES.md, Fold 7);
+//
 //   * the patterns-mirror group's pattern, mirror and the cut guards on a pocket / hole (a tool almost on an earlier cut, a thin wall) go to its step (`routeOf`); its time limit
 //     applies to every run of a document that has a pattern or a mirror and does not drill;
 //
@@ -36,6 +39,9 @@ import { SHELL_DRAFT_PROFILE, shellDraftStep, voidedDep } from './shell-draft.js
 import { PM_PROFILE, PM_KINDS, cutGuard, pmStep } from './patterns-mirror.js';
 import { BOOL_PROFILE, BOOL_KINDS, boolStep } from './booleans.js';
 import { RG_PROFILE, RG_KINDS, rgStep } from './revolve-groove.js';
+import { FC_PROFILE, FC_KINDS, FC_PRIMITIVES, fcStep } from './fillet-chamfer.js';
+import { guardPrimitiveRound } from './fc-guard.js';
+import type { RoundFeature } from './fc-guard.js';
 import type { FView } from './shell-draft.js';
 
 /** The kinds the extrude-pocket group owns here. (Its fork also planned `combine`; in this set the booleans group owns that kind, and the extrude-pocket group's join checks are kept as guards on it.) */
@@ -53,7 +59,7 @@ export const EP_COMBINE_SAFETY = [
 /** The same, for the extrude-pocket group's inclusion-exclusion consistency check of a join: it binds only when ctx.unifiedEpJoinChecks is 'full'. */
 export const EP_COMBINE_CONSISTENCY = [/^\S+: the joined part and the sum of its pieces do not add up/];
 /** Which loop runs the kinds no group lists. */
-export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove';
+export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove' | 'fillet-chamfer';
 export type Route = UnifiedStyle;
 export interface UnifiedDomain {
   /** the document has an extrude, a pocket or a combine */
@@ -66,18 +72,21 @@ export interface UnifiedDomain {
   pm: boolean;
   /** the document has a join, a cut or a keep */
   bool: boolean;
-  /** the document has a revolve (spin) or a groove */
+  /** the document has a fillet (a round or a bevel of an edge), or a primitive whose whole-shape round the fillet-chamfer guard refuses */
   rg: boolean;
+  fc: boolean;
   style: UnifiedStyle;
 }
 
 const FV = (f: Feature): FView => f as unknown as FView;
+/** a primitive whose whole-shape round the fillet-chamfer group's guard refuses (a negative, a zero or a tiny size; a bevelled box is the shell-draft group's G-CHAMFER and is routed there first) */
+export const isRefusedRound = (f: Feature): boolean => FC_PRIMITIVES.includes(f.kind) && (f as unknown as RoundFeature).round !== undefined && !guardPrimitiveRound(f as unknown as RoundFeature).ok;
 /** a box with every edge bevelled: the one cross-kind guard of the shell-draft loop that looks at the feature itself, not at what it reads */
 export const isChamferBox = (f: Feature): boolean => f.kind === 'box' && !!FV(f).round && FV(f).roundStyle === 'chamfer';
 
 /** Which groups a document uses, and so which loop words the kinds no group lists. */
 export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
-  let ep = false; let holes = false; let sd = false; let pm = false; let bool = false; let rg = false;
+  let ep = false; let holes = false; let sd = false; let pm = false; let bool = false; let rg = false; let fc = false;
   for (const f of doc.features) {
     if (EP_KINDS.includes(f.kind)) ep = true;
     else if (f.kind === 'hole') holes = true;
@@ -85,10 +94,11 @@ export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
     else if (PM_KINDS.includes(f.kind)) pm = true;
     else if (BOOL_KINDS.includes(f.kind)) bool = true;
     else if (RG_KINDS.includes(f.kind)) rg = true;
+    else if (FC_KINDS.includes(f.kind) || isRefusedRound(f)) fc = true;
   }
   // no group at all: the extrude-pocket loop too (it words every refusal plainly; the base loop prints the engine's own text)
-  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : bool ? 'booleans' : rg ? 'revolve-groove' : 'extrude-pocket';
-  return { ep, holes, sd, pm, bool, rg, style };
+  const style: UnifiedStyle = ep ? 'extrude-pocket' : holes ? 'holes' : sd ? 'shell-draft' : pm ? 'patterns-mirror' : bool ? 'booleans' : rg ? 'revolve-groove' : fc ? 'fillet-chamfer' : 'extrude-pocket';
+  return { ep, holes, sd, pm, bool, rg, fc, style };
 }
 
 /**
@@ -98,6 +108,8 @@ export function domainOf(doc: { features: Feature[] }): UnifiedDomain {
 export function routeOf(f: Feature, st: TranslateState, ctx?: Pick<TranslateCtx, 'arc' | 'mt'>): Route {
   if (f.kind === 'shell' || f.kind === 'draft') return 'shell-draft';
   if (isChamferBox(f) || voidedDep(FV(f), st)) return 'shell-draft'; // G-CHAMFER, G-VOID (and the voided move / turn, which also carries the mark on)
+  if (FC_KINDS.includes(f.kind)) return 'fillet-chamfer';
+  if (isRefusedRound(f)) return 'fillet-chamfer'; // the whole-shape round guard of the fillet-chamfer group: a primitive nobody owns, so it binds
   if (PM_KINDS.includes(f.kind)) return 'patterns-mirror';
   // the patterns-mirror group's cut guards (a tool almost on an earlier cut, a wall thinner than 1% of the diagonal) look at a pocket and a hole: the group's step refuses them
   if (ctx && (f.kind === 'pocket' || f.kind === 'hole')) {
@@ -151,7 +163,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const { st, accepted } = env;
   const route = routeOf(f, st, env.ctx);
   const dom = st.unified!.domain;
-  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) + Number(dom.rg) >= 2;
+  const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) + Number(dom.rg) + Number(dom.fc) >= 2;
   const wrap = mixed || (dom.holes && route !== 'holes');
   const seen: Seen = [];
   const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes, dom.pm) } : env;
@@ -161,12 +173,32 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const maps = st.unified!.maps;
   if (mixed) { st.measure = maps[kind].measure; st.bodies = maps[kind].bodies; }
   const before = st.accLen[f.id];
+  const nOut = env.out.length;
   if (route === 'holes') await holesStep(f, idx, env2);
   else if (route === 'shell-draft') await shellDraftStep(f, idx, env2);
   else if (route === 'patterns-mirror') await pmStep(f, idx, env2);
   else if (route === 'booleans') await boolStep(f, idx, env2);
   else if (route === 'revolve-groove') await rgStep(f, idx, env2);
+  else if (route === 'fillet-chamfer') await fcStep(f, idx, env2);
   else await genericStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
+  if (route === 'fillet-chamfer') {
+    // the fillet-chamfer step keeps the RAW text of a refusal in st.refused (as its original does); in unified a feature of another group that depends on a refused blend is worded from the plain sentence
+    for (const n of env.out.slice(nOut)) if (n.status === 'refused' && n.refusal !== undefined && st.refused[n.id] !== undefined) st.refused[n.id] = n.refusal;
+    if (mixed) {
+      // a run of blends is one call that builds several features: every feature this step built (or left standing with a refusal) is carried over to the other kind of measure
+      const other: 'E' | 'P' = 'E';
+      for (const n of env.out.slice(nOut)) {
+        const mm = st.measure[n.id];
+        if (st.accLen[n.id] === undefined || !mm || maps[other].measure[n.id]) continue;
+        const rr = seen.find((x) => x.cmds.length === st.accLen[n.id] && x.cmds.every((c, i) => c === accepted[i]))?.res;
+        if (mm.shells === undefined) mm.shells = toE(mm, rr).shells;
+        const o = toE(mm, rr);
+        maps[other].measure[n.id] = o;
+        maps[other].bodies[n.id] = o.bodies;
+      }
+    }
+    return;
+  }
   if (!mixed) return;
   const m = st.measure[f.id];
   if (st.accLen[f.id] === before || !m) return; // refused or a no-op: nothing to carry over
@@ -181,7 +213,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
 export const UNIFIED_PROFILE: Profile = {
   name: 'unified',
   // claiming every kind a group lists keeps planFeature honest about what this set plans (a hole, a shell and a draft are planned asynchronously by the step)
-  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners, ...BOOL_PROFILE.planners, ...RG_PROFILE.planners },
+  planners: { ...EXTRUDE_POCKET_PROFILE.planners, ...HOLES_PROFILE.planners, ...SHELL_DRAFT_PROFILE.planners, ...PM_PROFILE.planners, ...BOOL_PROFILE.planners, ...RG_PROFILE.planners, ...FC_PROFILE.planners },
   verifies: true,
   initState(st, doc) {
     EXTRUDE_POCKET_PROFILE.initState(st);
@@ -190,6 +222,7 @@ export const UNIFIED_PROFILE: Profile = {
     PM_PROFILE.initState(st);
     BOOL_PROFILE.initState(st, doc);
     RG_PROFILE.initState(st);
+    FC_PROFILE.initState(st);
     st.unified = { domain: domainOf(doc ?? { features: [] }), maps: { E: { measure: {}, bodies: {} }, P: { measure: {}, bodies: {} } } };
   },
   // wording of the synchronous planFeature only (the step chooses the wording of a run by the document's style): the extrude-pocket group's, the first entry
