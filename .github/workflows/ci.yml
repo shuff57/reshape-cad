@@ -134,6 +134,16 @@ jobs:
       - name: Build every workspace, in dependency order
         run: npm run build
 
+      # Live-reference gate: the guard-layer fuzz scored against the
+      # independent oracle. Without the rig there is nothing to measure, so the
+      # gate SKIPS (exit 0) -- CI has no rig. With the rig it fails on any wrong
+      # solid. The scored run happens on a box that has the rig (see the
+      # remaining-work loop report); this step is the fail-safe wiring.
+      - name: Live-reference gate (skips without the rig)
+        id: live-gate
+        continue-on-error: true
+        run: sh packages/layer/test/live-gate.sh
+
       # check-record, then the workspace suites. NOT the gates: they measure
       # brep-rs against OpenCascade as a referee, on demand, and a referee
       # disagreeing is a finding for a person to read rather than a red build.

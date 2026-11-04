@@ -114,7 +114,7 @@ const rows = [];
 for (const c of cases) {
   const t0 = Date.now();
   let P = null, err = null;
-  try { P = oracle(c.model).P; } catch (e) { err = String(e.message || e).slice(0, 200); }
+  try { P = oracle(c.model).P; if (process.env.NEGATIVE_CONTROL === '1' && P !== null) P *= 1.05; } catch (e) { err = String(e.message || e).slice(0, 200); }
   const r = runScript(c.script);
   let cls = 'ERROR', vol = null, guards = [], shell = null, msg = err;
   if (r.errors.length) { cls = 'NODOC'; msg = r.errors[0].message; }
@@ -143,3 +143,4 @@ for (const c of cases) {
 const sum = (k) => rows.filter((x) => x.cls === k).length;
 writeFileSync(OUT, JSON.stringify({ pkg: PKG, harness: 'fuzz-guard.mjs', tolerance: 1e-3, cases: rows.length, counts: { MATCH: sum('MATCH'), REFUSED: sum('REFUSED'), WRONG: sum('WRONG'), NODOC: sum('NODOC'), NOSHELL: sum('NOSHELL'), 'ENGINE-FAIL': sum('ENGINE-FAIL'), 'NO-ORACLE': sum('NO-ORACLE'), ERROR: sum('ERROR') }, rows }, null, 1));
 console.log(`DONE ${rows.length} cases: MATCH=${sum('MATCH')} REFUSED=${sum('REFUSED')} WRONG=${sum('WRONG')} NODOC=${sum('NODOC')} NOSHELL=${sum('NOSHELL')} OTHER=${rows.length - sum('MATCH') - sum('REFUSED') - sum('WRONG') - sum('NODOC') - sum('NOSHELL')}`);
+process.exit(sum('WRONG') > 0 ? 1 : 0);
