@@ -47,6 +47,9 @@ const CASES = []; const seen = new Set();
 for (const c of SRC) { if (typeof c.src !== 'string') continue; const key = `${c.id}\u0000${c.src}`; if (seen.has(key)) continue; seen.add(key); CASES.push({ id: c.id, src: c.src }); }
 for (let i = 0; i < N_GEN; i++) CASES.push({ id: `rg seed ${i}`, gen: i });
 
+const idsOut = arg('ids-out');
+if (idsOut) { writeFileSync(idsOut, JSON.stringify([...new Set(CASES.map((c) => c.id))])); process.exit(0); }
+
 if (process.argv.includes('--all')) {
   const OUT = path.resolve(arg('out') || '.');
   mkdirSync(path.join(OUT, 'cases'), { recursive: true });

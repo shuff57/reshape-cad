@@ -50,6 +50,11 @@ const N_RG_COMBINED = Number(arg('rg-combined') || 400);
 const N_FC_COMBINED = Number(arg('fc-combined') || 400);
 const OUT = path.resolve(arg('out') || 'live-replay-unified.json');
 mkdirSync(path.dirname(OUT), { recursive: true });
+// --skip=<file> holds [{corpus,id},...] already finished in an earlier attempt (merge-unified.mjs skip).
+const skipFile = arg('skip');
+const skipKeys = new Set(skipFile && existsSync(path.resolve(skipFile))
+  ? JSON.parse(readFileSync(path.resolve(skipFile), 'utf8')).map((r) => `${r.corpus}\u0000${r.id}`)
+  : []);
 for (const k of ['H4_BUDGET_S', 'H4_DOC_BUDGET_S']) if (process.env[k] !== undefined) { console.error(`FATAL: ${k} is set; the layer uses the group's default budget (45 s per run, 180 s per document)`); process.exit(2); }
 if (process.env.SD_OFF) { console.error('FATAL: SD_OFF is set; the replay runs every guard on'); process.exit(2); }
 
@@ -93,7 +98,10 @@ if (existsSync(path.join(brepDir, 'brep_rs_bg.wasm'))) {
 
 // ---- corpora, selected the way the groups' own replays select them ---------------------------------------------------------------------------------------------
 const items = [];
-const add = (corpus, id, doc, fromUsage) => { if (!only.length || only.includes(id)) items.push({ corpus, id, doc, fromUsage }); };
+const add = (corpus, id, doc, fromUsage) => {
+  if (skipKeys.has(`${corpus}\u0000${id}`)) return;
+  if (!only.length || only.includes(id)) items.push({ corpus, id, doc, fromUsage });
+};
 if (corpora.includes('ep')) {
   const { CASES } = await imp(path.join(CONTRACT, 'extrude-pocket-cases.mjs'));
   for (const f of ['r2', 'r3', 'r4']) await imp(path.join(CONTRACT, `extrude-pocket-cases-${f}.mjs`));
@@ -239,17 +247,35 @@ for (const it of items) {
   // invariant 1, and the report for the combined docs
   if (u.threw) T.threw++;
   if (!u.threw && need.size === SETS.length) {
-    const literal = []; const violated = [];
+    const literal = []; const violated = []; const detail = [];
     for (const s of SETS) {
       const o = single[s]; if (o.threw) continue;
       const b = bindingRefusals(s, it.doc, o.notes);
       T.binding += b.binding.length;
       o.notes.forEach((n, i) => { if (n.status === 'refused' && u.notes[i]?.status === 'built') literal.push(`${s}:${it.doc.features[i].id}`); });
-      for (const i of b.binding) if (!unifiedCovers(it.doc, i, u.notes, o.notes[i].guard)) violated.push(`${s}:${it.doc.features[i].id}`);
+      for (const i of b.binding) if (!unifiedCovers(it.doc, i, u.notes, o.notes[i].guard)) {
+        violated.push(`${s}:${it.doc.features[i].id}`);
+        detail.push({
+          set: s,
+          feature: it.doc.features[i].id,
+          kind: it.doc.features[i].kind,
+          setStatus: o.notes[i].status,
+          setGuard: o.notes[i].guard ?? null,
+          setRefusal: o.notes[i].refusal ?? null,
+          unifiedStatus: u.notes[i]?.status ?? null,
+          unifiedGuard: u.notes[i]?.guard ?? null,
+          unifiedRefusal: u.notes[i]?.refusal ?? null,
+          unifiedCommands: u.notes[i]?.commands?.map((c) => c.command) ?? null,
+        });
+      }
     }
     row.literal = [...new Set(literal)];
     T.literalBuiltWhereASetRefused += row.literal.length;
-    if (violated.length) { row.violated = violated; T.unifiedBuiltWhereASetRefused.push({ id: it.id, features: violated }); }
+    if (violated.length) {
+      row.violated = violated;
+      row.violatedDetail = detail;
+      T.unifiedBuiltWhereASetRefused.push({ id: it.id, features: violated, detail });
+    }
     if (it.corpus === 'combined' || it.corpus === 'rgcombined' || it.corpus === 'fccombined') {
       row.unified = { feats: u.feats.map((f) => `${f.id}:${f.status}${f.guard ? `/${f.guard}` : ''}`), scene: u.scene ?? null };
       if (u.scene?.ok) T.combinedBuilt++;

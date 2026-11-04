@@ -39,6 +39,9 @@ const load = (p) => imp(path.join(REPO, p));
 const { CASES } = await imp(path.join(CONTRACT, 'boolean-cases.mjs'));
 for (const f of ['boolean-cases-r2.mjs', 'boolean-cases-r3.mjs', 'boolean-cases-r4.mjs', 'boolean-cases-r5.mjs', 'boolean-cases-r6.mjs']) await imp(path.join(CONTRACT, f));
 
+const idsOut = arg('ids-out');
+if (idsOut) { writeFileSync(idsOut, JSON.stringify([...new Set(CASES.map((c) => c.id))])); process.exit(0); }
+
 if (process.argv.includes('--all')) {
   const OUT = path.resolve(arg('out') || '.');
   mkdirSync(path.join(OUT, 'cases'), { recursive: true });

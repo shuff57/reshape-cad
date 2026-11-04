@@ -35,6 +35,12 @@ cd packages/layer && npm test        # node --test "test/*.test.mjs"
 
 The test needs `packages/script/dist` and `packages/sketch/dist` built (the root `npm run build` does it).
 
+The real-kernel live replays are not part of `npm test`. `test/run-live-replays.sh` runs the five
+group replays in order, one at a time, under the rig's memory and wall caps, and stops on a
+finding: `sh test/run-live-replays.sh --status | --dry-run | --from=<phase>` (see
+`test/LIVE-REPLAY-LOOP.md`). `test/status-page.mjs` writes a self-refreshing progress page for the
+loop, which is useful while the long phases run.
+
 ## The differential test (`test/differential.test.mjs`)
 
 It loads the ORIGINAL `.mjs` modules and the compiled port, feeds both the same ModelDocs through a deterministic FAKE engine
