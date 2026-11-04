@@ -192,6 +192,8 @@ function mentions(f) {
  *   binding     S refuses a feature of a kind S owns, or of a kind no set owns, or any feature through one of S's cross-kind guards (CROSS_KIND_GUARDS).
  *   stand-in    S refuses a kind ANOTHER set owns, through the base planner or a stand-in sentence (the holes set refuses every closed hollow with G-CLOSED, the
  *               extrude-pocket and holes sets refuse a whole-body draft the base does not map): S has no guard for that kind, so there is nothing to lose.
+ *               A G-BUDGET stop on another set's kind also lands here: the set's own CPU window closed on a stand-in plan, which says nothing about the
+ *               geometry (r3-vase2-x10, the holes set stopping unified's pattern).
  *   injected    S refuses because the fake engine failed on a call NUMBER (failEvery: every 5th call fails). Which call that is depends on how many runs the set made before, so it
  *               is not a decision of a guard; unified makes other calls and meets other failures.
  *   downstream  S refuses a feature that reads a stand-in refusal (directly or through others): it may be refused only because of it.
@@ -208,12 +210,18 @@ export function bindingRefusals(set, doc, notes) {
     const epJoin = set === 'extrude-pocket' && f.kind === 'combine' && EP_JOIN_LEVEL !== 'off'
       && (lib.un.EP_COMBINE_SAFETY.some((re) => re.test(n.refusal ?? '')) || (EP_JOIN_LEVEL === 'full' && lib.un.EP_COMBINE_CONSISTENCY.some((re) => re.test(n.refusal ?? ''))));
     const own = OWNS[set].includes(f.kind) || !ALL_OWNED.includes(f.kind) || epJoin;
+    // A G-BUDGET stop on a kind the set does not own is a statement about that set's CPU window, not about the
+    // geometry: the set planned the feature through a stand-in, and it was that stand-in that ran long. It does not
+    // bind (r3-vase2-x10: the holes set stopped a pattern at 45 s and unified built it). A G-BUDGET on a kind the set
+    // does own still binds, and the re-run in invariant 2 still applies to both. G-VOID and the other cross-kind
+    // guards are geometry and keep binding.
+    const budgetOnAnotherSetsKind = n.guard === 'G-BUDGET' && !own;
     // a refused groove leaves its part's handle pointing at itself (the revolve-groove group's chain): what is refused later on that part is refused BECAUSE of it, so when the groove's own refusal does not bind
     // (an injected failure, a dependency on a stand-in refusal, a kind another set owns) the part is tainted too
     const mark = () => { taint.add(f.id); if (CHAIN_TAINT && f.kind === 'groove' && typeof f.into === 'string') taint.add(f.into); };
     if (INJECTED.test(JSON.stringify([n.failed ?? null, n.raw ?? null, n.probe ?? null]))) { mark(); injected.push(i); return; }
     if (dep) { mark(); downstream.push(i); return; }
-    if (!own && !CROSS_KIND_GUARDS.includes(n.guard)) { mark(); standIn.push(i); return; }
+    if (!own && (!CROSS_KIND_GUARDS.includes(n.guard) || budgetOnAnotherSetsKind)) { mark(); standIn.push(i); return; }
     binding.push(i);
   });
   return { binding, standIn, downstream, injected };

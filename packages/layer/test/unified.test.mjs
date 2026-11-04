@@ -38,6 +38,17 @@ test('createTranslator: unified exists, is not a member of a composition, the de
 async function runDoc(set, features, cfg = CONFIGS[0]) { return runSet(set, { version: 1, features }, cfg); }
 const statusOf = (r, id) => r.result.features.find((f) => f.id === id);
 
+test('bindingRefusals: a G-BUDGET stop on another set\'s kind is a stand-in; a geometry guard on that kind still binds', () => {
+  const doc = { version: 1, features: [{ id: 'pat1', kind: 'pattern' }, { id: 'hole1', kind: 'hole' }] };
+  const refusal = (guard, extra = {}) => ({ status: 'refused', guard, refusal: `${guard} stopped it`, ...extra });
+  // the live case: the holes set does not own pattern, its 45 s window closed on a stand-in plan
+  assert.deepStrictEqual(bindingRefusals('holes', doc, [refusal('G-BUDGET'), { status: 'built' }]), { binding: [], standIn: [0], downstream: [], injected: [] });
+  // a geometry guard on the same kind is the set's own evidence and keeps binding
+  assert.deepStrictEqual(bindingRefusals('holes', doc, [refusal('G-CHAMFER'), { status: 'built' }]), { binding: [0], standIn: [], downstream: [], injected: [] });
+  // a budget stop on a kind the set does own keeps binding (the holes set's own hole)
+  assert.deepStrictEqual(bindingRefusals('holes', doc, [{ status: 'built' }, refusal('G-BUDGET')]), { binding: [1], standIn: [], downstream: [], injected: [] });
+});
+
 test('G-VOID: nothing but a move or a turn may follow a closed hollow, for EVERY kind, and the mark travels through the move and the turn', async () => {
   const hollow = [box('b1', [30, 24, 20]), shell('s1', 'b1', undefined, 2)];
   const sk = [rect('sk1', 6, 6)];
