@@ -17,6 +17,10 @@
 // are not compared: the original resolves names through brep-rs (ctx.resolveAt, archive/brep-rs/pkg), the layer through the engine's own topology. They are
 // listed as `excluded` with the reason. See NOTES.md.
 //
+// Named exception (owner-approved, c5ab5d23, the same one holes.differential.test.mjs carries): a closed hollow's original sentence prints the missing
+// reason as the word "undefined"; only that sentence is rewritten before the comparison and the row is marked H4-CLOSED-SENTENCE. Everything else in the
+// row still has to match.
+//
 // Needs: SOLIDCRAFT_REFEREE_PKG; packages/{sketch,script,layer}/dist built (npm run build). Memory: the child processes are the engine; run one replay at a time.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -89,7 +93,21 @@ async function outcome(isOriginal, doc) {
 const canon = (o) => JSON.stringify(o, (k, v) => (typeof v === 'number' ? Number(v.toPrecision(12)) : v));
 const budgetInvolved = (o) => (o.feats ?? []).some((f) => f.guard === 'G-BUDGET') || o.scene?.timedOut;
 
-const rows = []; let same = 0, differ = 0, timing = 0, noDoc = 0, excluded = 0;
+// Named exception (owner-approved, c5ab5d23; same rule as holes.differential.test.mjs): the
+// original's closed-hollow sentence prints its missing reason as "undefined"; the layer words it
+// without one. Only the sentence is rewritten here -- status, guard, commands and scene must still
+// match, or the row stays a differ.
+const closedText = (id) => `${id} (hollow): a hollow with no open side is not built here, so ${id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`;
+function closedSentenceException(a, b) {
+  const fa = (a.feats ?? []).find((f) => f.guard === 'G-CLOSED');
+  if (!fa || !/and undefined, so/.test(fa.refusal ?? '')) return false;
+  const fb = (b.feats ?? []).find((f) => f.id === fa.id && f.guard === 'G-CLOSED');
+  if (!fb || fb.refusal !== closedText(fb.id)) return false;
+  fa.refusal = fb.refusal;
+  return true;
+}
+
+const rows = []; let same = 0, differ = 0, timing = 0, noDoc = 0, excluded = 0, exceptions = 0;
 const t0 = Date.now();
 for (const c of cases) {
   if (only.length && !only.includes(c.id)) continue;
@@ -100,13 +118,16 @@ for (const c of cases) {
   if (diff.length) { excluded++; rows.push({ id: c.id, excluded: diff }); continue; }
   let a = await outcome(true, doc);
   let b = await outcome(false, doc);
+  let exception = closedSentenceException(a, b);
   let eq = canon(a) === canon(b);
   let retried = false;
-  if (!eq && (budgetInvolved(a) || budgetInvolved(b))) { retried = true; a = await outcome(true, doc); b = await outcome(false, doc); eq = canon(a) === canon(b); }
-  if (eq) { same++; if (retried) timing++; } else differ++;
-  rows.push(eq ? { id: c.id, same: true, retried, status: a.feats?.map((f) => f.status).join(',') ?? a.threw, guards: (a.feats ?? []).map((f) => f.guard).filter(Boolean), volume: a.scene?.volume ?? null } : { id: c.id, same: false, retried, original: a, layer: b });
-  if ((same + differ) % 10 === 0) { writeFileSync(OUT, JSON.stringify({ partial: true, same, differ, timing, noDoc, excluded, rows }, null, 1)); console.log(`${same + differ} cases, ${differ} differ, ${Math.round((Date.now() - t0) / 1000)} s`); }
+  if (!eq && (budgetInvolved(a) || budgetInvolved(b))) { retried = true; a = await outcome(true, doc); b = await outcome(false, doc); exception = closedSentenceException(a, b); eq = canon(a) === canon(b); }
+  if (eq) { same++; if (retried) timing++; if (exception) exceptions++; } else differ++;
+  rows.push(eq
+    ? { id: c.id, same: true, retried, ...(exception ? { exception: 'H4-CLOSED-SENTENCE' } : {}), status: a.feats?.map((f) => f.status).join(',') ?? a.threw, guards: (a.feats ?? []).map((f) => f.guard).filter(Boolean), volume: a.scene?.volume ?? null }
+    : { id: c.id, same: false, retried, original: a, layer: b });
+  if ((same + differ) % 10 === 0) { writeFileSync(OUT, JSON.stringify({ partial: true, same, differ, timing, noDoc, excluded, exceptions, rows }, null, 1)); console.log(`${same + differ} cases, ${differ} differ, ${Math.round((Date.now() - t0) / 1000)} s`); }
 }
-writeFileSync(OUT, JSON.stringify({ pkg: PKG, cases: same + differ, same, differ, timingRetried: timing, noDoc, excluded, rows }, null, 1));
-console.log(`DONE: ${same + differ} cases replayed, ${same} identical (${timing} only after a re-run because of the CPU budget), ${differ} differ, ${noDoc} scripts that do not run (no doc), ${excluded} docs not compared (names resolved differently by design). Wrote ${OUT}`);
+writeFileSync(OUT, JSON.stringify({ pkg: PKG, cases: same + differ, same, differ, timingRetried: timing, noDoc, excluded, exceptions, rows }, null, 1));
+console.log(`DONE: ${same + differ} cases replayed, ${same} identical (${timing} only after a re-run because of the CPU budget, ${exceptions} through the named closed-hollow sentence exception), ${differ} differ, ${noDoc} scripts that do not run (no doc), ${excluded} docs not compared (names resolved differently by design). Wrote ${OUT}`);
 process.exit(differ ? 1 : 0);

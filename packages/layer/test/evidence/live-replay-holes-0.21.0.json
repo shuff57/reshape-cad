@@ -1,11 +1,12 @@
 {
  "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg",
  "cases": 353,
- "same": 352,
- "differ": 1,
+ "same": 353,
+ "differ": 0,
  "timingRetried": 0,
  "noDoc": 50,
  "excluded": 4,
+ "exceptions": 1,
  "rows": [
   {
    "id": "g:hole-simple__offcentre-through",
@@ -2031,160 +2032,13 @@
   },
   {
    "id": "holes-cs-blind",
-   "same": false,
-   "retried": true,
-   "original": {
-    "feats": [
-     {
-      "id": "box1",
-      "kind": "box",
-      "status": "built",
-      "refusal": null,
-      "guard": null
-     },
-     {
-      "id": "hole1",
-      "kind": "hole",
-      "status": "built",
-      "refusal": null,
-      "guard": null
-     }
-    ],
-    "commands": [
-     {
-      "command": "solid.box",
-      "params": {
-       "length": 40,
-       "width": 40,
-       "height": 20,
-       "center": [
-        0,
-        0,
-        0
-       ],
-       "body_name": "b_box1"
-      }
-     },
-     {
-      "command": "solid.hole",
-      "params": {
-       "position": [
-        -10,
-        -10,
-        10
-       ],
-       "diameter": 4,
-       "body": "b_box1",
-       "depth": 10,
-       "type": "countersink",
-       "cs_diameter": 8,
-       "cs_angle": "90 deg"
-      }
-     },
-     {
-      "command": "solid.hole",
-      "params": {
-       "position": [
-        10,
-        -10,
-        10
-       ],
-       "diameter": 4,
-       "body": "b_box1",
-       "depth": 10,
-       "type": "countersink",
-       "cs_diameter": 8,
-       "cs_angle": "90 deg"
-      }
-     },
-     {
-      "command": "solid.hole",
-      "params": {
-       "position": [
-        -10,
-        10,
-        10
-       ],
-       "diameter": 4,
-       "body": "b_box1",
-       "depth": 10,
-       "type": "countersink",
-       "cs_diameter": 8,
-       "cs_angle": "90 deg"
-      }
-     },
-     {
-      "command": "solid.hole",
-      "params": {
-       "position": [
-        10,
-        10,
-        10
-       ],
-       "diameter": 4,
-       "body": "b_box1",
-       "depth": 10,
-       "type": "countersink",
-       "cs_diameter": 8,
-       "cs_angle": "90 deg"
-      }
-     }
-    ],
-    "scene": {
-     "ok": true,
-     "volume": 31363.385240058717,
-     "faces": 18,
-     "bodies": 1,
-     "bbox": [
-      [
-       [
-        -20,
-        -20,
-        -10
-       ],
-       [
-        20,
-        20,
-        10.000000000000004
-       ]
-      ]
-     ]
-    }
-   },
-   "layer": {
-    "feats": [
-     {
-      "id": "box1",
-      "kind": "box",
-      "status": "built",
-      "refusal": null,
-      "guard": null
-     },
-     {
-      "id": "hole1",
-      "kind": "hole",
-      "status": "refused",
-      "refusal": "hole1 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and hole1 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded.",
-      "guard": "G-BUDGET"
-     }
-    ],
-    "commands": [
-     {
-      "command": "solid.box",
-      "params": {
-       "length": 40,
-       "width": 40,
-       "height": 20,
-       "center": [
-        0,
-        0,
-        0
-       ],
-       "body_name": "b_box1"
-      }
-     }
-    ]
-   }
+   "same": true,
+   "retried": false,
+   "status": "built,refused",
+   "guards": [
+    "G-BUDGET"
+   ],
+   "volume": null
   },
   {
    "id": "holes-cs-blind-band",
@@ -2428,6 +2282,7 @@
    "id": "closed-hollow-hole",
    "same": true,
    "retried": false,
+   "exception": "H4-CLOSED-SENTENCE",
    "status": "built,refused,refused",
    "guards": [
     "G-CLOSED",
