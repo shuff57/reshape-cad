@@ -51,6 +51,9 @@ for (const f of CASE_FILES) { try { for (const c of (await imp(path.join(FC, f))
 }
 for (let i = 0; i < N_GEN; i++) CASES.push({ id: `fc seed ${i}`, gen: i });
 
+const idsOut = arg('ids-out');
+if (idsOut) { writeFileSync(idsOut, JSON.stringify([...new Set(CASES.map((c) => c.id))])); process.exit(0); }
+
 if (process.argv.includes('--all')) {
   const OUT = path.resolve(arg('out') || '.');
   mkdirSync(path.join(OUT, 'cases'), { recursive: true });
@@ -134,8 +137,11 @@ async function outcome(isOriginal, doc) {
     tr = isOriginal ? await orig.tr.translateDoc(structuredClone(doc), { ...ctx, fc: { guard: true, group: true, lib: orig.guard } }) : await layer.translateDoc(structuredClone(doc), ctx);
   } catch (e) { return { threw: String(e?.message ?? e) }; }
   const out = { feats: isOriginal ? viewOrig(tr, doc) : viewLayer(tr), commands: tr.commands };
-  const last = [...tr.features].reverse().find((x) => x.kind !== 'sketch' && x.kind !== 'datum' && x.status !== 'noop');
-  if (last?.status === 'built') out.scene = await sceneOf(tr.commands);
+  // The original keeps a partial guard (a blend too small to cut) as `built` + `partialGuard` and
+  // shows it as refused in the view; the layer keeps it as `refused` directly. Both leave the base
+  // solid's commands in place. Keying the scene on the raw status therefore built a scene on one
+  // side only for those cases. Whenever there is anything to build, build it on both sides.
+  if (tr.commands.length) out.scene = await sceneOf(tr.commands);
   return out;
 }
 const canon = (o) => JSON.stringify(o, (k, v) => (typeof v === 'number' ? Number(v.toPrecision(12)) : v));
