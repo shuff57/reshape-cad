@@ -1,0 +1,29 @@
+output dir: /home/shuff57/.cache/solidcraft-0.30.1-rig/step1/prims
+tolerances: truck volume/bbox planar 1e-9, curved 0.0003; centre of mass 0.000001 x bbox diagonal (0.00003 for non-pick curved results, tessellation-limited); brep-rs: gate tol
+fixture                                   OCCT vol  brep dVol  truck dVol     dBbox      dCOM  faces O/B/T(k)  outcome
+box                                     24000.0000    1.5e-16     1.5e-16    0.0e+0   6.6e-17        6/6/6(6)  PASS
+cylinder                                13571.6803    4.0e-16      1.1e-4    2.7e-5   8.7e-17        3/3/3(4)  PASS
+cone                                     4523.8934    2.0e-16      1.8e-4    1.3e-5   3.4e-17        2/2/2(4)  PASS
+sphere                                  14137.1669    1.3e-16      7.1e-5   1.2e-16   1.1e-13        1/1/1(6)  PASS
+torus                                    4421.5828    1.9e-15      1.5e-4    9.0e-5    7.4e-7        1/1/1(6)  PASS
+prism-hex                                5196.1524     0.0e+0     1.8e-16   3.6e-16   1.5e-17        8/8/8(8)  PASS
+prism-tri                                2598.0762    1.8e-16     5.3e-16    0.0e+0   7.4e-17        5/5/5(5)  PASS
+wedge                                     600.0000     0.0e+0      0.0e+0    0.0e+0   2.9e-17        5/5/5(5)  PASS
+wedge-2                                  1440.0000     0.0e+0      0.0e+0    0.0e+0   2.7e-17        5/5/5(5)  PASS
+
+REFUSED by truck/translator (0):
+
+FACE-TYPE COMPARISON (every fixture whose per-type counts differ; pl plane, cy cylinder, sp sphere, co cone, to torus, ot other):
+fixture                              OCCT types           truck types          OCCT components     explanation per type
+  truck-merges-edge-connected-same-surface-faces: truck count for that type == edge-connected components of same-surface faces in the live OCCT shape.
+  truck-splits-cylinder-patch-over-180deg: truck cylinder count == components + components whose summed angular span (face UV bounds) exceeds 180 degrees.
+  occt-other-surface-is-truck-plane: OCCT holds a face as a non-analytic surface where truck gives a plane; counts match once the two are paired.
+
+ASYMMETRIC FIXTURES. Pick controls = opposite edge/face through the part centre; REJECTED needs a failed score and control dCOM >= 10 x 0.000001.
+fixture                         OCCT==brep  true dVol  true dCOM   pos   ctl dVol   ctl dCOM   ctl/tol  control
+  pick coincidence (OCCT resolve == brep-rs resolve): 0/0
+
+fixtures 9: PASS 9, FAIL 0, CONVENTION 0, REFEREE-ARTIFACT 0, REFUSED 0, unexplained face-type mismatches 0
+brep-rs on the same fixtures: PASS 9, refused 0
+asymmetric: 0 fixtures, positive PASS 0, pick controls rejected 0/0
+Named picks (fillet / shell open / draft) take their point from brep-rs resolve; OCCT-vs-brep-rs coincidence is asserted above only for the asymmetric fixtures.
