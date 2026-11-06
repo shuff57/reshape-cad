@@ -1,0 +1,56 @@
+[
+ {
+  "id": "fz7-038-cyl-sph-sub",
+  "solidcore": 2348.864107310679,
+  "wallMs": 2702,
+  "occt": 2348.8641073339677,
+  "brep": null,
+  "relOcct": 9.914801482504998e-12,
+  "relBrep": null
+ },
+ {
+  "id": "r3-split-cone-slab",
+  "solidcore": 3128.1087686036244,
+  "wallMs": 2215,
+  "occt": 3128.108703790862,
+  "brep": null,
+  "relOcct": 2.0719472575921878e-8,
+  "relBrep": null
+ },
+ {
+  "id": "fz17-043-box-con-box-uni",
+  "solidcore": 11758.922887589912,
+  "wallMs": 1786,
+  "occt": 11758.92293773908,
+  "brep": null,
+  "relOcct": 4.264775682810339e-9,
+  "relBrep": null
+ },
+ {
+  "id": "fz17-109-wed-con-uni",
+  "solidcore": 8825.5240562037,
+  "wallMs": 1457,
+  "occt": 8825.524102138375,
+  "brep": null,
+  "relOcct": 5.204753295404891e-9,
+  "relBrep": null
+ },
+ {
+  "id": "fz23-087-sph-box-uni",
+  "solidcore": 6748.893514217849,
+  "wallMs": 3353,
+  "occt": 6748.893571884118,
+  "brep": null,
+  "relOcct": 8.54455150560749e-9,
+  "relBrep": null
+ },
+ {
+  "id": "r6-tiny-cone-minus-ball-r12.5",
+  "solidcore": 104.70250112379381,
+  "wallMs": 1920,
+  "occt": 104.70250115573413,
+  "brep": 104.7025011557389,
+  "relOcct": 3.050578229299423e-10,
+  "relBrep": 3.0510342687569477e-10
+ }
+]

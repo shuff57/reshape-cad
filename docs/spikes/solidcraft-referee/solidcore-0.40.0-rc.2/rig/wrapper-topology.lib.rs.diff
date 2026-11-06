@@ -1,0 +1,3 @@
+6a7,8
+> // rc.2 adaptation (Stage A probe): Region2::interior_point moved into the solidcraft_geom::Region2Geom trait.
+> use solidcraft_geom::Region2Geom;

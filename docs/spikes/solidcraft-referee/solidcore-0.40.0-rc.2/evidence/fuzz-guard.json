@@ -1,0 +1,454 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg",
+ "harness": "fuzz-guard.mjs",
+ "tolerance": 0.001,
+ "cases": 30,
+ "counts": {
+  "MATCH": 5,
+  "REFUSED": 23,
+  "WRONG": 2,
+  "NODOC": 0,
+  "NOSHELL": 0,
+  "ENGINE-FAIL": 0,
+  "NO-ORACLE": 0,
+  "ERROR": 0
+ },
+ "rows": [
+  {
+   "id": "plain-open-top",
+   "family": "plain",
+   "cls": "MATCH",
+   "vol": 2423.999999999999,
+   "P": 2424.0000000000005,
+   "rel": 5.628061273347327e-16,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 2334
+  },
+  {
+   "id": "plain-centered-hole",
+   "family": "plain",
+   "cls": "MATCH",
+   "vol": 2552.8052987979445,
+   "P": 2552.7998437500005,
+   "rel": 0.0000021368882317006995,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 3125
+  },
+  {
+   "id": "A-thru-web-0.95",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2522.8931250000005,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2507
+  },
+  {
+   "id": "A-thru-web-1",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2524.925156250001,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2563
+  },
+  {
+   "id": "A-thru-web-1.05",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2526.9178125000008,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2353
+  },
+  {
+   "id": "A-thru-web-1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2542.6720312500006,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2328
+  },
+  {
+   "id": "A-thru-web-1.9",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2551.8731250000005,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2245
+  },
+  {
+   "id": "A-thru-web-2",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2552.7998437500005,
+   "rel": null,
+   "guards": [
+    "engine"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): hole1 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+   "msg": null,
+   "ms": 3024
+  },
+  {
+   "id": "A-thru-web-2.05",
+   "family": "A",
+   "cls": "MATCH",
+   "vol": 2552.8052987999663,
+   "P": 2552.7998437500005,
+   "rel": 0.0000021368890236964867,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 2679
+  },
+  {
+   "id": "A-thru-web-3",
+   "family": "A",
+   "cls": "MATCH",
+   "vol": 2552.8052987979054,
+   "P": 2552.7998437500005,
+   "rel": 0.0000021368882163809428,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 2735
+  },
+  {
+   "id": "A-twohole-gap-1",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2661.3440625000007,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (two holes are closer than their wall allowances), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2526
+  },
+  {
+   "id": "A-twohole-gap-1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2674.3420312500007,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (two holes are closer than their wall allowances), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2459
+  },
+  {
+   "id": "A-twohole-gap-1.9",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2680.9401562500007,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (two holes are closer than their wall allowances), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2458
+  },
+  {
+   "id": "A-twohole-gap-2",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2681.5996875000005,
+   "rel": null,
+   "guards": [
+    "engine"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): hole2 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+   "msg": null,
+   "ms": 4050
+  },
+  {
+   "id": "A-twohole-gap-3",
+   "family": "A",
+   "cls": "MATCH",
+   "vol": 2681.6105976015306,
+   "P": 2681.5996875000005,
+   "rel": 0.000004068504922975719,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 3162
+  },
+  {
+   "id": "A-blind-floor-0.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2559.0829687500004,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2322
+  },
+  {
+   "id": "A-blind-floor-1",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2565.366093750001,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2306
+  },
+  {
+   "id": "A-blind-floor-1.05",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2565.994406250001,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2301
+  },
+  {
+   "id": "A-blind-floor-1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2571.6492187500007,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2280
+  },
+  {
+   "id": "A-blind-floor-1.9",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2576.6757187500007,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2271
+  },
+  {
+   "id": "A-blind-floor-2",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2577.9323437500007,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2314
+  },
+  {
+   "id": "A-blind-floor-3",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2562.225000000001,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2305
+  },
+  {
+   "id": "B-boss-open-top",
+   "family": "B",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2664.0000000000005,
+   "rel": null,
+   "guards": [
+    "G-CONVEX"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+   "msg": null,
+   "ms": 2821
+  },
+  {
+   "id": "C-bfillet-t1-R1.5",
+   "family": "C",
+   "cls": "WRONG",
+   "vol": 2348.275789218735,
+   "P": 2364.729334081044,
+   "rel": 0.006957897728579884,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 5684
+  },
+  {
+   "id": "C-bfillet-t0.5-R0.75",
+   "family": "C",
+   "cls": "WRONG",
+   "vol": 1236.3774253564457,
+   "P": 1240.580234629037,
+   "rel": 0.003387777070177252,
+   "guards": [],
+   "shellStatus": "built",
+   "shellRefusal": null,
+   "msg": null,
+   "ms": 5604
+  },
+  {
+   "id": "A-pocket-floor-1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2916.000000000001,
+   "rel": null,
+   "guards": [
+    "G-CONVEX"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing box1 is not supported yet because the part has inside corners (a pocket or groove) where the new wall would come out thicker than 1, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+   "msg": null,
+   "ms": 2544
+  },
+  {
+   "id": "A-pocket-floor-2",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2976.000000000001,
+   "rel": null,
+   "guards": [
+    "G-CONVEX"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing box1 is not supported yet because the part has inside corners (a pocket or groove) where the new wall would come out thicker than 1, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+   "msg": null,
+   "ms": 2424
+  },
+  {
+   "id": "A-pocket-floor-3",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2928.000000000001,
+   "rel": null,
+   "guards": [
+    "G-CONVEX"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing box1 is not supported yet because the part has inside corners (a pocket or groove) where the new wall would come out thicker than 1, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+   "msg": null,
+   "ms": 2270
+  },
+  {
+   "id": "A-convex-vfillet-thru-gl1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2534.1190625000004,
+   "rel": null,
+   "guards": [
+    "G-HOLE"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "shell1 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole's wall allowance of 3 reaches the side wall), so shell1 is shown without it -- move the holes apart, or drill after hollowing.",
+   "msg": null,
+   "ms": 2080
+  },
+  {
+   "id": "A-convex-vfillet-blind-gl1.5",
+   "family": "A",
+   "cls": "REFUSED",
+   "vol": null,
+   "P": 2515.4950000000003,
+   "rel": null,
+   "guards": [
+    "G-BLIND"
+   ],
+   "shellStatus": "refused",
+   "shellRefusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+   "msg": null,
+   "ms": 2069
+  }
+ ]
+}

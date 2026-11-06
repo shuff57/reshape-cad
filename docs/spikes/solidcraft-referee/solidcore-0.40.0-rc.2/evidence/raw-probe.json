@@ -1,0 +1,1698 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg",
+ "limitS": 300,
+ "tolerance": 0.001,
+ "rows": [
+  {
+   "id": "repro-p8-s1-00475",
+   "family": "repro p8 (A/B/C)",
+   "desc": "convex bfillet s=0.75 30x24x12",
+   "P": 958.01392793144,
+   "kernel": {
+    "ok": true,
+    "volume": 958.0136365514177,
+    "bodies": 1,
+    "pre": 8627.124719810614,
+    "ms": 752.2291290000001,
+    "wall": 1015,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 8627.124719627036
+   },
+   "occtArc": {
+    "volume": 958.0136395337905,
+    "pre": 8627.124719627036,
+    "maxPickDist": 0
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 958.01392793144,
+     "built": 959.252646638659,
+     "rel": 0.001293006991969013
+    },
+    "p7": {
+     "expectedP": 958.01392793144
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 3.0415008989823713e-7,
+    "occtInt": null,
+    "occtArc": 3.113079736201187e-9,
+    "occtIntVsP": null,
+    "occtArcVsP": 3.010370110991882e-7
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-p8-s1-01097",
+   "family": "repro p8 (A/B/C)",
+   "desc": "convex vfillet s=1 20x16x8 +blind",
+   "P": 1596.7064062500003,
+   "kernel": {
+    "ok": true,
+    "volume": 1596.6968314628132,
+    "bodies": 1,
+    "pre": 2517.7898238841653,
+    "ms": 797.7705800000001,
+    "wall": 1087,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 2517.7898238825856
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 2517.7898238825856
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 1596.7064062500003,
+     "built": 1635.168013407552,
+     "rel": 0.024088089712047973
+    },
+    "p7": {
+     "expectedP": 1596.7064062500003
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 0.000005996585940702336,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-p8-s1-01455",
+   "family": "repro p8 (A/B/C)",
+   "desc": "plate 26.3x20.4x12 open=top [blind,rim]",
+   "P": 3774.0920703125007,
+   "kernel": {
+    "ok": true,
+    "volume": 3774.0889225543797,
+    "bodies": 1,
+    "pre": 6550.987061585702,
+    "ms": 782.463737,
+    "wall": 1049,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=false, 3839.6291 of 6550.9871 kept",
+    "raw": 3839.6290681613045,
+    "pre": 6550.987061573605
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 6550.987061573605
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 3774.0920703125007,
+     "built": 3708.5304310308134,
+     "rel": 0.017371499703837046
+    },
+    "p7": {
+     "expectedP": 3774.0920703125007
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 8.340438077257705e-7,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-p8-s1-01589",
+   "family": "repro p8 (A/B/C)",
+   "desc": "convex bfillet s=2 24x24x8 +blind",
+   "P": 2170.751754924647,
+   "kernel": {
+    "ok": true,
+    "volume": 2170.7607640346264,
+    "bodies": 1,
+    "pre": 4514.877007880664,
+    "ms": 746.893633,
+    "wall": 1004,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 4514.877007666373
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 4514.877007666373
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 2170.751754924647,
+     "built": 2196.5776414295206,
+     "rel": 0.011897208626589488
+    },
+    "p7": {
+     "expectedP": 2170.751754924647
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 0.0000041502258188561,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-p8-s2-00591",
+   "family": "repro p8 (A/B/C)",
+   "desc": "convex bfillet s=0.75 30x24x6",
+   "P": 640.0139279314126,
+   "kernel": {
+    "ok": true,
+    "volume": 640.0136383491674,
+    "bodies": 1,
+    "pre": 4307.124719724193,
+    "ms": 642.819702,
+    "wall": 889,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 4307.124719626581
+   },
+   "occtArc": {
+    "volume": 640.0136395264221,
+    "pre": 4307.124719626581,
+    "maxPickDist": 0
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 640.0139279314126,
+     "built": 641.2127532809593,
+     "rel": 0.0018731238450098169
+    },
+    "p7": {
+     "expectedP": 640.0139279314126
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 4.52462411396482e-7,
+    "occtInt": null,
+    "occtArc": 1.8394212937292584e-9,
+    "occtIntVsP": null,
+    "occtArcVsP": 4.506229909316383e-7
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-p8-s2-01541",
+   "family": "repro p8 (A/B/C)",
+   "desc": "plate 18.8x19.3x12 open=top [rim]",
+   "P": 2557.350000000001,
+   "kernel": {
+    "ok": true,
+    "volume": 2557.3499999999995,
+    "bodies": 1,
+    "pre": 4432.08,
+    "ms": 346.479438,
+    "wall": 600,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 4432.08
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 4432.08
+   },
+   "truck": {
+    "p8": {
+     "cls": "WRONG",
+     "expectedP": 2557.350000000001,
+     "built": 2635.35,
+     "rel": 0.03050032259956559
+    },
+    "p7": {
+     "expectedP": 2557.350000000001
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 5.334592655128911e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-s1-00031",
+   "family": "repro p7/sweep (A)",
+   "desc": "plate 11.9x11.8x12 open=top [vthru]",
+   "P": 1092.7044140625003,
+   "kernel": {
+    "ok": true,
+    "volume": 1092.701142969244,
+    "bodies": 1,
+    "pre": 1534.2435526189697,
+    "ms": 612.977433,
+    "wall": 878,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 1092.7011429607219,
+    "pre": 1534.24355262769,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 1534.24355262769
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 1092.7044140625003,
+     "built": 1117.0315009689982,
+     "rel": 0.022263190844131128
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 0.0000029935755856017558,
+    "occtInt": 7.7991981468936e-12,
+    "occtArc": null,
+    "occtIntVsP": 0.000002993583384776555,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-s1-00038",
+   "family": "repro p7/sweep (A)",
+   "desc": "convex vchamfer s=2 36x16x12 +vthru",
+   "P": 3383.6787500000005,
+   "kernel": {
+    "ok": true,
+    "volume": 3383.772345725909,
+    "bodies": 1,
+    "pre": 6580.38055091651,
+    "ms": 749.127282,
+    "wall": 1017,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 3383.7723456840695,
+    "pre": 6580.380550980764,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 6580.380550980764
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 3383.6787500000005,
+     "built": 3390.7692812095133,
+     "rel": 0.0020955095720930498
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 0.000027660937347693434,
+    "occtInt": 1.2364745760460335e-11,
+    "occtArc": null,
+    "occtIntVsP": 0.000027660924982605653,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-s1-00201",
+   "family": "repro p7/sweep (A)",
+   "desc": "plate 16.8x13.6x12 open=top [vthru]",
+   "P": 2187.0094531250006,
+   "kernel": {
+    "ok": true,
+    "volume": 2186.9897416892995,
+    "bodies": 1,
+    "pre": 2402.4679934095366,
+    "ms": 627.4445109999999,
+    "wall": 868,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 2402.4680 of 2402.4680 kept",
+    "raw": 2402.467993412302,
+    "pre": 2402.467993412302
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 2402.467993412302
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2187.0094531250006,
+     "built": 2354.626905989008,
+     "rel": 0.0766423083469072
+    },
+    "base": null
+   },
+   "rel": {
+    "P": 0.000009012963191776666,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-s1-00501",
+   "family": "repro p7/sweep (A)",
+   "desc": "L 30x12 base6 wall8x8 open=low",
+   "P": 2320.2218750000006,
+   "kernel": {
+    "ok": false,
+    "volume": null,
+    "bodies": null,
+    "pre": 2852.6017763092354,
+    "ms": 353.53574100000003,
+    "wall": 607,
+    "hang": false,
+    "crash": false,
+    "error": "solid.shell: invalid input: shell: the 2.5 mm walls would meet along a line (between a hole and the side, for example), which leaves no solid there; use a thinner or thicker wall, or move the feature"
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 2852.6018 of 2852.6018 kept",
+    "raw": 2852.601776313845,
+    "pre": 2852.601776313845
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 2852.601776313845
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2320.2218750000006,
+     "built": 2353.968446110514,
+     "rel": 0.014544544844666323
+    },
+    "base": null
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "REFUSED"
+  },
+  {
+   "id": "repro-sw-0164",
+   "family": "repro p7/sweep (A)",
+   "desc": "S1 vthru web=1.5 t=1",
+   "P": 2542.6720312500006,
+   "kernel": {
+    "ok": true,
+    "volume": 2542.6767986550312,
+    "bodies": 1,
+    "pre": 11874.33629386383,
+    "ms": 583.1351999999999,
+    "wall": 841,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2542.676798538789,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11874.336293856408
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2542.6720312500006,
+     "built": 2553.1869732631976,
+     "rel": 0.004135390598538095
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2542.6720312500006,
+     "built": 2553.1869732631976,
+     "rel": 0.004135390598538095
+    }
+   },
+   "rel": {
+    "P": 0.000001874958693862853,
+    "occtInt": 4.5716413172546504e-11,
+    "occtArc": null,
+    "occtIntVsP": 0.0000018749129773639662,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-sw-0177",
+   "family": "repro p7/sweep (A)",
+   "desc": "S1b two vthru gap=1.5 t=1",
+   "P": 2674.3420312500007,
+   "kernel": {
+    "ok": true,
+    "volume": 2674.354679007818,
+    "bodies": 1,
+    "pre": 11748.672587687433,
+    "ms": 916.988419,
+    "wall": 1209,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2674.354679061711,
+    "pre": 11748.672587712817,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11748.672587712817
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2674.3420312500007,
+     "built": 2681.8592828353326,
+     "rel": 0.0028108788993673724
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2674.3420312500007,
+     "built": 2681.8592828353326,
+     "rel": 0.0028108788993673724
+    }
+   },
+   "rel": {
+    "P": 0.000004729297026926894,
+    "occtInt": 2.015178408092259e-11,
+    "occtArc": null,
+    "occtIntVsP": 0.00000472931717880628,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "repro-sw-0195",
+   "family": "repro p7/sweep (A)",
+   "desc": "S2 blind top floor=1.5 t=1",
+   "P": 2571.6492187500007,
+   "kernel": {
+    "ok": true,
+    "volume": 2571.654854713832,
+    "bodies": 1,
+    "pre": 11893.185849761003,
+    "ms": 477.25678400000004,
+    "wall": 734,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 11893.185849777947
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11893.185849777947
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2571.6492187500007,
+     "built": 2585.777196550815,
+     "rel": 0.00549374218606745
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2571.6492187500007,
+     "built": 2585.777196550815,
+     "rel": 0.00549374218606745
+    }
+   },
+   "rel": {
+    "P": 0.0000021915756589158,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-sw-0196",
+   "family": "repro p7/sweep (A)",
+   "desc": "S4 pocket top floor=1.5 t=1",
+   "P": 2736.0000000000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2735.999999999998,
+    "bodies": 1,
+    "pre": 11592,
+    "ms": 276.16986399999996,
+    "wall": 553,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 11591.999999999998
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11591.999999999998
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2736.0000000000005,
+     "built": 2776,
+     "rel": 0.014619883040935503
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2736.0000000000005,
+     "built": 2776,
+     "rel": 0.014619883040935503
+    }
+   },
+   "rel": {
+    "P": 8.310441353919299e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "repro-sw-0286",
+   "family": "repro p7/sweep (A)",
+   "desc": "S7 rim wall=2 t=1",
+   "P": 2864.0000000000005,
+   "kernel": {
+    "ok": false,
+    "volume": null,
+    "bodies": null,
+    "pre": 12360,
+    "ms": 254.57880999999998,
+    "wall": 549,
+    "hang": false,
+    "crash": false,
+    "error": "solid.shell: invalid input: shell: the 1 mm walls would meet along a line (between a hole and the side, for example), which leaves no solid there; use a thinner or thicker wall, or move the feature"
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 12360
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 12360
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "REFUSED",
+     "expectedP": 2864.0000000000005,
+     "sentence": "step 6 (solid.shell): lumps: cannot mesh a complete shell boundary"
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2864.0000000000005,
+     "built": 2719.5969349108946,
+     "rel": 0.05042006462608445
+    }
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "REFUSED"
+  },
+  {
+   "id": "repro-sw-0310",
+   "family": "repro p7/sweep (A)",
+   "desc": "S8 hhole g=1.5 bot t=1",
+   "P": 2733.1006250000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2733.108516236533,
+    "bodies": 1,
+    "pre": 11787.942495869547,
+    "ms": 644.920854,
+    "wall": 930,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2733.10851619027,
+    "pre": 11787.942495882688,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11787.942495882688
+   },
+   "truck": {
+    "p8": null,
+    "p7": {
+     "cls": "WRONG",
+     "expectedP": 2733.1006250000005,
+     "built": 2752.150770543636,
+     "rel": 0.006970158862568627
+    },
+    "base": {
+     "cls": "WRONG",
+     "expectedP": 2733.1006250000005,
+     "built": 2752.150770543636,
+     "rel": 0.006970158862568627
+    }
+   },
+   "rel": {
+    "P": 0.000002887283571012611,
+    "occtInt": 1.692681134820773e-11,
+    "occtArc": null,
+    "occtIntVsP": 0.0000028872666441523905,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "rim-w3",
+   "family": "A rim on the open face",
+   "note": "oracle P (= closed form 2872 - 48 (w - 2))",
+   "P": 2824.0000000000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2824,
+    "bodies": 1,
+    "pre": 12504,
+    "ms": 375.452722,
+    "wall": 627,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12504.0000 of 12504.0000 kept",
+    "raw": 12504,
+    "pre": 12504
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12504.0000 of 12504.0000 kept",
+    "raw": 12504,
+    "pre": 12504
+   },
+   "rel": {
+    "P": 1.6102951518642495e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w2.5",
+   "family": "A rim on the open face",
+   "note": "oracle P (= closed form 2872 - 48 (w - 2))",
+   "P": 2848.0000000000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2848,
+    "bodies": 1,
+    "pre": 12450,
+    "ms": 320.69157000000007,
+    "wall": 566,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12450.0000 of 12450.0000 kept",
+    "raw": 12449.999999999998,
+    "pre": 12449.999999999998
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12450.0000 of 12450.0000 kept",
+    "raw": 12449.999999999998,
+    "pre": 12449.999999999998
+   },
+   "rel": {
+    "P": 1.5967252488991013e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w2.05",
+   "family": "A rim on the open face",
+   "note": "oracle P (= closed form 2872 - 48 (w - 2))",
+   "P": 2869.600000000001,
+   "kernel": {
+    "ok": true,
+    "volume": 2869.6000000000013,
+    "bodies": 1,
+    "pre": 12391.140000000001,
+    "ms": 331.445939,
+    "wall": 582,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12391.1400 of 12391.1400 kept",
+    "raw": 12391.139999999998,
+    "pre": 12391.139999999998
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12391.1400 of 12391.1400 kept",
+    "raw": 12391.139999999998,
+    "pre": 12391.139999999998
+   },
+   "rel": {
+    "P": 1.584706408163033e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w2.006",
+   "family": "A rim on the open face",
+   "note": "oracle P (= closed form 2872 - 48 (w - 2))",
+   "P": 2872.000000000001,
+   "kernel": {
+    "ok": true,
+    "volume": 2871.7119999999995,
+    "bodies": 1,
+    "pre": 12384.863136,
+    "ms": 320.33711300000004,
+    "wall": 566,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12384.8631 of 12384.8631 kept",
+    "raw": 12384.863136000002,
+    "pre": 12384.863136000002
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12384.8631 of 12384.8631 kept",
+    "raw": 12384.863136000002,
+    "pre": 12384.863136000002
+   },
+   "rel": {
+    "P": 0.00010027855153251221,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w2.002",
+   "family": "A rim on the open face",
+   "note": "oracle P (= closed form 2872 - 48 (w - 2))",
+   "P": 2872.000000000001,
+   "kernel": {
+    "ok": true,
+    "volume": 2871.9040000000005,
+    "bodies": 1,
+    "pre": 12384.287904,
+    "ms": 319.578346,
+    "wall": 581,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12384.2879 of 12384.2879 kept",
+    "raw": 12384.287904000004,
+    "pre": 12384.287904000004
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12384.2879 of 12384.2879 kept",
+    "raw": 12384.287904000004,
+    "pre": 12384.287904000004
+   },
+   "rel": {
+    "P": 0.00003342618384417074,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w2",
+   "family": "A rim on the open face",
+   "note": "oracle P only (w <= 2t; truck p8 refused these)",
+   "P": 2872.000000000001,
+   "kernel": {
+    "ok": false,
+    "volume": null,
+    "bodies": null,
+    "pre": 12384,
+    "ms": 253.58287099999998,
+    "wall": 510,
+    "hang": false,
+    "crash": false,
+    "error": "solid.shell: invalid input: shell: the 1 mm walls would meet along a line (between a hole and the side, for example), which leaves no solid there; use a thinner or thicker wall, or move the feature"
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12000.0000 of 12384.0000 kept",
+    "raw": 11999.999999999998,
+    "pre": 12384
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=false, 12756.6519 of 12384.0000 kept",
+    "raw": 12756.651914287962,
+    "pre": 12384
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "REFUSED"
+  },
+  {
+   "id": "rim-w1.95",
+   "family": "A rim on the open face",
+   "note": "oracle P only (w <= 2t; truck p8 refused these)",
+   "P": 2865.5425000000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2865.5424999999996,
+    "bodies": 1,
+    "pre": 12376.74,
+    "ms": 330.392878,
+    "wall": 604,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12376.7400 of 12376.7400 kept",
+    "raw": 12376.74,
+    "pre": 12376.74
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12376.7400 of 12376.7400 kept",
+    "raw": 12376.74,
+    "pre": 12376.74
+   },
+   "rel": {
+    "P": 3.173900585222268e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "rim-w1.5",
+   "family": "A rim on the open face",
+   "note": "oracle P only (w <= 2t; truck p8 refused these)",
+   "P": 2802.2500000000005,
+   "kernel": {
+    "ok": true,
+    "volume": 2802.25,
+    "bodies": 1,
+    "pre": 12306,
+    "ms": 389.392157,
+    "wall": 635,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12306.0000 of 12306.0000 kept",
+    "raw": 12306,
+    "pre": 12306
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12306.0000 of 12306.0000 kept",
+    "raw": 12306,
+    "pre": 12306
+   },
+   "rel": {
+    "P": 1.6227936511248606e-16,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "lig-web1.0-east",
+   "family": "A hole ligament",
+   "P": 2524.93,
+   "kernel": {
+    "ok": true,
+    "volume": 2524.9279600833515,
+    "bodies": 1,
+    "pre": 11874.336293776016,
+    "ms": 623.9780330000001,
+    "wall": 915,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=false, 9973.9336 of 11874.3363 kept",
+    "raw": 9973.933620342335,
+    "pre": 11874.33629385641
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11874.33629385641
+   },
+   "rel": {
+    "P": 8.079101790149736e-7,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "lig-web1.0-north",
+   "family": "A hole ligament",
+   "P": 2524.87,
+   "kernel": {
+    "ok": true,
+    "volume": 2524.9279602220304,
+    "bodies": 1,
+    "pre": 11874.336293873363,
+    "ms": 676.717116,
+    "wall": 964,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 11874.3363 of 11874.3363 kept",
+    "raw": 11874.336293856408,
+    "pre": 11874.336293856408
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11874.336293856408
+   },
+   "rel": {
+    "P": 0.000022955725257335145,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "lig-web1.5-east",
+   "family": "A hole ligament",
+   "P": null,
+   "kernel": {
+    "ok": true,
+    "volume": 2542.6767986933255,
+    "bodies": 1,
+    "pre": 11874.33629378027,
+    "ms": 641.95694,
+    "wall": 935,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2542.6767985361776,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11874.336293856408
+   },
+   "rel": {
+    "P": null,
+    "occtInt": 6.180413949228918e-11,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(occtInt only)"
+  },
+  {
+   "id": "lig-web1.9-east",
+   "family": "A hole ligament",
+   "P": 2551.88,
+   "kernel": {
+    "ok": true,
+    "volume": 2551.880444324016,
+    "bodies": 1,
+    "pre": 11874.33629377916,
+    "ms": 678.445979,
+    "wall": 927,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2551.880444190236,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11874.336293856408
+   },
+   "rel": {
+    "P": 1.7411634399588096e-7,
+    "occtInt": 5.242402704449014e-11,
+    "occtArc": null,
+    "occtIntVsP": 1.7406391995971134e-7,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "lig-web2.0-east",
+   "family": "A hole ligament",
+   "P": 2552.8052987971814,
+   "kernel": {
+    "ok": false,
+    "volume": null,
+    "bodies": null,
+    "pre": 11874.33629377629,
+    "ms": 390.62390800000003,
+    "wall": 644,
+    "hang": false,
+    "crash": false,
+    "error": "solid.shell: invalid input: shell: the 1 mm walls would meet along a line (between a hole and the side, for example), which leaves no solid there; use a thinner or thicker wall, or move the feature"
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=false, 9916.3053 of 11874.3363 kept",
+    "raw": 9916.30529879718,
+    "pre": 11874.33629385641
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=false, 9916.3053 of 11874.3363 kept",
+    "raw": 9916.30529879718,
+    "pre": 11874.33629385641
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "REFUSED"
+  },
+  {
+   "id": "lig-web2.1-east",
+   "family": "A hole ligament",
+   "P": 2552.8052987971814,
+   "kernel": {
+    "ok": true,
+    "volume": 2552.8052988003055,
+    "bodies": 1,
+    "pre": 11874.336293780372,
+    "ms": 514.700298,
+    "wall": 791,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2552.805298797182,
+    "pre": 11874.33629385641,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2552.805298797181,
+    "pre": 11874.33629385641,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 1.223796543379949e-12,
+    "occtInt": 1.2236184070563128e-12,
+    "occtArc": 1.2239746797035854e-12,
+    "occtIntVsP": 1.7813632363609156e-16,
+    "occtArcVsP": 1.7813632363609156e-16
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "lig-web3.0-east",
+   "family": "A hole ligament",
+   "P": 2552.8052987971814,
+   "kernel": {
+    "ok": true,
+    "volume": 2552.8052987979054,
+    "bodies": 1,
+    "pre": 11874.33629377783,
+    "ms": 537.783508,
+    "wall": 817,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2552.8052987971814,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2552.8052987971814,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 2.8359302722865776e-13,
+    "occtInt": 2.8359302722865776e-13,
+    "occtArc": 2.8359302722865776e-13,
+    "occtIntVsP": 0,
+    "occtArcVsP": 0
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "lig-two-gap1.0",
+   "family": "A hole ligament",
+   "P": 2661.1,
+   "kernel": {
+    "ok": true,
+    "volume": 2661.3535973407543,
+    "bodies": 1,
+    "pre": 11748.672587689725,
+    "ms": 1088.477547,
+    "wall": 1378,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=false, 9867.7987 of 11748.6726 kept",
+    "raw": 9867.798675300704,
+    "pre": 11748.672587712817
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 11748.672587712817
+   },
+   "rel": {
+    "P": 0.00009529793722684902,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "lig-two-gap1.9",
+   "family": "A hole ligament",
+   "P": null,
+   "kernel": {
+    "ok": true,
+    "volume": 2680.954976164943,
+    "bodies": 1,
+    "pre": 11748.672587686571,
+    "ms": 999.044645,
+    "wall": 1269,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 11748.67258771282
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=false, 2681.6106 of 11748.6726 kept",
+    "raw": 2681.6105975943638,
+    "pre": 11748.67258771282
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "NO-ORACLE"
+  },
+  {
+   "id": "lig-two-gap2.1",
+   "family": "A hole ligament",
+   "P": 2681.610597594363,
+   "kernel": {
+    "ok": true,
+    "volume": 2681.6105976083254,
+    "bodies": 1,
+    "pre": 11748.67258768314,
+    "ms": 821.7576110000001,
+    "wall": 1115,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2681.610597594363,
+    "pre": 11748.672587712816,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2681.6105975943633,
+    "pre": 11748.672587712816,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 5.206782324825097e-12,
+    "occtInt": 5.206782324825097e-12,
+    "occtArc": 5.206612744890077e-12,
+    "occtIntVsP": 0,
+    "occtArcVsP": 1.6957993501905604e-16
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "lig-centre",
+   "family": "A hole ligament",
+   "P": 2552.8052987971814,
+   "kernel": {
+    "ok": true,
+    "volume": 2552.8052987979445,
+    "bodies": 1,
+    "pre": 11874.336293845114,
+    "ms": 567.7914840000001,
+    "wall": 826,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2552.805298797178,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2552.805298797178,
+    "pre": 11874.336293856408,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 2.9891275106136164e-13,
+    "occtInt": 3.003378416504508e-13,
+    "occtArc": 3.003378416504508e-13,
+    "occtIntVsP": 1.4250905890887325e-15,
+    "occtArcVsP": 1.4250905890887325e-15
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "counterbore-open-top",
+   "family": "critic",
+   "P": 2628.2035224833367,
+   "kernel": {
+    "ok": true,
+    "volume": 2628.2035224873757,
+    "bodies": 1,
+    "pre": 11798.93807012589,
+    "ms": 650.923382,
+    "wall": 898,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2628.203522483335,
+    "pre": 11798.93807017025,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2621.762792505603,
+    "pre": 11798.93807017025,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 1.5368162838306914e-12,
+    "occtInt": 1.5375083875387901e-12,
+    "occtArc": 0.0024566410051220736,
+    "occtIntVsP": 6.921037080975868e-16,
+    "occtArcVsP": 0.0024506207082653315
+   },
+   "cls": "MATCH(P)"
+  },
+  {
+   "id": "n7-vertex-boss",
+   "family": "n7",
+   "note": "P = the notes' \"separate piece hollowed closed\" reading; a policy choice, not a measured error",
+   "P": 2720,
+   "kernel": {
+    "ok": true,
+    "volume": 2935.999999999999,
+    "bodies": 2,
+    "pre": 12512,
+    "ms": 238.90013000000002,
+    "wall": 499,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 12512.000000000002
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not done",
+    "pre": 12512.000000000002
+   },
+   "rel": {
+    "P": 0.07941176470588202,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "WRONG?(one oracle)"
+  },
+  {
+   "id": "n17b-box-on-cylinder-wall",
+   "family": "n17b",
+   "P": 3760.8537,
+   "kernel": {
+    "ok": true,
+    "volume": 3760.8536609880125,
+    "bodies": 1,
+    "pre": 22334.010584548807,
+    "ms": 686.318761,
+    "wall": 930,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not done",
+    "pre": 22334.010584815587
+   },
+   "occtArc": {
+    "volume": 3755.6357319251347,
+    "pre": 22334.010584815587,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 1.0373173412764772e-8,
+    "occtInt": null,
+    "occtArc": 0.0013893597343646329,
+    "occtIntVsP": null,
+    "occtArcVsP": 0.0013874424508630685
+   },
+   "cls": "MATCH(P)"
+  },
+  {
+   "id": "n6-rounded-plate-boss",
+   "family": "critic",
+   "P": 2729.646,
+   "kernel": {
+    "ok": true,
+    "volume": 2729.6460129267475,
+    "bodies": 1,
+    "pre": 12722.743338847797,
+    "ms": 737.9974,
+    "wall": 993,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12722.7433 of 12722.7433 kept",
+    "raw": 12722.743338868979,
+    "pre": 12722.743338868979
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12722.7433 of 12722.7433 kept",
+    "raw": 12722.743338868979,
+    "pre": 12722.743338868979
+   },
+   "rel": {
+    "P": 4.735686360510162e-9,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "n9-corner-boss-hole",
+   "family": "critic",
+   "P": 3002.195,
+   "kernel": {
+    "ok": true,
+    "volume": 3002.1946709896724,
+    "bodies": 1,
+    "pre": 12573.80532876938,
+    "ms": 510.29558099999997,
+    "wall": 756,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12002.1947 of 12573.8053 kept",
+    "raw": 12002.194671058462,
+    "pre": 12573.805328941538
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12573.8053 of 12573.8053 kept",
+    "raw": 12573.805328941538,
+    "pre": 12573.805328941538
+   },
+   "rel": {
+    "P": 1.0958992594826407e-7,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "n10-round-boss",
+   "family": "critic",
+   "P": 2584.221,
+   "kernel": {
+    "ok": true,
+    "volume": 2586.15264187519,
+    "bodies": 1,
+    "pre": 12301.592894800837,
+    "ms": 519.0971179999999,
+    "wall": 751,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=false, 12120.6372 of 12301.5929 kept",
+    "raw": 12120.637157897849,
+    "pre": 12301.59289474462
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12222.6361 of 12301.5929 kept",
+    "raw": 12222.636059535902,
+    "pre": 12301.59289474462
+   },
+   "rel": {
+    "P": 0.0007474754965577839,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "MATCH(P only)"
+  },
+  {
+   "id": "n11-round-pocket-floor-open",
+   "family": "critic",
+   "P": 3393.752,
+   "kernel": {
+    "ok": true,
+    "volume": 3393.7522203942535,
+    "bodies": 1,
+    "pre": 11396.814210508715,
+    "ms": 490.745837,
+    "wall": 731,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 11396.8142 of 11396.8142 kept",
+    "raw": 11396.814210510758,
+    "pre": 11396.814210510758
+   },
+   "occtArc": {
+    "volume": 3393.7522203923027,
+    "pre": 11396.814210510758,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 6.494117825178176e-8,
+    "occtInt": null,
+    "occtArc": 5.748404740866496e-13,
+    "occtIntVsP": null,
+    "occtArcVsP": 6.494060341127034e-8
+   },
+   "cls": "MATCH"
+  },
+  {
+   "id": "n8b-pad-0.5",
+   "family": "critic",
+   "P": 2474,
+   "kernel": {
+    "ok": false,
+    "volume": null,
+    "bodies": null,
+    "pre": 12050,
+    "ms": 206.638032,
+    "wall": 447,
+    "hang": false,
+    "crash": false,
+    "error": "solid.shell: not supported yet: SMLib shell for this geometry"
+   },
+   "occtInt": {
+    "error": "thick solid (intersection) not usable: valid=true, 12050.0000 of 12050.0000 kept",
+    "raw": 12050.000000000002,
+    "pre": 12050.000000000002
+   },
+   "occtArc": {
+    "error": "thick solid (arc) not usable: valid=true, 12050.0000 of 12050.0000 kept",
+    "raw": 12050.000000000002,
+    "pre": 12050.000000000002
+   },
+   "rel": {
+    "P": null,
+    "occtInt": null,
+    "occtArc": null,
+    "occtIntVsP": null,
+    "occtArcVsP": null
+   },
+   "cls": "REFUSED"
+  },
+  {
+   "id": "control-plain-open-top",
+   "family": "control",
+   "P": 2424,
+   "kernel": {
+    "ok": true,
+    "volume": 2423.999999999999,
+    "bodies": 1,
+    "pre": 12000,
+    "ms": 211.48470300000002,
+    "wall": 468,
+    "hang": false,
+    "crash": false,
+    "error": null
+   },
+   "occtInt": {
+    "volume": 2423.999999999999,
+    "pre": 11999.999999999998,
+    "maxPickDist": 0
+   },
+   "occtArc": {
+    "volume": 2423.999999999999,
+    "pre": 11999.999999999998,
+    "maxPickDist": 0
+   },
+   "rel": {
+    "P": 3.752040848898219e-16,
+    "occtInt": 0,
+    "occtArc": 0,
+    "occtIntVsP": 3.752040848898219e-16,
+    "occtArcVsP": 3.752040848898219e-16
+   },
+   "cls": "MATCH"
+  }
+ ]
+}

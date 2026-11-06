@@ -1,0 +1,10 @@
+# one child process per case, hard limit 300 s; load average at start 1.9 3.8 4.6; cpus 32
+sx-plain-block             {"id":"sx-plain-block","ms":180,"commands":11,"result":"b_pull1=35858.6283","wallS":0.6}   load 1.9
+sx-hole-clear              {"id":"sx-hole-clear","ms":182,"commands":15,"result":"b_pull1=32745.3100","wallS":0.8}   load 1.9
+sx-hole-cross              {"id":"sx-hole-cross","ms":333,"commands":15,"result":"b_pull1=32742.0923","wallS":1.1}   load 1.9
+sx-hole-cross-a            {"id":"sx-hole-cross-a","ms":279,"commands":15,"result":"b_pull1=32723.2091","wallS":0.8}   load 1.9
+sx-hole-cross-d            {"id":"sx-hole-cross-d","ms":257,"commands":15,"result":"b_pull1=32778.0489","wallS":0.8}   load 1.9
+sx-hole-cross-e            {"id":"sx-hole-cross-e","ms":200,"commands":15,"result":"b_pull1=32603.9383","wallS":0.8}   load 1.9
+sx-pocket-cross            {"id":"sx-pocket-cross","ms":189,"commands":15,"result":"b_pull1=33373.8053","wallS":0.6}   load 1.9
+sx-pocket-cross-a          {"id":"sx-pocket-cross-a","ms":169,"commands":15,"result":"b_pull1=33373.8053","wallS":0.6}   load 2.0
+EXIT=0

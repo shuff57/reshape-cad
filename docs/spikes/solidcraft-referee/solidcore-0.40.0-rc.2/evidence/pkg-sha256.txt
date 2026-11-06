@@ -1,0 +1,2 @@
+70bf9e2d5879df5d8d4ca2ae32c4e5ea19f4534ce61d2910e328d0d4e28e8190  /home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg/solidcraft_referee_bg.wasm
+3c6661c4c6acc2a37e49854d6487e31eeed5eda53dcb0946668b66be6f58176b  /home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg-topology/solidcraft_referee_p2_bg.wasm

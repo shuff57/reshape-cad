@@ -1,0 +1,32 @@
+# Stage A rig copy for SolidCraft v0.40.0-rc.2 (777f9609). Wrapper source unchanged; this manifest mirrors
+# rc.2's root Cargo.toml: [profile.release] (opt-level 3, lto thin, codegen-units 16, debug line-tables-only)
+# and its [patch.crates-io] list (UI crates only; rc.2 no longer vendors truck). build.rs mirrors
+# apps/solidcraft-web/build.rs (8 MiB wasm stack for solidcore).
+[package]
+name = "solidcraft-referee-p2"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+solidcraft-engine = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/crates/engine" }
+solidcraft-doc = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/crates/doc" }
+# rc.2 adaptation (Stage A probe): Region2Geom (interior_point) lives in solidcraft-geom.
+solidcraft-geom = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/crates/geom" }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+wasm-bindgen = "=0.2.129"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+debug = "line-tables-only"
+
+[patch.crates-io]
+egui-wgpu = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/vendor/egui-wgpu" }
+winit = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/vendor/winit" }
+accesskit_macos = { path = "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-src/vendor/accesskit_macos" }
+
+[workspace]

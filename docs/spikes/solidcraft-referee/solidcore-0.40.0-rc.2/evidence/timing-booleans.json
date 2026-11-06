@@ -1,0 +1,67 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg",
+ "cases": 6,
+ "same": 6,
+ "differ": 0,
+ "flakyRetried": 0,
+ "noDoc": 0,
+ "excluded": 0,
+ "hangOrCrash": 0,
+ "wallS": 15,
+ "rows": [
+  {
+   "id": "fz7-038-cyl-sph-sub",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "volume": 2348.864107310679,
+   "wallMs": 2702,
+   "load1": 2.5
+  },
+  {
+   "id": "r3-split-cone-slab",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "volume": 3128.1087686036244,
+   "wallMs": 2215,
+   "load1": 2.5
+  },
+  {
+   "id": "fz17-043-box-con-box-uni",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,built",
+   "volume": 11758.922887589912,
+   "wallMs": 1786,
+   "load1": 2.5
+  },
+  {
+   "id": "fz17-109-wed-con-uni",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "volume": 8825.5240562037,
+   "wallMs": 1457,
+   "load1": 2.7
+  },
+  {
+   "id": "fz23-087-sph-box-uni",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "volume": 6748.893514217849,
+   "wallMs": 3353,
+   "load1": 2.7
+  },
+  {
+   "id": "r6-tiny-cone-minus-ball-r12.5",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built",
+   "volume": 104.70250112379381,
+   "wallMs": 1920,
+   "load1": 2.7
+  }
+ ]
+}

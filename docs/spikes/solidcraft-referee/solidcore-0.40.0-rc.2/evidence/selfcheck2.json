@@ -1,0 +1,261 @@
+{
+ "h": 0.05,
+ "rows": [
+  {
+   "family": "hhole-y",
+   "name": "t=1 r=1.5 g=2.1 top",
+   "closed": 2126.3229756714964,
+   "oracleP": 2126.3165625000006,
+   "rel": 0.000003016085312122382,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=1 r=1.5 g=1.9 top",
+   "closed": 2126.3229756714964,
+   "oracleP": 2126.3165625000006,
+   "rel": 0.000003016085312122382,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=1 r=2 g=0.6 top",
+   "closed": 2166.6332410857212,
+   "oracleP": 2166.6210937500005,
+   "rel": 0.000005606549133667013,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=0.5 r=1 g=1.1 top",
+   "closed": 1056.6792191143722,
+   "oracleP": 1056.6575000000003,
+   "rel": 0.00002055412274521065,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=0.5 r=1 g=0.9 bot",
+   "closed": 1055.0164347176133,
+   "oracleP": 1054.9953906250003,
+   "rel": 0.00001994669648785435,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=2.5 r=2 g=5.1 top",
+   "closed": 4820.28657228641,
+   "oracleP": 4820.325468750001,
+   "rel": 0.00000806932596392294,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=2.5 r=1.5 g=4.9 bot",
+   "closed": 4910.640815610254,
+   "oracleP": 4910.643593750001,
+   "rel": 5.657387397980512e-7,
+   "ok": true
+  },
+  {
+   "family": "hhole-y",
+   "name": "t=1 r=1.5 g=3 top",
+   "closed": 2126.3229756714964,
+   "oracleP": 2126.3165625000006,
+   "rel": 0.000003016085312122382,
+   "ok": true
+  },
+  {
+   "family": "L-high",
+   "name": "t=1 ww=6 Hb=4",
+   "closed": 1400,
+   "oracleP": 1400.0000000000002,
+   "rel": 1.6240976817373719e-16,
+   "ok": true
+  },
+  {
+   "family": "L-high",
+   "name": "t=1 ww=2.1 Hb=4",
+   "closed": 1392.2000000000003,
+   "oracleP": 1392.2000000000003,
+   "rel": 0,
+   "ok": true
+  },
+  {
+   "family": "L-high",
+   "name": "t=1 ww=1.9 Hb=4",
+   "closed": 1379.1999999999998,
+   "oracleP": 1379.2000000000003,
+   "rel": 3.2971820684923446e-16,
+   "ok": true
+  },
+  {
+   "family": "L-high",
+   "name": "t=0.5 ww=1.1 Hb=3",
+   "closed": 665.8499999999999,
+   "oracleP": 665.8500000000001,
+   "rel": 3.4147882472513645e-16,
+   "ok": true
+  },
+  {
+   "family": "L-low",
+   "name": "t=1 ww=6 Hb=4",
+   "closed": 1120,
+   "oracleP": 1120.0000000000002,
+   "rel": 2.0301221021717148e-16,
+   "ok": true
+  },
+  {
+   "family": "L-low",
+   "name": "t=1 ww=2.1 Hb=4",
+   "closed": 1003.0000000000005,
+   "oracleP": 1003.0000000000002,
+   "rel": 2.266935946592542e-16,
+   "ok": true
+  },
+  {
+   "family": "L-low",
+   "name": "t=1 ww=3.9 Hb=4",
+   "closed": 1056.9999999999995,
+   "oracleP": 1057.0000000000002,
+   "rel": 6.45336827180413e-16,
+   "ok": true
+  },
+  {
+   "family": "L-low",
+   "name": "t=2.5 ww=8 Hb=6",
+   "closed": 2760,
+   "oracleP": 2760.0000000000005,
+   "rel": 1.647635329298783e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=1 top+bot",
+   "closed": 1040,
+   "oracleP": 1040.0000000000002,
+   "rel": 2.1862853408003084e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=1 top+xp",
+   "closed": 1458,
+   "oracleP": 1458.0000000000005,
+   "rel": 3.1189804587548977e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=1 top+xp+xn",
+   "closed": 1260,
+   "oracleP": 1260.0000000000002,
+   "rel": 1.804552979708191e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=2.5 top+yp",
+   "closed": 3168.75,
+   "oracleP": 3168.750000000001,
+   "rel": 2.87020024228143e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=0.5 bot",
+   "closed": 863.5,
+   "oracleP": 863.5000000000002,
+   "rel": 2.633163583592728e-16,
+   "ok": true
+  },
+  {
+   "family": "open-faces",
+   "name": "t=1 xp",
+   "closed": 2096,
+   "oracleP": 2096.0000000000005,
+   "rel": 2.1695961397254967e-16,
+   "ok": true
+  },
+  {
+   "family": "bossBox",
+   "name": "t=1 6x5x4",
+   "closed": 1740,
+   "oracleP": 1740.0000000000005,
+   "rel": 2.6134905223360006e-16,
+   "ok": true
+  },
+  {
+   "family": "bossBox",
+   "name": "t=1 2.1x5x4",
+   "closed": 1697.1000000000004,
+   "oracleP": 1697.1000000000004,
+   "rel": 0,
+   "ok": true
+  },
+  {
+   "family": "bossBox",
+   "name": "t=1 6x5x1.5",
+   "closed": 1695,
+   "oracleP": 1695.0000000000005,
+   "rel": 2.682875226468815e-16,
+   "ok": true
+  },
+  {
+   "family": "bossBox",
+   "name": "t=0.5 4x4x2",
+   "closed": 882,
+   "oracleP": 882.0000000000002,
+   "rel": 2.5779328281545586e-16,
+   "ok": true
+  },
+  {
+   "family": "bossBox",
+   "name": "t=2.5 8x8x6",
+   "closed": 3990,
+   "oracleP": 3990.000000000001,
+   "rel": 2.279435342789294e-16,
+   "ok": true
+  },
+  {
+   "family": "rboss",
+   "name": "t=1 r=3 bh=4",
+   "closed": 1731.3982236861548,
+   "oracleP": 1731.3956250000003,
+   "rel": 0.0000015009176507700584,
+   "ok": true
+  },
+  {
+   "family": "rboss",
+   "name": "t=1 r=2.05 bh=3",
+   "closed": 1688.6804175789675,
+   "oracleP": 1688.6750000000004,
+   "rel": 0.0000032081730271340135,
+   "ok": true
+  },
+  {
+   "family": "rboss",
+   "name": "t=0.5 r=2 bh=2",
+   "closed": 878.0298660228527,
+   "oracleP": 878.0293750000002,
+   "rel": 5.592325176447134e-7,
+   "ok": true
+  },
+  {
+   "family": "rboss",
+   "name": "t=2.5 r=4 bh=6",
+   "closed": 3914.3528525976003,
+   "oracleP": 3914.355937500001,
+   "rel": 7.881002343823663e-7,
+   "ok": true
+  },
+  {
+   "family": "rboss",
+   "name": "t=1 r=3 bh=1.5",
+   "closed": 1692.1283155162828,
+   "oracleP": 1692.1272656250003,
+   "rel": 6.204560687651594e-7,
+   "ok": true
+  }
+ ]
+}

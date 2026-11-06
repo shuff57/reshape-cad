@@ -1,0 +1,172 @@
+{
+ "rc.2": {
+  "pkg": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg",
+  "S": 11933.695802520697,
+  "one call": {
+   "volume": 11933.694671392339,
+   "faces": 10,
+   "face_types": {
+    "cylinder": 4,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20,
+     15,
+     10
+    ],
+    "min": [
+     -20,
+     -15.000000000000004,
+     0
+    ]
+   }
+  },
+  "four calls": {
+   "volume": 11915.346214338764,
+   "faces": 18,
+   "face_types": {
+    "cylinder": 8,
+    "other": 4,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20,
+     15.000000000000002,
+     10
+    ],
+    "min": [
+     -20,
+     -15.000000000000002,
+     -1.051814540294681e-30
+    ]
+   }
+  },
+  "three calls (front, back, left)": {
+   "volume": 11938.358941993336,
+   "faces": 13,
+   "face_types": {
+    "cylinder": 5,
+    "other": 2,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20,
+     15,
+     10
+    ],
+    "min": [
+     -20,
+     -15.000000000000002,
+     0
+    ]
+   }
+  },
+  "two calls (front, back)": {
+   "volume": 11961.371669598515,
+   "faces": 8,
+   "face_types": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20,
+     15,
+     10
+    ],
+    "min": [
+     -20,
+     -15,
+     0
+    ]
+   }
+  }
+ },
+ "0.21.0-corrected": {
+  "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-corrected-pkg",
+  "S": 11933.695802520697,
+  "one call": {
+   "volume": 11933.669690009956,
+   "faces": 10,
+   "face_types": {
+    "cylinder": 4,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20.00000000000001,
+     15.000000000000005,
+     10
+    ],
+    "min": [
+     -20.00000000000001,
+     -15.000000000000005,
+     0
+    ]
+   }
+  },
+  "four calls": {
+   "volume": 11933.669561490473,
+   "faces": 10,
+   "face_types": {
+    "cylinder": 4,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20.000000000000004,
+     15.000000000000009,
+     10
+    ],
+    "min": [
+     -20.000000000000004,
+     -15.000000000000009,
+     0
+    ]
+   }
+  },
+  "three calls (front, back, left)": {
+   "volume": 11947.513471877535,
+   "faces": 9,
+   "face_types": {
+    "cylinder": 3,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20.000000000000014,
+     15,
+     10
+    ],
+    "min": [
+     -20.000000000000004,
+     -15.000000000000009,
+     0
+    ]
+   }
+  },
+  "two calls (front, back)": {
+   "volume": 11961.346328329928,
+   "faces": 8,
+   "face_types": {
+    "cylinder": 2,
+    "plane": 6
+   },
+   "bbox": {
+    "max": [
+     20.000000000000007,
+     15,
+     10
+    ],
+    "min": [
+     -20.000000000000007,
+     -15,
+     0
+    ]
+   }
+  }
+ }
+}

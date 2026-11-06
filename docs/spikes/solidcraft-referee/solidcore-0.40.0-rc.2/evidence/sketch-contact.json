@@ -1,0 +1,334 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg-topology",
+ "probes": {
+  "A distance-pinned contact": [
+   {
+    "amp": 0,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.92595339255331e-10,
+    "contactErrMm": 0.00012629911163877528,
+    "perpMinusR": -6.025508980656014e-10,
+    "ms": 215.64410999999996
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.928076138976394e-10,
+    "contactErrMm": 0.0001262375391392028,
+    "perpMinusR": -6.007834230103981e-10,
+    "ms": 63.54097200000001
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.877751949716185e-10,
+    "contactErrMm": 0.00012608443392486313,
+    "perpMinusR": -6.019531539891432e-10,
+    "ms": 61.012253999999984
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.977201287370008e-10,
+    "contactErrMm": 0.00012619460474672047,
+    "perpMinusR": -5.947873304990026e-10,
+    "ms": 58.48875300000009
+   },
+   {
+    "amp": 0.5,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.646354826031711e-10,
+    "contactErrMm": 0.00012501896626063516,
+    "perpMinusR": -5.983382678209637e-10,
+    "ms": 55.713796
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.957581426078832e-10,
+    "contactErrMm": 0.0001264833735114908,
+    "perpMinusR": -6.040457023459567e-10,
+    "ms": 56.26496799999995
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 9.81435377411799e-10,
+    "contactErrMm": 0.0001256977017572399,
+    "perpMinusR": -5.985549833553705e-10,
+    "ms": 56.28185099999996
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 3.3852387559818453e-10,
+    "contactErrMm": 0.00007364451270298695,
+    "perpMinusR": -2.0382717735856204e-10,
+    "ms": 58.10242199999993
+   }
+  ],
+  "B Symmetric-tied contact": [
+   {
+    "amp": 0,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.923759343635538e-10,
+    "contactErrMm": 0.00013036189696561797,
+    "perpMinusR": -6.923759343635538e-10,
+    "ms": 35.32423700000004
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.920757300576952e-10,
+    "contactErrMm": 0.0001301543758469102,
+    "perpMinusR": -6.920757300576952e-10,
+    "ms": 64.11574000000007
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.221601012157407e-10,
+    "contactErrMm": 0.0001263384121755174,
+    "perpMinusR": -6.221601012157407e-10,
+    "ms": 58.804226999999855
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.931051288461276e-10,
+    "contactErrMm": 0.00012787651842162311,
+    "perpMinusR": -6.931051288461276e-10,
+    "ms": 60.93335499999989
+   },
+   {
+    "amp": 0.5,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 8.979430532463084e-10,
+    "contactErrMm": 0.00013582771463799945,
+    "perpMinusR": -8.979439414247281e-10,
+    "ms": 61.76553600000011
+   },
+   {
+    "amp": 0.05,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.795355389499491e-10,
+    "contactErrMm": 0.00012937655968126783,
+    "perpMinusR": -6.795355389499491e-10,
+    "ms": 58.39542899999992
+   },
+   {
+    "amp": 0.1,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.794058649006729e-10,
+    "contactErrMm": 0.00012785489428731637,
+    "perpMinusR": -6.794058649006729e-10,
+    "ms": 58.320309999999836
+   },
+   {
+    "amp": 0.25,
+    "sentence": null,
+    "status": "solved",
+    "dof": 2,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 6.780815908769e-10,
+    "contactErrMm": 0.00012811025356405172,
+    "perpMinusR": -6.780815908769e-10,
+    "ms": 57.79205400000001
+   }
+  ],
+  "D distance-pinned contact, ARC": [
+   {
+    "amp": 0,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.3505998803539114e-10,
+    "contactErrMm": 0.00008954200232555017,
+    "perpMinusR": -3.667173231747256e-10,
+    "ms": 2.5032360000000153
+   },
+   {
+    "amp": 0.05,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.3508663338798215e-10,
+    "contactErrMm": 0.0000894988956304984,
+    "perpMinusR": -3.659188507754152e-10,
+    "ms": 1.3544640000000072
+   },
+   {
+    "amp": 0.1,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.3211123568198673e-10,
+    "contactErrMm": 0.00008934807492146032,
+    "perpMinusR": -3.6619685062078133e-10,
+    "ms": 1.3004070000001775
+   },
+   {
+    "amp": 0.25,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.4166093005060247e-10,
+    "contactErrMm": 0.00008977708216112387,
+    "perpMinusR": -3.6433167593941107e-10,
+    "ms": 1.3363550000001396
+   },
+   {
+    "amp": 0.5,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.331637271093314e-10,
+    "contactErrMm": 0.00008947744430113647,
+    "perpMinusR": -3.674580639767555e-10,
+    "ms": 1.3026830000001155
+   },
+   {
+    "amp": 0.05,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.3646863900903554e-10,
+    "contactErrMm": 0.0000896499680877823,
+    "perpMinusR": -3.672431247991881e-10,
+    "ms": 1.243744000000106
+   },
+   {
+    "amp": 0.1,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.2870507144243675e-10,
+    "contactErrMm": 0.00008907993787743494,
+    "perpMinusR": -3.6482017407024614e-10,
+    "ms": 1.320639999999912
+   },
+   {
+    "amp": 0.25,
+    "sentence": "solid.extrude: sk has no closed profiles",
+    "status": "solved",
+    "dof": 4,
+    "redundant": [],
+    "failing": [],
+    "solverMaxResidual": 4.4149039979402005e-10,
+    "contactErrMm": 0.00009000331779821595,
+    "perpMinusR": -3.6856917517980037e-10,
+    "ms": 1.3295640000001185
+   }
+  ],
+  "A0 exact-tangent start": {
+   "sentence": "sketch.dimension: invalid parameters for `sketch.dimension`: that dimension is already determined by k2 (RadialDimension), k3 (Tangent); add it as a driven (reference) dimension with driven: true",
+   "status": "solved",
+   "dof": 3,
+   "redundant": [],
+   "failing": [],
+   "solverMaxResidual": 0,
+   "contactErrMm": 0,
+   "perpMinusR": 0,
+   "ms": 56.91807599999993
+  },
+  "B0 exact-tangent start": {
+   "sentence": null,
+   "status": "solved",
+   "dof": 3,
+   "redundant": [
+    "k7"
+   ],
+   "failing": [],
+   "solverMaxResidual": 1.0862422072932532e-12,
+   "contactErrMm": 2.849289826708693e-7,
+   "perpMinusR": 1.0862422072932532e-12,
+   "ms": 56.586681
+  },
+  "D0 exact-tangent start, ARC": {
+   "sentence": "solid.extrude: sk has no closed profiles",
+   "status": "solved",
+   "dof": 4,
+   "redundant": [],
+   "failing": [],
+   "solverMaxResidual": 1.518269954203788e-10,
+   "contactErrMm": 0.000021800301926422125,
+   "perpMinusR": 1.0430234453906451e-10,
+   "ms": 1.2914590000000317
+  }
+ }
+}
