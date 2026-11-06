@@ -1,0 +1,245 @@
+{
+ "phase": "next-loop phase 2",
+ "date": "2026-11-06",
+ "kernel": "~/.cache/solidcraft-0.21.0-rig/sc-corrected-pkg",
+ "wasmSha256": "62491d1efe094cfc4e1f35be159c07ee0bf184cf17bacde4f61e76d573ae18e4",
+ "selfcheck": {
+  "selfcheck": "140 / 145",
+  "selfcheck2": "32 / 32",
+  "note": "136/136 closed forms; 9 Euclid rows all within the 1.5% acceptance (5 at 1.0-2.1e-3); identical to phase1-selfcheck.log"
+ },
+ "guardFuzz": {
+  "counts": {
+   "MATCH": 7,
+   "REFUSED": 23,
+   "WRONG": 0,
+   "NODOC": 0,
+   "NOSHELL": 0,
+   "ENGINE-FAIL": 0,
+   "NO-ORACLE": 0,
+   "ERROR": 0
+  },
+  "cases": 30,
+  "verdictsIdenticalToPreviousLoopPhase1": true,
+  "coverage": "solid.shell guard only; no slanted-bore case"
+ },
+ "counts": {
+  "rows": 4,
+  "promoteProposed": 0,
+  "keep": 4
+ },
+ "rows": [
+  {
+   "id": "sx-hole-cross",
+   "raw": {
+    "id": "sx-hole-cross",
+    "ms": 10596,
+    "commands": 15,
+    "result": "b_pull1=32742.2188",
+    "wallS": 10.8
+   },
+   "shippedLayer": {
+    "id": "sx-hole-cross",
+    "same": true,
+    "status": "noop,built,noop,built,noop,refused",
+    "volume": null
+   },
+   "guardLiftedVerifyOn": {
+    "id": "sx-hole-cross",
+    "ms": 24261,
+    "status": "built",
+    "refusal": null,
+    "checks": [
+     {
+      "check": "cut-consistency",
+      "removedByTool": 116.2984877566606,
+      "devMm3": -0.4119313495248207,
+      "tolMm3": 9.857678752958352,
+      "inconclusive": false
+     }
+    ],
+    "volume": 32742.218757421655,
+    "occt": 32742.089094813346,
+    "rel": 3.9601201967893055e-06
+   },
+   "occtSaved": {
+    "volume": 32742.089094813346,
+    "com": [
+     30.043449644546875,
+     29.999979898707043,
+     4.990521599334327
+    ],
+    "bbox": [
+     0,
+     0,
+     -1e-07,
+     60,
+     60,
+     10.0000001
+    ],
+    "faces": 8,
+    "solids": 1
+   },
+   "fc": null,
+   "freecad": "missing",
+   "decision": "keep"
+  },
+  {
+   "id": "sx-hole-cross-d",
+   "raw": {
+    "id": "sx-hole-cross-d",
+    "ms": 9541,
+    "commands": 15,
+    "result": "b_pull1=32778.1958",
+    "wallS": 9.8
+   },
+   "shippedLayer": {
+    "id": "sx-hole-cross-d",
+    "same": true,
+    "status": "noop,built,noop,built,noop,refused",
+    "volume": null
+   },
+   "guardLiftedVerifyOn": {
+    "id": "sx-hole-cross-d",
+    "ms": 22217,
+    "status": "built",
+    "refusal": null,
+    "checks": [
+     {
+      "check": "cut-consistency",
+      "removedByTool": 80.34708824145098,
+      "devMm3": -0.3862507904705126,
+      "tolMm3": 9.857678752958352,
+      "inconclusive": false
+     }
+    ],
+    "volume": 32778.19583749592,
+    "occt": 32778.04788653368,
+    "rel": 4.513720974361336e-06
+   },
+   "occtSaved": {
+    "volume": 32778.04788653368,
+    "com": [
+     30.02925485686924,
+     29.999985259998134,
+     4.991824134332635
+    ],
+    "bbox": [
+     0,
+     0,
+     -1e-07,
+     60,
+     60,
+     10.0000001
+    ],
+    "faces": 9,
+    "solids": 1
+   },
+   "fc": null,
+   "freecad": "missing",
+   "decision": "keep"
+  },
+  {
+   "id": "sx-hole-cross-e",
+   "raw": {
+    "id": "sx-hole-cross-e",
+    "ms": 1176,
+    "commands": 15,
+    "result": "b_pull1=32604.1293",
+    "wallS": 1.4
+   },
+   "shippedLayer": {
+    "id": "sx-hole-cross-e",
+    "same": true,
+    "status": "noop,built,noop,built,noop,refused",
+    "volume": null
+   },
+   "guardLiftedVerifyOn": {
+    "id": "sx-hole-cross-e",
+    "ms": 1491,
+    "status": "refused",
+    "refusal": "pocket2 would leave a sealed cavity inside the part instead of opening onto a face; start the sketch on a face of the part, or cut deeper",
+    "checks": [],
+    "volume": null,
+    "occt": 32603.910208809284,
+    "rel": null
+   },
+   "occtSaved": {
+    "volume": 32603.910208809284,
+    "com": [
+     30.137122246979295,
+     30,
+     4.996097239745402
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     10
+    ],
+    "faces": 9,
+    "solids": 1
+   },
+   "fc": null,
+   "freecad": "missing",
+   "decision": "keep"
+  },
+  {
+   "id": "sx-pocket-cross",
+   "raw": {
+    "id": "sx-pocket-cross",
+    "ms": 807,
+    "commands": 15,
+    "result": "b_pull1=33373.8324",
+    "wallS": 0.9
+   },
+   "shippedLayer": {
+    "id": "sx-pocket-cross",
+    "same": true,
+    "status": "noop,built,noop,built,noop,refused",
+    "volume": null
+   },
+   "guardLiftedVerifyOn": {
+    "id": "sx-pocket-cross",
+    "ms": 895,
+    "status": "built",
+    "refusal": null,
+    "checks": [
+     {
+      "check": "cut-consistency",
+      "removedByTool": 226.17193985975314,
+      "devMm3": 0.004292629542760551,
+      "tolMm3": 10.079999999999998,
+      "inconclusive": false
+     }
+    ],
+    "volume": 33373.83235276979,
+    "occt": 33373.78851072699,
+    "rel": 1.3136669450105154e-06
+   },
+   "occtSaved": {
+    "volume": 33373.78851072699,
+    "com": [
+     29.708523284226292,
+     29.999999999999996,
+     4.849396453515637
+    ],
+    "bbox": [
+     0,
+     0,
+     0,
+     60,
+     60,
+     10
+    ],
+    "faces": 13,
+    "solids": 1
+   },
+   "fc": null,
+   "freecad": "missing",
+   "decision": "keep"
+  }
+ ]
+}
