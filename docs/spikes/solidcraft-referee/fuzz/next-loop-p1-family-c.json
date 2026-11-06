@@ -1,0 +1,1433 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg",
+ "brep": "/home/shuff57/Documents/GitHub/reshape-cad/archive/brep-rs/pkg",
+ "occt": "/home/shuff57/.t3-desktop/worktrees/reshape-cad/t3-77f76edb/node_modules/replicad-opencascadejs/dist",
+ "negativeControl": false,
+ "tolerance": 0.001,
+ "cases": 11,
+ "counts": {
+  "MATCH": 9,
+  "WRONG": 0,
+  "REFUSED": 2,
+  "NOT-REACHED": 0,
+  "NO-OCCT": 0,
+  "ENGINE-FAIL": 0,
+  "NODOC": 0,
+  "ERROR": 0
+ },
+ "rows": [
+  {
+   "id": "control-plain-box-t1",
+   "family": "control",
+   "oracle": {
+    "S": 12000.000000000004,
+    "P": 2424.0000000000005
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 12000,
+    "shellStatus": "built",
+    "built": 2424
+   },
+   "occt": {
+    "pre": 11999.999999999998,
+    "built": 2423.999999999999,
+    "refusals": {}
+   },
+   "occtDirect": null,
+   "rel": {
+    "layerVsOcct": 3.7520408488982203e-16,
+    "layerVsP": 1.876020424449109e-16,
+    "occtVsP": 5.628061273347327e-16,
+    "preLayerVsOcct": 1.5158245029548806e-16,
+    "preLayerVsS": 3.0316490059097597e-16,
+    "preOcctVsS": 4.54747350886464e-16,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": null,
+    "preDirectVsS": null,
+    "preBuildDocVsDirect": null,
+    "layerVsRef": 3.7520408488982203e-16
+   },
+   "occtRef": "buildDoc",
+   "cls": "MATCH",
+   "ms": 2417
+  },
+  {
+   "id": "C-plain-40x30x10-t0.5-R0.75",
+   "family": "C",
+   "oracle": {
+    "S": 11983.262540462985,
+    "P": 1240.580234629037
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11983.23757268354,
+    "shellStatus": "built",
+    "built": 1240.5590232574225
+   },
+   "occt": {
+    "pre": 11978.554058813641,
+    "built": 1236.377391006318,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11983.261886574752,
+    "built": 1240.5800101047305,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": 0.0033821649291895747,
+    "layerVsP": 0.00001709794418969564,
+    "occtVsP": 0.003387804758936653,
+    "preLayerVsOcct": 0.0003909915877077692,
+    "preLayerVsS": 0.0000020835544044141564,
+    "preOcctVsS": 0.00039292151310592956,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": 0.000016916963949969923,
+    "directVsP": 1.80983301413702e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.00000202898771987715,
+    "preDirectVsS": 5.456679525236389e-8,
+    "preBuildDocVsDirect": 0.00039286696774816856,
+    "layerVsRef": 0.000016916963949969923
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 6205
+  },
+  {
+   "id": "C-plain-40x30x10-t1-R1.5",
+   "family": "C",
+   "oracle": {
+    "S": 11933.695802520697,
+    "P": 2364.729334081044
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11933.669561490473,
+    "shellStatus": "built",
+    "built": 2364.716986708479
+   },
+   "occt": {
+    "pre": 11915.34621409747,
+    "built": 2348.2757890697535,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11933.694671035533,
+    "built": 2364.7285964650555,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": 0.007001391282596546,
+    "layerVsP": 0.000005221473928058037,
+    "occtVsP": 0.006957897791581428,
+    "preLayerVsOcct": 0.0015377939561104928,
+    "preLayerVsS": 0.000002198902222592073,
+    "preOcctVsS": 0.0015376283028222604,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": 0.000004909551393697069,
+    "directVsP": 3.1192406576820063e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.0000021040881095504624,
+    "preDirectVsS": 9.481431253927808e-8,
+    "preBuildDocVsDirect": 0.0015375336342899157,
+    "layerVsRef": 0.000004909551393697069
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 8428
+  },
+  {
+   "id": "C-plain-40x30x10-t1.5-R2.25",
+   "family": "C",
+   "oracle": {
+    "S": 11852.270483944887,
+    "P": 3376.059746801308
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11852.214218617954,
+    "shellStatus": "built",
+    "built": 3376.01343754832
+   },
+   "occt": {
+    "pre": 11812.071434241745,
+    "built": 3339.844531840961,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11852.26904030615,
+    "built": 3376.058591338459,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": 0.01082951777022457,
+    "layerVsP": 0.000013716953034360006,
+    "occtVsP": 0.010727065773838775,
+    "preLayerVsOcct": 0.003398454250779377,
+    "preLayerVsS": 0.000004747219278341299,
+    "preOcctVsS": 0.003391675017676633,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": 0.000013374705715966148,
+    "directVsP": 3.4225189591224636e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000004625417125593249,
+    "preDirectVsS": 1.218027161364194e-7,
+    "preBuildDocVsDirect": 0.0033915536280609403,
+    "layerVsRef": 0.000013374705715966148
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 8395
+  },
+  {
+   "id": "C-plain-40x30x10-t2-R3",
+   "family": "C",
+   "oracle": {
+    "S": 11739.95738095545,
+    "P": 4278.184496932484
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11739.859706088324,
+    "shellStatus": "built",
+    "built": 4278.103062947742
+   },
+   "occt": {
+    "pre": 11670.424687636716,
+    "built": 4215.23295697059,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11739.955681799427,
+    "built": 4278.182828182674,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": 0.01491497780049992,
+    "layerVsP": 0.0000190347061470639,
+    "occtVsP": 0.014714545388828163,
+    "preLayerVsOcct": 0.00594965653008028,
+    "preLayerVsS": 0.000008319865563054065,
+    "preOcctVsS": 0.005922738138004599,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": 0.000018644653147249132,
+    "directVsP": 3.900602723532509e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000008175134021328297,
+    "preDirectVsS": 1.447327249351916e-7,
+    "preBuildDocVsDirect": 0.0059225942624728705,
+    "layerVsRef": 0.000018644653147249132
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 9797
+  },
+  {
+   "id": "C-plain-40x30x10-t2.5-R3.75",
+   "family": "C",
+   "oracle": {
+    "S": 11597.72729247807,
+    "P": 5074.714492968753
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       15,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11597.577407792569,
+    "shellStatus": "built",
+    "built": 5074.679942447318
+   },
+   "occt": {
+    "pre": 11492.100942672629,
+    "built": 4978.59040210931,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11597.725284076972,
+    "built": 5074.714141424588,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": 0.019300551476839175,
+    "layerVsP": 0.000006808367541151471,
+    "occtVsP": 0.018941773176131785,
+    "preLayerVsOcct": 0.009178170784097762,
+    "preLayerVsS": 0.00001292362561398586,
+    "preOcctVsS": 0.009107504180922358,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": 0.000006739094324636134,
+    "directVsP": 6.92736833572235e-8,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000012750455867976382,
+    "preDirectVsS": 1.7317195403083555e-7,
+    "preBuildDocVsDirect": 0.009107332586102907,
+    "layerVsRef": 0.000006739094324636134
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 10108
+  },
+  {
+   "id": "C-repro-s1-00475",
+   "family": "C",
+   "oracle": {
+    "S": 8627.124851671319,
+    "P": 958.01392793144
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 8627.119246722325,
+    "shellStatus": "built",
+    "built": 958.0107077512042
+   },
+   "occt": {
+    "pre": 8621.451183597548,
+    "built": 952.9526130387067,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 8627.124719627034,
+    "built": 958.0136395337893,
+    "preFaces": 10
+   },
+   "raw": {
+    "built": 958.0106926679783,
+    "pre": 8627.119241083963,
+    "documented": {
+     "cls": "WRONG",
+     "expectedP": 958.01392793144,
+     "built": 959.252646638659,
+     "rel": 0.001293006991969013
+    }
+   },
+   "rel": {
+    "layerVsOcct": 0.005307813466578024,
+    "layerVsP": 0.000003361308371278819,
+    "occtVsP": 0.005283132891044495,
+    "preLayerVsOcct": 0.0006574372462445723,
+    "preLayerVsS": 6.496891015689035e-7,
+    "preOcctVsS": 0.0006576545687374904,
+    "rawVsOcct": 0.005307797638691429,
+    "rawVsP": 0.000003377052637045581,
+    "layerVsDirect": 0.000003060272280129493,
+    "directVsP": 3.010370124045504e-7,
+    "rawVsDirect": 0.0000030760165506358625,
+    "preLayerVsDirect": 6.343833997468509e-7,
+    "preDirectVsS": 1.5305711531741968e-8,
+    "preBuildDocVsDirect": 0.0006576392730915956,
+    "layerVsRef": 0.000003060272280129493
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 10259
+  },
+  {
+   "id": "C-repro-s2-00591",
+   "family": "C",
+   "oracle": {
+    "S": 4307.124851671145,
+    "P": 640.0139279314126
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 4307.119896861782,
+    "shellStatus": "built",
+    "built": 640.0113586560446
+   },
+   "occt": {
+    "pre": 4304.3483083836745,
+    "built": 637.5278350725894,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 4307.12471962658,
+    "built": 640.0136395264198,
+    "preFaces": 10
+   },
+   "raw": {
+    "built": 640.0113456087466,
+    "pre": 4307.119894974953,
+    "documented": {
+     "cls": "WRONG",
+     "expectedP": 640.0139279314126,
+     "built": 641.2127532809593,
+     "rel": 0.0018731238450098169
+    }
+   },
+   "rel": {
+    "layerVsOcct": 0.003895553177176185,
+    "layerVsP": 0.000004014405399326896,
+    "occtVsP": 0.003884435557298741,
+    "preLayerVsOcct": 0.0006439043217550607,
+    "preLayerVsS": 0.0000011503751420274124,
+    "preOcctVsS": 0.0006446396106658059,
+    "rawVsOcct": 0.003895532711719943,
+    "rawVsP": 0.000004034791358823028,
+    "layerVsDirect": 0.000003563784010588013,
+    "directVsP": 4.5062299466190643e-7,
+    "rawVsDirect": 0.0000035841699792705313,
+    "preLayerVsDirect": 0.0000011197179353879364,
+    "preDirectVsS": 3.0657240966938506e-8,
+    "preBuildDocVsDirect": 0.0006446089731867716,
+    "layerVsRef": 0.000003563784010588013
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 10594
+  },
+  {
+   "id": "C-gen-s2-01562",
+   "family": "C (+through hole)",
+   "oracle": {
+    "S": 2751.6935283292028,
+    "P": 504.8259058430719
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -10,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       10,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -12,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       12,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 2751.7305484083354,
+    "shellStatus": "built",
+    "built": 504.8562471161899
+   },
+   "occt": {
+    "pre": 2748.9528545300504,
+    "built": 502.3729652778186,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 2751.7292657759763,
+    "built": 504.8587697625644,
+    "preFaces": 11
+   },
+   "raw": {
+    "built": 504.85627427045523,
+    "pre": 2751.7305730215626,
+    "documented": null
+   },
+   "rel": {
+    "layerVsOcct": 0.004943104048200518,
+    "layerVsP": 0.00006010244871905416,
+    "occtVsP": 0.004858983140250752,
+    "preLayerVsOcct": 0.0010104552625220626,
+    "preLayerVsS": 0.000013453561870712808,
+    "preOcctVsS": 0.0009959952919671345,
+    "rawVsOcct": 0.004943158100204169,
+    "rawVsP": 0.0000601562380849312,
+    "layerVsDirect": 0.000004996736762077475,
+    "directVsP": 0.00006509951076625027,
+    "rawVsDirect": 0.000004942950897633895,
+    "preLayerVsDirect": 4.661186603855035e-7,
+    "preDirectVsS": 0.000012987437156640495,
+    "preBuildDocVsDirect": 0.0010089696251941748,
+    "layerVsRef": 0.000004996736762077475
+   },
+   "occtRef": "direct",
+   "cls": "MATCH",
+   "ms": 21219
+  },
+  {
+   "id": "B-gen-s1-01725",
+   "family": "B (bfillet + blind)",
+   "oracle": {
+    "S": 4608.636553901178,
+    "P": 1414.1543437666915
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -8,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       8,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "G-BLIND",
+     "refusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 4608.628485858532,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 4590.279309072958,
+    "built": 4590.279309072958,
+    "refusals": {
+     "shell1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+    }
+   },
+   "occtDirect": {
+    "pre": 4608.627766037889,
+    "error": "thick solid not done"
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 2.2459535476491577,
+    "preLayerVsOcct": 0.003997398752905017,
+    "preLayerVsS": 0.0000017506354755966643,
+    "preOcctVsS": 0.003983226842368392,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 1.561897987082047e-7,
+    "preDirectVsS": 0.0000019068249764782599,
+    "preBuildDocVsDirect": 0.003981327609086839,
+    "layerVsRef": null
+   },
+   "occtRef": "buildDoc",
+   "cls": "REFUSED",
+   "ms": 6040
+  },
+  {
+   "id": "B-gen-s2-00829",
+   "family": "B (bfillet + blind)",
+   "oracle": {
+    "S": 5641.380196184034,
+    "P": 2752.2761336840335
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       12,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       -15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "G-BLIND",
+     "refusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 5641.350283320171,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 5616.198716454134,
+    "built": 5616.198716454134,
+    "refusals": {
+     "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+    }
+   },
+   "occtDirect": {
+    "pre": 5641.378665106505,
+    "error": "thick solid not done"
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 1.0405651336069335,
+    "preLayerVsOcct": 0.004478396890115129,
+    "preLayerVsS": 0.0000053024016858189076,
+    "preOcctVsS": 0.004463709031157434,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.0000050310018204039805,
+    "preDirectVsS": 2.714012308350141e-7,
+    "preBuildDocVsDirect": 0.004463438841309394,
+    "layerVsRef": null
+   },
+   "occtRef": "buildDoc",
+   "cls": "REFUSED",
+   "ms": 5508
+  }
+ ],
+ "shipped": {
+  "pkg": "/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology",
+  "set": "unified",
+  "rows": [
+   {
+    "id": "C-plain-40x30x10-t0.5-R0.75",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 1240.5589987900723,
+    "relOcct": 0.000016936686458763458,
+    "relP": 0.00001711766669491973,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-plain-40x30x10-t1-R1.5",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 2364.716949904476,
+    "relOcct": 0.000004925115125970695,
+    "relP": 0.000005237037655476962,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-plain-40x30x10-t1.5-R2.25",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 3376.013279470181,
+    "relOcct": 0.000013421528996661372,
+    "relP": 0.000013763776299029874,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-plain-40x30x10-t2-R3",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 4278.1028434688915,
+    "relOcct": 0.000018695955033857254,
+    "relP": 0.000019086008013661193,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-plain-40x30x10-t2.5-R3.75",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 5074.668389536709,
+    "relOcct": 0.000009015658144334744,
+    "relP": 0.00000908493120314412,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-repro-s1-00475",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 958.0106926679783,
+    "relOcct": 0.0000030760165506358625,
+    "relP": 0.000003377052637045581,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-repro-s2-00591",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:built",
+    "vol": 640.0113456087466,
+    "relOcct": 0.0000035841699792705313,
+    "relP": 0.000004034791358823028,
+    "cls": "MATCH"
+   },
+   {
+    "id": "C-gen-s2-01562",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built hole1:built shell1:built",
+    "vol": 504.85627427045523,
+    "relOcct": 0.000004942950897633895,
+    "relP": 0.0000601562380849312,
+    "cls": "MATCH"
+   }
+  ]
+ }
+}

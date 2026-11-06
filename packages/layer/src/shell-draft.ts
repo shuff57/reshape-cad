@@ -972,6 +972,52 @@ async function planDraft(f: FView, st: TranslateState, ctx: SDCtx, G: SDG): Prom
   };
 }
 
+// ---- a fillet's edge from the primitive-frame resolver (path A for fillets) -----------------------------------------------------
+const PICKED_AT = 'ctx.resolveAt (primitive frame; only fillets in the history)';
+/**
+ * The point for a fillet's `between` edge, from `ctx.resolveAt` (the group's pick source, in the primitive's OWN frame), or null to keep path B.
+ * Without it the edge comes only from the engine's topology, which a host without topology (the node rig) cannot give, so every named fillet
+ * was refused there and the R = 1.5t bottom fillet (shell family C) could not be measured (fuzz/REMAINING-LOOP-PHASE1.md finding 3).
+ *
+ * The resolver's point is the midpoint of the edge on the primitive as it was made. It is used ONLY when that point is provably still on the
+ * same edge of the part the fillet is applied to, i.e. the engine's nearest-edge pick cannot land on another edge:
+ *  - the name is an edge between two different, non-opposite primitive faces of ONE plain box (no whole-shape round, no turn): a straight edge;
+ *  - every step from that box to the fillet's target is itself a fillet (round or bevel): no move, turn, cut, hole, join, mirror or pattern;
+ *  - none of those earlier fillets is on the same edge (that edge is gone), and each is smaller than half this edge's length (a fillet on a
+ *    neighbouring edge trims this one by at most its own size at the shared corner, so the midpoint survives).
+ * Anything else returns null and the fillet is planned exactly as before (path B), with the same sentences. No new refusal is made here.
+ * One candidate only (the original's three extra candidates one "radius" out are for a closed circle, which a box edge never is).
+ */
+async function filletEdgeAt(f: FView, prefix: Feature[], byId: Record<string, FView>, ctx: TranslateCtx): Promise<{ ok: true; kind: 'edge'; point: V3; length: number; evidence: { name: string; [k: string]: unknown } } | null> {
+  const nm = f.edge as (SDName & { of?: SDName[] }) | undefined;
+  if (!nm || nm.cause !== 'between' || !Array.isArray(nm.of) || nm.of.length !== 2) return null;
+  const root = byId[nm.feature];
+  if (!root || root.kind !== 'box' || root.round || !isZero3(root.rotate)) return null;
+  if (!nm.of.every((n) => n && n.cause === 'primitive' && n.feature === nm.feature && DIRV[n.part])) return null;
+  const [a, b] = nm.of.map((n) => DIRV[n.part]);
+  if (a.some((v, i) => v !== 0 && b[i] !== 0)) return null; // the same or opposite faces share no edge
+  const earlier: FView[] = [];
+  for (let cur = f.target, seen = new Set<string>(); ; ) {
+    if (!cur || seen.has(cur)) return null;
+    seen.add(cur);
+    if (cur === nm.feature) break;
+    const h = byId[cur];
+    if (!h || h.kind !== 'fillet') return null;
+    earlier.push(h);
+    cur = h.target;
+  }
+  const r = await ctx.resolveAt!(prefix, nm);
+  if (!r || r.kind !== 'edge' || !(typeof r.length === 'number' && r.length > 0) || !Array.isArray(r.centroid)) return null;
+  const pair = (n: { of?: SDName[] }) => (n.of ?? []).map((x) => `${x.feature}.${x.part}`).sort().join('|');
+  for (const h of earlier) {
+    const he = h.edge as (SDName & { of?: SDName[] }) | undefined;
+    if (!he || he.cause !== 'between' || pair(he) === pair(nm)) return null;
+    const size = (h as unknown as { size?: number }).size;
+    if (!(typeof size === 'number' && size >= 0 && size < r.length / 2)) return null;
+  }
+  return { ok: true, kind: 'edge', point: r.centroid, length: r.length, evidence: { name: `${nm.feature}.edge[${pair(nm)}]`, pickSource: PICKED_AT, history: earlier.map((h) => h.id) } };
+}
+
 // ---- the loop ------------------------------------------------------------------------------------------------------------
 /**
  * One feature of translateDocGuarded's forEach, ported (docs/spikes/solidcraft-referee/contract/shell-draft-translate.mjs). The differences from the original, and only these:
@@ -1013,9 +1059,11 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
       return { r: { kind: 'face', centroid: rr.point, current: true } };
     },
   };
-  // the base's planners read ctx.resolve for a fillet's edge: resolve it as the base loop does
-  const baseResolved = f.kind === 'fillet' ? await resolveNamesFor(f, prefix, env) : new Map();
-  const fctx: SDCtx & PlanCtx = { ...ctx, resolve: (name) => (baseResolved.get(name) as never) ?? null };
+  // the base's planners read ctx.resolve for a fillet's edge. Path A (the host supplies ctx.resolveAt, the group's pick source) when filletEdgeAt
+  // proves the primitive-frame point is still on that edge of the part as it is now; otherwise path B, resolved as the base loop does.
+  const edgeAt = f.kind === 'fillet' && ctx.resolveAt ? await filletEdgeAt(fv, prefix, byId, ctx) : null;
+  const baseResolved = f.kind === 'fillet' && !edgeAt ? await resolveNamesFor(f, prefix, env) : new Map();
+  const fctx: SDCtx & PlanCtx = { ...ctx, resolve: (name) => (edgeAt && name === fv.edge ? edgeAt as never : (baseResolved.get(name) as never) ?? null) };
   let plan: SDPlan;
   try {
     const vd = voidedDep(fv, st);
@@ -1024,6 +1072,7 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     else plan = f.kind === 'shell' ? await planShell(fv, st, fctx, G)
       : f.kind === 'draft' ? await planDraft(fv, st, fctx, G)
         : planFeature(f, st, fctx, BASE_PROFILE) as unknown as SDPlan;
+    if (edgeAt && plan.variants) plan.pickedFrom = PICKED_AT;
     if (vd && ['move', 'rotate'].includes(f.kind) && !plan.refusal && !plan.noop) {
       if (f.kind === 'move' && fv.copy) plan = { ...refuse(SENTENCE.afterClosedHollow(fv, vd)), guard: 'G-VOID' };
       else { plan.voided = true; plan.post = (after, before) => (before && (Math.abs(after.volume - before.volume) > 3e-4 * Math.max(1, before.volume) || after.faces !== before.faces) ? { guard: 'G-VOID', refusal: SENTENCE.afterClosedHollow(fv, vd) } : null); }

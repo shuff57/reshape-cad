@@ -11,7 +11,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const REPO = '/home/shuff57/Documents/GitHub/reshape-cad';
+const REPO = path.join(HERE, '..', '..', '..'); // the tree this file lives in (was the main checkout's absolute path; same value there)
 const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || '/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg';
 const OUT = process.env.OUT || '/tmp/opencode/remaining-loop/phase1-fuzz.json';
 const sc = createRequire(import.meta.url)(path.join(PKG, 'solidcraft_referee.js'));
