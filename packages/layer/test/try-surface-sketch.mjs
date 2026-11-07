@@ -170,7 +170,7 @@ try {
   const vol = async () => (await tool('measure', { summary: true })).bodies.find((b) => b.name === st.body)?.volume_mm3;
   const edges = async () => (await exec('model.edges', { body: st.body })).edges;
   const before = { v: await vol(), e: op.op === 'imprint' ? await edges() : undefined };
-  await exec('edit.checkpoint');
+  const checkpoint = (await exec('edit.checkpoint')).checkpoint;
   const r = await tool('batch', { commands: plan.commands, verbose: false });
   if (r.ok === false) {
     console.log(`REFUSED: ${surfaceRefusal(id, op.op, 'kernel')}\n  (the app said: ${String(r.failed?.error ?? '').split('\n')[0].slice(0, 200)})`);
@@ -180,7 +180,7 @@ try {
   const v = verifySurfaceSketch({ prediction: plan.prediction, volumeBefore: before.v, volumeAfter: after.v, edgesBefore: before.e, edgesAfter: after.e });
   const extra = (await tool('measure', { summary: true })).bodies.filter((b) => b.name !== st.body && !bodies.some((x) => x.name === b.name));
   if (!v.ok || extra.length) {
-    await exec('edit.restore_checkpoint');
+    await exec('edit.restore_checkpoint', { checkpoint });
     console.log(`REFUSED: ${surfaceRefusal(id, op.op, 'mismatch')}\n  (${v.ok ? 'it left extra bodies' : v.reason}; the design is back as it was)`);
     process.exit(2);
   }
