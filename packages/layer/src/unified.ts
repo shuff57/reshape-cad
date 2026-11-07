@@ -147,17 +147,21 @@ function wrapped(ctx: TranslateCtx, st: TranslateState, seen: Seen, budget: bool
 
 /**
  * Two kinds of measure live side by side in a document that uses two or more groups. The extrude-pocket group's (E) counts the pieces the engine splits off a
- * body ("b1 (2)") and the shells; the other loops' (P: names only; shells added here, which the holes guard G-SHELLS reads) do not count pieces. A guard reads
+ * body ("b1 (2)") and the shells; the other loops' (P: exact names; shells added here, which the holes guard G-SHELLS reads) do not find pieces themselves, so the pieces an E-kind step left are handed to them by name (toP). A guard reads
  * the kind it was written for, whichever step built the feature it reads: the extrude-pocket after-the-build checks compare shell counts (a cavity sealed
  * inside the part), which a measure without them silently passes. A step is given the maps of its own kind; what it accepts is converted for the other.
  */
 interface ByKind { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }
-const stripPiece = (n: string): string => n.replace(/ \(\d+\)$/, '');
 
 /** The measure of kind E of what a P-kind step built (pieces counted, shells summed), from the reply of the run that built it. */
 const toE = (m: Aggregate, r: RunResult | undefined): Aggregate => (r?.measure ? aggregate(r, m.bodies, true) ?? m : m);
-/** The measure of kind P (exact names, shells summed) of what an E-kind step built. */
-const toP = (m: Aggregate, r: RunResult | undefined): Aggregate => (r?.measure ? aggregateOf(r, [...new Set(m.bodies.map(stripPiece))]) ?? m : m);
+/**
+ * The measure of kind P (exact names, shells summed) of what an E-kind step built: EVERY piece the E-kind measure counted, each by its exact name. A P-kind step
+ * names its bodies exactly, so the pieces must be on its list: with the " (n)" names stripped, a cut, keep or mirror of a part that is two pieces took only the
+ * first piece (audit BOOL-9, PM-5: built 10500, 7500 and 18000 where the part is 9000, 3000 and 24000), and a step that refuses a target of several pieces never
+ * saw them. See docs/spikes/solidcraft-referee/GUARD-MULTIPIECE.md.
+ */
+const toP = (m: Aggregate, r: RunResult | undefined): Aggregate => (r?.measure ? aggregateOf(r, [...new Set(m.bodies)]) ?? m : m);
 
 export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promise<void> {
   const { st, accepted } = env;
