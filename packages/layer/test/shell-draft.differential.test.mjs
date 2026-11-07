@@ -154,7 +154,7 @@ const CFG0 = CONFIGS[0];
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 function runOrig(item, cfg, off = []) {
   const fake = makeFake({ sync: true, ...cfg.fake });
-  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, runSC: fake.runSC, resolveAt: cfg.resolver, ...(cfg.useMt ? { mt } : {}) };
+  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, runSC: fake.runSC, resolveAt: cfg.resolver, ...(cfg.useMt ? { mt } : {}) };
   let result; let error = null;
   try { result = orig.sd.translateDocGuarded(structuredClone(item.doc), ctx, { fromUsage: item.fromUsage, off }); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log };
@@ -163,7 +163,7 @@ async function runPort(tr, item, cfg, off = [], { resolver = cfg.resolver, async
   const fake = makeFake({ sync: !asyncFake, ...cfg.fake });
   const runSC = tweak ? (cmds, o) => tweak(fake.runSC(cmds, o)) : fake.runSC;
   const ctx = {
-    arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...(resolver ? { resolveAt: resolver } : {}),
+    arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...(resolver ? { resolveAt: resolver } : {}),
     ...(item.fromUsage ? { fromUsage: item.fromUsage } : {}), ...(off.length ? { guardsOff: off } : {}),
   };
   let result; let error = null;
@@ -234,7 +234,7 @@ test('createTranslator: the shell-draft set exists, the default stays base, unkn
   // planFeature cannot plan a shell or a draft synchronously under this set: it must not fall back to the unguarded base planner
   const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
   for (const f of [{ id: 's1', kind: 'shell', target: 'b1', thickness: 1 }, { id: 'd1', kind: 'draft', target: 'b1', angle: 3, pull: 'z', neutral: 0, whole: true }]) {
-    assert.throws(() => SD.planFeature(f, st, { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, runSC: () => ({ ok: true }), resolve: () => null }), /plans a shell and a draft asynchronously/);
+    assert.throws(() => SD.planFeature(f, st, { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, runSC: () => ({ ok: true }), resolve: () => null }), /plans a shell and a draft asynchronously/);
   }
 });
 
@@ -255,8 +255,8 @@ test('base, extrude-pocket and holes are untouched: base mode is still exactly t
   let n = 0;
   for (const { name, doc } of [...hand, ...generated.slice(0, 60)]) {
     const fa = makeFake({ boxBool: true }); const fb = makeFake({ boxBool: true });
-    const ca = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: fa.runSC, topologyOf: fa.topologyOf, resolveAt: () => null };
-    const cb = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: fb.runSC, topologyOf: fb.topologyOf, soups: {} };
+    const ca = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: fa.runSC, topologyOf: fa.topologyOf, resolveAt: () => null };
+    const cb = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: fb.runSC, topologyOf: fb.topologyOf, soups: {} };
     let ra, rb, ea = null, eb = null;
     try { ra = await orig.p4.translateDoc(structuredClone(doc), ca); } catch (e) { ea = errOf(e); }
     try { rb = await BASE.translateDoc(structuredClone(doc), cb); } catch (e) { eb = errOf(e); }
@@ -356,7 +356,7 @@ test('named picks without a resolver (the layer\'s own path): runs on every name
 test('without a resolver and without a topology: a named pick is refused in the group\'s own sentence, not thrown', async () => {
   const doc = { features: [{ id: 'b1', kind: 'box', size: [20, 20, 10], center: [0, 0, 0] }, { id: 's1', kind: 'shell', target: 'b1', thickness: 2, open: { cause: 'primitive', feature: 'b1', kind: 'face', part: '+z' } }] };
   const fake = makeFake({ shellDraft: true, boxBool: true });
-  const { _state, ...r } = await SD.translateDoc(structuredClone(doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: fake.runSC });
+  const { _state, ...r } = await SD.translateDoc(structuredClone(doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: fake.runSC });
   assert.equal(r.features[1].status, 'refused');
   assert.equal(r.features[1].guard, 'G-PICK');
   assert.match(r.features[1].refusal, /^s1 \(hollow\): the top face of b1 could not be found on the part as it is now, so s1 is shown without it/);
@@ -396,7 +396,7 @@ test('negative controls: a different engine, a 1e-9 and a 1e-12 tamper, base mod
   res.tamper1e12 = await detect('1e-12 tamper', (it) => runPort(SD, it, CFG0, [], { tweak: tamper(1e-12) }));
   res.baseMode = await detect('base mode', async (it) => {
     const fake = makeFake({ ...CFG0.fake }); let result; let error = null;
-    try { const { _state, ...rest } = await BASE.translateDoc(structuredClone(it.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {} }); result = rest; } catch (e) { error = errOf(e); }
+    try { const { _state, ...rest } = await BASE.translateDoc(structuredClone(it.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {} }); result = rest; } catch (e) { error = errOf(e); }
     return { result, error, log: fake.log };
   });
   res.guardOffOneSide = await detect('G-SWEEP off on the port only', (it) => runPort(SD, it, CFG0, ['G-SWEEP', 'G-REACH']));
@@ -565,7 +565,7 @@ const COMP2 = port.tr.createTranslator({ planners: ['extrude-pocket', 'holes'] }
 const strip = (r) => { if (!r) return r; const { _state, spentS, ...rest } = r; return rest; };
 async function runSet(tr, item, fake, withResolver) {
   const f = makeFake(fake);
-  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, ...(withResolver ? { resolveAt: fakeResolveAt } : {}), ...(item.fromUsage ? { fromUsage: item.fromUsage } : {}) };
+  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, ...(withResolver ? { resolveAt: fakeResolveAt } : {}), ...(item.fromUsage ? { fromUsage: item.fromUsage } : {}) };
   let result = null; let error = null;
   try { result = strip(await tr.translateDoc(structuredClone(item.doc), ctx)); } catch (e) { error = errOf(e); }
   return { result, error, log: f.log };
