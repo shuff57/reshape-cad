@@ -5,7 +5,7 @@ export * as mt from '../../../script/dist/model-types.js';
 export * as arc from '../../../sketch/dist/sketch-arc.js';
 // The translator is the layer's: the UNIFIED set (base + six groups' planners and guards, packages/layer Phase 2).
 import { createTranslator } from '../../../layer/dist/index.js';
-export { docProfileIndices } from '../../../layer/dist/index.js';
+export { docProfileIndices, draftFromUsage } from '../../../layer/dist/index.js';
 const layer = createTranslator({ planners: 'unified' });
 // The host's setting for the extrude-pocket group's join checks on every combine (packages/layer/NOTES.md, owner decision 2026-11-07):
 // 'full', so the inclusion-exclusion consistency check runs on every join. At the library default 'cheap' the unified set built 8 wrong
