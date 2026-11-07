@@ -18,6 +18,7 @@ import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, Transla
 import { removedVolume, holeProfile } from './holes-volume.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { motionRefusal } from './move-turn.js';
 import type { VolTool } from './holes-volume.js';
 
 /** the fields of a hole feature the guards read (loose on purpose: a malformed doc fails the same way) */
@@ -301,6 +302,9 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces!) : null;
     if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces!, accepted);
+    if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     if (plan.post) {
       const before = st.measure[headOf((f as unknown as HoleView).target)] ?? st.measure[(f as unknown as HoleView).target];
       const bad = plan.post(m, before, { allBodies, allCountBefore: hs.allCount, accepted, variant, off });

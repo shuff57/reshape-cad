@@ -30,6 +30,11 @@ const lastRun = new WeakMap<Cmd[], { len: number; res: RunResult }>();
 export function rememberRun(accepted: Cmd[], res: RunResult | undefined): void {
   if (res?.ok && res.measure) lastRun.set(accepted, { len: accepted.length, res });
 }
+/** The recorded reply of the run that built exactly the commands accepted so far, or undefined (no record, or the list changed since). The move-turn checks read it. */
+export function lastRunOf(accepted: Cmd[]): RunResult | undefined {
+  const rec = lastRun.get(accepted);
+  return rec && rec.len === accepted.length ? rec.res : undefined;
+}
 
 type Run = (cmds: Cmd[]) => RunResult | Promise<RunResult>;
 

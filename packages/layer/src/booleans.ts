@@ -33,7 +33,7 @@
 // turns into the same translator-error refusal (and, for a combine, into the same plain sentence).
 import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx } from './types.js';
-import { BASE_PROFILE, aggregate, frameWithMt, planFeature, refuse, resolveNamesFor } from './translate.js';
+import { BASE_PROFILE, aggregate, frameWithMt, isVerbatimGuard, planFeature, refuse, resolveNamesFor } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { joinPreflight, verifyUnion } from './extrude-pocket.js';
 import { sampleOutline } from './outline-guard.js';
@@ -41,6 +41,7 @@ import type { GuardOutline } from './outline-guard.js';
 import { orient } from './booleans-slow.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { motionRefusal } from './move-turn.js';
 import type { SketchRead, SlowFeat } from './booleans-slow.js';
 import { BUDGET_S, SENTENCES, afterCombine, describe, guardCombine, plainPieces, plainSentence, reusedTools } from './booleans-guard.js';
 import type { CombineView, GuardHit } from './booleans-guard.js';
@@ -285,7 +286,7 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     const raw = planned.refusal;
     let sentence = raw;
     // BOOLEANS-GUARD (G9): a refused plan of a combine is turned into one student sentence; (round 5) so is the dependency glue of ANY kind; (G12) a step that needs ONE piece, handed the pieces of an earlier cut
-    if ((planned as BoolRefusal).final) { /* a sentence of the extrude-pocket group's, kept as it is */ }
+    if ((planned as BoolRefusal).final || isVerbatimGuard(guard)) { /* a sentence of the extrude-pocket group's, or of a guard every set raises (open-outline, move-turn), kept as it is */ }
     else if (f.kind === 'combine') { const p = plainSentence(raw, f as unknown as { op?: string }); sentence = p.sentence; guard ??= p.code; }
     else if (/was refused \(.*\)$/.test(raw)) { const p = plainSentence(raw, f as unknown as { op?: string }); sentence = p.sentence; guard ??= p.code; }
     else { const pp = plainPieces(raw); if (pp) { sentence = pp.sentence; guard ??= pp.code; } }
@@ -319,6 +320,9 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
+    if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     if (combine) { const bad = afterCombine(f as unknown as CombineView, m, plan.before, plan.boxes); if (bad) { lastErr = bad.sentence; afterGuard = bad.code; continue; } } // BOOLEANS-GUARD (G4b, G19, G21): after-check
     if (combine && BFV(f).op === 'union' && epJoinLevel(st, ctx) !== 'off') { // the extrude-pocket group's join checks after the build (unified set only)
       const mE = aggregate(res, plan.produces, true) ?? m;
