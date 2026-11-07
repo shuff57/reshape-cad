@@ -27,6 +27,7 @@ import { BASE_PROFILE, planFeature, frameWithMt, resolveNamesFor } from './trans
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { outlineSize, taperFold } from './outline-guard.js';
@@ -611,9 +612,11 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     if (r.timedOut) r = { ...r, ok: false, failed: { command: '(budget)', error: `TIME BUDGET: exceeded ${B} ms` } };
     return r;
   };
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   for (const [vi, variant] of plan.variants.entries()) {
     const res = await callSC([...accepted, ...variant]);
     if (!res.ok) {
+      if (res.erroredBody) errored = true;
       lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown');
       if (res.timedOut) { refusedNote(`${f.id} (${f.kind}): ${lastErr}`, undefined, variant, 'G-BUDGET'); return; } // no other variant: the fallback would be as slow or worse
       if (vi === 0 && plan.copiesOf) firstJoinErr = lastErr;
@@ -785,6 +788,7 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, variantsTried: plan.variants.indexOf(variant) + 1, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, ...(plan.mirrorAt ? { mirrorAt: plan.mirrorAt } : {}), wallMs: res.wallMs });
     return;
   }
+  if (errored) { refusedNote(`${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`, erroredBodySentence(f), plan.variants[0], ERRORED_BODY_GUARD); return; }
   refusedNote(`${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`, undefined, plan.variants[0]);
 }
 const membersOf0 = (p: Profile): Profile[] => p.members ?? [p];

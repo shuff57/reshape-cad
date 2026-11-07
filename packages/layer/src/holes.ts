@@ -19,6 +19,7 @@ import { removedVolume, holeProfile } from './holes-volume.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { VolTool } from './holes-volume.js';
 
 /** the fields of a hole feature the guards read (loose on purpose: a malformed doc fails the same way) */
@@ -282,6 +283,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   if (plan.refusal) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); return; }
   if (plan.noop) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   for (const variant of plan.variants!) {
     const res = await runB([...accepted, ...variant]);
     if (res.timedOut && off.has('G-BUDGET')) { // negative control: no budget, the run was killed at the control limit (H4_CTL_S) so the control could end
@@ -295,7 +297,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       note({ status: 'refused', refusal: sentence, guard: 'G-BUDGET', raw: `${res.failed?.error}`, cpuMs: res.cpuMs, commands: variant });
       return;
     }
-    if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
+    if (!res.ok) { if (res.erroredBody) errored = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregateOf(res, plan.produces!);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces!.join(', ')} came back`; continue; }
     const allBodies: BodyRow[] = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
@@ -334,6 +336,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
     note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, probe: plan.probe, variantsTried: plan.variants!.indexOf(variant) + 1 });
     return;
   }
+  if (errored) { const s = erroredBodySentence(f); st.refused[f.id] = s; note({ status: 'refused', refusal: s, raw: lastErr, guard: ERRORED_BODY_GUARD, commands: plan.variants![0] }); return; }
   const sentence = f.kind === 'hole' ? (engineSentence(f as unknown as HoleView, lastErr) ?? SENTENCE.engine(f as unknown as HoleView)) : `${f.id} (${f.kind}): this step could not be built cleanly, so ${f.id} is shown without it.`;
   st.refused[f.id] = sentence;
   note({ status: 'refused', refusal: sentence, raw: lastErr, guard: 'G-ENGINE', commands: plan.variants![0] });

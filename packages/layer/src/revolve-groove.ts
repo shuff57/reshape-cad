@@ -27,6 +27,7 @@ import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from '.
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { COST_BUDGET_S, guardPlan, onRefused, plainRefusal, plainRefusalCode, postCheck, rgView } from './revolve-groove-guard.js';
@@ -108,11 +109,13 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   let lastErr: string | { plain: string } | null = null;
   let lastFail: RunResult | null = null;
   let timedOut = false;
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   for (const variant of plan.variants) {
     let res: RunResult;
     // time: a groove's engine runs carry { budgetS } (advice to the host, see the header); every other run is as in the original (no option)
     try { res = f.kind === 'groove' ? await ctx.runSC([...accepted, ...variant], { budgetS: RG_BUDGET_S + 1.5 * rs.lastRunS }) : await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
     if (!res.ok) {
+      if (res.erroredBody) errored = true;
       if (res.timedOut && f.kind === 'groove') { timedOut = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : 'TIME BUDGET: the run did not finish'; lastFail = res; continue; }
       lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue;
     }
@@ -142,7 +145,8 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     return;
   }
   let sentence: string; let code: string | undefined;
-  if (timedOut) { sentence = rgBudgetSentence(f.id); code = 'G-BUDGET'; }
+  if (errored) { sentence = erroredBodySentence(f); code = ERRORED_BODY_GUARD; }
+  else if (timedOut) { sentence = rgBudgetSentence(f.id); code = 'G-BUDGET'; }
   else {
     const plain = plainRefusal(f, lastErr);
     sentence = plain ?? `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr as string | null}`; // G6

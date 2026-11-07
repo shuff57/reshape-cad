@@ -24,6 +24,7 @@ import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './transla
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 
 const AXI: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -1137,9 +1138,11 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
   if (plan.refusal) { const s = sanitize(plan.refusal, byId); st.refused[f.id] = s; note({ status: (plan.status ?? 'refused') as 'refused', refusal: s, guard: plan.guard, ...(plan.raw === undefined ? {} : { raw: plan.raw }), commands: [] }); return; }
   if (plan.noop) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   for (const variant of plan.variants!) {
     let res: RunResult;
     try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
+    if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregateOf(res, plan.produces!);
     if (!m) { lastErr = `no body named ${plan.produces!.join(', ')} came back`; continue; }
@@ -1173,9 +1176,9 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     return;
   }
   const raw = lastErr;
-  const sentence = plan.plain ? plan.plain(raw) : sanitize(`${f.id} (${f.kind}): solidcraft refused it -- ${raw}`, byId);
+  const sentence = errored ? erroredBodySentence(f) : plan.plain ? plan.plain(raw) : sanitize(`${f.id} (${f.kind}): solidcraft refused it -- ${raw}`, byId);
   st.refused[f.id] = sentence as string;
-  note({ status: 'refused', refusal: sentence as string, raw, guard: 'engine', commands: plan.variants![0] });
+  note({ status: 'refused', refusal: sentence as string, raw, guard: errored ? ERRORED_BODY_GUARD : 'engine', commands: plan.variants![0] });
 }
 
 // ---- the planner set -----------------------------------------------------------------------------------------------------

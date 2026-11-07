@@ -42,6 +42,7 @@ import { orient } from './booleans-slow.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { SketchRead, SlowFeat } from './booleans-slow.js';
 import { BUDGET_S, SENTENCES, afterCombine, describe, guardCombine, plainPieces, plainSentence, reusedTools } from './booleans-guard.js';
 import type { CombineView, GuardHit } from './booleans-guard.js';
@@ -198,7 +199,7 @@ const boolCombine: Planner = (fe, st, ctx, h) => {
 // ---- the executor (booleans-r3/combine-exec.mjs) --------------------------------------------------------------------------------------------------
 type RunFn = (cmds: Cmd[]) => RunResult | Promise<RunResult>;
 interface ExecOk { cmds: Cmd[]; produces: string[]; res: RunResult }
-interface ExecErr { err: string; timedOut?: boolean }
+interface ExecErr { err: string; timedOut?: boolean; /** the run's reply carried an errored body (errored-body.ts) */ errored?: true }
 /**
  * The ONE function the combine step needs to be right for results that fall into several pieces and for keep() of three or more shapes. The caller hands it `runSC(commands) -> engine reply`.
  * Facts it rests on (probe-pieces.mjs, raw SolidCraft, no translator):
@@ -214,7 +215,7 @@ export async function execCombine(r3: BoolPlan['r3'], accepted: Cmd[], runSC: Ru
   const run = async (cmd: Cmd): Promise<{ names: Set<string> } | ExecErr> => {
     let r: RunResult; try { r = await runSC([...accepted, ...cmds, cmd]); } catch (e) { r = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
     if (r.timedOut) return { err: r.failed ? `${r.failed.command}: ${r.failed.error}` : 'TIME BUDGET: the run did not finish', timedOut: true };
-    if (!r.ok) return { err: r.failed ? `${r.failed.command}: ${r.failed.error}` : String(r.error ?? 'unknown') };
+    if (!r.ok) return { err: r.failed ? `${r.failed.command}: ${r.failed.error}` : String(r.error ?? 'unknown'), ...(r.erroredBody ? { errored: true as const } : {}) };
     cmds.push(cmd); res = r;
     return { names: new Set(r.measure!.bodies.map((b) => b.name)) };
   };
@@ -298,6 +299,7 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
   const plan = planned as unknown as StepPlan; // named `plan`, as in the original, so that a malformed plan throws the same TypeError text
   let lastErr: string | null = null;
   let timedOut = false;
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   const combine = f.kind === 'combine';
   // time: a combine's engine runs carry { budgetS } (advice to the host, see the header); every other run is as in the original (no option)
   const callSC: RunFn = async (cmds) => {
@@ -307,13 +309,14 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
   };
   if (plan.r3) { // BOOLEANS-R3: the combine executor decides the command list (it needs the body names each step leaves)
     const ex = await execCombine(plan.r3, accepted, callSC, bs.lastNames ?? []);
-    if ('err' in ex) { lastErr = ex.err; timedOut = !!ex.timedOut; plan.variants = []; } else { plan.variants = [ex.cmds]; plan.produces = ex.produces; plan.__res = ex.res; }
+    if ('err' in ex) { lastErr = ex.err; timedOut = !!ex.timedOut; errored = !!ex.errored; plan.variants = []; } else { plan.variants = [ex.cmds]; plan.produces = ex.produces; plan.__res = ex.res; }
   }
   let afterGuard: string | undefined;
   let epFinal = false;
   for (const variant of plan.variants!) {
     let res: RunResult;
     try { res = plan.__res ?? await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
+    if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregate(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
@@ -349,7 +352,8 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
   }
   let sentence: string;
   let code: string | undefined;
-  if (timedOut && combine) { sentence = SENTENCES.budget(BFV(f).op!); code = 'G-BUDGET'; }
+  if (errored) { sentence = erroredBodySentence(f); code = ERRORED_BODY_GUARD; } // an errored body (errored-body.ts)
+  else if (timedOut && combine) { sentence = SENTENCES.budget(BFV(f).op!); code = 'G-BUDGET'; }
   else if (combine && epFinal) { sentence = lastErr!; code = afterGuard; }
   else if (combine) { const p: GuardHit = plainSentence(lastErr, f as unknown as { op?: string }); sentence = p.sentence; code = afterGuard ?? p.code; } // BOOLEANS-GUARD (G9)
   else sentence = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`;

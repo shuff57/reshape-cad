@@ -41,6 +41,8 @@ export interface RunResult {
   rejected?: unknown;
   error?: unknown;
   sketch_at_failure?: unknown;
+  /** every set: the engine answered ok but these bodies of its measure are errors; translateDoc's runSC turns such a reply into this failed one (errored-body.ts). */
+  erroredBody?: string[];
 }
 
 export interface TopoFace {

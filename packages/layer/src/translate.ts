@@ -23,6 +23,7 @@ import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
 import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal } from './move-turn.js';
 import type { MotionInfo } from './move-turn.js';
 import { PRIMITIVES_GUARD, primitiveEffects, primitiveRefusal } from './primitives.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence, withErroredBodies } from './errored-body.js';
 import type { PrimF } from './primitives.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
@@ -793,7 +794,9 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
  * ctx: { arc, mt, runSC(cmds)->parsed result, topologyOf(cmds)->topology reply, soups? }
  * A feature whose kind is owned by a profile with its own `step` (the holes set) is run by that step; every other feature runs the loop below.
  */
-export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
+export async function translateDoc(doc: { features: Feature[] }, ctx0: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
+  // every set: an ok reply with an errored body is a failed reply for every reader, so nothing reads its missing bounding box (errored-body.ts)
+  const ctx = withErroredBodies(ctx0);
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
   if (!ctx.skipMoveTurn) st.motion = motionInfo(doc, ctx);
   if (!ctx.skipPrimitives) st.primitives = primitiveEffects(doc);
@@ -834,10 +837,12 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   let lastFail: RunResult | null = null;
   let verifyRefusal: string | null = null;
   let verifyGuard: string | undefined;
+  let errored = false;
   const checks: unknown[] = [];
   for (const variant of plan.variants) {
     let res: RunResult;
     try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
+    if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
     const m = aggregate(res, plan.produces, profile.verifies);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
@@ -867,9 +872,10 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
     return;
   }
-  const sentence = verifyRefusal ?? profile.kernelRefusal(f, lastErr);
+  // an errored body (errored-body.ts): the owner's sentence, whatever the set's wording of an engine failure
+  const sentence = errored ? erroredBodySentence(f) : verifyRefusal ?? profile.kernelRefusal(f, lastErr);
   st.refused[f.id] = sentence;
-  note({ status: 'refused', refusal: sentence, ...(verifyRefusal && verifyGuard ? { guard: verifyGuard } : {}), commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
+  note({ status: 'refused', refusal: sentence, ...(errored ? { guard: ERRORED_BODY_GUARD } : verifyRefusal && verifyGuard ? { guard: verifyGuard } : {}), commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
 }
 
 /** Resolve one name against the shapes a finished translateDoc left behind (same code path as translateDoc). */

@@ -33,6 +33,7 @@ import { resolveName } from './resolve-names.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { motionRefusal } from './move-turn.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
 import type { EdgeRes, Resolved } from './resolve-names.js';
 import { guardBatch, guardBlend, guardPrimitiveRound, guardShellRim, postCheck } from './fc-guard.js';
@@ -176,6 +177,7 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let lastFail: RunResult | null = null;
+  let errored = false; // an engine reply with an errored body (errored-body.ts)
   for (const variant of plan.variants) {
     // ---- GUARD on a single-edge blend about to be sent
     let gv: GuardCmd | null = null;
@@ -186,7 +188,7 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     }
     let res: RunResult;
     try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
-    if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
+    if (!res.ok) { if (res.erroredBody) errored = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
     const m = aggregate(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     // every set: the built pull against its sketch (sketch-volume.ts)
@@ -218,6 +220,8 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     if (guardNote) { const sentence = refusalSentence(f, `${f.id} (${f.kind}): GUARD ${guardNote.code}`, guardNote, doc); note({ status: 'refused', refusal: sentence, guard: fcCode(guardNote.code), fc: guardNote, partial: true, ...built }); } else note({ status: 'built', ...built });
     return;
   }
+  // an errored body: the owner's sentence, kept as it is (the raw text stays in st.refused, as for every refusal of this step)
+  if (errored) { st.refused[f.id] = `${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`; note({ status: 'refused', refusal: erroredBodySentence(f), guard: ERRORED_BODY_GUARD, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null }); return; }
   refused(`${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`, { commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
 }
 
@@ -273,11 +277,11 @@ async function translateGroup(run: Feature[], prefix: Feature[], env: LoopEnv): 
     const cmd = mk(members.map((i) => points[i]));
     const gv = await guardCmd(ctx, accepted, cmd);
     let res: RunResult | null = null; let lastFail: RunResult | null = null; let m2: Aggregate | null = null;
-    let verdict: { guard?: FcBad; raw: string; measureRefused?: Aggregate } | null = null;
+    let verdict: { guard?: FcBad; raw: string; measureRefused?: Aggregate; errored?: true } | null = null;
     if (!gv.ok) verdict = { guard: gv, raw: `GUARD ${gv.code}` };
     else {
       try { res = await ctx.runSC([...accepted, cmd]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
-      if (!res.ok) { const lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; verdict = { raw: `solidcraft refused it -- ${lastErr}` }; } else {
+      if (!res.ok) { const lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; verdict = { raw: `solidcraft refused it -- ${lastErr}`, ...(res.erroredBody ? { errored: true as const } : {}) }; } else {
         m2 = aggregate(res, plan.produces);
         if (!m2) verdict = { raw: `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back` };
         else if (members.length === 1) { const pc = faceCheck(gv, before, m2.faces); if (pc) verdict = { guard: pc, raw: `GUARD ${pc.code}`, measureRefused: m2 }; }
@@ -288,7 +292,7 @@ async function translateGroup(run: Feature[], prefix: Feature[], env: LoopEnv): 
         const m = run[i];
         const rawM = `${m.id} (fillet): ${verdict.raw}`;
         st.refused[m.id] = rawM;
-        notes.set(m.id, { id: m.id, kind: 'fillet', status: 'refused', refusal: refusalSentence(m, rawM, verdict.guard ?? null, doc), commands: [cmd], group: ids, ...(verdict.guard ? { guard: fcCode(verdict.guard.code), fc: verdict.guard } : {}), failed: lastFail?.failed ?? null, measureRefused: verdict.measureRefused ?? null });
+        notes.set(m.id, { id: m.id, kind: 'fillet', status: 'refused', refusal: verdict.errored ? erroredBodySentence(m) : refusalSentence(m, rawM, verdict.guard ?? null, doc), commands: [cmd], group: ids, ...(verdict.errored ? { guard: ERRORED_BODY_GUARD } : verdict.guard ? { guard: fcCode(verdict.guard.code), fc: verdict.guard } : {}), failed: lastFail?.failed ?? null, measureRefused: verdict.measureRefused ?? null });
       }
       continue;
     }
