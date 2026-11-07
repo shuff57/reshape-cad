@@ -32,6 +32,7 @@ import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, ShapeCa
 import { resolveName } from './resolve-names.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { OPEN_OUTLINE_GUARD } from './open-outline.js';
 import type { EdgeRes, Resolved } from './resolve-names.js';
 import { guardBatch, guardBlend, guardPrimitiveRound, guardShellRim, postCheck } from './fc-guard.js';
 import type { BlendStyle, FcBad, FcTopo, RimFeature, RoundFeature } from './fc-guard.js';
@@ -167,7 +168,10 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   }
   let plan: Plan;
   try { plan = planFeature(pf, st, fctx, BASE_PROFILE); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${(e as Error).message}`); }
-  if ('refusal' in plan) { refused(plan.refusal, { commands: [] }); return; }
+  if ('refusal' in plan) {
+    if (plan.guard === OPEN_OUTLINE_GUARD) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, commands: [] }); return; } // the open-outline sentence is kept as it is
+    refused(plan.refusal, { commands: [] }); return;
+  }
   if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let lastFail: RunResult | null = null;

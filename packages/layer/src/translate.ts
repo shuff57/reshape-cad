@@ -19,6 +19,7 @@ import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
@@ -53,7 +54,7 @@ function frameOf(s: SketchFeature, mt?: MtApi): Frame {
   return { origin: a.n.map((c) => c * o), ...a };
 }
 
-export interface Refusal { refusal: string }
+export interface Refusal { refusal: string; /** only OPEN_OUTLINE_GUARD (open-outline.ts) sets it on a planner refusal; the steps keep that sentence verbatim and note the code */ guard?: string }
 export const refuse = (sentence: string): Refusal => ({ refusal: sentence });
 export { frameOf as frameWithMt, isZero3 };
 
@@ -275,6 +276,7 @@ function profileCmds(sk: SketchFeature, ctx: TranslateCtx, profile: Profile): Re
   return { cmds };
 }
 
+const isSoupTarget = (st: TranslateState, id: string) => { const sk = st.sketches[id]; return !!sk && isSoup(sk); };
 export type InSketch = Refusal | { name: string; soup?: true; cmds: Cmd[] };
 export function inSketch(sk: SketchFeature, ctx: TranslateCtx, st: TranslateState, { revolve = false, allowSoup = true } = {}, profile: Profile = BASE_PROFILE): InSketch {
   if (isSoup(sk)) {
@@ -336,6 +338,12 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profil
     id = headOf(id);
     return profile.depSentence(f, role, id, st);
   };
+  // every set: a pull or pocket of a soup with an end that meets nothing is refused before any engine run (open-outline.ts). Raised here, where the sentence
+  // carries the planner's `${f.id}: ` prefix once (inSketch's refusals are wrapped again by each planner). A dependency refusal of the sketch or the part comes first.
+  if ((f.kind === 'extrude' || f.kind === 'pocket') && !ctx.skipOpenOutline && isSoupTarget(st, f.target) && !dep(f.target, 'sketch') && !(f.kind === 'pocket' && dep(f.into, 'solid'))) {
+    const oo = openOutlineRefusal(f, st.sketches[f.target]);
+    if (oo) return { refusal: oo, guard: OPEN_OUTLINE_GUARD };
+  }
   const planner = profile.planners[f.kind];
   if (planner) return planner(f, st, ctx, { name, needBody, headOf, dep, inSketch: (sk, opts) => inSketch(sk, ctx, st, opts, profile) });
   switch (f.kind) {
@@ -785,7 +793,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   let plan: Plan;
   let internal: string | null = null;
   try { plan = planFeature(f, st, fctx, profile); } catch (e) { const pe = profile.plannerError(f, e); internal = pe.internal; plan = refuse(pe.refusal); }
-  if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, commands: [], ...(internal ? { internalError: internal } : {}) }); return; }
+  if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, ...(plan.guard === OPEN_OUTLINE_GUARD ? { guard: plan.guard } : {}), commands: [], ...(internal ? { internalError: internal } : {}) }); return; }
   if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let lastFail: RunResult | null = null;

@@ -8,6 +8,8 @@ import type { SketchFeature } from '@shuff57/reshape-script/model-types';
 import type { V2 } from './types.js';
 
 const STEP = Math.PI / 720; // 0.25 degree
+// mm: ends this close are chained into one loop. What counts as JOINED is decided in front of this, by the open-outline pre-flight (open-outline.ts: the same
+// point within 1e-9, or a coincident rule), which refuses a pull or pocket of a soup with a loose end before this picker runs.
 const JOIN_TOL = 1e-5;
 const TOUCH_TOL = 1e-3;
 const near = (p: V2, q: V2) => Math.hypot(p[0] - q[0], p[1] - q[1]) <= JOIN_TOL;

@@ -12,6 +12,8 @@
 //             bar before = OVER-REFUSAL, outside = a wrong solid now refused. Every measured feature still built is scored too (an uncaught wrong solid).
 //             --sets=a,b runs those sets instead (and then also compares docs with a pocket and no pull, and scores pockets: a newly refused POCKET-CUT pocket and a
 //             measured pocket still built).
+//             --switch=open: "off" is ctx.skipOpenOutline instead (the open-outline pre-flight, src/open-outline.ts; every other check on in both runs), and a newly refused
+//             OPEN-OUTLINE pull or pocket is scored the same way. Its references for an open outline are the case's own (a closed form where it has one, else OCCT, brep-rs).
 // The references come from the sketch-geometry rig itself (sg-core.mjs: buildOCCT, buildBrep, the same doc it measures).
 import { writeFileSync } from 'node:fs';
 import { readdirSync } from 'node:fs';
@@ -33,11 +35,13 @@ const has = (k) => process.argv.includes(`--${k}`);
 const OUT = arg('out');
 const only = arg('only');
 const NINE = ['base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove', 'fillet-chamfer', 'unified'];
+const OFF = arg('switch') === 'open' ? { skipOpenOutline: true } : { skipSketchVolume: true };
+console.log(`OFF switch ${JSON.stringify(OFF)}`);
 const TR = Object.fromEntries(NINE.map((p) => [p, createTranslator({ planners: p })]));
 
 async function layer(set, doc, on) {
   try {
-    const tr = await TR[set].translateDoc(structuredClone(doc), { arc: C.arc, mt: C.mt, runSC: C.runSC, soups: {}, resolveAt: () => null, ...(on ? {} : { skipSketchVolume: true }) });
+    const tr = await TR[set].translateDoc(structuredClone(doc), { arc: C.arc, mt: C.mt, runSC: C.runSC, soups: {}, resolveAt: () => null, ...(on ? {} : OFF) });
     return { feats: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, guard: f.guard ?? null, volume: f.measure?.volume ?? null, faceTypes: f.measure?.faceTypes ?? null })) };
   } catch (e) { return { threw: String(e.message) }; }
 }
@@ -93,7 +97,7 @@ if (has('corpus')) {
   // a still-built measured pocket are scored as a pull is. Without --sets the run is exactly the one GUARD-SKETCH-VOLUME.md reports ('unified', pull docs, pulls scored).
   const SETS = arg('sets') ? arg('sets').split(',') : ['unified'];
   const WITH_POCKETS = !!arg('sets');
-  const NEW_GUARDS = WITH_POCKETS ? ['SKETCH-VOLUME', 'POCKET-CUT'] : ['SKETCH-VOLUME'];
+  const NEW_GUARDS = OFF.skipOpenOutline ? ['OPEN-OUTLINE'] : WITH_POCKETS ? ['SKETCH-VOLUME', 'POCKET-CUT'] : ['SKETCH-VOLUME'];
   const files = readdirSync(SG).filter((n) => /^cases-.*\.mjs$/.test(n)).sort();
   const rows = []; const T0 = { cases: 0, custom: 0, scriptRefused: 0, noPull: 0 };
   const TS = Object.fromEntries(SETS.map((s) => [s, { compared: 0, same: 0, newlyRefused: 0, byGuard: {}, overRefusal: 0, caughtWrong: 0, noRef: 0, notMeasured: 0, builtScored: 0, builtWrong: [], threw: 0 }]));
@@ -145,7 +149,7 @@ if (has('corpus')) {
           // the reference is of the case's measured feature; a newly refused pull / pocket that is not that feature is not scored
           const s = f.id === ext ? scoreAgainst(b.volume, curved) : { verdict: 'NOT-MEASURED-FEATURE' };
           if (s.verdict === 'EXACT') T.overRefusal++; else if (s.verdict === 'WRONG') T.caughtWrong++; else if (s.verdict === 'NO-REF') T.noRef++; else T.notMeasured++;
-          row.newly = { ...(row.newly ?? {}), [f.id]: { guard: f.guard, before: b.volume, curved, ...s } };
+          row.newly = { ...(row.newly ?? {}), [f.id]: { guard: f.guard, before: b.volume, refusal: f.refusal, curved, ...s } };
         }
         // every measured feature still built after: scored (a wrong solid the checks do not catch)
         const m = on.feats.find((x) => x.id === ext);

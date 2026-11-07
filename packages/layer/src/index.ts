@@ -36,4 +36,6 @@ export { FC_PROFILE, FC_KINDS, FC_CROSS_KIND_GUARDS, FC_PRIMITIVES, fcStep, fcCo
 export type { FCState } from './fillet-chamfer.js';
 export { RECONCILE_TOL, SKETCH_VOLUME_GUARD, sketchArea, soupArea, outlineArea, pullLength, reconcilePull, reconcileSentence, sketchVolumeRefusal } from './sketch-volume.js';
 export { POCKET_CUT_GUARD, pocketCutRefusal } from './pocket-cut.js';
+export { OPEN_OUTLINE_GUARD, SAME_POINT, HAIR_GAP, openOutline, openOutlineRefusal } from './open-outline.js';
+export type { OpenOutline } from './open-outline.js';
 export type { SketchArea } from './sketch-volume.js';

@@ -26,7 +26,10 @@ export const RECONCILE_TOL = { planar: 1e-9, curved: 3e-4 };
 export const SKETCH_VOLUME_GUARD = 'SKETCH-VOLUME';
 
 const TAU = Math.PI * 2;
-const JOIN_TOL = 1e-5; // mm: two row ends this close are joined into one loop (the same tolerance as the layer's even-odd picker, soup-regions.ts)
+// mm: two row ends this close are chained into one loop (the same tolerance as the layer's even-odd picker, soup-regions.ts). It does not decide what is joined:
+// the open-outline pre-flight (open-outline.ts) refuses a pull of a soup with an end that is neither within SAME_POINT = 1e-9 of another nor held by a coincident
+// rule before the engine runs, so every soup this check sees has its ends 1e-9 apart or held by a rule (and a rule that does not hold on the rows skips the check).
+const JOIN_TOL = 1e-5;
 const hyp = (a: V2, b: V2) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const fmt = (v: number) => (Number.isFinite(v) ? String(Number(v.toPrecision(6))) : String(v));
 const piecesWord = (n: number) => (n === 1 ? 'one piece' : `${n} separate pieces`);

@@ -127,6 +127,11 @@ export interface TranslateCtx {
    * the differential tests only, which report bounding-box volumes (and the originals they are compared with have neither check). Never set in production.
    */
   skipSketchVolume?: boolean;
+  /**
+   * Every set: switch OFF the open-outline pre-flight of a pull or pocket of a soup (open-outline.ts). For measuring only (the before/after runs of
+   * GUARD-OPEN-OUTLINE.md, the differential tests' originals have no such check). Never set in production.
+   */
+  skipOpenOutline?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

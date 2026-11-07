@@ -26,6 +26,7 @@ import type { RunResult } from './types.js';
 import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { OPEN_OUTLINE_GUARD } from './open-outline.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { COST_BUDGET_S, guardPlan, onRefused, plainRefusal, plainRefusalCode, postCheck, rgView } from './revolve-groove-guard.js';
 import type { RGPlan, RGRefusal } from './revolve-groove-guard.js';
@@ -96,7 +97,7 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     st.refused[f.id] = plan.refusal;
     if (onRefused(rgView(f), st)) rs.chained[f.id] = true;
     const pr = plan as RGRefusal;
-    let code: string | undefined = pr.code;
+    let code: string | undefined = pr.code ?? (pr.guard === OPEN_OUTLINE_GUARD ? pr.guard : undefined);
     if (!code && !own) { const m = DEP_REFUSED.exec(plan.refusal); if (m && rs.chained[m[1]]) code = 'RG-CHAIN'; } // a later feature on a part whose groove was refused
     note({ status: 'refused', refusal: plan.refusal, commands: [], ...(code ? { guard: code } : {}), ...(pr.rg ? { rg: pr.rg } : {}) });
     return;
