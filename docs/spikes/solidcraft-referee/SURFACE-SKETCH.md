@@ -89,6 +89,10 @@ These decided the design. Each is a candidate upstream report; none is filed (ow
 7. **Booleans of a shadow prism against the part are exact enough to check against**: cylinder, sphere, lofted wavy
    body and prisms with corners give the predicted volume to 4e-14 .. 7e-5 in 1 to 9 s. Marks are slow: 3 s on a flat
    face, 16 to 36 s on a cylinder, about 29 s on a sphere (the cylinder mark is split into some 1500 short edges).
+9. **Two builds of rc.2 disagree on marks.** A circle mark on a cylinder that already had a cut was built (and checked)
+   by the rig's wasm build, and refused by the official rc.2 Linux CLI (native) with fact 6's loop-orientation error.
+   Volumes from cut / raise agreed between the two builds on all 17 features compared. So marks need the check on the
+   build the student actually runs; `test/showcase-surface-sketch.mjs` checks every feature on both.
 8. One shadow prism was refused by solidcore's extrude ("flat arrays: a NURBS form that is not its analytic surface"):
    a 14 x 8 rectangle on the wavy face, allowed 3% stretch.
 
@@ -148,6 +152,16 @@ Earlier runs during development found two faults of the layer's own, both fixed 
 outline with corners that crossed the corner edge had its first and last sides joined into one spline, which rounded a
 corner off (+0.031 mm3 on a 67.88 mm3 raise); and the volume tolerance had a floor of 1e-6 of the BODY's volume, which
 let that through on a 48000 mm3 part. The tolerance is now 2e-4 of the change plus 1e-9 of the body.
+
+## Showcase in SolidCraft itself
+
+`node packages/layer/test/showcase-surface-sketch.mjs <out>` (with `SOLIDCRAFT_CLI` set to the official rc.2
+`solidcraft-cli`) builds four designs, keeps a feature only if it matches its prediction on both the rig kernel and the
+official CLI, and saves `.solidcraft` files and snapshots. Result on 2026-11-07: cylinder 2 of 4 features (a slot raised
+square to the surface was refused by a solidcore boolean, "intersect::curve_class::p6: upstream status 1001"; the mark
+was refused by the official CLI, fact 9), sphere 3 of 4 (the mark refused, fact 6), wavy 5 of 5, corners 12 of 12
+(outside 60, 90, 120, 150 and inside 90, 120 degrees, a circle cut and a rectangle raised across each edge). No feature
+was built that did not match.
 
 ## Not done
 
