@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -537,6 +537,11 @@ async function run({ confirmed = false } = {}) {
       }
       return fs;
     }
+    // the patterns-mirror group's source-level front door (audit PM-4; packages/layer pm-preflight.ts): the script lowers a repeatAround of a pocket or hole into
+    // plain rotated cuts, so the doc carries no trace of its angle, and only the call text can show a full turn written as 720 or -360, or an angle it cannot check.
+    // Run on the editor text the sandbox just ran; a ModelDoc example has no script. The whole run is refused, in the group's sentence.
+    const pf = fromExample ? null : preflightScript(srcText);
+    if (pf) return failState(summary, 'refused', `REFUSED BEFORE BUILD: ${pf.sentence}`, 'Nothing was sent to solidcraft; your design is untouched.');
     const bad = validDoc(r.doc);
     if (bad) return failState(summary, 'refused', `REFUSED BEFORE BUILD: ${bad}`, 'Nothing was sent to solidcraft; your design is untouched.');
     // solve, then the legacy rule guard (a rule the student wrote is never silently dropped) and G-FROM's input, from the doc (host-entry.mjs hostPrepare)

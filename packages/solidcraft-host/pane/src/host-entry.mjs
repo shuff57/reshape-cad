@@ -5,7 +5,7 @@ export * as mt from '../../../script/dist/model-types.js';
 export * as arc from '../../../sketch/dist/sketch-arc.js';
 // The translator is the layer's: the UNIFIED set (base + six groups' planners and guards, packages/layer Phase 2).
 import { createTranslator } from '../../../layer/dist/index.js';
-export { docProfileIndices, draftFromUsage } from '../../../layer/dist/index.js';
+export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
 import { extentAlong } from '../../../script/dist/model-types.js';
 // ctx.fromUsage for the from-bottom draft guard (G-FROM), read from the DOC, not from the script text: the sandboxed interpreter records on each draft it
