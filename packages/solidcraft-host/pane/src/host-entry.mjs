@@ -5,6 +5,8 @@ export * as mt from '../../../script/dist/model-types.js';
 export * as arc from '../../../sketch/dist/sketch-arc.js';
 // The translator is the layer's: the UNIFIED set (base + six groups' planners and guards, packages/layer Phase 2).
 import { createTranslator } from '../../../layer/dist/index.js';
+import { hostPreflight } from './host-guards.mjs';
+export { hostPreflight, soupSolveVerdict } from './host-guards.mjs';
 export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
 import { extentAlong } from '../../../script/dist/model-types.js';
@@ -46,18 +48,35 @@ const hostCtx = (ctx) => ({ ...ctx, unifiedEpJoinChecks: HOST_EP_JOIN_CHECKS });
 const NOT_YET = {
   blend: 'a loft between two sketches is not available in this version yet, so {id} is shown without it.',
 };
+// Host-route guards the layer does not run (host-guards.mjs; audit SG-13), and the pilot's NOT_YET kinds. A NOT_YET feature is left out of the doc the
+// layer translates and reported refused, as before. The guard judges a feature the layer BUILT (a sketch's rules matter only to a feature that pulled or cut
+// it): the doc is translated once; when a feature the guard is about was built, it is translated again with that guard's feature, and every feature that reads it, left out and reported refused in the guard's
+// sentence, in doc order, beside whatever did build. Where the layer already refused the feature (the kernel's own conflict sentence, another guard), its
+// sentence stands and the first translation is the result.
 export const translateDoc = async (doc, ctx0) => {
   const ctx = hostCtx(ctx0);
-  const blocked = doc.features.filter((f) => NOT_YET[f.kind]);
-  if (!blocked.length) return layer.translateDoc(doc, ctx);
-  const ids = new Set(blocked.map((f) => f.id));
-  const tr = await layer.translateDoc({ ...doc, features: doc.features.filter((f) => !ids.has(f.id)) }, ctx);
+  const notYet = new Map(doc.features.filter((f) => NOT_YET[f.kind]).map((f) => [f.id, { refusal: NOT_YET[f.kind].replace('{id}', f.id), guard: 'PILOT-NOT-YET' }]));
+  const tr = await translateWithout(doc, ctx, notYet);
+  const flagged = hostPreflight(doc);
+  if (!flagged.size) return tr;
+  const built = new Set(tr.features.filter((f) => f.status === 'built').map((f) => f.id));
+  const fired = new Set([...flagged].filter(([id, v]) => v.subject && built.has(id)).map(([, v]) => v.root));
+  if (!fired.size) return tr;
+  const pre = hostPreflight(doc, fired);
+  for (const [id, v] of notYet) if (!pre.has(id)) pre.set(id, v);
+  if (ctx.soups) for (const k of Object.keys(ctx.soups)) delete ctx.soups[k]; // the second translation fills it afresh, as a run of its own
+  return translateWithout(doc, ctx, pre);
+};
+/** The layer's translation of `doc` without the features of `pre` (id -> { refusal, guard }), which are reported refused in doc order. */
+async function translateWithout(doc, ctx, pre) {
+  if (!pre.size) return layer.translateDoc(doc, ctx);
+  const tr = await layer.translateDoc({ ...doc, features: doc.features.filter((f) => !pre.has(f.id)) }, ctx);
   const by = new Map(tr.features.map((f) => [f.id, f]));
-  tr.features = doc.features.map((f) => (ids.has(f.id)
-    ? { id: f.id, kind: f.kind, status: 'refused', refusal: NOT_YET[f.kind].replace('{id}', f.id), guard: 'PILOT-NOT-YET' }
+  tr.features = doc.features.map((f) => (pre.has(f.id)
+    ? { id: f.id, kind: f.kind, status: 'refused', refusal: pre.get(f.id).refusal, guard: pre.get(f.id).guard }
     : by.get(f.id))).filter(Boolean);
   return tr;
-};
+}
 export const resolveAfter = layer.resolveAfter;
 export const FEATURE_KINDS = layer.FEATURE_KINDS;
 export { checkRules } from '../../../layer/dist/index.js';
