@@ -18,6 +18,7 @@ import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, Transla
 import { removedVolume, holeProfile } from './holes-volume.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { hollowRefusal } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { VolTool } from './holes-volume.js';
@@ -324,6 +325,9 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces!, (c) => runB(c, { replay: false })) : null;
     if (pc) { st.refused[f.id] = pc; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
+    // every set: the hollow of a part with rounded or bevelled edges against its closed form (hollow-check.ts)
+    const hc = f.kind === 'shell' ? hollowRefusal(f, doc.features, st, ctx, res, plan.produces!, accepted) : null;
+    if (hc) { st.refused[f.id] = hc.sentence; note({ status: 'refused', refusal: hc.sentence, guard: hc.guard, commands: variant }); return; }
     accepted.push(...variant);
     rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });

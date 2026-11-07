@@ -147,6 +147,11 @@ export interface TranslateCtx {
    * originals have no such guard). Never set in production.
    */
   skipPrimitives?: boolean;
+  /**
+   * Every set: switch OFF the check of a hollow of a part with rounded or bevelled edges against its closed form (hollow-check.ts). For measuring only (the
+   * before/after runs of GUARD-FAMILY-C-HOLLOW.md; the differential tests' originals have no such check). Never set in production.
+   */
+  skipHollowCheck?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

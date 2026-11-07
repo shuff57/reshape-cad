@@ -23,6 +23,7 @@ import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { hollowRefusal, openAxisEngineSentence } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
@@ -102,7 +103,7 @@ export const SENTENCE = {
   stale: (f: FView, what: string) => `${f.id}: the ${what} cannot be found reliably after the part was turned or copied, so ${f.id} is shown without it -- apply it before turning the part.`,
   holeNear: (f: FView, why: string) => `${f.id} (hollow): not supported yet because a hole would be too close to a wall or to another hole (${why}), so ${f.id} is shown without it -- move the holes apart, or drill after hollowing.`,
   rim: (f: FView, rr: number, t: number, style: string | undefined) => `${f.id} (hollow): the open edge of ${f.target} is ${style === 'chamfer' ? 'bevelled by' : 'rounded with a radius of'} ${fmt(rr)}, which is as large as the wall (${fmt(t)}), so the rim would have no thickness and ${f.id} is shown without it -- make the ${style === 'chamfer' ? 'bevel' : 'round'} smaller than the wall.`,
-  openAxisEngine: (f: FView) => `${f.id} (hollow): ${f.target} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`,
+  openAxisEngine: (f: FView) => openAxisEngineSentence(f),
   hollowSide: (f: FView) => `${f.id} (hollow): "side" is the curved wall of a cylinder, not a flat face, so ${f.id} is shown without it -- open top or bottom instead.`,
   cap: (f: FView, word: string, why: { pull?: string; fromWord?: string | null } = {}) => {
     const fa = ['right', 'left'].includes(word) ? 'x' : ['front', 'back'].includes(word) ? 'y' : 'z';
@@ -1162,6 +1163,9 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces!, ctx.runSC) : null;
     if (pc) { st.refused[f.id] = pc; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
+    // every set: the hollow of a part with rounded or bevelled edges against its closed form (hollow-check.ts)
+    const hc = f.kind === 'shell' ? hollowRefusal(f, doc.features, st, ctx, res, plan.produces!, accepted) : null;
+    if (hc) { st.refused[f.id] = hc.sentence; note({ status: 'refused', refusal: hc.sentence, guard: hc.guard, commands: variant }); return; }
     accepted.push(...variant);
     rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });

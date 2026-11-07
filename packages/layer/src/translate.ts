@@ -19,6 +19,7 @@ import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { hollowRefusal } from './hollow-check.js';
 import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
 import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal } from './move-turn.js';
 import type { MotionInfo } from './move-turn.js';
@@ -859,6 +860,9 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = !profile.verifies && f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
     if (pc) { verifyRefusal = pc; verifyGuard = POCKET_CUT_GUARD; lastErr = null; continue; }
+    // every set: the hollow of a part with rounded or bevelled edges against its closed form (hollow-check.ts)
+    const hc = f.kind === 'shell' ? hollowRefusal(f, doc.features, st, ctx, res, plan.produces, accepted) : null;
+    if (hc) { verifyRefusal = hc.sentence; verifyGuard = hc.guard; lastErr = null; continue; }
     accepted.push(...variant);
     rememberRun(accepted, res);
     for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
