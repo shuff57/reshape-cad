@@ -1,7 +1,9 @@
-// SG-13 and PM-4 on the HOST ROUTE (docs/spikes/solidcraft-referee/AUDIT-HOST-GUARDS.md; GUARD-SG13-PNP7-PM4.md). No kernel: the host's own translateDoc
+// SG-13, PNP-7 and PM-4 on the HOST ROUTE (docs/spikes/solidcraft-referee/AUDIT-HOST-GUARDS.md; GUARD-SG13-PNP7-PM4.md). No kernel: the host's own translateDoc
 // (host-entry.mjs: unified set, joins at 'full') on the layer's fake engine, and the contract modules the host copies, as the independent reference.
 //   SG-13  a soup whose rules move its drawn rows and leave freedom (or cannot all be met) is refused in the sketch-geometry contract's sentence, where the layer
 //          built it; where the layer refused it already (the kernel's own conflict sentence), that sentence stands.
+//   PNP-7  G-STALE: a round, bevel, hollow or draft on a part a pocket() / groove() already cut, the cut's result not kept, is refused in the
+//          picks-naming-params contract's sentence; a kept result, or a round made before the cut, is not touched.
 //   PM-4   pane.js run() calls the patterns-mirror group's preflightScript on the editor text, before anything is translated.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -21,6 +23,7 @@ const { install, withPreamble } = await imp('packages/solidcraft-host/pane/lib/f
 install(globalThis);
 const CONTRACT = 'docs/spikes/solidcraft-referee/contract';
 const G = await imp(`${CONTRACT}/sketch-geometry.guard.mjs`);
+const R3_SRC = readFileSync(path.join(root, CONTRACT, 'picks-naming-params.evidence/r3-guard.mjs'), 'utf8');
 
 /** what pane.js run() does: the sandbox runner, hostPrepare, then the host's translateDoc (here on the fake engine) */
 async function host(src, { runSC = null } = {}) {
@@ -120,6 +123,47 @@ test('SG-13: where the layer refused the pull already, its own sentence stands (
   assert.notEqual(pull.guard, 'SG-RULES-CONFLICT');
   assert.match(pull.refusal, /over-constrain/);
   assert.equal(tr.features.find((f) => f.id === 'sk1').status, 'noop', 'the sketch is not reported refused when no guard of these fired');
+});
+
+// ---- PNP-7 G-STALE --------------------------------------------------------------------------------------------------------------------------------------------
+const BASE = "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });";
+const STALE = (id, cut, label) => `${id} is not built: ${cut === 'groove1' ? 'box1' : 'pull1'} was already cut by ${cut}, so this ${label} would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.`;
+
+test('PNP-7: the host copy of staleConsumers and its sentence are the contract\'s (r3-guard.mjs)', () => {
+  const body = (src, name) => { const i = src.indexOf(name); assert.ok(i >= 0, name); return src.slice(i, src.indexOf('\n}\n', i) + 2); };
+  const host = readFileSync(path.join(root, 'packages/solidcraft-host/pane/src/host-guards.mjs'), 'utf8');
+  assert.equal(body(host, 'export function staleConsumers(doc) {'), body(R3_SRC, 'export function staleConsumers(doc) {'));
+  assert.ok(R3_SRC.includes('so this ${labelOf(f)} would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.`'));
+  assert.ok(R3_SRC.includes("const labelOf = (f) => (f.kind === 'fillet' ? (f.style === 'chamfer' ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind);"));
+  assert.ok(host.includes("const labelOf = (f) => (f.kind === 'fillet' ? (f.style === 'chamfer' ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind);"));
+});
+
+test('PNP-7: a hollow, a draft and a round on a part a pocket or groove already cut, result not kept, are refused with G-STALE where the layer built them', async () => {
+  // the fake engine builds the hollow and the draft (its pocket is refused by the cut check, which the real kernel builds; G-STALE reads the doc either way)
+  for (const [tail, id, label] of [["pocket(sk2, p, 4); hollow(p, { wall: 1, open: 'bottom' });", 'shell1', 'hollow'], ["pocket(sk2, p, 4); draft(p.face('right'), 5);", 'draft1', 'draft']]) {
+    const { by } = await host(`${BASE} ${tail}`);
+    assert.equal(by.get(id).status, 'refused', tail);
+    assert.equal(by.get(id).guard, 'G-STALE', tail);
+    assert.equal(by.get(id).refusal, STALE(id, 'pocket1', label), tail);
+  }
+  // a dependent: the contract's pointer sentence
+  const { by } = await host(`${BASE} pocket(sk2, p, 4); const h = hollow(p, { wall: 1, open: 'bottom' }); move(h, [0, 0, 5]);`);
+  assert.equal(by.get('move1').refusal, 'move1 is not built because shell1 could not be built, so move1 is shown without it.');
+  assert.equal(by.get('move1').guard, HG.PREFLIGHT_DEP_GUARD);
+  // the doc-level rule on a groove and on a round (the fake cannot resolve this round's edge, so it is checked on the doc, as the live run checks it built)
+  const g = runScript("const b = box(40,40,20); const sk = sketch('front'); sk.polygon([[0,15],[8,15],[8,22],[0,22]]); groove(sk, b, 180); round(b.edge('top','front'), 1);");
+  const st = HG.staleConsumers(H.solveDoc(g.doc));
+  assert.deepStrictEqual([...st], [['round1', { target: 'box1', cut: 'groove1' }]]);
+  assert.equal(HG.staleSentence({ id: 'round1', kind: 'fillet' }, st.get('round1')), STALE('round1', 'groove1', 'round'));
+});
+
+test('PNP-7: a kept result, a round made before the cut, and a hole are not touched', async () => {
+  for (const tail of ["const q = pocket(sk2, p, 4); hollow(q, { wall: 1, open: 'bottom' });", "const q = pocket(sk2, p, 4); draft(q.face('right'), 5);", "const r = round(p.edge('top','front'), 1); pocket(sk2, r, 4);", "hole(p, { across: 6, at: [20, 15], deep: 5 }); hollow(p, { wall: 1, open: 'bottom' });"]) {
+    const doc = H.solveDoc(runScript(`${BASE} ${tail}`).doc);
+    assert.equal(HG.staleConsumers(doc).size, 0, tail);
+    const { tr } = await host(`${BASE} ${tail}`);
+    assert.ok(!tr.features.some((f) => f.guard === 'G-STALE' || f.guard === HG.PREFLIGHT_DEP_GUARD), tail);
+  }
 });
 
 // ---- PM-4 -----------------------------------------------------------------------------------------------------------------------------------------------------

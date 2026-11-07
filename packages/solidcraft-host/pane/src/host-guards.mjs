@@ -6,6 +6,9 @@
 //   SG-13  solveVerdict (contract/sketch-geometry.guard.mjs round 5): a soup (a sketch drawn as rows and rules) whose rules MOVE the drawn rows and leave freedom
 //          in what they move, or cannot all be met. SolidCraft solves a soup itself, so the shape that is pulled is its solver's choice (HALT-4 live:
 //          a5-uc-two-circles-equal-radius built 14434.61 against brep-rs 12738.05). The solve is the contract's own independent solver (soup-solve.mjs).
+//   PNP-7  G-STALE (contract/picks-naming-params.evidence/r3-guard.mjs staleConsumers, round 5): a round, bevel, hollow or draft whose target is a part a
+//          pocket() or groove() already cut, where the script did not keep the cut's result. The doc puts the cut on a branch the pick does not see; the
+//          translator moves the pick onto the cut part without a word.
 import { solveSoup } from './soup-solve.mjs';
 
 // ---- SG-13 (contract/sketch-geometry.guard.mjs, copied: fmt, oneSentence, verdict, isSoup, RULE_TOL, solveVerdict) ---------------------------------------------
@@ -51,8 +54,22 @@ export function soupSolveVerdict(sk) {
   return solveVerdict(soupSolve(sk));
 }
 
+// ---- PNP-7 G-STALE (contract/picks-naming-params.evidence/r3-guard.mjs, copied: staleConsumers, labelOf, the sentence) -----------------------------------------
+const labelOf = (f) => (f.kind === 'fillet' ? (f.style === 'chamfer' ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind);
+/** Pick consumers whose target a pocket() / groove() already cut: Map id -> { target, cut }. */
+export function staleConsumers(doc) {
+  const out = new Map(); const cutBy = new Map();
+  for (const f of doc.features) {
+    if ((f.kind === 'pocket' || f.kind === 'groove') && f.into) cutBy.set(f.into, f.id);
+    else if (['fillet', 'shell', 'draft'].includes(f.kind) && cutBy.has(f.target)) out.set(f.id, { target: f.target, cut: cutBy.get(f.target) });
+  }
+  return out;
+}
+export const staleSentence = (f, st) => `${f.id} is not built: ${st.target} was already cut by ${st.cut}, so this ${labelOf(f)} would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.`;
+
 // ---- the pre-flight over a doc ---------------------------------------------------------------------------------------------------------------------------------
 export const SG13_GUARD = { 'rules-conflict': 'SG-RULES-CONFLICT', 'rules-underdetermined': 'SG-RULES-UNDERDETERMINED' };
+export const STALE_GUARD = 'G-STALE';
 /** guard code on a feature refused only because a feature it reads was refused by one of these pre-flights */
 export const PREFLIGHT_DEP_GUARD = 'HOST-PREFLIGHT-DEP';
 const SKIP_KEYS = new Set(['id', 'kind', 'name']);
@@ -65,12 +82,13 @@ function refsOf(f) {
 }
 /**
  * Map id -> { refusal, guard, root, subject } for every feature of `doc` these pre-flights would refuse, in doc order. `root` is the feature the verdict is about
- * (an SG-13 sketch); `subject` marks the feature whose BUILD the verdict is about (a reader of the SG-13 sketch).
+ * (an SG-13 sketch, a G-STALE consumer); `subject` marks the feature whose BUILD the verdict is about (a reader of the SG-13 sketch, the G-STALE consumer itself).
  * `roots` (a Set), when given, keeps only those roots and what hangs off them. A dependent is refused with the dependent sentence of the contract whose guard
- * refused what it reads (sketch-geometry-harness/sg-guarded.mjs for SG-13).
+ * refused what it reads (sketch-geometry-harness/sg-guarded.mjs for SG-13, r3-guard.mjs for G-STALE).
  */
 export function hostPreflight(doc, roots = null) {
   const out = new Map();
+  const stale = staleConsumers(doc);
   const kindOf = new Map(doc.features.map((f) => [f.id, f.kind]));
   for (const f of doc.features) {
     const dead = [...refsOf(f)].find((r) => out.has(r) && r !== f.id);
@@ -83,8 +101,12 @@ export function hostPreflight(doc, roots = null) {
       const d = out.get(dead);
       // sg-guarded.mjs: a feature that reads a refused sketch gets the sketch's own sentence; anything further down, the pointer sentence
       if (d.from === 'sg' && kindOf.get(dead) === 'sketch') out.set(f.id, { refusal: d.refusal, guard: d.guard, root: d.root, from: 'sg', subject: true });
-      else out.set(f.id, { refusal: `${f.id} was not built because ${dead} was refused: ${d.refusal}`, guard: PREFLIGHT_DEP_GUARD, root: d.root, from: 'sg' });
+      else if (d.from === 'sg') out.set(f.id, { refusal: `${f.id} was not built because ${dead} was refused: ${d.refusal}`, guard: PREFLIGHT_DEP_GUARD, root: d.root, from: 'sg' });
+      else out.set(f.id, { refusal: `${f.id} is not built because ${dead} could not be built, so ${f.id} is shown without it.`, guard: PREFLIGHT_DEP_GUARD, root: d.root, from: 'stale' });
+      continue;
     }
+    const st = stale.get(f.id);
+    if (st && (!roots || roots.has(f.id))) out.set(f.id, { refusal: staleSentence(f, st), guard: STALE_GUARD, root: f.id, from: 'stale', subject: true });
   }
   return out;
 }

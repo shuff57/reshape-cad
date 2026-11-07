@@ -6,7 +6,7 @@ export * as arc from '../../../sketch/dist/sketch-arc.js';
 // The translator is the layer's: the UNIFIED set (base + six groups' planners and guards, packages/layer Phase 2).
 import { createTranslator } from '../../../layer/dist/index.js';
 import { hostPreflight } from './host-guards.mjs';
-export { hostPreflight, soupSolveVerdict } from './host-guards.mjs';
+export { hostPreflight, soupSolveVerdict, staleConsumers } from './host-guards.mjs';
 export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
 import { extentAlong } from '../../../script/dist/model-types.js';
@@ -48,9 +48,10 @@ const hostCtx = (ctx) => ({ ...ctx, unifiedEpJoinChecks: HOST_EP_JOIN_CHECKS });
 const NOT_YET = {
   blend: 'a loft between two sketches is not available in this version yet, so {id} is shown without it.',
 };
-// Host-route guards the layer does not run (host-guards.mjs; audit SG-13), and the pilot's NOT_YET kinds. A NOT_YET feature is left out of the doc the
-// layer translates and reported refused, as before. The guard judges a feature the layer BUILT (a sketch's rules matter only to a feature that pulled or cut
-// it): the doc is translated once; when a feature the guard is about was built, it is translated again with that guard's feature, and every feature that reads it, left out and reported refused in the guard's
+// Host-route guards the layer does not run (host-guards.mjs; audit SG-13, PNP-7), and the pilot's NOT_YET kinds. A NOT_YET feature is left out of the doc the
+// layer translates and reported refused, as before. The two guards judge a feature the layer BUILT, as the contract's own guards do (r3-guard.mjs refuses a
+// stale pick only when the page built it; a sketch's rules matter only to a feature that pulled or cut it): the doc is translated once; when a feature these
+// guards are about was built, it is translated again with that guard's feature, and every feature that reads it, left out and reported refused in the guard's
 // sentence, in doc order, beside whatever did build. Where the layer already refused the feature (the kernel's own conflict sentence, another guard), its
 // sentence stands and the first translation is the result.
 export const translateDoc = async (doc, ctx0) => {
