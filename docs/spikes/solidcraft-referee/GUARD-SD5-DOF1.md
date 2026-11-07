@@ -109,7 +109,8 @@ Corpora:
     (`B2-11-137`: L polygon, `length(2,16); distX(6,5,12); length(3,31.5)`, built 8970.02, the docs' reading 7557.11; before the outline crossed) and 2 went
     right to refused (`B2-11-136`, `B2-12-76`: before, the settle gave up and kept the drawn shape, which happens to be the docs' reading). Fixing it is the
     contract's anchor 4 (negate the value when the corners are given in descending order), but `packages/script/test/sketch-rule-words.test.mjs` test 2 pins
-    the current reading ("distX(3, 1, 12) normalises to the same rule"), so it is a language decision for the owner. Not done here.
+    the current reading ("distX(3, 1, 12) normalises to the same rule"), so it is a language decision for the owner. Not done here; done
+    after the owner's decision, see "Row #11" below.
 - **sketch-constraints** (the r5 case table through the host route, 86 cases): before 54 RIGHT, 26 REFUSED, 6 PIPELINE-DIFF; after **60 RIGHT, 26 REFUSED, 0
   PIPELINE-DIFF**. The six legacy docs that missed the planar bar by up to 2.2e-4 mm3 (row #44, the TS solver's tolerance) now build to the closed form:
   legacy-across-up-length-pin 5999.99971 to 6000, legacy-pin-offset-corner 5999.99998 to 6000, legacy-equal-edges-square 4840.00022 to 4840,
@@ -128,3 +129,66 @@ sandbox runner; the guard runs on the host from the posted doc and log. Shared f
 - Host bundle rebuilt (`npm run build`; `sh packages/solidcraft-host/pane/build.sh`). In headless Chrome against the SolidCraft 0.21.0 web build:
   `test/live-pane.mjs` builds the hole at 11717.30 mm3 (as on 2026-10-25); its second run stops at "waiting for your confirmation", as before.
   `test/live-examples.mjs`: **46 of 56 pass**, the same set as `test/examples-0.21.0-with-topology.json`, every volume equal to 1e-6.
+
+## Row #11: distX / distY / angle are read in the order they are written
+
+Date 2026-11-07, from main @ 56a41297. Owner-approved language fix (contract sketch-dof-diagnosis#11, the contract's anchor 4 of
+`make-logged-script.mjs`).
+
+**Defect.** `distX(a, b, v)` / `distY` / `angle(edge, other, d)` store the pair as (lower, higher). With the corners written in descending order the
+interpreter swapped them and kept `v`, so `distX(3, 1, 12)` held x3 - x1 = +12: the mirror of reshape-docs.ts ("distX(1, 3, -12) asks for corner 3 to sit
+12 mm to the LEFT of corner 1", so `distX(3, 1, 12)` puts corner 1 12 mm to the right of corner 3, x3 - x1 = -12).
+
+**Fix.** reshape-script.ts `inWrittenOrder`: when the call names the higher corner (edge) first, the stored value is the written one negated (`+ 0`, so a
+reversed 0 is 0, not -0). The stored rule shape is unchanged (`{ kind, a < b, value }`, `{ kind: 'angle', edge < other, degrees }`), so the solver, the
+Rules panel, legacy-guard.ts and the translator read it as before; only the value of a descending call changes.
+- **angle.** The docs give `angle(edge, other, degrees)` as a signed turn between two named edges, with the sign meaningful; read in written order it is
+  the turn from `edge` to `other`, and the turn from `other` to `edge` is its negative. A sign flip and "360 minus" are the same rule here, so the question
+  does not split: the solver compares turns modulo 360 (sketch-solve.ts normalises `want` into (-180, 180], SPEC-P1d T5 pins 350 = -10), and test 11
+  checks `angle(2, 1, -120)` and `angle(2, 1, 240)` both solve to `angle(1, 2, 120)`'s points. The docs do not say which way round a positive turn goes;
+  that is unchanged by this fix and not needed for it (only the swap is). No docs text changed.
+- **toScript.** A literal comes back in the stored order with its sign: `distX(3, 1, 12)` is written back as `.distX(1, 3, -12)`, the same rule. A
+  param() is the exception: its slot is now named in the written order (`dx2_0` for `distX(3, 1, w)`, `ang3_1` for `angle(4, 2, t)`; ascending calls keep
+  `dx0_2` as before), and toScript writes such a call back in that order with the param's name, so the slider still drives it and Code to Build to Code
+  gives the same stored rule and the same `namedParams` slots (test 12).
+- **legacy-guard.ts.** No logic change: it holds the logged rule, which is now the documented one (the contract's guard got the same through anchor 4).
+  Header comment only. Its sentences use the existing template on the stored rule, so a descending call is named with the negated value, exactly as
+  the contract's sentence does: `distX(3, 1, 12)` on a 40 x 30 rect is refused with "The rules, with corner 3 being -12 across from corner 1, would turn
+  the sketch inside out, so the part is not built; remove or change one of the rules." No new wording.
+
+**What changes for a script that relied on the old reading.** Every descending `distX` / `distY` / `angle` call now holds the opposite sign from before:
+the part it builds is the mirror of what it built (corner positions reflected along that axis, or the turn reversed), or, where the drawn outline cannot
+reach the documented shape, it is refused with the contract's sentence instead of building the mirror. Such a script keeps its old shape by swapping the
+corners (`distX(1, 3, 12)` for the old `distX(3, 1, 12)`) or negating the value. toScript output for these calls changes from `.distX(1, 3, 12)` to
+`.distX(1, 3, -12)`. Ascending calls are unchanged. The interpreter's own (pre-guard) "cannot hold" warning for such a rule prints the stored value, so it
+shows the negated number. No repo example, test fixture or docs page used a descending call except sketch-rule-words.test.mjs.
+
+**Tests** (`packages/script/test/sketch-rule-words.test.mjs`). Test 2 / 2b now pin the documented reading (`distX(3, 1, 12)` stores `value: -12`), 2c the
+reversed 0; test 4 pins `angle(4, 2, 30)` as `degrees: -30` (and `angle(2, 4, 30)` as +30); test 5's descending `angle(4, 2, -30)` is now +30. Test 8's
+fixture wrote `angle(4, 2, 30)`; under the documented reading that is the -30 turn, which its five-corner outline cannot hold with the symmetric rule
+(the settle drops one), so it now writes `angle(2, 4, 30)`, the same stored rule as before. New: 9 and 10 (distX / distY in both orders give
+x_b - x_a = v / y_b - y_a = v after solveDoc, and both spellings of one rule solve to the same points), 11 (angle in both orders: the solved turn from
+edge to other equals the written degrees; reversed, sign-flipped and 360-minus give the same points), 12 (round trip of descending literals and params).
+
+**Live (0.21.0 corrected, host route as pane.js runs it, under the rig lock).**
+- **sketch-dof-diagnosis** (619, regenerated as in DOF-1, scored against the contract's guard, its signed checker and the shoelace area x 10): 0 built
+  wrong, 450 right, 169 refused; outcome equal to the contract on 619 of 619, refusal sentence equal to the contract's on every refusal.
+  - The 579 scripts without a descending call: identical to 56a41297 (425 right, 154 refused, 0 built wrong; same volumes and sentences).
+  - **The 40 descending-order scripts:** after 56a41297 14 built wrong, 3 right, 23 refused; now **0 built wrong, 25 right, 15 refused**, and the 15 are
+    exactly the ones the contract refuses. Every one of the 25 builds agrees with OCCT and with brep-rs (both building the same prepared doc, 25 of 25),
+    with the contract's witness, and holds every written rule under the docs' reading to 1e-9. B2-11-137 builds 7557.114970 (the docs' reading 7557.114970;
+    was 8970.02); B2-11-136 builds 11520 and B2-12-76 builds 7000 (both were refused).
+  - Every change against 56a41297 (32, all descending-order scripts; no ascending script changed): built wrong to right 13 (B2-11-50, -82, -137, -146,
+    -224, -228, -246, B2-12-56, -111, -119, -140, -208, -241); refused to right 9 (B1-Q, B2-11-117, -136, -174, -196, -214, B2-12-25, -76, -162); built wrong
+    to refused 1 (B1-P, `rect(40,30); distX(3,1,12)`: the documented 12-wide rectangle drawn the other way round, the contract refuses it); still refused
+    with a different sentence 9 (B2-11-64, -145, -204, -206, B2-12-9, -38, -133, -145, -245: the sentence now names the documented rule, as the contract's
+    does, e.g. B2-11-64 "... with the rules for corner 3 being 60 across from corner 1 and edges 1 and 2 being the same length ..." where it named
+    "-60"). New wrong 0, new over-refusal 0 (nothing that built right is refused).
+- **sketch-constraints** (86, the r5 case table through the host route): 60 RIGHT, 26 REFUSED, the same per case as at 56a41297, no volume change.
+- Root `npm test`: 915 pass, 6 skipped, 0 fail, of 921. Host bundle rebuilt; `test/live-examples.mjs`: 46 of 56 pass, the same set as
+  `test/examples-0.21.0-with-topology.json`, every volume equal to 1e-6.
+
+Not touched: unified.ts, translate.ts, move-turn/primitives code, dependsOn, VOCABULARY, archive/, the gate scripts, reshape-docs.ts, the contract
+directory (its reshape-script.logged.mjs keeps its own copy with anchor 4 and stays the independent reference). Not in scope and unchanged: the studio's
+soup canvas writes its own signed rows and does not go through these words.
+

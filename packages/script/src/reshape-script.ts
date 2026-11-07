@@ -1237,6 +1237,19 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
    * click would. RunResult.warnings carries the house sentence for a caller
    * that never opens Build to look.
    */
+  /** distX / distY / angle store their pair as (lower, higher), the order the Rules panel and the solver use: the rule is
+   *  "corner b sits value across (up) from corner a" (the solver's x_b - x_a = value), and "the turn from edge to other is
+   *  degrees". reshape-docs.ts reads the call in the order it is WRITTEN: distX(1, 3, -12) puts corner 3 12 mm to the left of
+   *  corner 1, so distX(3, 1, 12) puts corner 1 12 mm to the right of corner 3, which is x_3 - x_1 = -12. When the call names
+   *  the higher one first, the stored value is therefore the written one negated (contract sketch-dof-diagnosis#11: it used to
+   *  be kept as written, which held the mirror of the asked shape). For angle the negated turn is the same rule as 360 minus
+   *  it: the solver compares turns modulo 360 (sketch-solve.ts, the `want` wrap). `+ 0` keeps a reversed 0 from becoming -0.
+   *  The param slot is named in the written order too (dx2_0 for distX(3, 1, w)), which is how toScript writes such a call
+   *  back the way it was written, so the param still drives it. */
+  function inWrittenOrder(i: number, j: number, v: number): number {
+    return (i > j ? -v : v) + 0;
+  }
+
   function applyConstraint(sketchId: string, added: SketchConstraint) {
     const cur = findFeature(sketchId) as SketchFeature;
     const existing = cur.constraints ?? [];
@@ -1683,7 +1696,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const v = requiredNumber('.distX()', 'value', value);
         applyConstraint(id, {
           kind: 'distanceX', a: Math.min(i, j), b: Math.max(i, j),
-          value: num(v, id, `dx${Math.min(i, j)}_${Math.max(i, j)}`),
+          value: inWrittenOrder(i, j, num(v, id, `dx${i}_${j}`)),
         });
         return handle;
       },
@@ -1697,7 +1710,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const v = requiredNumber('.distY()', 'value', value);
         applyConstraint(id, {
           kind: 'distanceY', a: Math.min(i, j), b: Math.max(i, j),
-          value: num(v, id, `dy${Math.min(i, j)}_${Math.max(i, j)}`),
+          value: inWrittenOrder(i, j, num(v, id, `dy${i}_${j}`)),
         });
         return handle;
       },
@@ -1732,7 +1745,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         const v = requiredNumber('.angle()', 'degrees', degrees);
         applyConstraint(id, {
           kind: 'angle', edge: Math.min(i, j), other: Math.max(i, j),
-          degrees: num(v, id, `ang${Math.min(i, j)}_${Math.max(i, j)}`),
+          degrees: inWrittenOrder(i, j, num(v, id, `ang${i}_${j}`)),
         });
         return handle;
       },

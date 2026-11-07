@@ -151,10 +151,21 @@ function constraintCallLine(v: string, c: SketchConstraint, bindings: Map<string
   // branches stay ABOVE the equal/parallel/perpendicular fallthrough on
   // purpose: distanceX/distanceY/symmetric carry no .edge and would fall
   // into that line, emitting undefined.
-  if (c.kind === 'distanceX') return `${v}.distX(${c.a + 1}, ${c.b + 1}, ${bound(`dx${c.a}_${c.b}`, c.value)})`;
-  if (c.kind === 'distanceY') return `${v}.distY(${c.a + 1}, ${c.b + 1}, ${bound(`dy${c.a}_${c.b}`, c.value)})`;
+  //
+  // distX / distY / angle are stored as (lower, higher) with the value in that order (reshape-script.ts inWrittenOrder):
+  // distX(3, 1, 12) is stored as a 1 -> 3 rule of -12, and written back as .distX(1, 3, -12), the same rule. A param() is
+  // the exception: its slot is named in the order the script wrote the call (dx2_0 for distX(3, 1, w)), and such a call is
+  // written back in that order with the param's name, so `w` still drives it and re-running gives the same stored rule.
+  const signed = (word: string, slot: string, lo: number, hi: number, value: number): string => {
+    if (bindings.has(pname(v, `${slot}${hi}_${lo}`)) && !bindings.has(pname(v, `${slot}${lo}_${hi}`))) {
+      return `${v}.${word}(${hi + 1}, ${lo + 1}, ${bound(`${slot}${hi}_${lo}`, -value + 0)})`;
+    }
+    return `${v}.${word}(${lo + 1}, ${hi + 1}, ${bound(`${slot}${lo}_${hi}`, value)})`;
+  };
+  if (c.kind === 'distanceX') return signed('distX', 'dx', c.a, c.b, c.value);
+  if (c.kind === 'distanceY') return signed('distY', 'dy', c.a, c.b, c.value);
   if (c.kind === 'symmetric') return `${v}.symmetric(${c.a + 1}, ${c.b + 1}, ${c.center + 1})`;
-  if (c.kind === 'angle') return `${v}.angle(${c.edge + 1}, ${c.other + 1}, ${bound(`ang${c.edge}_${c.other}`, c.degrees)})`;
+  if (c.kind === 'angle') return signed('angle', 'ang', c.edge, c.other, c.degrees);
   return `${v}.${c.kind}(${c.edge + 1}, ${c.other + 1})`; // equal / parallel / perpendicular
 }
 

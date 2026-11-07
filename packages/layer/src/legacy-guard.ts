@@ -5,6 +5,10 @@
 //    record of every rule call, which the original read from its patched copy reshape-script.logged.mjs); the interpreter itself is never imported here;
 //  - the sketch solver comes in as an argument (`solve`: packages/sketch's solveSketch and seedForNewRule), as every kernel and solver does in this layer;
 //  - a sketch whose rules were all written before any rule call (no ruleLog entry) is read from its constraints, as the original does.
+// The rules it holds are the interpreter's stored ones, (lower, higher) with the value in that order. Since contract row #11 the interpreter
+// stores a descending distX / distY / angle call with its value negated (reshape-script.ts inWrittenOrder), which is the original's anchor 4
+// (make-logged-script.mjs), so the rule held here is the one reshape-docs.ts describes and a sentence names it the same way the original does
+// (distX(3, 1, 12): "corner 3 being -12 across from corner 1").
 //
 // WHAT IT GUARDS (contract rows sketch-dof-diagnosis#8, #10, #13, #14, #15). runScript settles each rule call by addConstraintSettling, which may DROP an older rule
 // to make the new one fit (the 25%-of-area gate), and solveDoc keeps the OLD points when a solve "collapses". So rect(40,30); length(1,20); length(2,15) built
