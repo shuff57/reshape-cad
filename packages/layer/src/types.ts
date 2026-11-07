@@ -140,6 +140,11 @@ export interface TranslateCtx {
    * closed-form volume of a primitive). For measuring only (the before/after runs of GUARD-MOVE-TURN.md; the differential tests' originals have none of them). Never set in production.
    */
   skipMoveTurn?: boolean;
+  /**
+   * Every set: switch OFF the primitives group's guard (primitives.ts). For measuring only (the before/after runs of GUARD-PRIMITIVES.md; the differential tests'
+   * originals have no such guard). Never set in production.
+   */
+  skipPrimitives?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

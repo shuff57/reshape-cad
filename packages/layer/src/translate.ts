@@ -22,6 +22,8 @@ import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js
 import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
 import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal } from './move-turn.js';
 import type { MotionInfo } from './move-turn.js';
+import { PRIMITIVES_GUARD, primitiveEffects, primitiveRefusal } from './primitives.js';
+import type { PrimF } from './primitives.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
@@ -58,10 +60,10 @@ function frameOf(s: SketchFeature, mt?: MtApi): Frame {
 
 export interface Refusal { refusal: string; /** only the VERBATIM_GUARDS set it on a planner refusal; the steps keep that sentence verbatim and note the code */ guard?: string }
 /**
- * The guard codes planFeature raises in every set (open-outline.ts, move-turn.ts): a step that rewrites planner refusals into its own sentences keeps these as they
+ * The guard codes planFeature raises in every set (open-outline.ts, move-turn.ts, primitives.ts): a step that rewrites planner refusals into its own sentences keeps these as they
  * are and notes the code.
  */
-export const VERBATIM_GUARDS: ReadonlySet<string> = new Set([OPEN_OUTLINE_GUARD, MT_CUT_GUARD, MT_CONE_GUARD]);
+export const VERBATIM_GUARDS: ReadonlySet<string> = new Set([OPEN_OUTLINE_GUARD, MT_CUT_GUARD, MT_CONE_GUARD, PRIMITIVES_GUARD]);
 export const isVerbatimGuard = (g: string | undefined): g is string => !!g && VERBATIM_GUARDS.has(g);
 export const refuse = (sentence: string): Refusal => ({ refusal: sentence });
 export { frameOf as frameWithMt, isZero3 };
@@ -95,6 +97,8 @@ export interface TranslateState {
   accepted?: Cmd[];
   /** every set: the move-turn group's bookkeeping, taken from the doc once per translation (move-turn.ts). Absent when planFeature is called without translateDoc. */
   motion?: MotionInfo;
+  /** every set: each primitive with the turns and plain moves the script applied to it, folded in once per translation (primitives.ts). Absent when planFeature is called without translateDoc. */
+  primitives?: Map<string, PrimF>;
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
   unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }
@@ -357,6 +361,11 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
     id = headOf(id);
     return profile.depSentence(f, role, id, st);
   };
+  // every set: the primitives group's guard, on the primitive as the script placed it, before its planner (primitives.ts)
+  {
+    const pv = primitiveRefusal(f, st, ctx);
+    if (pv) return { refusal: pv.sentence, guard: PRIMITIVES_GUARD };
+  }
   // every set: a pull or pocket of a soup with an end that meets nothing is refused before any engine run (open-outline.ts). Raised here, where the sentence
   // carries the planner's `${f.id}: ` prefix once (inSketch's refusals are wrapped again by each planner). A dependency refusal of the sketch or the part comes first.
   if ((f.kind === 'extrude' || f.kind === 'pocket') && !ctx.skipOpenOutline && isSoupTarget(st, f.target) && !dep(f.target, 'sketch') && !(f.kind === 'pocket' && dep(f.into, 'solid'))) {
@@ -787,6 +796,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
 export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
   if (!ctx.skipMoveTurn) st.motion = motionInfo(doc, ctx);
+  if (!ctx.skipPrimitives) st.primitives = primitiveEffects(doc);
   profileIn.initState(st, doc);
   const shapeCache: ShapeCache = new Map();
   const accepted: Cmd[] = [];

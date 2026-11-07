@@ -60,12 +60,12 @@ const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 function runOrig(item) {
   const fake = makeFake({ sync: true, ...CFG });
   let result; let error = null;
-  try { result = sd.translateDocGuarded(structuredClone(item.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, runSC: fake.runSC, resolveAt: fakeResolveAt, mt }, { fromUsage: item.fromUsage, off: [] }); } catch (e) { error = errOf(e); }
+  try { result = sd.translateDocGuarded(structuredClone(item.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, runSC: fake.runSC, resolveAt: fakeResolveAt, mt }, { fromUsage: item.fromUsage, off: [] }); } catch (e) { error = errOf(e); }
   return { result, error };
 }
 async function runPort(item, followMoves) {
   const fake = makeFake({ sync: false, ...CFG });
-  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(item.fromUsage ? { fromUsage: item.fromUsage } : {}), ...(followMoves === undefined ? {} : { followMoves }) };
+  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(item.fromUsage ? { fromUsage: item.fromUsage } : {}), ...(followMoves === undefined ? {} : { followMoves }) };
   let result; let error = null;
   try { const { _state, ...rest } = await SD.translateDoc(structuredClone(item.doc), ctx); result = rest; } catch (e) { error = errOf(e); }
   return { result, error };
@@ -83,7 +83,7 @@ test('flag OFF (and an explicit false) is identical to no flag on every doc of t
     T.offIdentical++;
   }
   for (const it of pool.slice(0, 80)) { // the base set too
-    const mk = async (flag) => { const f = makeFake({ boxBool: true }); try { const { _state, ...r } = await BASE.translateDoc(structuredClone(it.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, ...(flag === undefined ? {} : { followMoves: flag }) }); return r; } catch (e) { return errOf(e); } };
+    const mk = async (flag) => { const f = makeFake({ boxBool: true }); try { const { _state, ...r } = await BASE.translateDoc(structuredClone(it.doc), { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, ...(flag === undefined ? {} : { followMoves: flag }) }); return r; } catch (e) { return errOf(e); } };
     assert.deepStrictEqual(await mk(false), await mk(undefined), it.name);
   }
 });
@@ -151,7 +151,7 @@ test('the base set: a moved box is refused with the flag off and shelled with it
   const shell = (target) => ({ id: 's1', kind: 'shell', target, thickness: 1, open: { cause: 'primitive', feature: 'b1', kind: 'face', part: '+z' } });
   const run = async (features, flag) => {
     const f = makeFake({ boxBool: true, shellDraft: true });
-    const { _state, ...r } = await BASE.translateDoc({ features }, { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, followMoves: flag });
+    const { _state, ...r } = await BASE.translateDoc({ features }, { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, mt, runSC: f.runSC, topologyOf: f.topologyOf, soups: {}, followMoves: flag });
     return r.features.at(-1);
   };
   const mv = { id: 'm1', kind: 'move', target: 'b1', offset: [7, 3, 2], copy: false };
