@@ -155,8 +155,9 @@ export interface TranslateCtx {
    * sum of its parts, measured in scratch sessions: one or more engine runs per join); 'off': the combine is left to the booleans group's own guards.
    */
   unifiedEpJoinChecks?: 'off' | 'cheap' | 'full';
-  /** shell-draft set only: which `draft(` calls of the script used `from:` and no `neutral:` (draftFromUsage(script)), in order; the original's `opts.fromUsage`. */
-  fromUsage?: Array<{ from: string | null; neutral: boolean }>;
+  /** shell-draft set only: how each draft of the doc gave its neutral, in the doc's draft order: fromUsageOfDoc(doc) (what the interpreter executed), or the
+   *  textual draftFromUsage(script) (the original's `opts.fromUsage`). `maybe`: from-unknown, the words a `from:` could have read the neutral from. */
+  fromUsage?: Array<{ from: string | null; neutral: boolean; maybe?: string[] }>;
 }
 
 export type { Feature, SketchFeature };

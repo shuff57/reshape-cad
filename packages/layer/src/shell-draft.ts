@@ -66,6 +66,8 @@ export interface FView {
   angle?: number;
   pull?: string;
   neutral?: number;
+  /** draft: the `from:` word the interpreter read `neutral` from (DraftFeature.neutralFrom) */
+  neutralFrom?: string;
   thickness?: number;
   axis?: string;
   diameter?: number;
@@ -325,8 +327,15 @@ function tieOf(centres: number[][], dir: V3, kind: string, n: number | null): Ti
   return top.length > 1 ? { kind, n, ties: top.length } : null;
 }
 
-/** getting the draft-from neutral usage out of the script text: which draft calls used `from:` and no `neutral:` */
-export interface FromUse { from: string | null; neutral: boolean }
+/**
+ * How each draft's neutral plane was given, in the doc's draft order (ctx.fromUsage). `from` with `neutral` false: the script gave `from:` and no `neutral:`, so the
+ * neutral is the ROOT primitive's extreme on that side, read when the call ran (G-FROM checks it is still the part's extreme). `maybe`: how it was given is NOT
+ * known (a doc no script produced), and these are the words a `from:` could have read this neutral from; G-FROM checks each.
+ */
+export interface FromUse { from: string | null; neutral: boolean; maybe?: string[] }
+/** getting the draft-from neutral usage out of the script text: which draft calls used `from:` and no `neutral:`. TEXTUAL: it counts every `draft(` in the text, a comment
+ *  or a string included, and a draft emitted twice by a loop once, so it is paired with the doc's drafts by position only as far as the text and the run agree. A host
+ *  that has the doc the interpreter returned uses fromUsageOfDoc(doc), which reads what the interpreter executed. Kept for the contract replays and the tests. */
 export function draftFromUsage(script: string): FromUse[] {
   const out: FromUse[] = []; // one entry per draft( call, in order
   const re = /\bdraft\s*\(/g; let m: RegExpExecArray | null;
@@ -337,6 +346,48 @@ export function draftFromUsage(script: string): FromUse[] {
     out.push({ from: /\bfrom\s*:\s*['"]([a-z]+)['"]/.exec(body)?.[1] ?? null, neutral: /\bneutral\s*:/.test(body) });
   }
   return out;
+}
+
+const LO_WORD: Record<string, string> = { x: 'left', y: 'front', z: 'bottom' };
+const HI_WORD: Record<string, string> = { x: 'right', y: 'back', z: 'top' };
+/** the kinds whose handle keeps the root of the shape it works on (the interpreter's SolidHandle.rootId): the moves, turns, mirrors, repeats and the in-place edits */
+const KEEPS_ROOT = new Set(['move', 'rotate', 'mirror', 'pattern', 'hole', 'shell', 'fillet', 'draft']);
+/** The extreme draft()'s `from` word gives on the root `rootId`, as the interpreter computes it (reshape-script.ts primitiveExtreme): the centre plus or minus half the
+ *  extent for a plain box or cylinder, and 0 for any root whose extent it cannot read. */
+function interpreterExtreme(doc: { version?: number; features: Feature[] }, byId: Record<string, FView>, rootId: string, axis: string, lo: boolean, mt: FromUsageMt): number {
+  const f = byId[rootId];
+  const half = mt.extentAlong(doc, rootId, axis);
+  const center = f && ['box', 'cylinder', 'sphere', 'cone', 'torus'].includes(f.kind) ? (f.center?.[AXI[axis]] ?? 0) : 0;
+  if (half == null) return 0;
+  return lo ? center - half / 2 : center + half / 2;
+}
+export interface FromUsageMt { extentAlong(doc: any, featureId: string, axis: any): number | null }
+/**
+ * ctx.fromUsage from the DOC, in the doc's draft order (the order shellDraftStep pairs it by). `recorded: true` = the doc is the one the interpreter returned for the
+ * script that ran, which records DraftFeature.neutralFrom on every draft whose neutral came from a `from:` word and on no other; a draft without it gave its neutral
+ * by number or not at all. `recorded: false` = a doc no script produced here (a ModelDoc example, the translateRaw hook): a draft carrying neutralFrom is read as
+ * above; one without it is FROM-UNKNOWN, and every word along its pull whose extreme (as the interpreter computes it) equals its neutral is a `maybe` for G-FROM, so
+ * the guard still runs (it may refuse a neutral that was set by hand on the root's extreme of a part that has since moved; it never builds it unchecked). `mt` is
+ * the model-types module (extentAlong), needed for `recorded: false` only.
+ */
+export function fromUsageOfDoc(doc: { version?: number; features: Feature[] }, opts: { recorded: boolean; mt?: FromUsageMt }): FromUse[] {
+  const byId: Record<string, FView> = Object.fromEntries(doc.features.map((x) => [x.id, FV(x)]));
+  return doc.features.filter((x) => x.kind === 'draft').map((x): FromUse => {
+    const f = FV(x);
+    if (typeof f.neutralFrom === 'string') return { from: f.neutralFrom, neutral: false };
+    if (opts.recorded) return { from: null, neutral: false };
+    if (!opts.mt) throw new Error('fromUsageOfDoc: recorded: false needs mt (the model-types module) to read the root extents');
+    let rootId: string | undefined;
+    if (f.face && f.face.cause === 'primitive') rootId = f.face.feature;
+    else { let cur = byId[f.target!]; const seen = new Set<string>(); while (cur && KEEPS_ROOT.has(cur.kind) && cur.target && !seen.has(cur.id)) { seen.add(cur.id); cur = byId[cur.target]; } rootId = cur?.id; }
+    const axis = f.pull ?? 'z';
+    const maybe: string[] = [];
+    if (rootId) for (const lo of [true, false]) {
+      const v = interpreterExtreme(doc, byId, rootId, axis, lo, opts.mt);
+      if (Math.abs(v - f.neutral!) <= 1e-9 * Math.max(1, Math.abs(v))) maybe.push(lo ? LO_WORD[axis] : HI_WORD[axis]);
+    }
+    return { from: null, neutral: false, ...(maybe.length ? { maybe } : {}) };
+  });
 }
 
 // ---- the translator ----------------------------------------------------------------------------------------------------
@@ -768,11 +819,13 @@ function reachCheck(f: FView, part: string, c0: number, st: TranslateState, ctx:
 /** G-FROM: draft {from:word} without neutral: the script layer read the ROOT primitive's own extreme; it must still be the part's current extreme. */
 function fromGuard(f: FView, m: Aggregate | undefined, G: SDG): SDPlan | null {
   const use = G.fromUsage?.[G.draftIds.indexOf(f.id)];
-  if (use?.from && !use.neutral && m) {
+  // a known `from:` word, else (from-unknown, fromUsageOfDoc) every word a `from:` could have read this neutral from
+  const words = use?.from && !use.neutral ? [use.from] : (use?.maybe ?? []);
+  if (m) for (const word of words) {
     const ax = AXI[f.pull!];
-    const lo = use.from === 'bottom' || use.from === 'front' || use.from === 'left';
+    const lo = word === 'bottom' || word === 'front' || word === 'left';
     const want = lo ? m.bbox[ax] : m.bbox[ax + 3];
-    if (Math.abs(want - f.neutral!) > 1e-9 * Math.max(1, Math.abs(want))) return { ...refuse(SENTENCE.fromStale(f, use.from, f.neutral!, want)), guard: 'G-FROM' };
+    if (Math.abs(want - f.neutral!) > 1e-9 * Math.max(1, Math.abs(want))) return { ...refuse(SENTENCE.fromStale(f, word, f.neutral!, want)), guard: 'G-FROM' };
   }
   return null;
 }

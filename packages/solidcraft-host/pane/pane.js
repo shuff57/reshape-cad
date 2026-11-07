@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, draftFromUsage } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -520,8 +520,9 @@ async function run({ confirmed = false } = {}) {
   try {
     status('evaluating in the sandbox...');
     // a ModelDoc example (no script form) runs as is while its editor text is unedited; anything else goes through the sandbox
-    const srcText = $('src').value; // read once: the draft from-bottom guard (G-FROM) needs the same text the sandbox ran
-    const r = (ex?.doc && srcText === ex.script) ? { errors: [], doc: ex.doc } : await evaluate(srcText);
+    const srcText = $('src').value;
+    const fromExample = !!(ex?.doc && srcText === ex.script);
+    const r = fromExample ? { errors: [], doc: ex.doc } : await evaluate(srcText);
     if (r.errors.length) {
       const e0 = r.errors[0];
       const syntax = e0.line == null;
@@ -559,7 +560,7 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, fromUsage: draftFromUsage(srcText), topologyOf: (cmds) => bridge.topologyOf(cmds) });
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, fromUsage: hostFromUsage(doc, { recorded: !fromExample }), topologyOf: (cmds) => bridge.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
     const fin = await runSC(tr.commands);
     keepNext = false;
@@ -665,7 +666,9 @@ async function translateRaw(docIn, names = []) {
   await waitForBridge();
   const doc = solveDoc(docIn);
   soups = {};
-  const ctx = { arc, mt, runSC, soups, followMoves: true, topologyOf: (cmds) => bridge.topologyOf(cmds) };
+  // no script ran here: a draft the doc does not mark (DraftFeature.neutralFrom) is from-unknown, and G-FROM checks it against every `from:` word that could
+  // have given its neutral (hostFromUsage recorded: false), so a stale from-bottom draft is refused here too, never built unchecked
+  const ctx = { arc, mt, runSC, soups, followMoves: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
   const tr = await translateDoc(doc, ctx);
   const fin = await runSC(tr.commands);
   const resolved = [];

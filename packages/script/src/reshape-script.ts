@@ -3091,6 +3091,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const id = nextId(docNow(), 'draft');
     const f: DraftFeature = { id, kind: 'draft', target: owner.id, angle: num(a, id, 'angle'), pull, neutral, whole: whole || undefined };
     if (!whole && face) f.face = face;
+    // What this call EXECUTED, per feature (DraftFeature.neutralFrom): the neutral came from the `from` word, not from a number.
+    if (extra.from !== undefined && extra.neutral === undefined) f.neutralFrom = extra.from as NonNullable<DraftFeature['neutralFrom']>;
     pushFeature(f);
     mutateHandle(owner, f);
     return owner;

@@ -763,7 +763,8 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
     if (f.kind === 'draft') {
       const opts: string[] = [];
       if (f.whole) opts.push('whole: true');
-      const from = draftFromWord(doc, f.target, f.pull, f.neutral);
+      // the word the script gave, when the interpreter recorded one (its neutral is that word's root extreme), else reversed out of the numbers
+      const from = f.neutralFrom ?? draftFromWord(doc, f.target, f.pull, f.neutral);
       if (from) opts.push(`from: '${from}'`);
       else opts.push(`neutral: ${lit(f.neutral)}`);
       const ref =

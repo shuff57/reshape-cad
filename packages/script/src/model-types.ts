@@ -689,6 +689,17 @@ export interface DraftFeature {
   pull: Axis3;
   /** Where along `pull` the part does not move. */
   neutral: number;
+  /**
+   * The face word the script's draft() read `neutral` from: set by the
+   * interpreter only when the call gave `from:` and no `neutral:`, so the
+   * value is the ROOT primitive's own extreme on that side, read when the
+   * call ran. Absent for a hand-set or default neutral, and on every doc not
+   * built by a script. The kernel ignores it; the layer's from-bottom guard
+   * (G-FROM) reads it to check the part's extreme is still there. Recorded
+   * per feature, from what the interpreter executed, so a comment, a string
+   * or a loop in the script text cannot misalign it.
+   */
+  neutralFrom?: 'top' | 'bottom' | 'front' | 'back' | 'left' | 'right';
 }
 
 /**
