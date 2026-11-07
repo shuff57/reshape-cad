@@ -25,6 +25,8 @@ import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionIn
 import type { MotionInfo } from './move-turn.js';
 import { PRIMITIVES_GUARD, primitiveEffects, primitiveRefusal } from './primitives.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence, withErroredBodies } from './errored-body.js';
+import { beforeOf, blendRefusal, chainsOn, groupRun, isStraight } from './fillet-chain.js';
+import type { BlendInfo, ChainEdge, ChainInfo } from './fillet-chain.js';
 import type { PrimF } from './primitives.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
@@ -95,6 +97,8 @@ export interface TranslateState {
   rg?: RGState;
   /** fillet-chamfer set only: the group's bookkeeping (the fillets a grouped blend already handled). See fillet-chamfer.ts. */
   fc?: FCState;
+  /** every set but fillet-chamfer and unified: runs of named fillets sent as one call per connected chain, by member id (fillet-chain.ts). */
+  chain?: Record<string, ChainInfo>;
   /** revolve-groove set only: the commands accepted so far (the guard G10 reads them); the same array as the loop's. */
   accepted?: Cmd[];
   /** every set: the move-turn group's bookkeeping, taken from the doc once per translation (move-turn.ts). Absent when planFeature is called without translateDoc. */
@@ -134,7 +138,7 @@ export type Verify = (m: Aggregate, env: VerifyEnv) => Promise<string | null>;
 export type Plan =
   | Refusal
   | { noop: true; stage?: true }
-  | { variants: Cmd[][]; produces: string[]; consumes: string[]; pickedFrom?: string; evidence?: Evidence; flagCurvedSlant?: boolean; verify?: Verify };
+  | { variants: Cmd[][]; produces: string[]; consumes: string[]; pickedFrom?: string; evidence?: Evidence; flagCurvedSlant?: boolean; verify?: Verify; /** a fillet: what its blend call sends (fillet-chain.ts blendRefusal) */ blend?: BlendInfo };
 
 /** What a per-kind planner is handed besides the feature, the state and the context. */
 export interface PlanHelpers {
@@ -340,6 +344,14 @@ function roundPoints(f: PrimView, base: V3): V3[] {
 }
 
 /** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
+/** The resolved edge is ONE straight edge between two planar faces: the engine-topology resolution (both faces planar: the geometry check ran) or a pick that says so itself. */
+function straightPlanar(r: Resolved): boolean {
+  if (!r.ok || r.kind !== 'edge') return false;
+  const own = (r as unknown as { straightPlanar?: boolean }).straightPlanar;
+  if (typeof own === 'boolean') return own;
+  const checks = (r.evidence as { checks?: Array<{ check?: string }> }).checks;
+  return Array.isArray(r.edges) && r.edges.length === 1 && isStraight(r.edges[0].start, r.edges[0].mid, r.edges[0].end) && checks?.[0]?.check === 'geometry vs persistent names';
+}
 export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: Profile = BASE_PROFILE): Plan {
   const plan = planFeatureOf(f, st, ctx, profileIn);
   // every set: the move-turn group's cone chain limit, on a move or turn whose plan was made (as in the group's translator, after the planner; move-turn.ts)
@@ -581,6 +593,11 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
       return { variants: [[{ command: 'solid.shell', params: { faces: [r.point], thickness: f.thickness, body: bs[0] } }]], produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence };
     }
     case 'fillet': {
+      // a member of a run of named fillets whose edge went to the engine in the call of an earlier member (fillet-chain.ts): nothing more to send; the step measures the part as it is
+      const ch = st.chain?.[f.id];
+      if (ch && ch.lead !== f.id && st.accLen[ch.lead] !== undefined && st.bodies[ch.lead]?.length === 1) {
+        return { variants: [[]], produces: st.bodies[ch.lead], consumes: [f.target], pickedFrom: `one call with ${ch.lead} (${ch.ids.join(', ')})` };
+      }
       const d = dep(f.target);
       if (d) return refuse(d);
       const bs = needBody(f.target);
@@ -589,11 +606,12 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
       if (r && r.ok === false) return refuse(`${f.id} (${f.kind}): ${r.sentence}`);
       if (!r || r.kind !== 'edge') return refuse(`${f.id} (fillet): the edge could not be resolved to a single edge (${r ? `it names ${r.kind}` : 'no resolution'})`);
       // phase 4: the resolved point is ON the edge (the engine's own edge midpoint), so there is exactly one candidate.
-      const cands = [r.point];
-      const mk = (p: V3): Cmd => (f.style === 'chamfer'
-        ? { command: 'solid.chamfer', params: { edges: [p], distance: f.size, body: bs[0] } }
-        : { command: 'solid.fillet', params: { edges: [p], radius: f.size, body: bs[0] } });
-      return { variants: cands.map((p) => [mk(p)]), produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence };
+      // The lead of a run of named fillets on one connected chain sends every edge of the chain in this one call (fillet-chain.ts).
+      const pts = ch && ch.lead === f.id && ch.points && ch.ids.length > 1 ? ch.points : [r.point];
+      const mk = (p: V3[]): Cmd => (f.style === 'chamfer'
+        ? { command: 'solid.chamfer', params: { edges: p, distance: f.size, body: bs[0] } }
+        : { command: 'solid.fillet', params: { edges: p, radius: f.size, body: bs[0] } });
+      return { variants: [[mk(pts)]], produces: bs, consumes: [f.target], pickedFrom: 'solidcraft topology (browser)', evidence: r.evidence, blend: { edges: pts.length, straightPlanar: straightPlanar(r) } };
     }
     case 'draft': {
       const d = dep(f.target);
@@ -773,9 +791,12 @@ export interface TranslateResult {
  * phase 4: resolve the one name this feature needs (a shell's open face, a fillet's edge, a draft's face) from the engine's own topology,
  * before planning it. Returns what the planner's `ctx.resolve` reads. Nothing is resolved without `ctx.topologyOf`.
  */
-export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; shapeCache: ShapeCache }): Promise<Map<unknown, Resolved>> {
+export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; shapeCache: ShapeCache; /** the whole document (a LoopEnv's doc.features): a fillet that starts a run is grouped only when given (fillet-chain.ts) */ features?: Feature[] }): Promise<Map<unknown, Resolved>> {
   const { st, accepted, ctx, shapeCache } = env;
   const resolved = new Map<unknown, Resolved>();
+  // a member of a run whose edge already went to the engine in an earlier member's call: there is nothing to resolve (planFeature plans it from st.chain, fillet-chain.ts)
+  const ch = st.chain?.[f.id];
+  if (f.kind === 'fillet' && ch && ch.lead !== f.id && st.accLen[ch.lead] !== undefined) return resolved;
   const nameField = f.kind === 'shell' ? 'open' : f.kind === 'fillet' ? 'edge' : f.kind === 'draft' ? 'face' : null;
   const nameVal: TopoName | undefined = f.kind === 'shell' ? f.open : f.kind === 'fillet' ? f.edge : f.kind === 'draft' ? f.face : undefined;
   if (nameField && nameVal && typeof nameVal === 'object' && ctx.topologyOf) {
@@ -786,6 +807,23 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
     rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId });
     if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
     else resolved.set(nameVal, rr);
+    // a fillet that starts a run of named fillets: every member's edge on the part before the run, for one call per connected chain (fillet-chain.ts)
+    if (f.kind === 'fillet' && chainsOn(st, ctx) && !st.chain?.[f.id]) {
+      const idx = prefix.length; const all = env.features ?? (env as { doc?: { features: Feature[] } }).doc?.features ?? null;
+      if (all && all[idx]?.id === f.id) {
+        const own = rr;
+        const edgeOf = (x: Resolved): ChainEdge | null => (x.ok && x.kind === 'edge' && x.edges.length === 1 && (own.ok && own.kind === 'edge' && x.shape.featureId === own.shape.featureId) ? { point: x.point, ends: [x.edges[0].start, x.edges[0].end] } : null);
+        await groupRun(f, all, idx, st, async (m) => {
+          if (m.id === f.id) return edgeOf(own);
+          const nm = (m as unknown as { edge?: TopoName }).edge;
+          if (!nm || typeof nm !== 'object') return null;
+          let mr = await resolveName(nm, makeEnv(st, accepted, prefix, ctx, shapeCache), 'edge');
+          if (ctx.followMoves) mr = followMoves(mr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
+          mr = await confirmOnTarget(mr, { st, accepted, ctx, targetId });
+          return edgeOf(mr);
+        }, 1);
+      }
+    }
   }
   return resolved;
 }
@@ -825,7 +863,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   const { doc, ctx, st, accepted, out, shapeCache } = env;
   const profileIn = env.profile;
   const prefix = doc.features.slice(0, idx);
-  const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache });
+  const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache, features: doc.features });
   const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
   const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => out.push({ id: f.id, kind: f.kind, ...o });
   if (f.kind === 'sketch') st.sketches[f.id] = f;
@@ -857,6 +895,9 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
     if (mv) { verifyRefusal = mv.sentence; verifyGuard = mv.guard; lastErr = null; continue; }
+    // every set but fillet-chamfer and unified: a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, plan.blend, beforeOf(st, (f as { target?: string }).target), m, ctx);
+    if (bl) { verifyRefusal = bl.sentence; verifyGuard = bl.guard; lastErr = null; continue; }
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = !profile.verifies && f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
     if (pc) { verifyRefusal = pc; verifyGuard = POCKET_CUT_GUARD; lastErr = null; continue; }

@@ -28,6 +28,7 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
+import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
@@ -634,6 +635,9 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
     if (mv) { refusedNote(mv.sentence, mv.sentence, variant, mv.guard); return; }
+    // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, blendOf(plan), beforeOf(st, g.target), m, ctx);
+    if (bl) { refusedNote(bl.sentence, bl.sentence, variant, bl.guard); return; }
     // ---- fused guard: a mirror is defined as copy + fuse. When ONE body goes in and several come out, solid.mirror combine:true reported success but left the copy
     // as a separate body touching the original (measured: a spun washer mirrored across a flat end). Volume and bbox still agree with the oracles there.
     if (f.kind === 'mirror' && st.measure[g.target!]?.shells === 1 && (m.shells as number) > 1) {

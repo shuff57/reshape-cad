@@ -33,16 +33,18 @@ const bottomFour = (size = 1.5) => [
   fillet('r3', 'r2', between('-z', '-x'), size), fillet('r4', 'r3', between('-z', '+x'), size),
 ];
 
-async function run(features, { resolver = fakeResolveAt } = {}) {
-  const fake = makeFake({ sync: true, shellDraft: true });
-  const ctx = { arc, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(resolver ? { resolveAt: resolver } : {}) };
+async function run(features, { resolver = fakeResolveAt, extra = {} } = {}) {
+  // fcModel: a blend adds one face per edge, as on a real kernel (the layer's post-build face count reads it, src/fillet-chain.ts)
+  const fake = makeFake({ sync: true, shellDraft: true, fcModel: true });
+  const ctx = { arc, mt, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(resolver ? { resolveAt: resolver } : {}), ...extra };
   const { _state, ...rest } = await sd.translateDoc({ features: structuredClone(features) }, ctx);
   return rest;
 }
 const byId = (tr) => Object.fromEntries(tr.features.map((f) => [f.id, f]));
 
 test('path A: four bottom fillets on a plain box are picked at the resolver point, one candidate each, and the hollow still plans', async () => {
-  const tr = byId(await run([box(), ...bottomFour(), hollow('r4')]));
+  // one call per feature (ctx.skipFilletChain, the route before fillet-chain.ts): the pick rule edge by edge
+  const tr = byId(await run([box(), ...bottomFour(), hollow('r4')], { extra: { skipFilletChain: true } }));
   const want = { r1: [0, -15, 0], r2: [0, 15, 0], r3: [-20, 0, 0], r4: [20, 0, 0] };
   for (const [id, p] of Object.entries(want)) {
     assert.equal(tr[id].status, 'built', `${id} built`);
@@ -53,6 +55,13 @@ test('path A: four bottom fillets on a plain box are picked at the resolver poin
     assert.equal(tr[id].commands[0].command, 'solid.fillet');
   }
   assert.ok(tr.s1, 'the hollow is planned');
+  // the route as it is (fillet-chain.ts): the same four resolver points, in member order, in ONE call sent by r1; r2..r4 are built by it
+  const g = byId(await run([box(), ...bottomFour(), hollow('r4')]));
+  assert.equal(g.r1.pickedFrom, PICKED_AT);
+  assert.deepEqual(g.r1.pick.edges, Object.values(want));
+  assert.equal(g.r1.commands.length, 1);
+  for (const id of ['r2', 'r3', 'r4']) { assert.equal(g[id].status, 'built'); assert.deepEqual(g[id].commands, []); assert.equal(g[id].pickedFrom, 'one call with r1 (r1, r2, r3, r4)'); }
+  assert.ok(g.s1, 'the hollow is planned');
 });
 
 test('path A: the same rule holds for a bevel (chamfer style) and a vertical edge', async () => {

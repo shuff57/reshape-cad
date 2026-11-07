@@ -25,6 +25,7 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal, openAxisEngineSentence } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
+import { beforeOf, blendOf, blendRefusal, chainsOn, groupRun } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 
@@ -1046,7 +1047,7 @@ const PICKED_AT = 'ctx.resolveAt (primitive frame; only fillets in the history)'
  * Anything else returns null and the fillet is planned exactly as before (path B), with the same sentences. No new refusal is made here.
  * One candidate only (the original's three extra candidates one "radius" out are for a closed circle, which a box edge never is).
  */
-async function filletEdgeAt(f: FView, prefix: Feature[], byId: Record<string, FView>, ctx: TranslateCtx): Promise<{ ok: true; kind: 'edge'; point: V3; length: number; evidence: { name: string; [k: string]: unknown } } | null> {
+async function filletEdgeAt(f: FView, prefix: Feature[], byId: Record<string, FView>, ctx: TranslateCtx): Promise<{ ok: true; kind: 'edge'; point: V3; length: number; straightPlanar: true; ends: [V3, V3]; evidence: { name: string; [k: string]: unknown } } | null> {
   const nm = f.edge as (SDName & { of?: SDName[] }) | undefined;
   if (!nm || nm.cause !== 'between' || !Array.isArray(nm.of) || nm.of.length !== 2) return null;
   const root = byId[nm.feature];
@@ -1073,7 +1074,10 @@ async function filletEdgeAt(f: FView, prefix: Feature[], byId: Record<string, FV
     const size = (h as unknown as { size?: number }).size;
     if (!(typeof size === 'number' && size >= 0 && size < r.length / 2)) return null;
   }
-  return { ok: true, kind: 'edge', point: r.centroid, length: r.length, evidence: { name: `${nm.feature}.edge[${pair(nm)}]`, pickSource: PICKED_AT, history: earlier.map((h) => h.id) } };
+  // the edge runs along the axis neither face is normal to: its end points, for the connectivity of a run of fillets (fillet-chain.ts); a box edge is straight between two planes
+  const dir = [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const ends: [V3, V3] = [r.centroid.map((v, i) => v - dir[i] * r.length! / 2), r.centroid.map((v, i) => v + dir[i] * r.length! / 2)];
+  return { ok: true, kind: 'edge', point: r.centroid, length: r.length, straightPlanar: true, ends, evidence: { name: `${nm.feature}.edge[${pair(nm)}]`, pickSource: PICKED_AT, history: earlier.map((h) => h.id) } };
 }
 
 // ---- the loop ------------------------------------------------------------------------------------------------------------
@@ -1119,7 +1123,17 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
   };
   // the base's planners read ctx.resolve for a fillet's edge. Path A (the host supplies ctx.resolveAt, the group's pick source) when filletEdgeAt
   // proves the primitive-frame point is still on that edge of the part as it is now; otherwise path B, resolved as the base loop does.
-  const edgeAt = f.kind === 'fillet' && ctx.resolveAt ? await filletEdgeAt(fv, prefix, byId, ctx) : null;
+  // a member of a run whose edge already went in an earlier member's call (fillet-chain.ts) is planned from st.chain: nothing to pick
+  const chained = f.kind === 'fillet' && !!st.chain?.[f.id] && st.chain[f.id].lead !== f.id && st.accLen[st.chain[f.id].lead] !== undefined;
+  const edgeAt = f.kind === 'fillet' && ctx.resolveAt && !chained ? await filletEdgeAt(fv, prefix, byId, ctx) : null;
+  // path A, a fillet that starts a run of named fillets: every member's edge from the same resolver, for one call per connected chain (fillet-chain.ts); a member
+  // the resolver cannot place leaves the run ungrouped (path B, below, then groups it from the engine's topology when it can)
+  if (edgeAt && chainsOn(st, ctx) && !st.chain?.[f.id]) {
+    await groupRun(f, doc.features, idx, st, async (m) => {
+      const e = m.id === f.id ? edgeAt : await filletEdgeAt(FV(m), prefix, byId, ctx);
+      return e ? { point: e.point, ends: e.ends } : null;
+    }, 1);
+  }
   const baseResolved = f.kind === 'fillet' && !edgeAt ? await resolveNamesFor(f, prefix, env) : new Map();
   const fctx: SDCtx & PlanCtx = { ...ctx, resolve: (name) => (edgeAt && name === fv.edge ? edgeAt as never : (baseResolved.get(name) as never) ?? null) };
   let plan: SDPlan;
@@ -1153,6 +1167,9 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces!, accepted);
     if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, blendOf(plan), beforeOf(st, fv.target), m, ctx);
+    if (bl) { st.refused[f.id] = bl.sentence; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox, com: m.com }, commands: variant }); return; }
     const bad = await plan.post?.(m, st.measure[headOf(fv.target!)] ?? st.measure[fv.target!], { accepted: [...accepted], variant, runSC: ctx.runSC });
     if (bad) {
       const s = sanitize(bad.refusal, byId);

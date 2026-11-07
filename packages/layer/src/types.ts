@@ -152,6 +152,11 @@ export interface TranslateCtx {
    * before/after runs of GUARD-FAMILY-C-HOLLOW.md; the differential tests' originals have no such check). Never set in production.
    */
   skipHollowCheck?: boolean;
+  /**
+   * Every set but fillet-chamfer and unified: switch OFF the grouping of a run of named fillets into one call per connected chain and the post-build face count of a
+   * one-edge blend (fillet-chain.ts). For the differential tests only (their originals send one call per feature, their fake engines do not count faces). Never set in production.
+   */
+  skipFilletChain?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

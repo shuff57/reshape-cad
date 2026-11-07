@@ -28,6 +28,7 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
+import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
@@ -89,7 +90,7 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   const rs = st.rg!;
   st.accepted = accepted; // G10: the guard reads the commands already accepted
   const prefix = doc.features.slice(0, idx);
-  const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache });
+  const resolved = await resolveNamesFor(f, prefix, { st, accepted, ctx, shapeCache, features: doc.features });
   const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
   const note = (o: Omit<FeatureResult, 'id' | 'kind'>): void => { out.push({ id: f.id, kind: f.kind, ...o }); };
   if (f.kind === 'sketch') st.sketches[f.id] = f;
@@ -128,6 +129,9 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
     if (mv) { st.refused[f.id] = mv.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, blendOf(plan), beforeOf(st, (f as unknown as { target?: string }).target), m, ctx);
+    if (bl) { st.refused[f.id] = bl.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, commands: variant }); return; }
     { const post = postCheck(f, st, m, new Set(ctx.guardsOff ?? [])); if (post) { lastErr = post; continue; } } // G5
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;

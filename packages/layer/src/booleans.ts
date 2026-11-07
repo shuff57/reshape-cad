@@ -43,10 +43,11 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
-import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
+import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import type { SketchRead, SlowFeat } from './booleans-slow.js';
 import { BUDGET_S, SENTENCES, afterCombine, describe, guardCombine, plainPieces, plainSentence, reusedTools } from './booleans-guard.js';
 import type { CombineView, GuardHit } from './booleans-guard.js';
+import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 
 export {
   BUDGET_S as BOOLEANS_BUDGET_S, SENTENCES as BOOLEANS_SENTENCES, SLIVER as BOOLEANS_SLIVER, afterCombine, guardCombine, plainPieces, plainSentence, reusedTools, lintSentence as booleansLintSentence, explainCombineArgs, explainFront, describe as describeOperand, obbDepth,
@@ -327,6 +328,9 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
     if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, blendOf(plan), beforeOf(st, BFV(f).target), m, ctx);
+    if (bl) { st.refused[f.id] = bl.sentence; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, commands: variant }); return; }
     if (combine) { const bad = afterCombine(f as unknown as CombineView, m, plan.before, plan.boxes); if (bad) { lastErr = bad.sentence; afterGuard = bad.code; continue; } } // BOOLEANS-GUARD (G4b, G19, G21): after-check
     if (combine && BFV(f).op === 'union' && epJoinLevel(st, ctx) !== 'off') { // the extrude-pocket group's join checks after the build (unified set only)
       const mE = aggregate(res, plan.produces, true) ?? m;

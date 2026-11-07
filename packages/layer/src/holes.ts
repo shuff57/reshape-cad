@@ -20,6 +20,7 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
 import { motionRefusal } from './move-turn.js';
+import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { VolTool } from './holes-volume.js';
 
@@ -308,6 +309,9 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces!, accepted);
     if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
+    const bl = blendRefusal(f, blendOf(plan), beforeOf(st, fv.target), m, ctx);
+    if (bl) { st.refused[f.id] = bl.sentence; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox }, commands: variant }); return; }
     if (plan.post) {
       const before = st.measure[headOf((f as unknown as HoleView).target)] ?? st.measure[(f as unknown as HoleView).target];
       const bad = plan.post(m, before, { allBodies, allCountBefore: hs.allCount, accepted, variant, off });
