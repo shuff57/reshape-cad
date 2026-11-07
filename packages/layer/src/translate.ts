@@ -20,6 +20,8 @@ import { followMoves } from './follow-moves.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
+import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal } from './move-turn.js';
+import type { MotionInfo } from './move-turn.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
@@ -54,7 +56,13 @@ function frameOf(s: SketchFeature, mt?: MtApi): Frame {
   return { origin: a.n.map((c) => c * o), ...a };
 }
 
-export interface Refusal { refusal: string; /** only OPEN_OUTLINE_GUARD (open-outline.ts) sets it on a planner refusal; the steps keep that sentence verbatim and note the code */ guard?: string }
+export interface Refusal { refusal: string; /** only the VERBATIM_GUARDS set it on a planner refusal; the steps keep that sentence verbatim and note the code */ guard?: string }
+/**
+ * The guard codes planFeature raises in every set (open-outline.ts, move-turn.ts): a step that rewrites planner refusals into its own sentences keeps these as they
+ * are and notes the code.
+ */
+export const VERBATIM_GUARDS: ReadonlySet<string> = new Set([OPEN_OUTLINE_GUARD, MT_CUT_GUARD, MT_CONE_GUARD]);
+export const isVerbatimGuard = (g: string | undefined): g is string => !!g && VERBATIM_GUARDS.has(g);
 export const refuse = (sentence: string): Refusal => ({ refusal: sentence });
 export { frameOf as frameWithMt, isZero3 };
 
@@ -85,6 +93,8 @@ export interface TranslateState {
   fc?: FCState;
   /** revolve-groove set only: the commands accepted so far (the guard G10 reads them); the same array as the loop's. */
   accepted?: Cmd[];
+  /** every set: the move-turn group's bookkeeping, taken from the doc once per translation (move-turn.ts). Absent when planFeature is called without translateDoc. */
+  motion?: MotionInfo;
   /** unified set only: which groups the document uses (decides the style of the loop). See unified.ts. */
   unified?: { domain: UnifiedDomain; maps: { E: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> }; P: { measure: Record<string, Aggregate>; bodies: Record<string, string[]> } } };
 }
@@ -325,6 +335,15 @@ function roundPoints(f: PrimView, base: V3): V3[] {
 
 /** Plan one feature. Returns {refusal} | {variants:[cmds...], produces:[names], consumes:[ids]} | {noop:true}. */
 export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: Profile = BASE_PROFILE): Plan {
+  const plan = planFeatureOf(f, st, ctx, profileIn);
+  // every set: the move-turn group's cone chain limit, on a move or turn whose plan was made (as in the group's translator, after the planner; move-turn.ts)
+  if ((f.kind === 'move' || f.kind === 'rotate') && !('refusal' in plan) && !('noop' in plan)) {
+    const cc = coneChainRefusal(f, st, ctx);
+    if (cc) return { refusal: cc, guard: MT_CONE_GUARD };
+  }
+  return plan;
+}
+function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: Profile): Plan {
   const profile = ownerOf(profileIn, f.kind); // a composition: the profile that owns this kind decides
   const name = bname(f.id);
   const needBody = (id: string): string[] | null => {
@@ -343,6 +362,11 @@ export function planFeature(f: Feature, st: TranslateState, ctx: PlanCtx, profil
   if ((f.kind === 'extrude' || f.kind === 'pocket') && !ctx.skipOpenOutline && isSoupTarget(st, f.target) && !dep(f.target, 'sketch') && !(f.kind === 'pocket' && dep(f.into, 'solid'))) {
     const oo = openOutlineRefusal(f, st.sketches[f.target]);
     if (oo) return { refusal: oo, guard: OPEN_OUTLINE_GUARD };
+  }
+  // every set: a move or turn of a part that a pocket, groove or hole has cut since is refused (the move-turn group's cut-head guard, move-turn.ts). A dependency refusal comes first.
+  if ((f.kind === 'move' || f.kind === 'rotate') && !dep(f.target)) {
+    const ch = cutHeadRefusal(f, st, ctx, headOf);
+    if (ch) return { refusal: ch, guard: MT_CUT_GUARD };
   }
   const planner = profile.planners[f.kind];
   if (planner) return planner(f, st, ctx, { name, needBody, headOf, dep, inSketch: (sk, opts) => inSketch(sk, ctx, st, opts, profile) });
@@ -762,6 +786,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
  */
 export async function translateDoc(doc: { features: Feature[] }, ctx: TranslateCtx, profileIn: Profile = BASE_PROFILE): Promise<TranslateResult> {
   const st: TranslateState = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} };
+  if (!ctx.skipMoveTurn) st.motion = motionInfo(doc, ctx);
   profileIn.initState(st, doc);
   const shapeCache: ShapeCache = new Map();
   const accepted: Cmd[] = [];
@@ -793,7 +818,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   let plan: Plan;
   let internal: string | null = null;
   try { plan = planFeature(f, st, fctx, profile); } catch (e) { const pe = profile.plannerError(f, e); internal = pe.internal; plan = refuse(pe.refusal); }
-  if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, ...(plan.guard === OPEN_OUTLINE_GUARD ? { guard: plan.guard } : {}), commands: [], ...(internal ? { internalError: internal } : {}) }); return; }
+  if ('refusal' in plan) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, ...(isVerbatimGuard(plan.guard) ? { guard: plan.guard } : {}), commands: [], ...(internal ? { internalError: internal } : {}) }); return; }
   if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let lastFail: RunResult | null = null;
@@ -813,6 +838,9 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { verifyRefusal = sv; verifyGuard = SKETCH_VOLUME_GUARD; lastErr = null; continue; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
+    if (mv) { verifyRefusal = mv.sentence; verifyGuard = mv.guard; lastErr = null; continue; }
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = !profile.verifies && f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
     if (pc) { verifyRefusal = pc; verifyGuard = POCKET_CUT_GUARD; lastErr = null; continue; }

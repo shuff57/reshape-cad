@@ -32,7 +32,8 @@ import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, ShapeCa
 import { resolveName } from './resolve-names.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
-import { OPEN_OUTLINE_GUARD } from './open-outline.js';
+import { motionRefusal } from './move-turn.js';
+import { isVerbatimGuard } from './translate.js';
 import type { EdgeRes, Resolved } from './resolve-names.js';
 import { guardBatch, guardBlend, guardPrimitiveRound, guardShellRim, postCheck } from './fc-guard.js';
 import type { BlendStyle, FcBad, FcTopo, RimFeature, RoundFeature } from './fc-guard.js';
@@ -169,7 +170,7 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   let plan: Plan;
   try { plan = planFeature(pf, st, fctx, BASE_PROFILE); } catch (e) { plan = refuse(`${f.id} (${f.kind}): translator error: ${(e as Error).message}`); }
   if ('refusal' in plan) {
-    if (plan.guard === OPEN_OUTLINE_GUARD) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, commands: [] }); return; } // the open-outline sentence is kept as it is
+    if (isVerbatimGuard(plan.guard)) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, commands: [] }); return; } // the open-outline and move-turn sentences are kept as they are
     refused(plan.refusal, { commands: [] }); return;
   }
   if ('noop' in plan) { note({ status: 'noop', commands: [] }); return; }
@@ -191,6 +192,9 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
+    if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     // ---- POST-BUILD NET: a blend of ONE straight planar edge adds exactly one face
     if (gv) {
       const pc = faceCheck(gv, f.kind === 'fillet' ? st.measure[headId(st, fv.target!)]?.faces : undefined, m.faces);

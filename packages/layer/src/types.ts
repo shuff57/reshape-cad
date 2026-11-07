@@ -100,6 +100,8 @@ export interface ArcApi {
 /** The `mt` member of the context: model-types, of which only sketchFrameOf is read. */
 export interface MtApi {
   sketchFrameOf?(s: SketchFeature): Frame;
+  /** model-types.ts nameMap: the studio's display names (Move 1, Turn 2). The move-turn group's sentences use them, as the group's translator did (move-turn.ts). */
+  nameMap?(doc: { features: Feature[] }): Record<string, string>;
 }
 
 export interface SoupInfo {
@@ -124,7 +126,8 @@ export interface TranslateCtx {
   /**
    * Every set: switch OFF the check of a pull's built volume and pieces against its sketch (sketch-volume.ts), and in the seven sets that have no after-the-build
    * check of a pocket (all but 'extrude-pocket' and 'unified') the extrude-pocket group's cut-consistency check of a pocket (pocket-cut.ts). For the fake engines of
-   * the differential tests only, which report bounding-box volumes (and the originals they are compared with have neither check). Never set in production.
+   * the differential tests only, which report bounding-box volumes (and the originals they are compared with have neither check). It also switches off the move-turn
+   * group's two checks after the build (move-turn.ts: a move or turn against the part it started from, a primitive against its closed-form volume). Never set in production.
    */
   skipSketchVolume?: boolean;
   /**
@@ -132,6 +135,11 @@ export interface TranslateCtx {
    * GUARD-OPEN-OUTLINE.md, the differential tests' originals have no such check). Never set in production.
    */
   skipOpenOutline?: boolean;
+  /**
+   * Every set: switch OFF the move-turn group's guards (move-turn.ts: the cut-head and cone-chain refusals, the rigid-motion invariant of a move or turn, the
+   * closed-form volume of a primitive). For measuring only (the before/after runs of GUARD-MOVE-TURN.md; the differential tests' originals have none of them). Never set in production.
+   */
+  skipMoveTurn?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

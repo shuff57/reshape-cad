@@ -39,6 +39,9 @@ export { RECONCILE_TOL, SKETCH_VOLUME_GUARD, sketchArea, soupArea, outlineArea, 
 export { POCKET_CUT_GUARD, pocketCutRefusal } from './pocket-cut.js';
 export { OPEN_OUTLINE_GUARD, SAME_POINT, HAIR_GAP, openOutline, openOutlineRefusal } from './open-outline.js';
 export type { OpenOutline } from './open-outline.js';
+export { MT_CUT_GUARD, MT_CONE_GUARD, MT_INVARIANT_GUARD, MT_PRIMITIVE_GUARD, CONE_CHAIN_MAX, INV_TOL, motionInfo, cutHeadRefusal, coneChainRefusal, invariantSentence, primitiveVolume, primitiveSentence, motionRefusal } from './move-turn.js';
+export type { MotionInfo } from './move-turn.js';
+export { VERBATIM_GUARDS, isVerbatimGuard } from './translate.js';
 export type { SketchArea } from './sketch-volume.js';
 export { guardLegacySketches, intendedRules as legacyIntendedRules, checkAll as legacyCheckAll, polish as legacyPolish, plainRule as legacyPlainRule, refuseSentence as legacyRefuseSentence, refuseSentenceWith as legacyRefuseSentenceWith, refuseShapeSentence as legacyRefuseShapeSentence, shapeProblem as legacyShapeProblem } from './legacy-guard.js';
 export type { RuleLogEntry, LegacyGuardResult, LegacySolver, LegacySketchReport } from './legacy-guard.js';

@@ -66,7 +66,7 @@ async function runOrig(which, item, cfg) {
   const doc = structuredClone(item.doc);
   let result; let error = null; const soups = {};
   try {
-    const ctx = which === 'p0' ? { arc, skipSketchVolume: true, skipOpenOutline: true, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, resolveAt: () => null } : { arc, skipSketchVolume: true, skipOpenOutline: true, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, topologyOf: fake.topologyOf, soups };
+    const ctx = which === 'p0' ? { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, resolveAt: () => null } : { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, topologyOf: fake.topologyOf, soups };
     const res = await orig[which].translateDoc(doc, ctx);
     result = norm(normOrig(res, which));
   } catch (e) { error = errOf(e); }
@@ -89,7 +89,7 @@ async function runPort(tr, item, cfg, which = 'p4', extra = {}, passOpts = false
   const optsLog = [];
   const runSC = (cmds, opts) => { optsLog.push({ opts: opts ?? null, last: cmds[cmds.length - 1]?.command, op: cmds[cmds.length - 1]?.params?.operation }); return passOpts ? fake.runSC(cmds, opts) : fake.runSC(cmds); };
   const soups = {};
-  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, runSC, topologyOf: fake.topologyOf, soups, ...(cfg.useMt ? { mt } : {}), ...extra };
+  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, runSC, topologyOf: fake.topologyOf, soups, ...(cfg.useMt ? { mt } : {}), ...extra };
   let result; let error = null; let guards = [];
   try {
     const { _state, ...rest } = await tr.translateDoc(structuredClone(item.doc), ctx);
@@ -287,7 +287,7 @@ test('the time limit: a groove run past its budget is refused with the plain sen
   for (const [cost, built] of [[55000, true], [70000, false]]) {
     const fake = makeFake({ boxBool: true, rgModel: true, cpuMs: (cmds) => (cmds[cmds.length - 1].command === 'solid.revolve' ? cost : 10000) });
     const seen = [];
-    const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, mt, runSC: (c, o) => { seen.push(o?.budgetS ?? null); return fake.runSC(c, o); }, topologyOf: fake.topologyOf, soups: {} };
+    const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, mt, runSC: (c, o) => { seen.push(o?.budgetS ?? null); return fake.runSC(c, o); }, topologyOf: fake.topologyOf, soups: {} };
     const r = await RGSET.translateDoc({ version: 1, features: feats }, ctx);
     assert.equal(r.features.find((f) => f.id === 'g1').status, built ? 'built' : 'refused', `a groove run of ${cost} ms`);
     assert.deepStrictEqual(seen.filter((s) => s !== null), [60]);

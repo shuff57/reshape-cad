@@ -26,7 +26,8 @@ import type { RunResult } from './types.js';
 import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
-import { OPEN_OUTLINE_GUARD } from './open-outline.js';
+import { motionRefusal } from './move-turn.js';
+import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { COST_BUDGET_S, guardPlan, onRefused, plainRefusal, plainRefusalCode, postCheck, rgView } from './revolve-groove-guard.js';
 import type { RGPlan, RGRefusal } from './revolve-groove-guard.js';
@@ -97,7 +98,7 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     st.refused[f.id] = plan.refusal;
     if (onRefused(rgView(f), st)) rs.chained[f.id] = true;
     const pr = plan as RGRefusal;
-    let code: string | undefined = pr.code ?? (pr.guard === OPEN_OUTLINE_GUARD ? pr.guard : undefined);
+    let code: string | undefined = pr.code ?? (isVerbatimGuard(pr.guard) ? pr.guard : undefined);
     if (!code && !own) { const m = DEP_REFUSED.exec(plan.refusal); if (m && rs.chained[m[1]]) code = 'RG-CHAIN'; } // a later feature on a part whose groove was refused
     note({ status: 'refused', refusal: plan.refusal, commands: [], ...(code ? { guard: code } : {}), ...(pr.rg ? { rg: pr.rg } : {}) });
     return;
@@ -120,6 +121,9 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { st.refused[f.id] = sv; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
+    if (mv) { st.refused[f.id] = mv.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     { const post = postCheck(f, st, m, new Set(ctx.guardsOff ?? [])); if (post) { lastErr = post; continue; } } // G5
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;

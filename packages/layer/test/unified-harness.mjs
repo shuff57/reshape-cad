@@ -66,6 +66,8 @@ const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
  * The check of a pull's built volume against its sketch (src/sketch-volume.ts) is OFF in these runs by default: the fake engine reports a pull's bounding-box volume, so the check
  * would refuse about a third of the pulls of the corpora (1031 of 2890 docs with a pull change) and everything built on them, and the invariants would compare far less. It binds in
  * every set alike (all of them call the same function), and test/sketch-volume.test.mjs pins it per set. UNIFIED_SKETCH_VOLUME=on runs the invariants with it ON.
+ * The same switch keeps the move-turn group's two checks after the build off (src/move-turn.ts: the rigid-motion invariant, a primitive's closed-form volume; the fake's
+ * volumes are not closed forms, and with them on 217683 of the binding refusals were MT-PRIMITIVE). Its refusals before the build (cut-head, cone chain) stay on.
  */
 export const SKETCH_VOLUME_ON = process.env.UNIFIED_SKETCH_VOLUME === 'on';
 export async function runSet(set, doc, cfg, fromUsage, extra = {}) {

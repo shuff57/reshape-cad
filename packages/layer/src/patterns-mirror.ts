@@ -26,7 +26,8 @@ import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, frameWithMt, resolveNamesFor } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
-import { OPEN_OUTLINE_GUARD } from './open-outline.js';
+import { motionRefusal } from './move-turn.js';
+import { isVerbatimGuard } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { outlineSize, taperFold } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
@@ -566,7 +567,7 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   const fctx: PlanCtx = { ...ctx, resolve: (name) => resolved.get(name) ?? null };
   let planned: Plan;
   try { planned = planFeature(f, st, fctx, PM_PLAN); } catch (e) { planned = refuse(`${f.id} (${f.kind}): translator error: ${(e as Error).message}`) as unknown as Plan; }
-  if ('refusal' in planned) { const pg = (planned as unknown as PMRefusal).guard; refusedNote(planned.refusal, pg === OPEN_OUTLINE_GUARD ? planned.refusal : undefined, [], pg); return; } // the open-outline sentence is kept as it is, as the sketch-volume one is
+  if ('refusal' in planned) { const pg = (planned as unknown as PMRefusal).guard; refusedNote(planned.refusal, isVerbatimGuard(pg) ? planned.refusal : undefined, [], pg); return; } // the open-outline and move-turn sentences are kept as they are, as the sketch-volume one is
   if ('noop' in planned) { note({ status: 'noop', commands: [] }); return; }
   const plan = planned as unknown as PMPlan; // named `plan` so that a malformed plan throws the same TypeError text as the original ('plan.produces is not iterable')
   // ---- patches 'snap' and 'web' for a cut: a tool almost on an earlier cut, a wall thinner than 1% of the part's diagonal
@@ -626,6 +627,9 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { refusedNote(sv, sv, variant, SKETCH_VOLUME_GUARD); return; }
+    // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
+    const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
+    if (mv) { refusedNote(mv.sentence, mv.sentence, variant, mv.guard); return; }
     // ---- fused guard: a mirror is defined as copy + fuse. When ONE body goes in and several come out, solid.mirror combine:true reported success but left the copy
     // as a separate body touching the original (measured: a spun washer mirrored across a flat end). Volume and bbox still agree with the oracles there.
     if (f.kind === 'mirror' && st.measure[g.target!]?.shells === 1 && (m.shells as number) > 1) {
