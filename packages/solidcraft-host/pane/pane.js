@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -539,7 +539,11 @@ async function run({ confirmed = false } = {}) {
     }
     const bad = validDoc(r.doc);
     if (bad) return failState(summary, 'refused', `REFUSED BEFORE BUILD: ${bad}`, 'Nothing was sent to solidcraft; your design is untouched.');
-    const doc = solveDoc(r.doc);
+    // solve, then the legacy rule guard (a rule the student wrote is never silently dropped) and G-FROM's input, from the doc (host-entry.mjs hostPrepare)
+    const prep = hostPrepare(r, { recorded: !fromExample });
+    Object.assign(summary, { warnings: prep.warnings, interpreterWarnings: r.warnings ?? [] });
+    if (prep.refusal) return failState(summary, 'refused', `REFUSED BEFORE BUILD: ${prep.refusal}`, 'Nothing was sent to solidcraft; your design is untouched.');
+    const doc = prep.doc;
     $('doc').textContent = JSON.stringify(doc.features, null, 1);
     status('waiting for solidcraft...');
     await waitForBridge();
@@ -560,7 +564,7 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, fromUsage: hostFromUsage(doc, { recorded: !fromExample }), topologyOf: (cmds) => bridge.topologyOf(cmds) });
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
     const fin = await runSC(tr.commands);
     keepNext = false;
@@ -576,7 +580,8 @@ async function run({ confirmed = false } = {}) {
     showSketches(rows);
     const v = verdict(ex, tr, fin, rows);
     $('verdict').className = v.cls; $('verdict').textContent = v.text;
-    $('verdict-detail').textContent = v.detail ?? '';
+    // the interpreter's warnings that still stand (a round cut down to fit, ...), verbatim, beside the verdict
+    $('verdict-detail').textContent = [v.detail, ...prep.warnings].filter(Boolean).join(' ');
     const failedCmd = refused.map((f) => f.failed).find(Boolean);
     showResult(fin, [
       ['bridge ok', String(fin.ok)],
@@ -593,6 +598,7 @@ async function run({ confirmed = false } = {}) {
       features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, pickedFrom: f.pickedFrom ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
       refusals: refused.map((f) => f.refusal), sketches: rows.map((x) => ({ sketch: x.id, state: x.label, status: x.status, dof: x.dof, failing: x.failing, redundant: x.redundant, resid: x.resid, worstRes: x.worstRes, profiles: x.profiles, rule: x.rule })),
       refusedCommand: failedCmd ?? null, commands: tr.commands.length,
+      warnings: prep.warnings, interpreterWarnings: r.warnings ?? [],
     };
     window.__lastRun = { tr, fin, doc, summary };
   } catch (e) {

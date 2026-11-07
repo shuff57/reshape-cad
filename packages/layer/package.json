@@ -30,6 +30,7 @@
     "./sketch-map": "./dist/sketch-map.js",
     "./resolve-names": "./dist/resolve-names.js",
     "./rule-check": "./dist/rule-check.js",
+    "./legacy-guard": "./dist/legacy-guard.js",
     "./types": "./dist/types.js"
   },
   "typesVersions": {

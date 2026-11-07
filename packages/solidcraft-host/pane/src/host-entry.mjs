@@ -13,6 +13,27 @@ import { extentAlong } from '../../../script/dist/model-types.js';
 // recorded: true for the doc the sandbox returned for the script that ran; false for any other doc (a ModelDoc example, translateRaw), where a draft with
 // no record is from-unknown and G-FROM checks every word a `from:` could have read its neutral from (never built unchecked).
 export const hostFromUsage = (doc, { recorded }) => fromUsageOfDoc(doc, { recorded, mt: { extentAlong } });
+
+// What pane.js run() does between the sandbox and the translator (DOF-1): solve the doc, then the legacy rule guard (packages/layer legacy-guard.ts, the
+// sketch-dof-diagnosis contract's guard). The interpreter settles each rule call by dropping an older rule when the new one does not fit, with no word, so the
+// settled doc can build a part that ignores a rule the student wrote (rect(40,30); length(1,20); length(2,15) built 40 x 15). The guard replays what was WRITTEN
+// from the runner's rule log: it builds a shape that holds every written rule (checked to 1e-9), or refuses the run in the contract's one sentence.
+// `r` is the runner's message { doc, warnings, ruleLog }; `recorded` as hostFromUsage (false: no script ran, the sketch's own rules are what was written).
+// Returns { refusal, warnings } or { doc, fromUsage, warnings }. `warnings` are the interpreter's warnings that still stand, verbatim: a rule warning
+// ("... cannot hold along with the rules already on this sketch ...") is about the settled doc the guard has replaced, so it no longer stands (contract
+// sketch-dof-diagnosis#15: its claim was false where the guard builds, and the refusal sentence replaces it where it does not).
+import { solveDoc as solveDocForHost } from '../../../script/dist/model-codegen.js';
+import { solveSketch, seedForNewRule } from '../../../sketch/dist/sketch-solve.js';
+import { guardLegacySketches } from '../../../layer/dist/index.js';
+const LEGACY_SOLVER = { solveSketch, seedForNewRule };
+export function hostPrepare(r, { recorded }) {
+  const log = recorded && Array.isArray(r.ruleLog) ? r.ruleLog : [];
+  const g = guardLegacySketches(r.doc, solveDocForHost(r.doc), log, LEGACY_SOLVER);
+  const ruleWarnings = new Set(log.map((e) => e?.warning).filter(Boolean));
+  const warnings = (Array.isArray(r.warnings) ? r.warnings : []).map(String).filter((w) => !ruleWarnings.has(w));
+  if (g.outcome === 'refused') return { refusal: g.sentence, warnings, sketches: g.sketches };
+  return { doc: g.doc, fromUsage: hostFromUsage(g.doc, { recorded }), warnings, sketches: g.sketches };
+}
 const layer = createTranslator({ planners: 'unified' });
 // The host's setting for the extrude-pocket group's join checks on every combine (packages/layer/NOTES.md, owner decision 2026-11-07):
 // 'full', so the inclusion-exclusion consistency check runs on every join. At the library default 'cheap' the unified set built 8 wrong

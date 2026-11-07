@@ -16,6 +16,10 @@ window.addEventListener('message', (e) => {
     source: 'reshape-result', runId: d.runId,
     errors: r.errors.map((x) => ({ message: String(x.message), line: x.line })),
     doc: r.errors.length ? null : r.doc,
+    // the interpreter's warnings (a round cut down to fit, a rule left fighting), verbatim, and its record of every rule call (the host's legacy rule guard
+    // replays what was WRITTEN from it, docs/spikes/solidcraft-referee/GUARD-SD5-DOF1.md)
+    warnings: (r.warnings ?? []).map(String),
+    ruleLog: r.errors.length ? [] : (r.ruleLog ?? []),
   }, '*');
 });
 window.parent.postMessage({ source: 'reshape-runner-ready' }, '*');

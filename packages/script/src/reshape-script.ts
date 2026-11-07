@@ -174,6 +174,27 @@ export interface RunResult {
    * before this field existed has to change.
    */
   warnings?: string[];
+  /**
+   * Every rule call that changed a sketch's rule list, in the order it ran
+   * (an identical repeat is not logged): the rules before it, the rule
+   * added, what addConstraintSettling dropped to make it fit, and the
+   * warning this call pushed, if any. It is the record of what the student
+   * WROTE, which the settled doc no longer shows once an older rule was
+   * dropped. Read by the host's legacy rule guard (packages/layer
+   * legacy-guard.ts, contract sketch-dof-diagnosis#8..#15). Optional so
+   * nothing that destructures RunResult has to change.
+   */
+  ruleLog?: RuleLogEntry[];
+}
+
+/** One applyConstraint call, see RunResult.ruleLog. */
+export interface RuleLogEntry {
+  sketchId: string;
+  existing: SketchConstraint[];
+  added: SketchConstraint;
+  removed: SketchConstraint | null;
+  removedAlso: SketchConstraint | null;
+  warning: string | null;
 }
 
 /**
@@ -719,6 +740,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   const usedParamNames = new Set<string>();
   // See applyConstraint()'s own comment and RunResult.warnings.
   const ruleWarnings: string[] = [];
+  const ruleLog: RuleLogEntry[] = [];
 
   const docNow = (): ModelDoc => ({ version: 1, features });
 
@@ -1231,6 +1253,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const next = [...base, added];
     const points = cur.points.map((p): [number, number] => [p[0], p[1]]);
     const result = addConstraintSettling(points, next);
+    const logged: RuleLogEntry = {
+      sketchId, existing: existing.map((c) => ({ ...c })), added: { ...added },
+      removed: result.removed ? { ...result.removed } : null, removedAlso: result.removedAlso ? { ...result.removedAlso } : null, warning: null,
+    };
+    ruleLog.push(logged);
     replaceFeature(sketchId, { ...cur, constraints: result.constraints });
     // result.removed === null covers TWO cases: the rule fit cleanly (fine,
     // nothing to say), or nothing removed made it fit (genuinely fighting).
@@ -1240,10 +1267,10 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       const seed = seedForNewRule(points, result.constraints);
       const solved = solveSketch(seed, result.constraints);
       if (solved.overConstrained || collapsedByRatio(points, solved.points)) {
-        ruleWarnings.push(
+        logged.warning =
           `${describeConstraint(added)} cannot hold along with the rules already on this sketch -- `
-            + `the shape is as close as it can get to all of them. Remove one to settle it.`
-        );
+            + `the shape is as close as it can get to all of them. Remove one to settle it.`;
+        ruleWarnings.push(logged.warning);
       }
     }
   }
@@ -3279,6 +3306,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   return {
     doc: finalDoc, params, namedParams: namedParamsOut, errors,
     ...(ruleWarnings.length > 0 ? { warnings: ruleWarnings } : {}),
+    ...(ruleLog.length > 0 ? { ruleLog } : {}),
   };
 }
 
