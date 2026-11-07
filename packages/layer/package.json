@@ -31,7 +31,8 @@
     "./resolve-names": "./dist/resolve-names.js",
     "./rule-check": "./dist/rule-check.js",
     "./legacy-guard": "./dist/legacy-guard.js",
-    "./types": "./dist/types.js"
+    "./types": "./dist/types.js",
+    "./surface-sketch": "./dist/surface-sketch.js"
   },
   "typesVersions": {
     "*": {

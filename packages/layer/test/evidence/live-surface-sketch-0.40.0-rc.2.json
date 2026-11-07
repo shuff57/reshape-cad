@@ -1,0 +1,998 @@
+{
+ "rig": "/home/shuff57/.cache/solidcraft-0.40.0-rc.2-rig/sc-referee-pkg-topology",
+ "tag": "0.40.0-rc.2",
+ "date": "2026-11-07T16:59:44.810Z",
+ "results": [
+  {
+   "name": "cylinder cut along view, rectangle 16 x 10, 1.5 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -233.6510053851905,
+    "surfaceArea": 159.99999999999875,
+    "stretch": 0,
+    "tiltDeg": 22.91831180523293,
+    "normalDepth": [
+     1.3815914910043277,
+     1.5
+    ],
+    "outlineLength": 51.99999166666646
+   },
+   "commands": 11,
+   "kernelMs": 389,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50031.83145257582,
+    "volumeDelta": -233.65100538266415,
+    "predicted": -233.6510053851905,
+    "relError": 1.0812488924175111e-11
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 1035
+  },
+  {
+   "name": "cylinder cut along view, rectangle turned 30 deg (helical sides)",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -125.24632851489172,
+    "surfaceArea": 127.99999999999909,
+    "stretch": 0,
+    "tiltDeg": 25.577418186492746,
+    "normalDepth": [
+     0.9020027530156605,
+     0.9999999171435222
+    ],
+    "outlineLength": 47.99999505208379
+   },
+   "commands": 11,
+   "kernelMs": 3188,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50140.23622581834,
+    "volumeDelta": -125.24623214013991,
+    "predicted": -125.24632851489172,
+    "relError": 7.69481652264358e-7
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3797
+  },
+  {
+   "name": "cylinder cut square to the surface, rectangle 16 x 10, 1.5 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -240.5593525858095,
+    "surfaceArea": 159.99999999999875,
+    "stretch": 0,
+    "tiltDeg": 22.91831180523293,
+    "normalDepth": [
+     1.5,
+     1.5
+    ],
+    "outlineLength": 51.99999166666646
+   },
+   "commands": 11,
+   "kernelMs": 437,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50024.92313679725,
+    "volumeDelta": -240.55932116122858,
+    "predicted": -240.5593525858095,
+    "relError": 1.3063129987335455e-7
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 1079
+  },
+  {
+   "name": "cylinder raise along view, slot 12 long r 3, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 97.32931481509098,
+    "surfaceArea": 100.27433387031728,
+    "stretch": 0,
+    "tiltDeg": 25.782803957892902,
+    "normalDepth": [
+     0.9004493556963084,
+     1
+    ],
+    "outlineLength": 42.84933083824778
+   },
+   "commands": 8,
+   "kernelMs": 3856,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50362.81094807256,
+    "volumeDelta": 97.32849011407961,
+    "predicted": 97.32931481509098,
+    "relError": 0.000008473305426371997
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 4437
+  },
+  {
+   "name": "cylinder raise square to the surface, circle r 5, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 78.50913596765284,
+    "surfaceArea": 78.53981633539996,
+    "stretch": 0,
+    "tiltDeg": 14.323944878270593,
+    "normalDepth": [
+     1,
+     1
+    ],
+    "outlineLength": 31.415792858572193
+   },
+   "commands": 8,
+   "kernelMs": 3013,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50343.991170337235,
+    "volumeDelta": 78.50871237875253,
+    "predicted": 78.50913596765284,
+    "relError": 0.000005395409019386808
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3615
+  },
+  {
+   "name": "cylinder cut, plate with a ring (circle inside a rectangle)",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -180.58856955062072,
+    "surfaceArea": 187.72566612981052,
+    "stretch": 0,
+    "tiltDeg": 25.78310078088705,
+    "normalDepth": [
+     0.9004471023526769,
+     1
+    ],
+    "outlineLength": 78.84932655079247
+   },
+   "commands": 12,
+   "kernelMs": 2294,
+   "measured": {
+    "volumeBefore": 50265.48245795848,
+    "volumeAfter": 50084.892813430546,
+    "volumeDelta": -180.5896445279359,
+    "predicted": -180.58856955062072,
+    "relError": 0.000005952632095404123
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2900
+  },
+  {
+   "name": "cylinder mark a circle r 5",
+   "expect": "built",
+   "prediction": {
+    "surfaceArea": 78.53981633539996,
+    "stretch": 0,
+    "tiltDeg": 14.323944878270593,
+    "outlineLength": 31.415792858572193
+   },
+   "commands": 5,
+   "kernelMs": 15066,
+   "measured": {
+    "markedEdges": 2112,
+    "markedLength": 31.415652807704863,
+    "predictedLength": 31.415792858572193,
+    "otherLengthBefore": 290.9214060895182,
+    "otherLengthAfter": 291.01939617038465
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 16719
+  },
+  {
+   "name": "cylinder mark an ellipse 7 x 4",
+   "expect": "built",
+   "prediction": {
+    "surfaceArea": 87.96459430060747,
+    "stretch": 0,
+    "tiltDeg": 20.053522829578817,
+    "outlineLength": 35.20314754219268
+   },
+   "commands": 5,
+   "kernelMs": 9491,
+   "outcome": "kernel-refused",
+   "sentence": "The outline for surface1 could not be built on this face, so the part is shown without it -- try a smaller or simpler outline.",
+   "kernelError": "solid.split_face: SMLib split face: SMLib's check refuses the result: 4 failed tests:\nSmTrimmingTools::Test #3 Loop Orientation: Face Loop has bad orientation [owner SmFace]\nSmTrimmingTools::Test #4 Loop Orientation: Face Loop has zero area [owner SmFace]\nSmTrimmingTools::Test #3 Loop Orientation: Face Loop has bad o",
+   "timedOut": false,
+   "pass": false,
+   "ms": 10084
+  },
+  {
+   "name": "cylinder mark a slot 10 long r 3 (pieces meet smoothly)",
+   "expect": "built",
+   "prediction": {
+    "surfaceArea": 88.27433387031728,
+    "stretch": 0,
+    "tiltDeg": 22.918014982238788,
+    "outlineLength": 38.849331879914374
+   },
+   "commands": 5,
+   "kernelMs": 33203,
+   "measured": {
+    "markedEdges": 3312,
+    "markedLength": 38.84906071676884,
+    "predictedLength": 38.849331879914374,
+    "otherLengthBefore": 290.9214060895182,
+    "otherLengthAfter": 291.01939617038465
+   },
+   "bodies": [
+    "c"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 35670
+  },
+  {
+   "name": "cylinder REFUSE: wraps 172 deg round",
+   "expect": "refused",
+   "outcome": "refused",
+   "sentence": "The sketch for surface1 wraps too far round the surface: it reaches 85.9 degrees round from where it is placed, more than 70 -- make it shorter round the surface.",
+   "pass": true,
+   "ms": 2
+  },
+  {
+   "name": "cylinder REFUSE: marking a rectangle",
+   "expect": "refused",
+   "outcome": "refused",
+   "sentence": "surface1 can only mark a smooth closed outline (a circle, an oval, a slot, a rectangle with rounded corners) on a curved face for now: an outline with sharp corners or loose ends would be carried on past them to the edge of the face. Cut or raise it instead, by a small depth.",
+   "pass": true,
+   "ms": 1
+  },
+  {
+   "name": "sphere cut along view, circle r 4, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -49.968318090224955,
+    "surfaceArea": 50.19082818180626,
+    "stretch": 0.0029604348528652347,
+    "tiltDeg": 7.639437268411002,
+    "normalDepth": [
+     0.9911242720341793,
+     0.9911242720341794
+    ],
+    "outlineLength": 25.05817709642752
+   },
+   "commands": 8,
+   "kernelMs": 3568,
+   "measured": {
+    "volumeBefore": 113097.33553530826,
+    "volumeAfter": 113047.36884544624,
+    "volumeDelta": -49.96668986201985,
+    "predicted": -49.968318090224955,
+    "relError": 0.00003258521133664241
+   },
+   "bodies": [
+    "b"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 4386
+  },
+  {
+   "name": "sphere raise square to the surface, circle r 5, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 78.33955210043094,
+    "surfaceArea": 78.35854490337348,
+    "stretch": 0.004623334364468268,
+    "tiltDeg": 9.549296585513723,
+    "normalDepth": [
+     1,
+     1
+    ],
+    "outlineLength": 31.2705542915334
+   },
+   "commands": 8,
+   "kernelMs": 4057,
+   "measured": {
+    "volumeBefore": 113097.33553530826,
+    "volumeAfter": 113175.67505512932,
+    "volumeDelta": 78.33951982106373,
+    "predicted": 78.33955210043094,
+    "relError": 4.120443165501748e-7
+   },
+   "bodies": [
+    "b"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 4906
+  },
+  {
+   "name": "sphere cut square to the surface, rectangle 6 x 4, 0.8 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -19.187125028172016,
+    "surfaceArea": 23.980747521390008,
+    "stretch": 0.002405754668826976,
+    "tiltDeg": 6.886095696736577,
+    "normalDepth": [
+     0.8,
+     0.8
+    ],
+    "outlineLength": 19.9777906872123
+   },
+   "commands": 11,
+   "kernelMs": 2813,
+   "measured": {
+    "volumeBefore": 113097.33553530826,
+    "volumeAfter": 113078.14967318374,
+    "volumeDelta": -19.18586212451919,
+    "predicted": -19.187125028172016,
+    "relError": 0.00006582036917837899
+   },
+   "bodies": [
+    "b"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3604
+  },
+  {
+   "name": "sphere raise along view, slot 6 long r 1.5 (stretch < 1%)",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 19.95669463548288,
+    "surfaceArea": 25.036739259084527,
+    "stretch": 0.0037455571203826032,
+    "tiltDeg": 8.594105854763303,
+    "normalDepth": [
+     0.7910174070808065,
+     0.7990002083159731
+    ],
+    "outlineLength": 21.39759906559768
+   },
+   "commands": 8,
+   "kernelMs": 4091,
+   "measured": {
+    "volumeBefore": 113097.33553530826,
+    "volumeAfter": 113117.29220124435,
+    "volumeDelta": 19.95666593608621,
+    "predicted": 19.95669463548288,
+    "relError": 0.000001438083670324518
+   },
+   "bodies": [
+    "b"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 4924
+  },
+  {
+   "name": "sphere mark a circle r 5",
+   "expect": "built",
+   "prediction": {
+    "surfaceArea": 78.35854490337348,
+    "stretch": 0.004623334364468268,
+    "tiltDeg": 9.549296585513723,
+    "outlineLength": 31.2705542915334
+   },
+   "commands": 5,
+   "kernelMs": 26909,
+   "measured": {
+    "markedEdges": 2112,
+    "markedLength": 31.270412297070248,
+    "predictedLength": 31.2705542915334,
+    "otherLengthBefore": 94.18673293115447,
+    "otherLengthAfter": 94.11156269527469
+   },
+   "bodies": [
+    "b"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 28918
+  },
+  {
+   "name": "sphere REFUSE: circle r 12 stretches 2.6%",
+   "expect": "refused",
+   "outcome": "refused",
+   "sentence": "The sketch for surface1 is too big for this sphere to hold without stretching: lengths across it would change by up to 2.6%, more than the 1% allowed -- make it smaller, place it nearer its middle, or allow more stretch.",
+   "pass": true,
+   "ms": 1
+  },
+  {
+   "name": "wavy cut along view, circle r 6, 1 deep",
+   "expect": "built",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "prediction": {
+    "volumeDelta": -102.55598187732892,
+    "surfaceArea": 113.13021409359905,
+    "stretch": 0.009464332214602855,
+    "tiltDeg": 27.25546356482827,
+    "normalDepth": [
+     0.8889734758716109,
+     0.9631937005001483
+    ],
+    "outlineLength": 37.68321142909139
+   },
+   "commands": 8,
+   "kernelMs": 5740,
+   "measured": {
+    "volumeBefore": 32870.502092905845,
+    "volumeAfter": 32767.947294991223,
+    "volumeDelta": -102.5547979146213,
+    "predicted": -102.55598187732892,
+    "relError": 0.000011544550458601335
+   },
+   "bodies": [
+    "w"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 8727
+  },
+  {
+   "name": "wavy raise along view, slot 10 long r 2.5, 1 high",
+   "expect": "built",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "prediction": {
+    "volumeDelta": 64.5209627400458,
+    "surfaceArea": 69.69688343044336,
+    "stretch": 0.003991719678081207,
+    "tiltDeg": 28.198807594028654,
+    "normalDepth": [
+     0.8813132863219564,
+     0.9684014217481935
+    ],
+    "outlineLength": 35.724177996047004
+   },
+   "commands": 8,
+   "kernelMs": 4313,
+   "measured": {
+    "volumeBefore": 32870.502092905845,
+    "volumeAfter": 32935.02225343893,
+    "volumeDelta": 64.52016053308762,
+    "predicted": 64.5209627400458,
+    "relError": 0.000012433276320072866
+   },
+   "bodies": [
+    "w"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 8834
+  },
+  {
+   "name": "wavy cut along view, rectangle 9 x 6 turned 20 deg, 0.8 deep",
+   "expect": "built",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "prediction": {
+    "volumeDelta": -38.66677593405555,
+    "surfaceArea": 53.98055986619235,
+    "stretch": 0.004211878183303819,
+    "tiltDeg": 28.18985136388604,
+    "normalDepth": [
+     0.7051097118344857,
+     0.7695312435431534
+    ],
+    "outlineLength": 29.98141920041327
+   },
+   "commands": 11,
+   "kernelMs": 2888,
+   "measured": {
+    "volumeBefore": 32870.502092905845,
+    "volumeAfter": 32831.835264718975,
+    "volumeDelta": -38.66682818686968,
+    "predicted": -38.66677593405555,
+    "relError": 0.0000013513620638560774
+   },
+   "bodies": [
+    "w"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 6444
+  },
+  {
+   "name": "wavy REFUSE: rectangle 14 x 8 stretches 2% on the waves",
+   "expect": "refused",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "outcome": "refused",
+   "sentence": "The sketch for surface1 is too big for this curved face to hold without stretching: lengths across it would change by up to 2%, more than the 1% allowed -- make it smaller, place it nearer its middle, or allow more stretch.",
+   "pass": true,
+   "ms": 2488
+  },
+  {
+   "name": "wavy rectangle 14 x 8 with 3% stretch allowed",
+   "expect": "built",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "prediction": {
+    "volumeDelta": -81.57386267285962,
+    "surfaceArea": 111.84398142254148,
+    "stretch": 0.019665541996895297,
+    "tiltDeg": 27.27071802884738,
+    "normalDepth": [
+     0.7110812137279519,
+     0.7913697495628064
+    ],
+    "outlineLength": 43.895118418000486
+   },
+   "commands": 11,
+   "kernelMs": 875,
+   "outcome": "kernel-refused",
+   "sentence": "The cut for surface1 could not be built on this face, so the part is shown without it -- try a smaller or simpler outline.",
+   "kernelError": "solid.extrude: body `surface1_prism`: the operation failed: SMLib: solidcore: flat arrays: a NURBS form that is not its analytic surface",
+   "timedOut": false,
+   "pass": false,
+   "ms": 4451
+  },
+  {
+   "name": "wavy REFUSE: runs off the face",
+   "expect": "refused",
+   "fit": {
+    "maxResidual": 0.001096010459540997,
+    "fitResidual": 0.00017640317085679258,
+    "holdoutResidual": 0.001096010459540997,
+    "rmsResidual": 0.000024319950344332182,
+    "samples": 6555,
+    "heldOut": 3716,
+    "faces": 10
+   },
+   "outcome": "refused",
+   "sentence": "The sketch for surface1 runs off the edge of the face it is on.",
+   "pass": true,
+   "ms": 2436
+  },
+  {
+   "name": "outside corner 45 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -30.055885913111105,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 67.50000000000001,
+    "normalDepth": [
+     0.38268343236508956,
+     0.3826834323650897
+    ],
+    "outlineLength": 31.415795919851217
+   },
+   "commands": 9,
+   "kernelMs": 2257,
+   "measured": {
+    "volumeBefore": 23058.874503045718,
+    "volumeAfter": 23028.81939120216,
+    "volumeDelta": -30.055111843557825,
+    "predicted": -30.055885913111105,
+    "relError": 0.000025754341612756486
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2883
+  },
+  {
+   "name": "outside corner 60 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -39.26990739985078,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 60.00000000000001,
+    "normalDepth": [
+     0.49999999999999994,
+     0.5
+    ],
+    "outlineLength": 31.415795919851224
+   },
+   "commands": 9,
+   "kernelMs": 2247,
+   "measured": {
+    "volumeBefore": 31794.228634059946,
+    "volumeAfter": 31754.959940919416,
+    "volumeDelta": -39.26869314052965,
+    "predicted": -39.26990739985078,
+    "relError": 0.00003092086031085099
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2871
+  },
+  {
+   "name": "outside corner 90 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -55.53603562637183,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 45.00000000000001,
+    "normalDepth": [
+     0.7071067811865475,
+     0.7071067811865476
+    ],
+    "outlineLength": 31.415795919851224
+   },
+   "commands": 9,
+   "kernelMs": 2336,
+   "measured": {
+    "volumeBefore": 48000,
+    "volumeAfter": 47944.465737858074,
+    "volumeDelta": -55.534262141925865,
+    "predicted": -55.53603562637183,
+    "relError": 0.000031933940295881055
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3058
+  },
+  {
+   "name": "outside corner 90 deg: raise a rectangle 12 x 8 across the edge, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 67.88225099390999,
+    "surfaceArea": 95.99999999999906,
+    "stretch": 0,
+    "tiltDeg": 45.00000000000001,
+    "normalDepth": [
+     0.7071067811865475,
+     0.7071067811865476
+    ],
+    "outlineLength": 39.99999999999969
+   },
+   "commands": 11,
+   "kernelMs": 233,
+   "measured": {
+    "volumeBefore": 48000,
+    "volumeAfter": 48067.88225099391,
+    "volumeDelta": 67.88225099391275,
+    "predicted": 67.88225099390999,
+    "relError": 4.061305826461946e-14
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 851
+  },
+  {
+   "name": "outside corner 120 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -68.01747480703497,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 30.000000000000004,
+    "normalDepth": [
+     0.8660254037844386,
+     0.8660254037844386
+    ],
+    "outlineLength": 31.415795919851217
+   },
+   "commands": 9,
+   "kernelMs": 2414,
+   "measured": {
+    "volumeBefore": 64205.771365940054,
+    "volumeAfter": 64137.75592811575,
+    "volumeDelta": -68.01543782430235,
+    "predicted": -68.01747480703497,
+    "relError": 0.000029947932327657144
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3090
+  },
+  {
+   "name": "outside corner 120 deg: raise a rectangle 12 x 8 across the edge, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 83.1384387633066,
+    "surfaceArea": 95.99999999999906,
+    "stretch": 0,
+    "tiltDeg": 30.000000000000004,
+    "normalDepth": [
+     0.8660254037844386,
+     0.8660254037844386
+    ],
+    "outlineLength": 39.9999999999997
+   },
+   "commands": 11,
+   "kernelMs": 286,
+   "measured": {
+    "volumeBefore": 64205.771365940054,
+    "volumeAfter": 64288.909804703355,
+    "volumeDelta": 83.13843876330066,
+    "predicted": 83.1384387633066,
+    "relError": 7.144874692518445e-14
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 958
+  },
+  {
+   "name": "outside corner 150 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -75.863635486061,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 14.999999999999996,
+    "normalDepth": [
+     0.9659258262890683,
+     0.9659258262890683
+    ],
+    "outlineLength": 31.415795919851224
+   },
+   "commands": 9,
+   "kernelMs": 2487,
+   "measured": {
+    "volumeBefore": 81774.99074759311,
+    "volumeAfter": 81699.1292315525,
+    "volumeDelta": -75.86151604060433,
+    "predicted": -75.863635486061,
+    "relError": 0.000027937567756827436
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3142
+  },
+  {
+   "name": "inside corner 90 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -55.53603562637181,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 45.00000000000001,
+    "normalDepth": [
+     0.7071067811865475,
+     0.7071067811865476
+    ],
+    "outlineLength": 31.415795919851224
+   },
+   "commands": 9,
+   "kernelMs": 2287,
+   "measured": {
+    "volumeBefore": 54000,
+    "volumeAfter": 53944.465737530125,
+    "volumeDelta": -55.5342624698751,
+    "predicted": -55.53603562637181,
+    "relError": 0.000031928035134519504
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2881
+  },
+  {
+   "name": "inside corner 120 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -68.01747480703496,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 30.000000000000004,
+    "normalDepth": [
+     0.8660254037844386,
+     0.8660254037844386
+    ],
+    "outlineLength": 31.415795919851217
+   },
+   "commands": 9,
+   "kernelMs": 2388,
+   "measured": {
+    "volumeBefore": 65737.97632095823,
+    "volumeAfter": 65669.9608830977,
+    "volumeDelta": -68.01543786053662,
+    "predicted": -68.01747480703496,
+    "relError": 0.00002994739960745205
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3054
+  },
+  {
+   "name": "inside corner 120 deg: raise a slot across the edge, 1 high",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": 51.64538517843356,
+    "surfaceArea": 59.634954067886376,
+    "stretch": 0,
+    "tiltDeg": 30.000000000000004,
+    "normalDepth": [
+     0.8660254037844386,
+     0.8660254037844386
+    ],
+    "outlineLength": 31.707704510976807
+   },
+   "commands": 8,
+   "kernelMs": 2358,
+   "measured": {
+    "volumeBefore": 65737.97632095823,
+    "volumeAfter": 65789.62230159067,
+    "volumeDelta": 51.64598063244193,
+    "predicted": 51.64538517843356,
+    "relError": 0.000011529665357690164
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2950
+  },
+  {
+   "name": "inside corner 150 deg: cut a circle r 5 across the edge, 1 deep",
+   "expect": "built",
+   "prediction": {
+    "volumeDelta": -75.8636354860611,
+    "surfaceArea": 78.53981633540039,
+    "stretch": 0,
+    "tiltDeg": 14.999999999999996,
+    "normalDepth": [
+     0.9659258262890683,
+     0.9659258262890683
+    ],
+    "outlineLength": 31.415795919851224
+   },
+   "commands": 9,
+   "kernelMs": 2385,
+   "measured": {
+    "volumeBefore": 61130.2811663715,
+    "volumeAfter": 61054.41965032357,
+    "volumeDelta": -75.86151604792394,
+    "predicted": -75.8636354860611,
+    "relError": 0.000027937471274318527
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 2978
+  },
+  {
+   "name": "outside corner 90 deg: mark a circle r 3 on one face",
+   "expect": "built",
+   "prediction": {
+    "surfaceArea": 28.27433387018921,
+    "stretch": 0,
+    "tiltDeg": 0,
+    "outlineLength": 18.849337766418913
+   },
+   "commands": 4,
+   "kernelMs": 2051,
+   "measured": {
+    "markedEdges": 1512,
+    "markedLength": 18.849118451979912,
+    "predictedLength": 18.849337766418913,
+    "otherLengthBefore": 440,
+    "otherLengthAfter": 440
+   },
+   "bodies": [
+    "k"
+   ],
+   "closed": true,
+   "outcome": "built",
+   "pass": true,
+   "ms": 3423
+  },
+  {
+   "name": "outside corner 30 deg REFUSE: too sharp for one view",
+   "expect": "refused",
+   "outcome": "refused",
+   "sentence": "The corner under surface1 is too sharp to work across in one go: its faces turn 75 degrees away from the view, more than 70 -- split the sketch so each part stays on one face.",
+   "pass": true,
+   "ms": 2
+  }
+ ]
+}
