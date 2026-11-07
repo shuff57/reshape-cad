@@ -40,6 +40,7 @@ import { sampleOutline } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
 import { orient } from './booleans-slow.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { SketchRead, SlowFeat } from './booleans-slow.js';
 import { BUDGET_S, SENTENCES, afterCombine, describe, guardCombine, plainPieces, plainSentence, reusedTools } from './booleans-guard.js';
 import type { CombineView, GuardHit } from './booleans-guard.js';
@@ -326,7 +327,11 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
       try { bad = await verifyUnion(f, mE, plan.r3!.groups.flat(), { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks: [], scene: st.scene! }, epJoinLevel(st, ctx) === 'full'); } catch (e) { lastErr = `undefined: WASM TRAP: ${(e as Error).message}`; afterGuard = 'EP-JOIN'; continue; }
       if (bad) { lastErr = bad; afterGuard = 'EP-JOIN'; epFinal = true; continue; }
     }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
+    if (pc) { st.refused[f.id] = pc; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of (env.profile.members ?? [env.profile])) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies;

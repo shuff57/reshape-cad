@@ -198,8 +198,8 @@ function finiteTool(o: OptionPlan): OptionPlan {
   return { ...o, through: false, up: o.sgn > 0 ? 0 : ext, down: o.sgn > 0 ? ext : 0, span: ext, back: 0, slant: o.slant && { ...o.slant, alongNormal: true } };
 }
 
-type Sweep = { refusal: string } | { cmds: Cmd[]; ntool?: number };
-type Body = Record<string, unknown>;
+export type Sweep = { refusal: string } | { cmds: Cmd[]; ntool?: number };
+export type Body = Record<string, unknown>;
 type SketchPart = Exclude<InSketch, { refusal: string }>;
 
 /** The solidcraft commands for one planned pull/pocket. body = {operation, body_name|targets}. */
@@ -367,7 +367,7 @@ async function verifyPull(f: Feature, m: Aggregate, sk: SketchFeature, ctx: Tran
 
 const total = (res: { measure?: { bodies: Array<{ volume_mm3: number }> } }) => res.measure!.bodies.reduce((a, b) => a + b.volume_mm3, 0);
 
-interface Tool {
+export interface Tool {
   pieces: string[];
   build(body: Body, only?: number): Sweep;
   extents?: Extents | null;
@@ -386,6 +386,17 @@ async function verifyPocket(f: Feature, m: Aggregate, before: Aggregate | undefi
     const nf = nearFlush(tool.extents, bboxInFrame(before.bbox, tool.opt!), before.curved ? CURVED_BBOX_SLOP : FLUSH_NOISE);
     if (nf) return `${f.id}: the cut stops ${+nf.gap.toPrecision(2)} mm short of a face of the part, closer than the ${NEAR_FLUSH} mm this app can check reliably (SolidCraft can silently lose a sliver that thin), so it is refused; make the cut reach the face, or leave at least 0.001 mm`;
   }
+  const cc = await cutConsistency(f, m, before, env, tool);
+  if (cc.refusal) return cc.refusal;
+  return curvedAccuracy(f, m, sk, ctx, Math.max(cc.removed, 0));
+}
+
+/**
+ * The group's cut-consistency check, taken out of verifyPocket unchanged so the planner sets that have no after-the-build checks can run it on a pocket too
+ * (pocket-cut.ts; docs/spikes/solidcraft-referee/GUARD-SKETCH-VOLUME.md, "The pocket"). `m` and `before` are the measures of the cut part after and before
+ * (pieces counted), `env.scene` the bodies before. `refusal` is the group's shipped sentence when the two disagree; `removed` is what the tool takes out.
+ */
+export async function cutConsistency(f: Feature, m: Aggregate, before: Aggregate, env: VerifyEnv, tool: Pick<Tool, 'pieces' | 'build'>): Promise<{ refusal: string | null; removed: number }> {
   // consistency: V_before - V_after must equal what the tool removes, measured separately as (tool INTERSECT piece), one scratch session per piece.
   const sceneTotal = env.scene.reduce((a, b) => a + b.vol, 0);
   const sceneExact = (n: string) => env.scene.find((b) => b.name === n)?.vol ?? 0;
@@ -409,8 +420,8 @@ async function verifyPocket(f: Feature, m: Aggregate, before: Aggregate | undefi
   const tol = curvedPart ? CURVED_BAR * Math.max(before.volume, 1) : 1e-9 * Math.max(before.volume, 1);
   const dev = m.volume - (before.volume - removed);
   env.checks.push({ check: 'cut-consistency', removedByTool: removed, devMm3: dev, tolMm3: tol, inconclusive });
-  if (!inconclusive && Math.abs(dev) > tol) return `${f.id}: the cut and the volume the sketch should remove do not add up (${Math.abs(dev) < 0.01 ? dev.toExponential(1) : +dev.toFixed(3)} mm3 apart); a wall or sliver thinner than about 0.3% of the part's size is the usual cause, so it is refused rather than losing it silently; leave a thicker wall or cut in one go`;
-  return curvedAccuracy(f, m, sk, ctx, Math.max(removed, 0));
+  if (!inconclusive && Math.abs(dev) > tol) return { refusal: `${f.id}: the cut and the volume the sketch should remove do not add up (${Math.abs(dev) < 0.01 ? dev.toExponential(1) : +dev.toFixed(3)} mm3 apart); a wall or sliver thinner than about 0.3% of the part's size is the usual cause, so it is refused rather than losing it silently; leave a thicker wall or cut in one go`, removed };
+  return { refusal: null, removed };
 }
 
 // ---- a join whose parts only touch along a line or at a point -------------------------------------------------------------------------

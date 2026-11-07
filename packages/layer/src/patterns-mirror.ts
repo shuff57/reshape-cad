@@ -25,6 +25,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, frameWithMt, resolveNamesFor } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { outlineSize, taperFold } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
@@ -761,7 +762,11 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
         }
       }
     }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, callSC) : null;
+    if (pc) { refusedNote(pc, pc, variant, POCKET_CUT_GUARD); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     if (plan.mirrorAt) pm.mirrorAt[f.id] = plan.mirrorAt;
     pm.produced = plan.produces;
     for (const mp of membersOf0(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });

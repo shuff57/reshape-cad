@@ -35,4 +35,5 @@ export type { RGInfo, RGRefusal, RGPlan, CostFeatures, ProfileInfo as RGProfileI
 export { FC_PROFILE, FC_KINDS, FC_CROSS_KIND_GUARDS, FC_PRIMITIVES, fcStep, fcCode, refusalSentence as fcRefusalSentence, fcGuard, fcSentences } from './fillet-chamfer.js';
 export type { FCState } from './fillet-chamfer.js';
 export { RECONCILE_TOL, SKETCH_VOLUME_GUARD, sketchArea, soupArea, outlineArea, pullLength, reconcilePull, reconcileSentence, sketchVolumeRefusal } from './sketch-volume.js';
+export { POCKET_CUT_GUARD, pocketCutRefusal } from './pocket-cut.js';
 export type { SketchArea } from './sketch-volume.js';

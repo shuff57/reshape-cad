@@ -122,8 +122,9 @@ export interface TranslateCtx {
   skipVerify?: boolean;
   unguardedSlant?: boolean;
   /**
-   * Every set: switch OFF the check of a pull's built volume and pieces against its sketch (sketch-volume.ts). For the fake engines of the differential tests only,
-   * which report a bounding-box volume for a pull (and the originals they are compared with have no such check). Never set in production.
+   * Every set: switch OFF the check of a pull's built volume and pieces against its sketch (sketch-volume.ts), and in the seven sets that have no after-the-build
+   * check of a pocket (all but 'extrude-pocket' and 'unified') the extrude-pocket group's cut-consistency check of a pocket (pocket-cut.ts). For the fake engines of
+   * the differential tests only, which report bounding-box volumes (and the originals they are compared with have neither check). Never set in production.
    */
   skipSketchVolume?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */

@@ -25,6 +25,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { RunResult } from './types.js';
 import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { COST_BUDGET_S, guardPlan, onRefused, plainRefusal, plainRefusalCode, postCheck, rgView } from './revolve-groove-guard.js';
 import type { RGPlan, RGRefusal } from './revolve-groove-guard.js';
@@ -119,7 +120,11 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { st.refused[f.id] = sv; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     { const post = postCheck(f, st, m, new Set(ctx.guardsOff ?? [])); if (post) { lastErr = post; continue; } } // G5
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
+    if (pc) { st.refused[f.id] = pc; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies;

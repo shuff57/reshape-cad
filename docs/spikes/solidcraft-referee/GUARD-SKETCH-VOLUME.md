@@ -124,3 +124,78 @@ The pull check makes no claim about a pocket. A pocket check in those seven sets
 - (b) a new sentence for a pocket whose tool lies inside the part. Proposed, NOT applied: `Cutting ${sketch-part} ${fmt(D)} mm deep should remove about ${fmt(want)} mm3 (its area ${fmt(area)} mm2 times the depth), but the 3D build removed ${fmt(diff)} mm3 ${more|less}, so it was not cut; a thin wall or a very small gap between shapes is the usual cause, so make the walls thicker or draw the shapes on separate sketches.`
 
 `unified` (the host's set) is not affected: it refuses this pocket today.
+
+## The pocket: option (a), applied (2026-11-06)
+
+The owner chose (a): the seven sets that had no after-the-build pocket check (`base`, `holes`, `shell-draft`, `patterns-mirror`, `booleans`, `revolve-groove`,
+`fillet-chamfer`) now run the extrude-pocket group's **existing** cut-consistency check, with its **shipped sentence verbatim**. No text is new. Logs:
+`~/.cache/solidcraft-0.21.0-rig/next-loop/logs/gsp-*`, same rig (0.21.0 corrected, under `rig.lock`).
+
+**What.**
+
+- `extrude-pocket.ts`: the consistency block of `verifyPocket` is moved, unchanged, into an exported `cutConsistency(f, m, before, env, tool)`, and `verifyPocket` calls it.
+  The sentence line is byte-identical (the diff only wraps it in `{ refusal: ..., removed }`). `extrude-pocket` and `unified` behave exactly as before (replay below).
+- `pocket-cut.ts`, `pocketCutRefusal`. After a pocket's engine run succeeds and the set's own checks pass, just before the pocket is accepted:
+  - it takes the pocket's own commands, turns the `solid.extrude` cut into a new body `tmp_tool_<id>`, and intersects that body with the part in one scratch run;
+  - it calls `cutConsistency` on that result;
+  - the scene before the pocket is the reply of the last accepted run. Each of the eight accept sites records it (`rememberRun`), so **the cost is one extra engine
+    run per pocket** (pinned by a test). If a site's record does not match, `accepted` is measured afresh.
+  - The scratch run goes through the step's own run function: the holes `runB` (`replay: false`, as its probes do), the patterns-mirror `callSC` (its budget),
+    and `ctx.runSC` everywhere else. No kernel is named.
+- Called from: `genericStep`, only when the owning profile does not verify (that is `base`; `extrude-pocket` verifies and already runs the check), and from the
+  six group steps. `unified` sends every pocket it builds to the extrude-pocket loop. The pockets it routes to a group step (a patterns-mirror cut guard, G-VOID) are
+  refused before any engine run, so `unified` makes no new call (invariant 2 below).
+- The note carries guard code `POCKET-CUT`. That is a code, not text; the extrude-pocket group's own note stays without one, as before.
+- **Only the cut-consistency check is reused.** The group's "does not touch the part", "sealed cavity", "stops ... short of a face" and curved-accuracy checks
+  are not given to the seven sets, because each has its own sentence.
+- **Inconclusive means accepted, as in the group:** a scratch run that fails, or a pocket whose cut is not one `solid.extrude`. One difference: here a scratch run
+  that throws is also inconclusive, where the extrude-pocket loop lets a throw inside `plan.verify` reject the whole translation.
+- **Switch:** `ctx.skipSketchVolume` now turns off both post-build sketch checks (the pull volume and this pocket check). The differential tests already set it.
+  `unified-harness.mjs` still defaults to off, and `UNIFIED_SKETCH_VOLUME=on` runs both checks on. Documented in `types.ts`.
+
+**Pocket sweep** (`test/live-sketch-volume.mjs --pocket`, `gsp-pocket.{log,json}`). The probe: `box(60, 50, 20, { at: [0, 0, 10] })` (z 0..20; a plain
+`box(60, 50, 20)` is centred, so the pocket would cut air), `sketch('top', 20)`, `rect(40, 30)`, `chamfer(1, d)`, `pocket(sk, b, 5)`. Closed form, OCCT and brep-rs
+agree to 1e-15 at every d.
+
+| d | the seven sets, before | the seven sets, after | extrude-pocket, unified |
+|---|---|---|---|
+| 5e-5 | built 53999.99875, 2.3e-8 off | **refused, POCKET-CUT**: `pocket1: the cut and the volume the sketch should remove do not add up (-2.5e-3 mm3 apart); ...` | refused (outline touches), unchanged |
+| 1e-4 | built 53999.99750, 4.6e-8 off | **refused, POCKET-CUT**: `pocket1: the cut and the volume the sketch should remove do not add up (-5.0e-3 mm3 apart); ...` | refused, the same sentence, unchanged |
+| 1.2e-4 | built, 1.3e-16 off | built, unchanged | built, unchanged |
+
+Totals: 27 runs, **0 built wrong**, 14 wrong pockets now refused (2 d x 7 sets), 9 built exact, 0 exact pockets refused. On the same kernel, the tool built
+on its own comes out 2.5e-3 and 5.0e-3 mm3 smaller than what the cut removed (the cut takes too much, the lone tool too little). That disagreement is what the
+check sees.
+
+**Multi-shape pocket probe** (`gsp-multipocket.log`, a scratch script). Two rects in one sketch, pocketed: 59000, exact, in all nine sets. A 40 x 40 rect with a
+d20 circle island, pocketed 5: 65570.535 in all nine sets, 4.0e-6 off the closed form, OCCT and brep-rs. That is inside the curved bar of 3e-4 and unchanged by
+this commit. No wrong pocket found.
+
+**Sketch-geometry corpus.**
+- Through `unified` (`--corpus`, `gsp-sg-unified.{log,json}`): **1118 of 1118 rows identical** to `gsv-sg-final.json` (40 newly refused by SKETCH-VOLUME, 3 built
+  wrong, the same three as above). **0 new refusals, 0 new built-wrong.**
+- Through the seven sets (`--corpus --sets=...`, a new option that also compares docs with a pocket and no pull and scores pockets; `gsp-sg-seven.{log,json}`):
+  **0 POCKET-CUT refusals, and 0 pockets change status in any set.** No wrong pocket is built.
+- **A finding outside this change, for the owner.** The seven sets still build **wrong pulls**: 36 each in base, holes, shell-draft, booleans and fillet-chamfer, and 7 each
+  in patterns-mirror and revolve-groove. The pull check (SKETCH-VOLUME) misses them, and `unified` refuses or builds them right.
+  - Most are sketches with several shapes, where the build equals one shape's area times the length: `multi-apart-rects` 1000 against 2000, `fc-two-disjoint-rects-one-sketch`
+    6000 against 12000, `tw-3level-thin` 4640 against 20640. The check's area comes from the same outline the set pulls, so it agrees with the wrong build.
+  - The rest are bowties (`a5-A-bowtie`, `poly-bowtie`), the two underdetermined soups, and `frame-u-length-9e-7`. The 7 in patterns-mirror and revolve-groove are this group.
+  - This was measured with the harness's `soups: {}`. What a host passes as `ctx.soups` to these sets was not checked.
+  - These are pulls, not pockets. This commit does not touch how a pull is planned or checked, and no POCKET-CUT fired anywhere in the corpus, so they are not caused by it. A run of the seven sets at 40af01fe was not made. Not fixed here.
+
+**Extrude-pocket live replay** (`gsp-epreplay.{log,json}`): **466 identical, 0 differ, 0 new refusals.** Built-wrong rescored by
+`contract/extrude-pocket-measure.mjs` on this tree (`gsp-epmeasure/`): the contract route, identical to the layer on every case, has **308 built, all PASS, 158 refused, 0 WRONG**. Every verdict and volume is the same as in `gsv-epmeasure`.
+
+**Tests.**
+- `packages/layer/test/pocket-cut.test.mjs` (fake engine, 4 tests):
+  - at 1e-4 and 5e-5 the seven sets refuse the pocket with the exact sentence and guard `POCKET-CUT`, using the volumes measured live; at 1.2e-4 all nine sets build it;
+  - the sentence is the one `extrude-pocket` and `unified` give on the same doc and engine (their notes unchanged);
+  - exactly one extra engine run per pocket, and `ctx.skipSketchVolume` turns it off;
+  - a failed or throwing scratch run is inconclusive and accepted.
+- `unified.test.mjs`, check off (default, `gsp-unified-off.log`) and on (`UNIFIED_SKETCH_VOLUME=on`, `gsp-unified-on.log`): 9/9 pass both times.
+  - Invariant 1: 0 violations (157352 and 156329 binding refusals compared).
+  - Invariant 2: 71463 runs equal, 0 differ.
+  - The sentence lint finds 0 sentences worse.
+  - With the check on, the seven sets' POCKET-CUT refusals are refusals of a kind those sets do not own, so they do not bind unified (the harness's stand-in rule).
+- Root `npm test` (`gsp-npmtest.log`): **891 pass / 897, 0 fail**. The 6 skipped are the script package's existing skips. The layer suite is 132/132 (128 + the 4 new tests).

@@ -18,6 +18,7 @@ import { mapSketch } from './sketch-map.js';
 import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
@@ -804,7 +805,11 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { verifyRefusal = sv; verifyGuard = SKETCH_VOLUME_GUARD; lastErr = null; continue; }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = !profile.verifies && f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
+    if (pc) { verifyRefusal = pc; verifyGuard = POCKET_CUT_GUARD; lastErr = null; continue; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies;

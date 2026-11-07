@@ -22,6 +22,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './translate.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 
 const AXI: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -1098,7 +1099,11 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
       note({ status: 'refused', refusal: s, guard: bad.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox, com: m.com }, commands: variant });
       return;
     }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces!, ctx.runSC) : null;
+    if (pc) { st.refused[f.id] = pc; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies; st.measure[f.id] = m;

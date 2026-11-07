@@ -17,6 +17,7 @@ import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './transla
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 import { removedVolume, holeProfile } from './holes-volume.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { VolTool } from './holes-volume.js';
 
 /** the fields of a hole feature the guards read (loose on purpose: a malformed doc fails the same way) */
@@ -314,7 +315,11 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       const prev = hs.chain[h];
       hs.chain[f.id] = prev ?? { baseIdx: plan.baseIdx!, baseMeasure: st.measure[h] ?? st.measure[(f as unknown as HoleView).target] };
     }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pc = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces!, (c) => runB(c, { replay: false })) : null;
+    if (pc) { st.refused[f.id] = pc; note({ status: 'refused', refusal: pc, guard: POCKET_CUT_GUARD, commands: variant }); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, null, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies; st.measure[f.id] = m;

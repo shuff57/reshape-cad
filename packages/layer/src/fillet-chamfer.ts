@@ -31,6 +31,7 @@ import { BASE_PROFILE, aggregate, confirmOnTarget, makeEnv, planFeature, refuse,
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, ShapeCache, TranslateState } from './translate.js';
 import { resolveName } from './resolve-names.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
+import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import type { EdgeRes, Resolved } from './resolve-names.js';
 import { guardBatch, guardBlend, guardPrimitiveRound, guardShellRim, postCheck } from './fc-guard.js';
 import type { BlendStyle, FcBad, FcTopo, RimFeature, RoundFeature } from './fc-guard.js';
@@ -191,7 +192,11 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
       const pc = faceCheck(gv, f.kind === 'fillet' ? st.measure[headId(st, fv.target!)]?.faces : undefined, m.faces);
       if (pc) { refused(`${f.id} (${f.kind}): GUARD ${pc.code}`, { commands: variant, verdict: pc, measureRefused: m }); return; }
     }
+    // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
+    const pcut = f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
+    if (pcut) { st.refused[f.id] = pcut; note({ status: 'refused', refusal: pcut, guard: POCKET_CUT_GUARD, commands: variant }); return; }
     accepted.push(...variant);
+    rememberRun(accepted, res);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
     st.accLen[f.id] = accepted.length;
     st.bodies[f.id] = m.bodies;
@@ -281,6 +286,7 @@ async function translateGroup(run: Feature[], prefix: Feature[], env: LoopEnv): 
     }
     const mm = m2!;
     accepted.push(cmd);
+    rememberRun(accepted, res!);
     members.forEach((i, k) => {
       const m = run[i];
       for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res!, mm, plan, { f: m, ctx });
