@@ -6,6 +6,7 @@ export type { Translator, TranslatorOptions, PlannerSet } from './translator.js'
 export { EXTRUDE_POCKET_PROFILE, plainKernelSentence, boxContact, JOIN_TOUCH_SENTENCE } from './extrude-pocket.js';
 export * as outlineGuard from './outline-guard.js';
 export * as soupRegions from './soup-regions.js';
+export * as surfaceSketch from './surface-sketch.js';
 export { mapSketch, docProfileIndices, extrudeCommands, frameOf } from './sketch-map.js';
 export type { MapResult, RuleRow, SketchInput } from './sketch-map.js';
 export { resolveName, pickPoint, nameText } from './resolve-names.js';
