@@ -16,6 +16,7 @@ import type { Cmd, RunResult, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 import { removedVolume, holeProfile } from './holes-volume.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { VolTool } from './holes-volume.js';
 
 /** the fields of a hole feature the guards read (loose on purpose: a malformed doc fails the same way) */
@@ -296,6 +297,9 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
     const m = aggregateOf(res, plan.produces!);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces!.join(', ')} came back`; continue; }
     const allBodies: BodyRow[] = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces!) : null;
+    if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     if (plan.post) {
       const before = st.measure[headOf((f as unknown as HoleView).target)] ?? st.measure[(f as unknown as HoleView).target];
       const bad = plan.post(m, before, { allBodies, allCountBefore: hs.allCount, accepted, variant, off });

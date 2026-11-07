@@ -21,6 +21,7 @@
 import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, resolveNamesFor, membersOf } from './translate.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 
 const AXI: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -1087,6 +1088,9 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregateOf(res, plan.produces!);
     if (!m) { lastErr = `no body named ${plan.produces!.join(', ')} came back`; continue; }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces!) : null;
+    if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     const bad = await plan.post?.(m, st.measure[headOf(fv.target!)] ?? st.measure[fv.target!], { accepted: [...accepted], variant, runSC: ctx.runSC });
     if (bad) {
       const s = sanitize(bad.refusal, byId);

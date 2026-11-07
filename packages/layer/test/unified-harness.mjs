@@ -62,9 +62,15 @@ export const CONFIGS = [
 export const EP_JOIN_LEVEL = process.env.UNIFIED_EP_JOIN ?? 'cheap';
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 /** One run of one set on one doc on a fresh fake engine: { result (no _state), error, log }. */
+/**
+ * The check of a pull's built volume against its sketch (src/sketch-volume.ts) is OFF in these runs by default: the fake engine reports a pull's bounding-box volume, so the check
+ * would refuse about a third of the pulls of the corpora (1031 of 2890 docs with a pull change) and everything built on them, and the invariants would compare far less. It binds in
+ * every set alike (all of them call the same function), and test/sketch-volume.test.mjs pins it per set. UNIFIED_SKETCH_VOLUME=on runs the invariants with it ON.
+ */
+export const SKETCH_VOLUME_ON = process.env.UNIFIED_SKETCH_VOLUME === 'on';
 export async function runSet(set, doc, cfg, fromUsage, extra = {}) {
   const fake = makeFake({ ...cfg.fake });
-  const ctx = { arc: lib.arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...(set === 'unified' ? { unifiedEpJoinChecks: EP_JOIN_LEVEL } : {}), ...extra };
+  const ctx = { arc: lib.arc, ...(SKETCH_VOLUME_ON ? {} : { skipSketchVolume: true }), runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt: lib.mt } : {}), ...(cfg.resolver ? { resolveAt: cfg.resolver } : {}), ...(fromUsage ? { fromUsage } : {}), ...(set === 'unified' ? { unifiedEpJoinChecks: EP_JOIN_LEVEL } : {}), ...extra };
   let result; let error = null;
   // the patterns-mirror set notes the wall milliseconds of the run that built a feature; a fixed clock keeps two runs of the same doc comparable
   const realNow = Date.now; Date.now = () => 0;

@@ -39,6 +39,7 @@ import { joinPreflight, verifyUnion } from './extrude-pocket.js';
 import { sampleOutline } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
 import { orient } from './booleans-slow.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { SketchRead, SlowFeat } from './booleans-slow.js';
 import { BUDGET_S, SENTENCES, afterCombine, describe, guardCombine, plainPieces, plainSentence, reusedTools } from './booleans-guard.js';
 import type { CombineView, GuardHit } from './booleans-guard.js';
@@ -314,6 +315,9 @@ export async function boolStep(f: Feature, idx: number, env: LoopEnv): Promise<v
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregate(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
+    if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     if (combine) { const bad = afterCombine(f as unknown as CombineView, m, plan.before, plan.boxes); if (bad) { lastErr = bad.sentence; afterGuard = bad.code; continue; } } // BOOLEANS-GUARD (G4b, G19, G21): after-check
     if (combine && BFV(f).op === 'union' && epJoinLevel(st, ctx) !== 'off') { // the extrude-pocket group's join checks after the build (unified set only)
       const mE = aggregate(res, plan.produces, true) ?? m;

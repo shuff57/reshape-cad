@@ -89,7 +89,7 @@ async function runOrig(item, cfg) {
   const doc = structuredClone(item.doc);
   let result; let error = null; const soups = {};
   try {
-    const ctx = { arc, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, topologyOf: withTopoDown(fake, cfg.topoDown), soups, fc: { guard: true, group: true, lib: orig.guard } };
+    const ctx = { arc, skipSketchVolume: true, ...(cfg.useMt ? { mt } : {}), runSC: fake.runSC, topologyOf: withTopoDown(fake, cfg.topoDown), soups, fc: { guard: true, group: true, lib: orig.guard } };
     const res = await orig.tr.translateDoc(doc, ctx);
     result = norm(viewOrig(res, item.doc));
   } catch (e) { error = errOf(e); }
@@ -105,7 +105,7 @@ async function runPort(tr, item, cfg, extra = {}) {
   const optsLog = [];
   const runSC = (cmds, opts) => { optsLog.push(opts ?? null); return fake.runSC(cmds, opts); };
   const soups = {};
-  const ctx = { arc, runSC, topologyOf: withTopoDown(fake, cfg.topoDown), soups, ...(cfg.useMt ? { mt } : {}), ...extra };
+  const ctx = { arc, skipSketchVolume: true, runSC, topologyOf: withTopoDown(fake, cfg.topoDown), soups, ...(cfg.useMt ? { mt } : {}), ...extra };
   let result; let error = null; let guards = [];
   try {
     const { _state, ...rest } = await tr.translateDoc(structuredClone(item.doc), ctx);
@@ -206,7 +206,7 @@ test('the set exists, is a member of nothing else by accident, and the default s
   assert.deepStrictEqual(port.fc.FC_KINDS, ['fillet']);
   assert.deepStrictEqual(port.fc.FC_CROSS_KIND_GUARDS, ['FC-KNIFE-RIM', 'FC-WHOLE-CHAMFER', 'FC-NEGATIVE', 'FC-TOO-SMALL']);
   // a fillet is planned asynchronously (the guard reads the topology): planFeature must not fall back to the unguarded planner
-  assert.throws(() => FCSET.planFeature({ id: 'f1', kind: 'fillet', target: 'b1', edge: {}, size: 1, style: 'fillet' }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} }, { arc, runSC: () => ({ ok: true }), resolve: () => null }), /plans a fillet asynchronously/);
+  assert.throws(() => FCSET.planFeature({ id: 'f1', kind: 'fillet', target: 'b1', edge: {}, size: 1, style: 'fillet' }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} }, { arc, skipSketchVolume: true, runSC: () => ({ ok: true }), resolve: () => null }), /plans a fillet asynchronously/);
 });
 
 test('(a) every case of the group that turns into a ModelDoc', { timeout: 3_000_000 }, async () => {

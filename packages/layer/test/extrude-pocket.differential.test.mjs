@@ -61,7 +61,7 @@ async function run(impl, doc, cfg) {
   const fake = makeFake({ failEvery: cfg.failEvery, boxBool: cfg.box });
   const soups = {};
   const topologyOf = cfg.topo === 'none' ? undefined : fake.topologyOf;
-  const ctx = { arc, runSC: fake.runSC, ...(topologyOf ? { topologyOf } : {}), soups, ...(cfg.useMt ? { mt } : {}), ...(cfg.skipVerify ? { skipVerify: true } : {}), ...(cfg.unguardedSlant ? { unguardedSlant: true } : {}) };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, ...(topologyOf ? { topologyOf } : {}), soups, ...(cfg.useMt ? { mt } : {}), ...(cfg.skipVerify ? { skipVerify: true } : {}), ...(cfg.unguardedSlant ? { unguardedSlant: true } : {}) };
   let result; let error = null;
   try { result = await impl.translateDoc(structuredClone(doc), ctx); } catch (e) { error = `${e?.constructor?.name}: ${e?.message}`; }
   return { result, error, soups, log: fake.log, ctx };
@@ -158,7 +158,7 @@ test('coverage: the corpus reaches the group paths (not a vacuous pass)', () => 
 
 test('planFeature in extrude-pocket mode agrees on direct calls, state mutation included (verify closures compared as present/absent)', () => {
   const fake = makeFake({ boxBool: true });
-  const ctx = { arc, mt, runSC: fake.runSC, resolve: () => null };
+  const ctx = { arc, skipSketchVolume: true, mt, runSC: fake.runSC, resolve: () => null };
   const scene = [{ name: 'b_b1', vol: 4000, bbox: [-10, -10, -5, 10, 10, 5], shells: 1 }, { name: 'b_b2', vol: 10, bbox: [0, 0, 0, 1, 1, 10], shells: 1 }];
   const mk = (withEp) => ({ head: {}, bodies: { b1: ['b_b1'], b2: ['b_b2'], e0: ['b_e0'] }, stale: { old: 'x' }, refused: { bad: 'm: was refused' }, sketches: {}, measure: { b1: { volume: 4000, faces: 6, shells: 1, bodies: ['b_b1'], bbox: [-10, -10, -5, 10, 10, 5] }, b2: { bbox: [-1, -1, -1, 3, 3, 3] } }, counter: 5, accLen: {}, ...(withEp ? { scene: structuredClone(scene), curvedSlant: new Set(['b_e0']) } : {}) });
   const strip = (v) => JSON.parse(JSON.stringify(v, (k, x) => (typeof x === 'function' ? '[fn]' : x instanceof Set ? [...x] : x === undefined ? '[undef]' : x)));

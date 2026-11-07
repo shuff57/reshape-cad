@@ -30,6 +30,7 @@ import type { Cmd, RunResult, TranslateCtx, TopologyReply, V3 } from './types.js
 import { BASE_PROFILE, aggregate, confirmOnTarget, makeEnv, planFeature, refuse, resolveNamesFor, membersOf } from './translate.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, ShapeCache, TranslateState } from './translate.js';
 import { resolveName } from './resolve-names.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { EdgeRes, Resolved } from './resolve-names.js';
 import { guardBatch, guardBlend, guardPrimitiveRound, guardShellRim, postCheck } from './fc-guard.js';
 import type { BlendStyle, FcBad, FcTopo, RimFeature, RoundFeature } from './fc-guard.js';
@@ -182,6 +183,9 @@ export async function fcStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
     const m = aggregate(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
+    if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     // ---- POST-BUILD NET: a blend of ONE straight planar edge adds exactly one face
     if (gv) {
       const pc = faceCheck(gv, f.kind === 'fillet' ? st.measure[headId(st, fv.target!)]?.faces : undefined, m.faces);

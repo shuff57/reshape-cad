@@ -24,6 +24,7 @@
 import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx, V3 } from './types.js';
 import { BASE_PROFILE, planFeature, frameWithMt, resolveNamesFor } from './translate.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { outlineSize, taperFold } from './outline-guard.js';
 import type { GuardOutline } from './outline-guard.js';
@@ -620,6 +621,9 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     const fresh = res.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n) && !plan.produces.includes(n));
     const m = aggregatePM(res, [...plan.produces, ...fresh]);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
+    if (sv) { refusedNote(sv, sv, variant, SKETCH_VOLUME_GUARD); return; }
     // ---- fused guard: a mirror is defined as copy + fuse. When ONE body goes in and several come out, solid.mirror combine:true reported success but left the copy
     // as a separate body touching the original (measured: a spun washer mirrored across a flat end). Volume and bbox still agree with the oracles there.
     if (f.kind === 'mirror' && st.measure[g.target!]?.shells === 1 && (m.shells as number) > 1) {

@@ -17,6 +17,7 @@ import type { Cmd, Frame, MtApi, RunResult, TopologyReply, TranslateCtx, TopoBod
 import { mapSketch } from './sketch-map.js';
 import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { UnifiedDomain } from './unified.js';
 import type { PMState } from './patterns-mirror.js';
 import type { BoolState } from './booleans.js';
@@ -788,6 +789,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   let lastErr: string | null = null;
   let lastFail: RunResult | null = null;
   let verifyRefusal: string | null = null;
+  let verifyGuard: string | undefined;
   const checks: unknown[] = [];
   for (const variant of plan.variants) {
     let res: RunResult;
@@ -797,8 +799,11 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     if (profile.verifies) {
       const bad = plan.verify && !ctx.skipVerify ? await plan.verify(m, { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks, scene: st.scene! }) : null;
-      if (bad) { verifyRefusal = bad; lastErr = null; continue; }
+      if (bad) { verifyRefusal = bad; verifyGuard = undefined; lastErr = null; continue; }
     }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
+    if (sv) { verifyRefusal = sv; verifyGuard = SKETCH_VOLUME_GUARD; lastErr = null; continue; }
     accepted.push(...variant);
     for (const mp of membersOf(profileIn)) mp.onAccepted?.(st, res, m, plan, { f, ctx });
     st.accLen[f.id] = accepted.length;
@@ -813,7 +818,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   }
   const sentence = verifyRefusal ?? profile.kernelRefusal(f, lastErr);
   st.refused[f.id] = sentence;
-  note({ status: 'refused', refusal: sentence, commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
+  note({ status: 'refused', refusal: sentence, ...(verifyRefusal && verifyGuard ? { guard: verifyGuard } : {}), commands: plan.variants[0], failed: lastFail?.failed ?? null, sketchAtFailure: lastFail?.sketch_at_failure ?? null });
 }
 
 /** Resolve one name against the shapes a finished translateDoc left behind (same code path as translateDoc). */

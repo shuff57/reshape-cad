@@ -24,6 +24,7 @@
 import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { RunResult } from './types.js';
 import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from './translate.js';
+import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Planner, Profile, TranslateState } from './translate.js';
 import { COST_BUDGET_S, guardPlan, onRefused, plainRefusal, plainRefusalCode, postCheck, rgView } from './revolve-groove-guard.js';
 import type { RGPlan, RGRefusal } from './revolve-groove-guard.js';
@@ -114,6 +115,9 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     }
     const m = aggregateRG(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
+    // every set: the built pull against its sketch (sketch-volume.ts)
+    const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
+    if (sv) { st.refused[f.id] = sv; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     { const post = postCheck(f, st, m, new Set(ctx.guardsOff ?? [])); if (post) { lastErr = post; continue; } } // G5
     accepted.push(...variant);
     for (const mp of membersOf(env.profile)) mp.onAccepted?.(st, res, m, plan, { f, ctx });

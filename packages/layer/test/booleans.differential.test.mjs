@@ -65,14 +65,14 @@ function runOrig(item, cfg) {
   const fake = makeFake({ sync: true, ...cfg.fake });
   const doc = structuredClone(item.doc);
   let result; let error = null;
-  try { result = norm(normOrig(orig.tr.translateDoc(doc, origCtx(orig, { arc, mt }, doc, fake.runSC, cfg.useMt)))); } catch (e) { error = errOf(e); }
+  try { result = norm(normOrig(orig.tr.translateDoc(doc, origCtx(orig, { arc, skipSketchVolume: true, mt }, doc, fake.runSC, cfg.useMt)))); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log };
 }
 async function runPort(tr, item, cfg, extra = {}, passOpts = false) {
   const fake = makeFake({ ...cfg.fake });
   const optsLog = [];
   const runSC = (cmds, opts) => { optsLog.push({ opts: opts ?? null, last: cmds[cmds.length - 1]?.command }); return passOpts ? fake.runSC(cmds, opts) : fake.runSC(cmds); };
-  const ctx = { arc, runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...extra };
+  const ctx = { arc, skipSketchVolume: true, runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...extra };
   let result; let error = null; let guards = [];
   try {
     const { _state, ...rest } = await tr.translateDoc(structuredClone(item.doc), ctx);
@@ -203,7 +203,7 @@ test('the set exists, is a member of nothing else by accident, and the default s
   // the executor decides the commands, so the planner of a combine returns a plan with no variants: it is the step that runs it
   const st = { head: {}, bodies: { a: ['b_a'], b: ['b_b'] }, stale: {}, refused: {}, sketches: {}, measure: { a: { volume: 8000, faces: 6, kernelFaces: 6, curved: false, bbox: [-10, -10, -10, 10, 10, 10], faceTypes: { plane: 6 }, com: [0, 0, 0], bodies: ['b_a'] }, b: { volume: 1000, faces: 6, kernelFaces: 6, curved: false, bbox: [5, -5, -5, 15, 5, 5], faceTypes: { plane: 6 }, com: [10, 0, 0], bodies: ['b_b'] } }, counter: 0, accLen: {} };
   port.b.initBool(st, { features: [{ id: 'a', kind: 'box', size: [20, 20, 20], center: [0, 0, 0] }, { id: 'b', kind: 'box', size: [10, 10, 10], center: [10, 0, 0] }, { id: 'c', kind: 'combine', op: 'union', targets: ['a', 'b'] }] });
-  const p = BOOL.planFeature({ id: 'c', kind: 'combine', op: 'union', targets: ['a', 'b'] }, st, { arc, runSC: () => ({ ok: true }), resolve: () => null });
+  const p = BOOL.planFeature({ id: 'c', kind: 'combine', op: 'union', targets: ['a', 'b'] }, st, { arc, skipSketchVolume: true, runSC: () => ({ ok: true }), resolve: () => null });
   assert.deepStrictEqual(p.r3, { op: 'union', groups: [['b_a'], ['b_b']], keep: [false, false] });
 });
 
@@ -236,7 +236,7 @@ test('the time limit: a run past its budget refuses the combine with the group s
   for (const [cost, built] of [[55000, true], [70000, false]]) {
     const fake = makeFake({ boxBool: true, boolModel: true, cpuMs: (cmds) => (cmds[cmds.length - 1].command === 'solid.combine' ? cost : 10000) });
     const seen = [];
-    const ctx = { arc, mt, runSC: (c, o) => { seen.push(o?.budgetS ?? null); return fake.runSC(c, o); }, topologyOf: fake.topologyOf, soups: {} };
+    const ctx = { arc, skipSketchVolume: true, mt, runSC: (c, o) => { seen.push(o?.budgetS ?? null); return fake.runSC(c, o); }, topologyOf: fake.topologyOf, soups: {} };
     const r = await BOOL.translateDoc({ version: 1, features: [B('b1', [30, 30, 10]), B('b2', [10, 10, 10], [5, 0, 0]), combine('c1', 'union', ['b1', 'b2'])] }, ctx);
     assert.equal(r.features.find((f) => f.id === 'c1').status, built ? 'built' : 'refused', `a combine run of ${cost} ms`);
     assert.deepStrictEqual(seen.filter((s) => s !== null), [60]);

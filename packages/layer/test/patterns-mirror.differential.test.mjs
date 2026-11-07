@@ -68,7 +68,7 @@ function normOrig(tr) {
 function runOrig(item, cfg, extra = {}) {
   const fake = makeFake({ sync: true, ...cfg.fake });
   const runSC = (cmds, opts) => fake.runSC(cmds, opts ? { budgetS: opts.budgetMs / 1000 } : undefined);
-  const ctx = { arc, runSC, resolveAt: () => null, patches: PATCHES, inProcess: true, ...(cfg.useMt ? { mt } : {}), ...extra };
+  const ctx = { arc, skipSketchVolume: true, runSC, resolveAt: () => null, patches: PATCHES, inProcess: true, ...(cfg.useMt ? { mt } : {}), ...extra };
   let result; let error = null;
   Date.now = () => 0;
   try { result = norm(normOrig(orig.pm.translateDoc(structuredClone(item.doc), ctx))); } catch (e) { error = errOf(e); } finally { Date.now = realNow; }
@@ -76,7 +76,7 @@ function runOrig(item, cfg, extra = {}) {
 }
 async function runPort(tr, item, cfg, extra = {}) {
   const fake = makeFake({ ...cfg.fake });
-  const ctx = { arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...extra };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}), ...extra };
   let result; let error = null; let guards = [];
   Date.now = () => 0;
   try {
@@ -222,7 +222,7 @@ test('the set exists, is a member of nothing else by accident, and the default s
   // pattern and mirror are planned synchronously by planFeature (this set's planners), unlike a hole / shell / draft
   const st = { head: {}, bodies: { b1: ['b_b1'] }, stale: {}, refused: {}, sketches: {}, measure: { b1: { volume: 1000, faces: 6, kernelFaces: 6, curved: false, bbox: [-5, -5, -5, 5, 5, 5], faceTypes: {}, com: [0, 0, 0], bodies: ['b_b1'], shells: 1 } }, counter: 0, accLen: {} };
   port.pm.PM_PROFILE.initState(st);
-  const p = PM.planFeature({ id: 'p1', kind: 'pattern', target: 'b1', mode: 'linear', count: 3, step: [30, 0, 0] }, st, { arc, runSC: () => ({ ok: true }), resolve: () => null });
+  const p = PM.planFeature({ id: 'p1', kind: 'pattern', target: 'b1', mode: 'linear', count: 3, step: [30, 0, 0] }, st, { arc, skipSketchVolume: true, runSC: () => ({ ok: true }), resolve: () => null });
   assert.equal(p.variants.length, 2);
 });
 

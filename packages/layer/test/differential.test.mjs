@@ -64,7 +64,7 @@ async function run(impl, doc, cfg) {
   const fake = makeFake({ failEvery: cfg.failEvery });
   const soups = {};
   const topologyOf = cfg.topo === 'none' ? undefined : cfg.topo === 'throws' ? async () => { throw new Error('fake: topology down'); } : fake.topologyOf;
-  const ctx = { arc, runSC: fake.runSC, ...(topologyOf ? { topologyOf } : {}), soups, ...(cfg.useMt ? { mt } : {}) };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, ...(topologyOf ? { topologyOf } : {}), soups, ...(cfg.useMt ? { mt } : {}) };
   let result; let error = null;
   try { result = await impl.translateDoc(structuredClone(doc), ctx); } catch (e) { error = `${e?.constructor?.name}: ${e?.message}`; }
   return { result, error, soups, log: fake.log, ctx };
@@ -177,9 +177,9 @@ test('resolveAfter without ctx.topologyOf throws/behaves the same', async () => 
   const outs = [];
   for (const impl of [orig.tr, port.tr]) {
     const fake = makeFake();
-    const ctx = { arc, mt, runSC: fake.runSC, topologyOf: fake.topologyOf };
+    const ctx = { arc, skipSketchVolume: true, mt, runSC: fake.runSC, topologyOf: fake.topologyOf };
     const tr = await impl.translateDoc(structuredClone(doc), ctx);
-    let r; try { r = await impl.resolveAfter(tr, doc, name, { arc, mt, runSC: fake.runSC }, 'face', 'b1', null); } catch (e) { r = `${e?.constructor?.name}: ${e?.message}`; }
+    let r; try { r = await impl.resolveAfter(tr, doc, name, { arc, skipSketchVolume: true, mt, runSC: fake.runSC }, 'face', 'b1', null); } catch (e) { r = `${e?.constructor?.name}: ${e?.message}`; }
     outs.push(r);
   }
   assert.deepStrictEqual(outs[1], outs[0]);
@@ -249,7 +249,7 @@ test('nameText, pickPoint, extrudeCommands agree', () => {
 
 test('planFeature called directly agrees (state mutation included)', () => {
   const fake = makeFake();
-  const ctx = { arc, mt, runSC: fake.runSC, resolve: () => null };
+  const ctx = { arc, skipSketchVolume: true, mt, runSC: fake.runSC, resolve: () => null };
   const st = () => ({ head: {}, bodies: { b1: ['b_b1'], b2: ['b_b2'] }, stale: { old: 'x' }, refused: { bad: 'was refused' }, sketches: {}, measure: { b1: { bbox: [0, 0, 0, 4, 4, 4] }, b2: { bbox: [-1, -1, -1, 3, 3, 3] } }, counter: 5, accLen: {} });
   const feats = [...hand.flatMap(([, d]) => d.features).slice(0, 80), { id: 'nope', kind: 'nothing' }, { id: 'x', kind: 'box' }];
   for (const f of feats) {

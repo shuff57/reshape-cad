@@ -121,6 +121,11 @@ export interface TranslateCtx {
   /** extrude-pocket profile only: measuring switches of the group's own harness (skip the after-the-build checks / the slanted-round-cut guard). */
   skipVerify?: boolean;
   unguardedSlant?: boolean;
+  /**
+   * Every set: switch OFF the check of a pull's built volume and pieces against its sketch (sketch-volume.ts). For the fake engines of the differential tests only,
+   * which report a bounding-box volume for a pull (and the originals they are compared with have no such check). Never set in production.
+   */
+  skipSketchVolume?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
   /**

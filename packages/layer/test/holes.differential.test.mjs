@@ -98,7 +98,7 @@ const CONFIGS = [
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 async function runOrig(doc, cfg, off = []) {
   const fake = makeFake({ sync: true, ...cfg.fake });
-  const ctx = { arc, runSC: fake.runSC, resolveAt: () => null, ...(cfg.useMt ? { mt } : {}) };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, resolveAt: () => null, ...(cfg.useMt ? { mt } : {}) };
   let result; let error = null;
   try { result = orig.h4.translateDocGuarded(structuredClone(doc), ctx, { off }); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log };
@@ -106,7 +106,7 @@ async function runOrig(doc, cfg, off = []) {
 async function runPort(tr, doc, cfg, off = [], asyncFake = false) {
   const fake = makeFake({ sync: !asyncFake, ...cfg.fake });
   const soups = {};
-  const ctx = { arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups, ...(cfg.useMt ? { mt } : {}), ...(off.length ? { guardsOff: off } : {}) };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, topologyOf: fake.topologyOf, soups, ...(cfg.useMt ? { mt } : {}), ...(off.length ? { guardsOff: off } : {}) };
   let result; let error = null;
   try { const { _state, ...rest } = await tr.translateDoc(structuredClone(doc), ctx); result = rest; assert.ok(_state); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log, soups };
@@ -164,7 +164,7 @@ test('createTranslator: the holes set exists, the default stays base, unknown se
   assert.deepStrictEqual(HOLES.FEATURE_KINDS, orig.p4.FEATURE_KINDS);
   assert.deepStrictEqual(port.h.ALL_GUARDS, orig.h4.ALL_GUARDS);
   // planFeature cannot plan a hole synchronously under this set (the guards cut probe pieces on the engine): it must not fall back to the unguarded planner
-  assert.throws(() => HOLES.planFeature({ id: 'h1', kind: 'hole', target: 'b1', diameter: 2, depth: 5, center: [0, 0, 0], axis: 'z' }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} }, { arc, runSC: () => ({ ok: true }), resolve: () => null }), /plans a hole asynchronously/);
+  assert.throws(() => HOLES.planFeature({ id: 'h1', kind: 'hole', target: 'b1', diameter: 2, depth: 5, center: [0, 0, 0], axis: 'z' }, { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, accLen: {} }, { arc, skipSketchVolume: true, runSC: () => ({ ok: true }), resolve: () => null }), /plans a hole asynchronously/);
 });
 
 test('base and extrude-pocket are untouched: base mode is still exactly the phase 4 translator on every corpus doc', async () => {
@@ -172,8 +172,8 @@ test('base and extrude-pocket are untouched: base mode is still exactly the phas
   let n = 0;
   for (const [name, doc] of [...hand, ...generated.slice(0, 60)]) {
     const fa = makeFake({ ...cfg.fake }); const fb = makeFake({ ...cfg.fake });
-    const ca = { arc, mt, runSC: fa.runSC, topologyOf: fa.topologyOf, resolveAt: () => null };
-    const cb = { arc, mt, runSC: fb.runSC, topologyOf: fb.topologyOf, soups: {} };
+    const ca = { arc, skipSketchVolume: true, mt, runSC: fa.runSC, topologyOf: fa.topologyOf, resolveAt: () => null };
+    const cb = { arc, skipSketchVolume: true, mt, runSC: fb.runSC, topologyOf: fb.topologyOf, soups: {} };
     let ra, rb, ea = null, eb = null;
     try { ra = await orig.p4.translateDoc(structuredClone(doc), ca); } catch (e) { ea = errOf(e); }
     try { rb = await BASE.translateDoc(structuredClone(doc), cb); } catch (e) { eb = errOf(e); }
@@ -392,7 +392,7 @@ const H_EP = port.tr.createTranslator({ planners: ['holes', 'extrude-pocket'] })
 /** `drop`: the state keys of the OTHER member of a composition (bookkeeping that exists only because the other set is also a member) */
 async function runTr(tr, doc, cfg, drop = ['holes']) {
   const fake = makeFake({ sync: true, ...cfg.fake });
-  const ctx = { arc, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}) };
+  const ctx = { arc, skipSketchVolume: true, runSC: fake.runSC, topologyOf: fake.topologyOf, soups: {}, ...(cfg.useMt ? { mt } : {}) };
   let result; let error = null;
   try { const r = await tr.translateDoc(structuredClone(doc), ctx); const { _state, spentS, ...rest } = r; result = { ...rest, accepted: _state.accepted, st: Object.fromEntries(Object.entries(_state.st).filter(([k]) => !drop.includes(k))) }; } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log.map((l) => l.slice(0, 2)), soups: ctx.soups };
