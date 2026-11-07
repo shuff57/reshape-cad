@@ -203,6 +203,14 @@ test('invariants 1 and 2, and the sentence lint: every corpus x four engine conf
           // the reference set REJECTED the whole document because the injected bridge failure fell inside one of its own checks (the extrude-pocket loop lets a throw in plan.verify reject the translation, NOTES fold 1 item 1);
           // unified, whose call numbering differs, translated it. Not a decision of a guard.
           else if (!u.error && refRun.error && /fake: unreachable executed/.test(refRun.error)) { T.inv2.refRejected = (T.inv2.refRejected ?? 0) + 1; }
+          // level 'full' with an engine that fails on a call NUMBER (failEvery / throwWhen): the consistency check's extra engine runs move the injected failure onto another call, so
+          // another feature (a box, a keep, a later join) meets it in unified and not in the booleans set, or the other way round. Accepted only when the cause is shown: unified at
+          // 'cheap' on the same doc and configuration equals the booleans set exactly, and the first differing feature (if any) is refused by EP-JOIN or carries the injected failure.
+          else if (!u.error && !refRun.error && ref === 'booleans' && EP_JOIN_LEVEL === 'full' && (cfg.fake.failEvery || cfg.fake.throwWhen)
+            && (k < 0 || uf[k].guard === 'EP-JOIN' || [uf[k].raw, rf[k]?.raw].some((r) => /fake: injected failure on call|WASM TRAP: fake: unreachable executed/.test(r ?? '')))
+            && JSON.stringify(await runSet('unified', it.doc, cfg, it.fromUsage, { unifiedEpJoinChecks: 'cheap' })) === JSON.stringify(refRun)) {
+            T.inv2.epJoin.callShift = (T.inv2.epJoin.callShift ?? 0) + 1; T.inv2.epJoin.docs.add(`${it.corpus} ${it.name}`);
+          }
           else T.inv2.differ.push(`${it.corpus} ${it.name} [${cfg.name}] vs ${ref}: ${String(e.message).split('\n').slice(0, 6).join(' / ')}`);
         }
         if (zone === 'none' && !u.error) {
@@ -271,6 +279,7 @@ test('summary', () => {
 #   EXCEPTIONS, cause = the patterns-mirror cut guards on a pocket / hole in a doc of another group: ${T.inv2.cutGuard.runs} runs of ${T.inv2.cutGuard.docs.size} docs ${JSON.stringify(T.inv2.cutGuard.byGuard)}
 #   NEW CLASS (join checks at level '${EP_JOIN_LEVEL}'), cause = the extrude-pocket group's join checks (EP-JOIN) on a combine in a doc inside the booleans domain: ${T.inv2.epJoin.runs} runs refused differently + ${T.inv2.epJoin.extraCalls} runs equal but for the consistency check's extra engine runs, of ${T.inv2.epJoin.docs.size} docs ${JSON.stringify(T.inv2.epJoin.byGuard)} by corpus ${JSON.stringify(T.inv2.epJoin.byCorpus)}
 #   reference set rejected the doc on an injected bridge failure, unified translated it: ${T.inv2.refRejected ?? 0} runs
+#   level 'full', engine failing on a call number: the consistency check's extra runs moved the injected failure (unified at 'cheap' equals the set): ${T.inv2.epJoin.callShift ?? 0} runs
 #   docs not in one group's domain (use two or more groups): ${T.inv2.mixedDocs} (${JSON.stringify(T.inv2.byCorpusMixed)})
 # unified: thrown: ${T.thrown.unified} unified runs rejected, ${T.thrown.sets} single-set runs rejected, ${T.thrown.unifiedOnly.length} rejected by unified and by no single set
 # unified: sentence lint: ${T.lint.refusals} unified refusals, ${T.lint.worse.length} worse than every single set's sentence for the same feature (exempt, only 'no full stop' / 'engine jargon' in the wording of the style's loop: ${T.lint.styleWording ?? 0}; not counted: ${T.lint.epWording} extrude-pocket sentences without a full stop for a feature the single set did not refuse)
