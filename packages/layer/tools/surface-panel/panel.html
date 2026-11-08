@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surface Sketch</title>
+<style>
+  :root { --bg: #f4f5f7; --card: #fff; --ink: #1c2230; --mute: #667085; --line: #d9dde5; --acc: #2f6fec; --ok: #18794e; --bad: #b42318; --okbg: #e7f6ee; --badbg: #fdecea; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #14171d; --card: #1d2129; --ink: #e8ebf1; --mute: #98a2b3; --line: #2e3440; --acc: #6b9bff; --ok: #4cc38a; --bad: #ff8a80; --okbg: #15291f; --badbg: #2f1a1a; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 system-ui, sans-serif; }
+  main { max-width: 380px; margin: 0 auto; padding: 14px 16px 24px; }
+  h1 { font-size: 16px; margin: 0 0 10px; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .step { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+  .row { display: flex; gap: 8px; align-items: center; margin: 6px 0; }
+  .row label { flex: 0 0 92px; color: var(--mute); }
+  input[type=number], select { flex: 1; min-width: 0; padding: 5px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); font: inherit; }
+  input[type=range] { flex: 1; }
+  .seg { display: flex; flex: 1; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+  .seg button { flex: 1; border: 0; background: transparent; color: var(--ink); padding: 6px 0; font: inherit; cursor: pointer; }
+  .seg button.on { background: var(--acc); color: #fff; }
+  button.main { width: 100%; padding: 9px; border: 0; border-radius: 8px; background: var(--acc); color: #fff; font: 600 14px system-ui, sans-serif; cursor: pointer; }
+  button.alt { padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+  .sel { font-weight: 600; }
+  .mute { color: var(--mute); font-size: 12px; }
+  .msg { border-radius: 8px; padding: 8px 10px; margin-top: 8px; font-size: 13px; }
+  .msg.ok { background: var(--okbg); color: var(--ok); }
+  .msg.bad { background: var(--badbg); color: var(--bad); }
+  .val { flex: 0 0 44px; text-align: right; font-variant-numeric: tabular-nums; }
+  .hide { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Surface sketch</h1>
+
+  <section>
+    <div class="step">1 · Pick in SolidCraft</div>
+    <div class="mute">Click a curved face where the sketch should go, or the edge where two flat faces meet.</div>
+    <div class="row" style="margin-top:8px"><button class="alt" id="use">Use selection</button><label style="flex:1;color:var(--mute)"><input type="checkbox" id="auto" checked> follow the selection</label></div>
+    <div id="sel" class="sel">Nothing picked yet</div>
+    <div class="row hide" id="sideRow"><button class="alt" id="side">Start on the other face</button></div>
+  </section>
+
+  <section>
+    <div class="step">2 · Shape</div>
+    <div class="row"><label>Shape</label>
+      <select id="shape"><option value="circle">Circle</option><option value="rect">Rectangle</option><option value="slot">Slot</option><option value="ellipse">Ellipse</option></select></div>
+    <div class="row"><label id="la">Radius</label><input type="number" id="a" value="5" min="0.1" step="0.5"></div>
+    <div class="row" id="rb"><label id="lb">Height</label><input type="number" id="b" value="4" min="0.1" step="0.5"></div>
+    <div class="row"><label>Turn</label><input type="range" id="turn" min="-180" max="180" value="0"><span class="val" id="turnv">0°</span></div>
+    <div class="row"><label>Move across</label><input type="number" id="du" value="0" step="1"><label style="flex:0 0 auto">along</label><input type="number" id="dv" value="0" step="1"></div>
+    <div class="mute">Moves are measured along the surface, in mm.</div>
+  </section>
+
+  <section>
+    <div class="step">3 · Feature</div>
+    <div class="row"><div class="seg" id="op"><button data-v="cut" class="on">Cut</button><button data-v="raise">Raise</button><button data-v="mark">Mark</button></div></div>
+    <div class="row" id="drow"><label id="dl">Depth (mm)</label><input type="number" id="depth" value="1" min="0.05" step="0.1"></div>
+    <div class="row" id="sqrow"><label style="flex:1;color:var(--mute)"><input type="checkbox" id="square"> depth square to the surface</label></div>
+    <div class="row" style="margin-top:10px"><button class="alt" id="wrap" style="flex:1">Show the wrap</button><button class="alt" id="clear">Clear</button></div>
+    <div id="check" class="mute"></div>
+    <div class="row" style="margin-top:8px"><button class="main" id="apply">Apply</button></div>
+    <div id="out"></div>
+  </section>
+  <div class="mute">Each feature is measured in SolidCraft after it is built and kept only if it matches the prediction; otherwise the design goes back as it was.</div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+let op = 'cut', picked = false, sideB = false, busy = false, timer = null;
+const api = async (path, body = {}) => (await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })).json();
+const params = (extra = {}) => ({ shape: $('shape').value, a: $('a').value, b: $('b').value, turn: $('turn').value, du: $('du').value, dv: $('dv').value, op, depth: $('depth').value, square: $('square').checked, ...extra });
+function msg(el, ok, text) { el.innerHTML = text ? `<div class="msg ${ok ? 'ok' : 'bad'}"></div>` : ''; if (text) el.firstChild.textContent = text; }
+function labels() {
+  const s = $('shape').value;
+  $('la').textContent = { circle: 'Radius', rect: 'Width', slot: 'Length', ellipse: 'Radius 1' }[s];
+  $('lb').textContent = { rect: 'Height', slot: 'End radius', ellipse: 'Radius 2' }[s] ?? '';
+  $('rb').classList.toggle('hide', s === 'circle');
+  $('drow').classList.toggle('hide', op === 'mark'); $('sqrow').classList.toggle('hide', op === 'mark');
+  $('dl').textContent = op === 'raise' ? 'Height (mm)' : 'Depth (mm)';
+  $('turnv').textContent = `${$('turn').value}°`;
+}
+async function run(fn) { if (busy) return; busy = true; document.querySelectorAll('button').forEach((b) => (b.disabled = true)); try { await fn(); } finally { busy = false; document.querySelectorAll('button').forEach((b) => (b.disabled = false)); } }
+async function pick() {
+  const r = await api('/api/pick', { sideB });
+  picked = r.ok;
+  $('sel').textContent = r.ok ? r.label : r.refusal;
+  $('sel').style.color = r.ok ? '' : 'var(--bad)';
+  $('sideRow').classList.toggle('hide', !(r.ok && r.corner));
+  msg($('out'), true, '');
+  if (r.ok) await preview(true);
+}
+async function preview(animate) {
+  if (!picked) return;
+  const r = await api('/api/preview', params({ animate }));
+  if (r.ok) $('check').textContent = `Fits${r.stretch > 0 ? `, stretch ${(r.stretch * 100).toFixed(2)}%` : ', no stretch'}${r.volume ? `, ${Math.abs(r.volume).toFixed(2)} mm³ ${op === 'raise' ? 'added' : 'removed'}` : ''}.`;
+  else $('check').textContent = r.refusal;
+  $('check').style.color = r.ok ? '' : 'var(--bad)';
+}
+function changed() { labels(); clearTimeout(timer); timer = setTimeout(() => run(() => preview(false)), 350); }
+['shape', 'a', 'b', 'turn', 'du', 'dv', 'depth', 'square'].forEach((id) => $(id).addEventListener('input', changed));
+$('op').addEventListener('click', (e) => { const v = e.target.dataset?.v; if (!v) return; op = v; [...$('op').children].forEach((b) => b.classList.toggle('on', b.dataset.v === v)); changed(); });
+$('use').onclick = () => run(pick);
+$('side').onclick = () => { sideB = !sideB; run(pick); };
+$('wrap').onclick = () => run(() => preview(true));
+$('clear').onclick = () => run(async () => { await api('/api/clear'); $('check').textContent = ''; });
+$('apply').onclick = () => run(async () => {
+  const r = await api('/api/apply', params());
+  msg($('out'), r.ok, r.ok ? `Built ${r.id}: ${r.result}.` : `${r.refusal}${r.detail ? ` (${r.detail})` : ''}`);
+  if (r.ok) $('check').textContent = '';
+});
+setInterval(async () => {
+  if (busy || !$('auto').checked) return;
+  try { const s = await api('/api/selection'); if (s.changed) { sideB = false; run(pick); } } catch {}
+}, 1200);
+labels();
+</script>
+</body>
+</html>

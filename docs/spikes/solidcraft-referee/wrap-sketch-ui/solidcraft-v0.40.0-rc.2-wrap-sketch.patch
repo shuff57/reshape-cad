@@ -1,0 +1,849 @@
+diff --git a/crates/engine/src/cmd/mod.rs b/crates/engine/src/cmd/mod.rs
+index 7ce27d8..3fded18 100644
+--- a/crates/engine/src/cmd/mod.rs
++++ b/crates/engine/src/cmd/mod.rs
+@@ -126,6 +126,8 @@ mod surface_analysis;
+ mod surface_boundary;
+ mod surface_match;
+ mod view_dxf;
++/// reSHape local patch: Wrap Sketch's ribbon entry.
++pub mod wrap_sketch;
+ mod view_navigation;
+ 
+ use serde::Serialize;
+@@ -367,6 +369,7 @@ pub fn command_specs() -> Vec<&'static CommandSpec> {
+     v.extend(section::COMMANDS.iter());
+     v.extend(view_navigation::COMMANDS.iter());
+     v.extend(view_dxf::COMMANDS.iter());
++    v.extend(wrap_sketch::COMMANDS.iter());
+     v.extend(settings::COMMANDS.iter());
+     v.extend(diagnostics::COMMANDS.iter());
+     v.extend(render::COMMANDS.iter());
+diff --git a/crates/engine/src/cmd/wrap_sketch.rs b/crates/engine/src/cmd/wrap_sketch.rs
+new file mode 100644
+index 0000000..fed7a76
+--- /dev/null
++++ b/crates/engine/src/cmd/wrap_sketch.rs
+@@ -0,0 +1,255 @@
++//! reSHape local patch (not upstream).
++//!
++//! - `surface.wrap_sketch`: the ribbon entry for Wrap Sketch. The work is done from its dialog in
++//!   the app (`ui-egui/src/dialogs_wrap.rs`) by the reSHape layer through the control port; as a
++//!   command on its own it only says so.
++//! - `reshape.overlay`: polylines the viewport draws on top of the model, set by the reSHape
++//!   helper: a surface sketch shown wrapped on its face while it is drawn flat. View-only state,
++//!   outside the document and the undo history.
++//! - `reshape.surface_warp`: for each surface sketch, a grid of where its plane's points lie on
++//!   the curved face. The viewport draws the sketch through it (on the face, not on the flat
++//!   plane) and turns clicks on the face back into sketch points. View-only too: the sketch
++//!   itself stays an ordinary flat sketch.
++use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
++use std::sync::{Mutex, RwLock};
++
++use crate::geom::prelude::*;
++use solidcore_record::{Plane, Vec2};
++
++use serde_json::{Value, json};
++
++use super::CommandSpec;
++use crate::params::bad;
++use crate::{Result, Session, Vec3};
++
++const CMD: &str = "surface.wrap_sketch";
++const OVERLAY: &str = "reshape.overlay";
++const WARP: &str = "reshape.surface_warp";
++pub static COMMANDS: &[CommandSpec] = &[
++    CommandSpec::new(CMD, "Wrap Sketch", run)
++        .at("SOLID", "CREATE")
++        .icon("project_surface")
++        .noundo()
++        .params("Opens its dialog: a sketch wrapped onto a curved face or across the edge between two flat faces, then cut, raised or marked. reSHape builds and checks it through the control port."),
++    CommandSpec::new(OVERLAY, "reSHape Overlay", set_overlay)
++        .noundo()
++        .params("lines: [[[x,y,z], ...], ...] world polylines drawn over the model (view only; [] clears)"),
++    CommandSpec::new(WARP, "reSHape Surface Warp", set_warps)
++        .noundo()
++        .params("warps: [{plane:{origin,x_dir,y_dir}, u0, v0, du, dv, nu, nv, points:[[x,y,z]|null, ...] (row by row, u fastest)}] (view only; [] clears)"),
++];
++
++fn run(_s: &mut Session, _p: &Value) -> Result<Value> {
++    Err(bad(CMD, "Wrap Sketch runs from its dialog in the app: reSHape builds and checks it"))
++}
++
++type Lines = Vec<Vec<[f32; 3]>>;
++static LINES: Mutex<(u64, Lines)> = Mutex::new((0, Vec::new()));
++static GEN: AtomicU64 = AtomicU64::new(0);
++
++fn set_overlay(_s: &mut Session, p: &Value) -> Result<Value> {
++    let lines: Vec<Vec<[f64; 3]>> =
++        serde_json::from_value(p.get("lines").cloned().unwrap_or(json!([]))).map_err(|_| bad(OVERLAY, "lines must be [[[x,y,z], ...], ...]"))?;
++    let lines: Lines = lines
++        .into_iter()
++        .filter(|l| l.len() >= 2 && l.len() <= 100_000 && l.iter().flatten().all(|v| v.is_finite()))
++        .map(|l| l.into_iter().map(|[x, y, z]| [x as f32, y as f32, z as f32]).collect())
++        .take(10_000)
++        .collect();
++    let n = lines.len();
++    if let Ok(mut g) = LINES.lock() {
++        g.0 += 1;
++        g.1 = lines;
++    }
++    GEN.fetch_add(1, Ordering::Relaxed);
++    Ok(json!({ "lines": n }))
++}
++
++/// The overlay's polylines (world, mm).
++pub fn overlay() -> Lines {
++    LINES.lock().map(|g| g.1.clone()).unwrap_or_default()
++}
++
++/// Changes each time the overlay is set: part of the viewport's scene key.
++pub fn generation() -> u64 {
++    GEN.load(Ordering::Relaxed)
++}
++
++/// A surface sketch's plane, and where its points lie on the face: grid point (i, j) is sketch
++/// point (u0 + i·du, v0 + j·dv). Between grid points the face is bilinear.
++struct Warp {
++    plane: Plane,
++    n: Vec3,
++    u0: f64,
++    v0: f64,
++    du: f64,
++    dv: f64,
++    nu: usize,
++    nv: usize,
++    pts: Vec<Option<Vec3>>,
++}
++
++#[derive(serde::Deserialize)]
++struct WarpIn {
++    plane: Plane,
++    u0: f64,
++    v0: f64,
++    du: f64,
++    dv: f64,
++    nu: usize,
++    nv: usize,
++    points: Vec<Option<[f64; 3]>>,
++}
++
++static WARPS: RwLock<Vec<Warp>> = RwLock::new(Vec::new());
++static ANY: AtomicBool = AtomicBool::new(false);
++
++fn set_warps(_s: &mut Session, p: &Value) -> Result<Value> {
++    let ins: Vec<WarpIn> = serde_json::from_value(p.get("warps").cloned().unwrap_or(json!([])))
++        .map_err(|_| bad(WARP, "warps must be [{plane, u0, v0, du, dv, nu, nv, points}]"))?;
++    let out: Vec<Warp> = ins
++        .into_iter()
++        .take(64)
++        .filter(|w| w.nu >= 2 && w.nv >= 2 && w.nu * w.nv == w.points.len() && w.points.len() <= 250_000)
++        .filter(|w| w.du > 0.0 && w.dv > 0.0 && [w.u0, w.v0, w.du, w.dv].iter().all(|v| v.is_finite()))
++        .map(|w| Warp {
++            n: w.plane.x.cross(w.plane.y),
++            plane: w.plane,
++            u0: w.u0,
++            v0: w.v0,
++            du: w.du,
++            dv: w.dv,
++            nu: w.nu,
++            nv: w.nv,
++            pts: w.points.into_iter().map(|q| q.filter(|q| q.iter().all(|v| v.is_finite())).map(Vec3::from)).collect(),
++        })
++        .collect();
++    let n = out.len();
++    if let Ok(mut g) = WARPS.write() {
++        *g = out;
++    }
++    ANY.store(n > 0, Ordering::Relaxed);
++    GEN.fetch_add(1, Ordering::Relaxed);
++    Ok(json!({ "warps": n }))
++}
++
++fn same(a: &Plane, b: &Plane) -> bool {
++    a.origin.dist(b.origin) < 1e-7 && a.x.dist(b.x) < 1e-9 && a.y.dist(b.y) < 1e-9
++}
++
++impl Warp {
++    fn at(&self, u: f64, v: f64) -> Option<Vec3> {
++        let (fi, fj) = ((u - self.u0) / self.du, (v - self.v0) / self.dv);
++        if !(fi >= 0.0 && fj >= 0.0 && fi <= (self.nu - 1) as f64 && fj <= (self.nv - 1) as f64) {
++            return None;
++        }
++        let (i, j) = ((fi.floor() as usize).min(self.nu - 2), (fj.floor() as usize).min(self.nv - 2));
++        let (s, t) = (fi - i as f64, fj - j as f64);
++        let g = |i: usize, j: usize| self.pts[j * self.nu + i];
++        let (a, b, c, d) = (g(i, j)?, g(i + 1, j)?, g(i, j + 1)?, g(i + 1, j + 1)?);
++        Some(a * ((1.0 - s) * (1.0 - t)) + b * (s * (1.0 - t)) + c * ((1.0 - s) * t) + d * (s * t))
++    }
++    fn local(&self, p: Vec3) -> Option<(f64, f64)> {
++        let d = p - self.plane.origin;
++        (d.dot(self.n).abs() <= 1e-6).then(|| (d.dot(self.plane.x), d.dot(self.plane.y)))
++    }
++    /// The sketch point whose place on the face the ray meets first.
++    fn hit(&self, o: Vec3, dir: Vec3) -> Option<Vec2> {
++        let mut best: Option<(f64, Vec2)> = None;
++        let uv = |i: usize, j: usize| Vec2::new(self.u0 + i as f64 * self.du, self.v0 + j as f64 * self.dv);
++        for j in 0..self.nv - 1 {
++            for i in 0..self.nu - 1 {
++                let g = |i: usize, j: usize| self.pts[j * self.nu + i];
++                let (Some(a), Some(b), Some(c), Some(d)) = (g(i, j), g(i + 1, j), g(i, j + 1), g(i + 1, j + 1)) else { continue };
++                for (p, q) in [([a, b, d], [uv(i, j), uv(i + 1, j), uv(i + 1, j + 1)]), ([a, d, c], [uv(i, j), uv(i + 1, j + 1), uv(i, j + 1)])] {
++                    let (e1, e2) = (p[1] - p[0], p[2] - p[0]);
++                    let h = dir.cross(e2);
++                    let det = e1.dot(h);
++                    if det.abs() < 1e-14 {
++                        continue;
++                    }
++                    let f = 1.0 / det;
++                    let s = o - p[0];
++                    let b1 = f * s.dot(h);
++                    if !(-1e-9..=1.0 + 1e-9).contains(&b1) {
++                        continue;
++                    }
++                    let k = s.cross(e1);
++                    let b2 = f * dir.dot(k);
++                    if b2 < -1e-9 || b1 + b2 > 1.0 + 1e-9 {
++                        continue;
++                    }
++                    let t = f * e2.dot(k);
++                    if t > 0.0 && best.is_none_or(|(bt, _)| t < bt) {
++                        best = Some((t, q[0] * (1.0 - b1 - b2) + q[1] * b1 + q[2] * b2));
++                    }
++                }
++            }
++        }
++        best.map(|b| b.1)
++    }
++}
++
++/// A point on any surface sketch's plane, put where it lies on its face (`None`: not on one).
++pub fn warp_point(p: Vec3) -> Option<Vec3> {
++    if !ANY.load(Ordering::Relaxed) {
++        return None;
++    }
++    let g = WARPS.read().ok()?;
++    g.iter().find_map(|w| w.local(p).and_then(|(u, v)| w.at(u, v)))
++}
++
++/// Is `plane` a surface sketch's plane, drawn on its face?
++pub fn warps(plane: &Plane) -> bool {
++    ANY.load(Ordering::Relaxed) && WARPS.read().is_ok_and(|g| g.iter().any(|w| same(&w.plane, plane)))
++}
++
++/// The segment `a`–`b` on `plane`, as short pieces on the face (just `a`–`b` when the plane is
++/// not a surface sketch's). Pieces off the face are left out.
++pub fn warp_pieces(plane: &Plane, a: Vec3, b: Vec3, step: f64) -> Vec<(Vec3, Vec3)> {
++    let Some(g) = ANY.load(Ordering::Relaxed).then(|| WARPS.read().ok()).flatten() else { return vec![(a, b)] };
++    let Some(w) = g.iter().find(|w| same(&w.plane, plane)) else { return vec![(a, b)] };
++    let n = ((a.dist(b) / step).ceil() as usize).clamp(1, 1024);
++    let on = |t: f64| w.local(a.lerp(b, t)).and_then(|(u, v)| w.at(u, v));
++    let pts: Vec<Option<Vec3>> = (0..=n).map(|k| on(k as f64 / n as f64)).collect();
++    pts.windows(2).filter_map(|p| Some((p[0]?, p[1]?))).collect()
++}
++
++/// The same polylines on `plane` with points every `step` (so they bend with the face when
++/// drawn through it). Unchanged when `plane` is not a surface sketch's.
++pub fn densify(plane: &Plane, parts: &mut [Vec<Vec3>], step: f64) {
++    if !warps(plane) {
++        return;
++    }
++    for part in parts.iter_mut() {
++        let mut out = Vec::with_capacity(part.len());
++        for (k, w) in part.windows(2).enumerate() {
++            let n = ((w[0].dist(w[1]) / step).ceil() as usize).clamp(1, 1024);
++            if k == 0 {
++                out.push(w[0]);
++            }
++            out.extend((1..=n).map(|i| w[0].lerp(w[1], i as f64 / n as f64)));
++        }
++        if !out.is_empty() {
++            *part = out;
++        }
++    }
++}
++
++/// Where the ray meets `plane`, or for a surface sketch, the point of its plane whose place on
++/// the face the ray meets (the plane itself when the ray misses the face).
++pub fn intersect_ray(plane: &Plane, o: Vec3, dir: Vec3) -> Option<Vec3> {
++    if ANY.load(Ordering::Relaxed)
++        && let Ok(g) = WARPS.read()
++        && let Some(w) = g.iter().find(|w| same(&w.plane, plane))
++        && let Some(q) = w.hit(o, dir)
++    {
++        return Some(plane.to_world(q));
++    }
++    plane.intersect_ray(o, dir)
++}
++
++/// Is the body face at `p` planar (`None`: no face there)?
++pub fn face_is_planar(s: &Session, p: Vec3) -> Option<bool> {
++    super::face::face_is_planar(s, p)
++}
+diff --git a/crates/ui-egui/src/dialogs.rs b/crates/ui-egui/src/dialogs.rs
+index a18faa8..c718471 100644
+--- a/crates/ui-egui/src/dialogs.rs
++++ b/crates/ui-egui/src/dialogs.rs
+@@ -392,6 +392,8 @@ crate::dialog_descriptor::dialog_descriptors! {
+                 dashed: bool,
+                 tolerance: f64,
+             },
++            /// reSHape local patch: Wrap Sketch (`dialogs_wrap`).
++            Wrap(crate::dialogs_wrap::Wrap),
+             /// Insert SVG / DXF: where the picked drawing goes (`dialogs_insert_drawing`).
+             InsertDrawing(crate::dialogs_insert_drawing::Place),
+             /// Plastic features (`dialogs_plastic`).
+@@ -850,7 +852,8 @@ impl Dialog {
+         let s = &app.session;
+         let has_bodies = !crate::open_meshing::session_world(s).bodies.is_empty();
+         let mut d = match id {
+-            "sketch.create" => Dialog::new(Kind::Sketch, vec![SelInput::new("Plane", PLANES | PLANAR_FACES, false)]),
++            // reSHape local patch: a curved face starts a surface sketch (`dialogs_wrap`).
++            "sketch.create" => Dialog::new(Kind::Sketch, vec![SelInput::new("Plane", PLANES | PLANAR_FACES | FACES, false)]),
+             "sketch.intersect" => {
+                 let bodies = s.selection.iter().any(|sel| matches!(sel, Sel::Body { .. }));
+                 Dialog::new(
+@@ -1092,6 +1095,7 @@ impl Dialog {
+                     .or_else(|| crate::dialogs_surface::start(app, id))
+                     .or_else(|| crate::dialogs_save_mesh::start(app, id))
+                     .or_else(|| crate::dialogs_view_dxf::start(app, id))
++                    .or_else(|| crate::dialogs_wrap::start(app, id))
+                     .or_else(|| crate::dialogs_plastic::start(app, id))
+                     .or_else(|| crate::dialogs_frame::start(app, id))
+                     .or_else(|| crate::dialogs_appearance::start(app, id))
+@@ -2470,6 +2474,7 @@ fn title(k: &Kind) -> &'static str {
+         Kind::Surface(k) => k.title(),
+         Kind::SaveMesh(_) => "SAVE AS MESH",
+         Kind::ViewDxf { .. } => "Export Current View as DXF",
++        Kind::Wrap(_) => "WRAP SKETCH",
+         Kind::InsertDrawing(p) => crate::dialogs_insert_drawing::title(p),
+         Kind::Plastic(k) => k.title(),
+         Kind::Frame(_) => "FRAME MEMBER",
+@@ -3504,6 +3509,7 @@ pub(crate) fn action_labels(kind: &Kind) -> (&'static str, &'static str) {
+         Kind::ConfirmDelete { .. } => ("Delete", "Cancel"),
+         Kind::SaveMesh(k) => (crate::dialogs_save_mesh::button(k), "Cancel"),
+         Kind::ViewDxf { .. } => ("Export DXF…", "Cancel"),
++        Kind::Wrap(_) => ("Wrap", "Cancel"),
+         _ => ("OK", "Cancel"),
+     }
+ }
+@@ -4236,6 +4242,12 @@ fn hole_defaults(s: &Session) -> Kind {
+ 
+ /// Start a sketch on a picked plane or planar face and turn the view to face it.
+ pub fn start_sketch(app: &mut SolveApp, sel: &Sel) -> Result<(), String> {
++    // reSHape local patch: on a curved face the sketch is a surface sketch.
++    if let Sel::Face { point, .. } = sel
++        && solidcraft_engine::cmd::wrap_sketch::face_is_planar(&app.session, *point) == Some(false)
++    {
++        return crate::dialogs_wrap::start_surface_sketch(app, sel);
++    }
+     let mut params = match sel {
+         Sel::Plane { name } => json!({ "plane": shown_origin_plane(app, name).unwrap_or_else(|| json!(name)) }),
+         Sel::Face { .. } => json!({
+@@ -4415,6 +4427,9 @@ pub(crate) fn run_dialog(app: &mut SolveApp, d: &Dialog) -> Result<(), String> {
+     if let Kind::ViewDxf { dashed, tolerance } = &d.kind {
+         return crate::dialogs_view_dxf::run(app, *dashed, *tolerance);
+     }
++    if let Kind::Wrap(w) = &d.kind {
++        return crate::dialogs_wrap::run(app, w, &d.inputs);
++    }
+     // Saving asks for a file name first; `Err("")` is the user backing out of that.
+     if let Kind::SaveMesh(k) = &d.kind {
+         return crate::dialogs_save_mesh::run(app, k, &d.inputs);
+@@ -5458,6 +5473,7 @@ fn dialog_commands(app: &SolveApp, d: &Dialog) -> Result<Vec<(String, Value)>, S
+         Kind::SketchModify(k) => return crate::sketch_modify_ui::commands(app, k, &d.inputs, &d.extra),
+         Kind::SaveMesh(k) => return crate::dialogs_save_mesh::commands(k, &d.inputs),
+         Kind::ViewDxf { .. } => return Ok(Vec::new()),
++        Kind::Wrap(_) => return Ok(Vec::new()),
+         Kind::InsertDrawing(p) => return crate::dialogs_insert_drawing::commands(p),
+         Kind::Plastic(k) => return crate::dialogs_plastic::commands(app, k, &d.inputs, &d.extra),
+         Kind::Frame(k) => return crate::dialogs_frame::commands(app, k, &d.inputs, &d.extra),
+diff --git a/crates/ui-egui/src/dialogs_dense.rs b/crates/ui-egui/src/dialogs_dense.rs
+index 640e978..a4e5ccf 100644
+--- a/crates/ui-egui/src/dialogs_dense.rs
++++ b/crates/ui-egui/src/dialogs_dense.rs
+@@ -18,6 +18,7 @@ pub(super) fn command(kind: &Kind) -> Option<&'static str> {
+         Kind::PartSize(_) => Some("parts.resize"),
+         Kind::SaveMesh(k) => Some(crate::dialogs_save_mesh::command_id(k)),
+         Kind::ViewDxf { .. } => Some("file.export_view_dxf"),
++        Kind::Wrap(_) => Some(crate::dialogs_wrap::ID),
+         Kind::InsertDrawing(p) => Some(if p.command.ends_with("dxf") { "sketch.insert_dxf" } else { "sketch.insert_svg" }),
+         Kind::Sketch => Some("sketch.create"),
+         Kind::SketchIntersect { .. } => Some("sketch.intersect"),
+@@ -361,6 +362,7 @@ pub(super) fn rows(app: &mut SolveApp, ctx: &egui::Context, d: &mut Dialog, ui:
+         Kind::PartSize(k) => enter |= crate::dialogs_part_size::rows(app, ui, k),
+         Kind::SaveMesh(k) => enter |= crate::dialogs_save_mesh::rows(app, ui, k, &mut d.inputs),
+         Kind::ViewDxf { dashed, tolerance } => crate::dialogs_view_dxf::rows(app, ui, dashed, tolerance),
++        Kind::Wrap(w) => crate::dialogs_wrap::rows(app, ui, w, &d.inputs),
+         Kind::InsertDrawing(p) => crate::dialogs_insert_drawing::rows(ui, p),
+         Kind::Sketch => {
+             if d.error.is_some() && matches!(d.inputs.first().and_then(|i| i.items.first()), Some(Sel::Face { .. })) {
+diff --git a/crates/ui-egui/src/dialogs_wrap.rs b/crates/ui-egui/src/dialogs_wrap.rs
+new file mode 100644
+index 0000000..6fed62e
+--- /dev/null
++++ b/crates/ui-egui/src/dialogs_wrap.rs
+@@ -0,0 +1,233 @@
++//! reSHape local patch (not upstream): Wrap Sketch. A sketch wrapped onto a curved face (cylinder,
++//! sphere, freeform) or across the edge between two flat faces, then cut, raised or marked.
++//!
++//! The dialog gathers the pick and the sizes. The reSHape layer does the rest from a Node helper
++//! (`packages/layer/tools/surface-panel/server.mjs --once`): it reads the surface, plans the
++//! sketch, shows it wrapping on, builds it through this app's control port, measures the result
++//! and keeps it only when it matches its own prediction, otherwise it puts the design back and
++//! says why. The answer arrives on the status line.
++use std::sync::Mutex;
++
++use serde_json::json;
++
++use crate::selection::{EDGES, FACES, FEATURES, PROFILES, SelInput};
++use solidcraft_engine::Sel;
++use crate::{SolveApp, dialogs::Kind, ui_kit};
++
++pub const ID: &str = "surface.wrap_sketch";
++const SHAPES: [&str; 4] = ["circle", "rect", "slot", "ellipse"];
++const OPS: [&str; 3] = ["cut", "raise", "mark"];
++
++#[derive(Clone, Debug, PartialEq)]
++pub struct Wrap {
++    pub shape: usize,
++    pub a: f64,
++    pub b: f64,
++    pub turn: f64,
++    pub across: f64,
++    pub along: f64,
++    pub op: usize,
++    pub depth: f64,
++    pub square: bool,
++    pub show_wrap: bool,
++}
++
++impl Default for Wrap {
++    fn default() -> Self {
++        Wrap { shape: 0, a: 5.0, b: 4.0, turn: 0.0, across: 0.0, along: 0.0, op: 0, depth: 1.0, square: false, show_wrap: true }
++    }
++}
++
++/// What the last Wrap Sketch left behind: kept between dialogs, so the next one starts from it.
++static LAST: Mutex<Option<Wrap>> = Mutex::new(None);
++/// The helper's answer, waiting for the window thread: (text, error).
++static DONE: Mutex<Option<(String, bool)>> = Mutex::new(None);
++static RUNNING: Mutex<bool> = Mutex::new(false);
++
++pub fn start(_app: &SolveApp, id: &str) -> Option<(Kind, Vec<SelInput>)> {
++    (id == ID).then(|| {
++        let w = LAST.lock().ok().and_then(|l| l.clone()).unwrap_or_default();
++        (Kind::Wrap(w), vec![SelInput::new("Face, corner edge or surface sketch", FACES | EDGES | PROFILES | FEATURES, false)])
++    })
++}
++
++/// A surface sketch (one of its profiles, or the sketch) is picked: its own curves are the shape.
++fn sketch_picked(inputs: &[SelInput]) -> bool {
++    matches!(crate::selection::items(inputs, 0).first(), Some(Sel::Profile { .. } | Sel::Feature { .. }))
++}
++
++pub fn rows(app: &SolveApp, ui: &mut egui::Ui, w: &mut Wrap, inputs: &[SelInput]) {
++    let units = app.session.doc.units.clone();
++    if sketch_picked(inputs) {
++        ui_kit::text(ui, "The surface sketch's own curves are wrapped.", ui_kit::Text::Note("wrap_sketch"));
++    } else {
++        shape_rows(ui, w, &units);
++    }
++    op_rows(ui, w, &units);
++}
++
++fn shape_rows(ui: &mut egui::Ui, w: &mut Wrap, units: &str) {
++    let units = units.to_string();
++    ui_kit::row(ui, "Shape", |ui| ui_kit::segmented(ui, &mut w.shape, &["Circle", "Rect", "Slot", "Ellipse"], Default::default()));
++    let (la, lb) = match w.shape {
++        0 => ("Radius", None),
++        1 => ("Width", Some("Height")),
++        2 => ("Length", Some("End radius")),
++        _ => ("Radius 1", Some("Radius 2")),
++    };
++    ui_kit::row(ui, la, |ui| ui_kit::bounded_length_field(ui, &mut w.a, &units, 3, 0.05..=500.0, 0.1));
++    if let Some(lb) = lb {
++        ui_kit::row(ui, lb, |ui| ui_kit::bounded_length_field(ui, &mut w.b, &units, 3, 0.05..=500.0, 0.1));
++    }
++    ui_kit::row(ui, "Turn", |ui| ui_kit::angle_field(ui, &mut w.turn));
++    ui_kit::row(ui, "Move across", |ui| ui_kit::bounded_length_field(ui, &mut w.across, &units, 2, -500.0..=500.0, 0.1));
++    ui_kit::row(ui, "Move along", |ui| ui_kit::bounded_length_field(ui, &mut w.along, &units, 2, -500.0..=500.0, 0.1));
++}
++
++fn op_rows(ui: &mut egui::Ui, w: &mut Wrap, units: &str) {
++    let units = units.to_string();
++    ui_kit::row(ui, "Operation", |ui| ui_kit::segmented(ui, &mut w.op, &["Cut", "Raise", "Mark"], Default::default()));
++    if w.op != 2 {
++        ui_kit::row(ui, if w.op == 1 { "Height" } else { "Depth" }, |ui| {
++            ui_kit::bounded_length_field(ui, &mut w.depth, &units, 3, 0.01..=100.0, 0.05)
++        });
++        ui_kit::row(ui, "Square to surface", |ui| ui_kit::checkbox(ui, "", &mut w.square));
++    }
++    ui_kit::row(ui, "Show the wrap", |ui| ui_kit::checkbox(ui, "", &mut w.show_wrap));
++    ui_kit::text(
++        ui,
++        "Moves are measured along the surface. reSHape measures the result and keeps it only if it matches; otherwise the design goes back and the status line says why.",
++        ui_kit::Text::Note("wrap"),
++    );
++}
++
++/// The helper: `RESHAPE_WRAP_HELPER` or the reSHape checkout this build was made for.
++fn helper() -> std::path::PathBuf {
++    std::env::var_os("RESHAPE_WRAP_HELPER").map(Into::into).unwrap_or_else(|| {
++        let home = std::env::var_os("HOME").map(std::path::PathBuf::from).unwrap_or_default();
++        home.join("Documents/GitHub/reshape-cad/packages/layer/tools/surface-panel/server.mjs")
++    })
++}
++
++fn app_port() -> Result<u16, String> {
++    solidcraft_engine::control_auth::read_current_port().ok_or_else(|| "This app has no control port open (Preferences › Assistant › agent control).".to_string())
++}
++
++fn helper_cmd(port: u16) -> Result<std::process::Command, String> {
++    let helper = helper();
++    if !helper.exists() {
++        return Err(format!("The reSHape helper was not found at {} (set RESHAPE_WRAP_HELPER).", helper.display()));
++    }
++    let mut cmd = std::process::Command::new("node");
++    cmd.arg(&helper).arg("--port").arg(port.to_string());
++    if let Some(cli) = std::env::current_exe().ok().and_then(|p| p.parent().map(|d| d.join("solidcraft-cli"))) {
++        cmd.arg("--cli").arg(cli);
++    }
++    Ok(cmd)
++}
++
++static WATCHER: Mutex<Option<std::process::Child>> = Mutex::new(None);
++
++/// The helper that keeps every surface sketch drawn wrapped on its face (`reshape.overlay`),
++/// started once and stopped when this app exits (it watches our process id).
++fn ensure_watcher(port: u16) {
++    let Ok(mut w) = WATCHER.lock() else { return };
++    if let Some(child) = w.as_mut()
++        && matches!(child.try_wait(), Ok(None))
++    {
++        return;
++    }
++    if let Ok(mut cmd) = helper_cmd(port) {
++        cmd.arg("--watch").arg("--app-pid").arg(std::process::id().to_string());
++        cmd.stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null());
++        *w = cmd.spawn().ok();
++    }
++}
++
++/// Run the helper once in the background; its JSON answer goes to the status line.
++fn helper_once(port: u16, args: &[&str], ok_text: impl Fn(&serde_json::Value) -> String + Send + 'static) -> Result<(), String> {
++    let mut cmd = helper_cmd(port)?;
++    cmd.args(args);
++    if let Ok(mut r) = RUNNING.lock() {
++        *r = true;
++    }
++    std::thread::spawn(move || {
++        let answer = match cmd.output() {
++            Ok(out) => {
++                let text = String::from_utf8_lossy(&out.stdout);
++                let last = text.lines().rev().find(|l| l.trim_start().starts_with('{')).unwrap_or("");
++                match serde_json::from_str::<serde_json::Value>(last) {
++                    Ok(v) if v["ok"].as_bool() == Some(true) => (ok_text(&v), false),
++                    Ok(v) => {
++                        let mut s = v["refusal"].as_str().unwrap_or("refused").to_string();
++                        if let Some(d) = v["detail"].as_str() {
++                            s.push_str(&format!(" ({d})"));
++                        }
++                        (format!("reSHape refused: {s}"), true)
++                    }
++                    Err(_) => {
++                        let err = String::from_utf8_lossy(&out.stderr);
++                        (format!("reSHape: the helper failed: {}", err.lines().last().unwrap_or("no answer")), true)
++                    }
++                }
++            }
++            Err(e) => (format!("reSHape: could not start node ({e})"), true),
++        };
++        if let Ok(mut d) = DONE.lock() {
++            *d = Some(answer);
++        }
++        if let Ok(mut r) = RUNNING.lock() {
++            *r = false;
++        }
++    });
++    Ok(())
++}
++
++/// New Sketch on a curved face: reSHape lays a sketch on the plane touching the face where it was
++/// clicked (its lengths are lengths along the surface) and draws it wrapped on the face as it is
++/// drawn. Wrap Sketch then cuts, raises or marks it.
++pub fn start_surface_sketch(app: &mut SolveApp, sel: &Sel) -> Result<(), String> {
++    let port = app_port()?;
++    ensure_watcher(port);
++    let sel = serde_json::to_value(sel).map_err(|e| e.to_string())?.to_string();
++    app.set_status("Surface sketch: reSHape is reading the face…", false);
++    helper_once(port, &["--sketch", &sel], |v| {
++        format!(
++            "Surface sketch {} on the {}: draw on it as usual, it shows wrapped on the face. Finish, then Wrap Sketch cuts or raises it.",
++            v["name"].as_str().unwrap_or(""),
++            v["label"].as_str().unwrap_or("face")
++        )
++    })
++}
++
++pub fn run(app: &mut SolveApp, w: &Wrap, inputs: &[SelInput]) -> Result<(), String> {
++    let Some(sel) = crate::selection::items(inputs, 0).first() else {
++        return Err("Pick a curved face, or the edge between two flat faces.".into());
++    };
++    if RUNNING.lock().map(|r| *r).unwrap_or(false) {
++        return Err("A Wrap Sketch is still being built and checked.".into());
++    }
++    let sel = serde_json::to_value(sel).map_err(|e| e.to_string())?;
++    let req = json!({
++        "sel": sel, "shape": SHAPES[w.shape.min(3)], "a": w.a, "b": w.b, "turn": w.turn, "du": w.across, "dv": w.along,
++        "op": OPS[w.op.min(2)], "depth": w.depth, "square": w.square, "animate": w.show_wrap,
++    });
++    if let Ok(mut l) = LAST.lock() {
++        *l = Some(w.clone());
++    }
++    let port = app_port()?;
++    ensure_watcher(port);
++    app.set_status("Wrap Sketch: reSHape is building and checking it…", false);
++    let req = req.to_string();
++    helper_once(port, &["--once", &req], |v| format!("Wrap Sketch {}: {}", v["id"].as_str().unwrap_or(""), v["result"].as_str().unwrap_or("built")))
++}
++
++/// Each frame: the helper's answer, once, onto the status line.
++pub fn poll(app: &mut SolveApp, ctx: &egui::Context) {
++    if RUNNING.lock().map(|r| *r).unwrap_or(false) {
++        ctx.request_repaint_after(std::time::Duration::from_millis(200));
++    }
++    if let Some((text, error)) = DONE.lock().ok().and_then(|mut d| d.take()) {
++        app.set_status(text, error);
++    }
++}
+diff --git a/crates/ui-egui/src/inference.rs b/crates/ui-egui/src/inference.rs
+index 9ed0a04..98a9ecd 100644
+--- a/crates/ui-egui/src/inference.rs
++++ b/crates/ui-egui/src/inference.rs
+@@ -427,7 +427,7 @@ impl Tracking {
+             return;
+         }
+         let (ray, direction) = proj.ray(cursor);
+-        let Some(world) = plane.intersect_ray(ray, direction) else { return };
++        let Some(world) = solidcraft_engine::cmd::wrap_sketch::intersect_ray(&plane, ray, direction) else { return };
+         let at = plane.to_local(world);
+         if !at.x.is_finite() || !at.y.is_finite() {
+             return;
+diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
+index 206a39d..c6d94ef 100644
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -54,6 +54,8 @@ pub mod dialogs_surface;
+ pub mod dialogs_sweep;
+ mod dialogs_thread;
+ pub mod dialogs_view_dxf;
++/// reSHape local patch: Wrap Sketch.
++pub mod dialogs_wrap;
+ pub mod dim_view;
+ #[cfg(test)]
+ mod dimension_create_ui_tests;
+@@ -2817,6 +2819,7 @@ impl SolveApp {
+             resume_ui::after_long_pause(ctx);
+         }
+         frame_watch::begin(self);
++        dialogs_wrap::poll(self, ctx);
+         refused_part::next_frame(self, ctx);
+         gpu::tick_tessellation(self);
+         file_picker::tick(self, ctx);
+diff --git a/crates/ui-egui/src/sketch_display.rs b/crates/ui-egui/src/sketch_display.rs
+index 3c186af..7bc619b 100644
+--- a/crates/ui-egui/src/sketch_display.rs
++++ b/crates/ui-egui/src/sketch_display.rs
+@@ -20,6 +20,7 @@ pub fn projection_key(proj: &Proj, ppp: f32) -> u64 {
+     for n in [proj.rect.left(), proj.rect.top(), proj.rect.width(), proj.rect.height(), ppp] {
+         n.to_bits().hash(&mut h);
+     }
++    solidcraft_engine::cmd::wrap_sketch::generation().hash(&mut h);
+     h.finish()
+ }
+ 
+@@ -67,6 +68,7 @@ pub fn curve_with_budget(sketch: &Sketch, index: usize, plane: &Plane, proj: &Pr
+         out.vertex_count += sampled.vertex_count;
+         out.parts.extend(sampled.parts);
+     }
++    solidcraft_engine::cmd::wrap_sketch::densify(plane, &mut out.parts, 0.5);
+     budget.remaining_vertices -= initial.remaining_vertices - local.remaining_vertices;
+     budget.remaining_nodes -= initial.remaining_nodes - local.remaining_nodes;
+     out
+@@ -83,6 +85,7 @@ pub fn curve_unclipped(sketch: &Sketch, index: usize, plane: &Plane, proj: &Proj
+         out.vertex_count += sampled.vertex_count;
+         out.parts.extend(sampled.parts);
+     }
++    solidcraft_engine::cmd::wrap_sketch::densify(plane, &mut out.parts, 0.5);
+     out
+ }
+ 
+diff --git a/crates/ui-egui/src/sketch_tools.rs b/crates/ui-egui/src/sketch_tools.rs
+index 937334a..48921d7 100644
+--- a/crates/ui-egui/src/sketch_tools.rs
++++ b/crates/ui-egui/src/sketch_tools.rs
+@@ -124,7 +124,7 @@ fn on_sketch_plane(app: &SolveApp, proj: &Proj, pos: Pos2) -> Option<Vec2> {
+     let st = crate::open_meshing::session_world(&app.session);
+     let ss = st.sketch(active_sketch(app)?)?;
+     let (o, d) = proj.ray(pos);
+-    ss.plane.intersect_ray(o, d).map(|w| ss.plane.to_local(w))
++    solidcraft_engine::cmd::wrap_sketch::intersect_ray(&ss.plane, o, d).map(|w| ss.plane.to_local(w))
+ }
+ 
+ /// A press and drag with Trim draws a path from `press`; true when it started one. Each piece
+@@ -1163,7 +1163,7 @@ pub fn on_click(app: &mut SolveApp, tool: &mut Tool, proj: &Proj, pos: Pos2) {
+                 let st = crate::open_meshing::session_world(&app.session);
+                 let ss = st.sketch(app.session.active_sketch?)?;
+                 let (o, d) = proj.ray(pos);
+-                let w = ss.plane.intersect_ray(o, d)?;
++                let w = solidcraft_engine::cmd::wrap_sketch::intersect_ray(&ss.plane, o, d)?;
+                 let pl = &ss.plane;
+                 Some((
+                     json!({"origin": [pl.origin.x, pl.origin.y, pl.origin.z], "x_dir": [pl.x.x, pl.x.y, pl.x.z], "y_dir": [pl.y.x, pl.y.y, pl.y.z]}),
+diff --git a/crates/ui-egui/src/viewport.rs b/crates/ui-egui/src/viewport.rs
+index 5c24b12..10fb946 100644
+--- a/crates/ui-egui/src/viewport.rs
++++ b/crates/ui-egui/src/viewport.rs
+@@ -317,6 +317,8 @@ pub struct Proj {
+ 
+ impl Proj {
+     pub fn to_screen(&self, p: Vec3) -> Option<Pos2> {
++        // reSHape local patch: a surface sketch is drawn on its face.
++        let p = solidcraft_engine::cmd::wrap_sketch::warp_point(p).unwrap_or(p);
+         let c = self.vp.apply(p);
+         if c[3] <= 1e-9 {
+             return None;
+@@ -615,6 +617,8 @@ fn scene_key(app: &SolveApp) -> u64 {
+         seam.order.hash(&mut h);
+         seam.points.first().map(|p| [p.x.to_bits(), p.y.to_bits(), p.z.to_bits()]).hash(&mut h);
+     }
++    // reSHape local patch: the wrapped-sketch overlay.
++    solidcraft_engine::cmd::wrap_sketch::generation().hash(&mut h);
+     // So are the faces Isocurve Analysis shows (their curves follow the bodies, hashed above).
+     for pick in &app.session.isocurves {
+         pick.body.hash(&mut h);
+@@ -1735,6 +1739,16 @@ pub(crate) fn build_scene(app: &SolveApp) -> GpuScene {
+             }
+         }
+     }
++    // reSHape local patch: surface sketches drawn wrapped on their faces (`reshape.overlay`).
++    let wrapped = solidcraft_engine::cmd::wrap_sketch::overlay();
++    if !wrapped.is_empty() {
++        let col = sc.color(c4(tk.accent));
++        for line in &wrapped {
++            for w in line.windows(2) {
++                sc.line(w[0], w[1], col, 2.4, false);
++            }
++        }
++    }
+     crate::edit_in_place::draw_context(app, &mut sc);
+ 
+     sc
+@@ -1840,7 +1854,15 @@ pub(crate) fn build_sketch_scene(app: &SolveApp, proj: &Proj) -> GpuScene {
+                 let wd = 0.7 + 0.3 * line.major;
+                 for (s0, s1, alpha) in fade.pieces(t) {
+                     let col = sc.color(grid_colour(col, alpha * line.weight));
+-                    sc.under_line(w3(c + across * t + along * s0), w3(c + across * t + along * s1), col, wd);
++                    // reSHape local patch: a surface sketch's grid lies on its face.
++                    match &sketch_plane {
++                        Some(pl) if solidcraft_engine::cmd::wrap_sketch::warps(pl) => {
++                            for (a, b) in solidcraft_engine::cmd::wrap_sketch::warp_pieces(pl, c + across * t + along * s0, c + across * t + along * s1, 1.0) {
++                                sc.line(a.to_f32(), b.to_f32(), col, wd, false);
++                            }
++                        }
++                        _ => sc.under_line(w3(c + across * t + along * s0), w3(c + across * t + along * s1), col, wd),
++                    }
+                 }
+             }
+         }
+@@ -1854,7 +1876,34 @@ pub(crate) fn build_sketch_scene(app: &SolveApp, proj: &Proj) -> GpuScene {
+         let profile_fill = sc.color(c4(tk.profile_fill));
+         for (index, _) in profiles.iter().enumerate() {
+             let display = crate::sketch_display::profile_region(app, sid, index, &ss.plane, proj);
++            let warped = solidcraft_engine::cmd::wrap_sketch::warps(&ss.plane);
+             for tri in display.as_ref().as_ref().map_or_else(Vec::new, |region| crate::sketch_display::fill_triangles(region, &mut fill_budget)) {
++                if warped {
++                    // reSHape local patch: a surface sketch's fill lies on its face, in small pieces.
++                    let [a, b, c] = tri;
++                    let k = ((a.dist(b).max(b.dist(c)).max(c.dist(a)) / 1.0).ceil() as usize).clamp(1, 24);
++                    let at = |i: usize, j: usize| {
++                        let q = a + (b - a) * (i as f64 / k as f64) + (c - a) * (j as f64 / k as f64);
++                        let w = ss.plane.to_world(q);
++                        solidcraft_engine::cmd::wrap_sketch::warp_point(w)
++                    };
++                    for i in 0..k {
++                        for j in 0..k - i {
++                            let mut cells = vec![[(i, j), (i + 1, j), (i, j + 1)]];
++                            if i + j + 1 < k {
++                                cells.push([(i + 1, j), (i + 1, j + 1), (i, j + 1)]);
++                            }
++                            for cell in cells {
++                                if let [Some(p), Some(q), Some(r)] = cell.map(|(i, j)| at(i, j)) {
++                                    for v in [p, q, r] {
++                                        sc.trans_tri(v.to_f32(), [0.0; 3], profile_fill);
++                                    }
++                                }
++                            }
++                        }
++                    }
++                    continue;
++                }
+                 for q in tri {
+                     sc.trans_tri((ss.plane.to_world(q) + lift).to_f32(), [0.0; 3], profile_fill);
+                 }
+@@ -1887,6 +1936,12 @@ pub(crate) fn build_sketch_scene(app: &SolveApp, proj: &Proj) -> GpuScene {
+         // can opt into the same behaviour in Preferences.
+         let through = active || app.preferences.reference_geometry_through_bodies;
+         let halo = sc.color(c4(tk.sketch_halo));
++        // reSHape local patch: a surface sketch's curves lie on its face.
++        if solidcraft_engine::cmd::wrap_sketch::warps(&ss.plane) {
++            for stroke in strokes.iter_mut() {
++                stroke.0 = stroke.0.iter().flat_map(|(a, b)| solidcraft_engine::cmd::wrap_sketch::warp_pieces(&ss.plane, *a, *b, 0.5)).collect();
++            }
++        }
+         for (segs, _, width, _) in strokes.iter().filter(|stroke| stroke.3) {
+             for (a, b) in segs {
+                 sc.line(a.to_f32(), b.to_f32(), halo, width + SKETCH_HALO_WIDTH, through);
+@@ -4382,7 +4437,7 @@ pub fn sketch_point_at(app: &SolveApp, proj: &Proj, pos: Pos2) -> Option<(Vec2,
+         }
+     }
+     let (o, d) = proj.ray(pos);
+-    let w = ss.plane.intersect_ray(o, d)?;
++    let w = solidcraft_engine::cmd::wrap_sketch::intersect_ray(&ss.plane, o, d)?;
+     let lp = ss.plane.to_local(w);
+     if crate::drag_snap::suppressed() {
+         return Some((lp, None));
+@@ -4796,7 +4851,7 @@ pub fn show(app: &mut SolveApp, ui: &mut egui::Ui) {
+                     let state = crate::open_meshing::shown_world(app);
+                     if let Some(sketch) = app.session.active_sketch.and_then(|id| state.sketch(id)) {
+                         let (origin, direction) = proj.ray(p);
+-                        if let Some(point) = sketch.plane.intersect_ray(origin, direction) {
++                        if let Some(point) = solidcraft_engine::cmd::wrap_sketch::intersect_ray(&sketch.plane, origin, direction) {
+                             crate::sketch_modify_ui::pick_position(&mut dialog, &app.session, point);
+                         }
+                     }
+@@ -4909,7 +4964,7 @@ pub fn show(app: &mut SolveApp, ui: &mut egui::Ui) {
+         let on_plane = |app: &SolveApp, p: Pos2| {
+             let ss = app.session.active_sketch.and_then(|sid| crate::open_meshing::shown_world(app).sketch(sid).cloned())?;
+             let (o, d) = proj.ray(p);
+-            ss.plane.intersect_ray(o, d).map(|w| ss.plane.to_local(w))
++            solidcraft_engine::cmd::wrap_sketch::intersect_ray(&ss.plane, o, d).map(|w| ss.plane.to_local(w))
+         };
+         // What a drag starts on: the 3D triad, then a dimension's text, then sketch geometry
+         // (before the dimension's lines, which end on the geometry they measure), as for clicks.
+diff --git a/crates/ui-egui/src/workspace.rs b/crates/ui-egui/src/workspace.rs
+index eec8dd7..980909d 100644
+--- a/crates/ui-egui/src/workspace.rs
++++ b/crates/ui-egui/src/workspace.rs
+@@ -109,8 +109,8 @@ pub const SECTIONS: &[Section] = &[
+     Section {
+         tab: "MODEL",
+         panel: "SKETCH",
+-        promoted: 1,
+-        ids: &["sketch.create", "sketch.edit", "sketch.line3d", "sketch.arc3d", "sketch.spline3d", "sketch.point3d"],
++        promoted: 2,
++        ids: &["sketch.create", "surface.wrap_sketch", "sketch.edit", "sketch.line3d", "sketch.arc3d", "sketch.spline3d", "sketch.point3d"],
+     },
+     Section { tab: "MODEL", panel: "CREATE", promoted: 3, ids: &["solid.extrude", "solid.revolve", "solid.hole"] },
+     Section {
