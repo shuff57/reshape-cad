@@ -182,12 +182,28 @@ const rotated = (f: FeatureView) => Array.isArray(f.rotate) && f.rotate.some((v)
 
 type NameOf<C extends string> = Extract<TopoName, { cause: C }>;
 
-async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: ResolveEnv, t: string): Promise<FaceResolved> {
+/**
+ * `world`: read the face part as a WORLD direction on the turned primitive (the planar face whose outward normal is the unturned direction, at
+ * the extreme along it), the way the OCCT and brep-rs referees name it (brep-adapter topo-resolve.ts resolvePrimitiveFace). Geometry only: the
+ * doc-plane and persistent-label checks are checks of the primitive's own frame and are not made.
+ */
+async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: ResolveEnv, t: string, world = false): Promise<FaceResolved> {
   const part = name.part;
   const isPrim = ['box', 'cylinder', 'prism'].includes(f.kind);
   // a primitive's `rotate` turns it about the origin (x, then y, then z) BEFORE it is placed at `center`; its face part is a local direction that the turn carries along
   // (solidcraft's persistent labels turn with the body: F1:+x stays the local +x face). Only with followTurns, and only by whole quarter turns.
   const turn = isPrim && rotated(f) && env.followTurns ? quarterTurns(f.rotate!) : null;
+  if (world) {
+    if (!turn || part === 'side' || !AXV[part]) return fail(`${t}: no world-frame reading`);
+    const shape = await shapeFor(env, f.id, t);
+    if (!shape.ok) return shape;
+    const tol = 1e-6 * Math.max(1, scaleOf(shape));
+    const dir = AXV[part];
+    const planar = shape.faces.filter((x) => x.plane_normal && parallel(x.plane_normal, dir));
+    const best = planar.length ? Math.max(...planar.map((x) => dot(x.centroid, dir))) : null;
+    const cands = planar.filter((x) => best !== null && Math.abs(dot(x.centroid, dir) - best) <= tol * 10);
+    return finishFace(t, shape, cands, { rule: `world frame: planar face with outward normal ${part} at the extreme along it on ${f.id}'s own shape` });
+  }
   if (isPrim && rotated(f) && !turn) return fail(`${t}: ${f.id} is rotated; this demo resolves primitive faces only on unrotated primitives (the part names the face by direction, and a rotated body turns solidcraft's own face labels too)`);
   if (isPrim && f.round) return fail(`${t}: ${f.id} carries a whole-shape round, which changes its faces and edges; not resolved`);
   if (part === 'side' && f.kind !== 'cylinder') return fail(`${t}: only a cylinder primitive has a 'side' face in this demo`);
@@ -364,6 +380,8 @@ async function resolveEdge(name: NameOf<'between'>, env: ResolveEnv): Promise<Fa
   if (!A.ok) return fail(`${t} cannot be resolved: ${A.sentence}`);
   let B = await resolveFaceNameOrSet(name.of[1], env);
   if (!B.ok) return fail(`${t} cannot be resolved: ${B.sentence}`);
+  const clash = await turnedFrameClash(name, env, A, B, t);
+  if (clash) return clash;
   // the edge lives on ITS feature's own shape; a face named on an earlier shape is first carried onto that shape
   A = await liftTo(A, name.feature, env, t);
   if (!A.ok) return A;
@@ -408,6 +426,37 @@ async function resolveEdge(name: NameOf<'between'>, env: ResolveEnv): Promise<Fa
       checks: [planeA && planeB ? { check: 'geometry vs persistent names', agree: true, geometric: geoAll!.length, named: byName.length } : { check: 'persistent names + plane of the planar face', agree: true, named: byName.length }],
     },
   };
+}
+
+/**
+ * An edge named on a primitive turned by quarter turns (followTurns) has two readings: the primitive's own frame (the face parts turn with the
+ * body; what the resolver picks) and the world frame (the face parts are world directions after the turn; what the OCCT and brep-rs referees
+ * pick). Where both readings name a face for each part and the two pairs differ, the name is refused: building either edge could be the wrong
+ * solid. Where they name the same pair, or the world frame names no face for a part (a cylinder lying on its side has no world top face, so
+ * only the primitive's own reading exists), the pick is resolved as before. A 'side' part (a cylinder's wall) is the same face in both frames.
+ */
+async function turnedFrameClash(name: NameOf<'between'>, env: ResolveEnv, A: FaceResolved & { ok: true }, B: FaceResolved & { ok: true }, t: string): Promise<Fail | null> {
+  if (!env.followTurns) return null;
+  const names = (r: { faces: TopoFace[] }) => new Set(r.faces.map((x) => x.name));
+  const own = [names(A), names(B)];
+  const world: Set<string>[] = [];
+  let turned: FeatureView | null = null;
+  for (let i = 0; i < 2; i++) {
+    const n = name.of[i];
+    const raw = n?.cause === 'primitive' ? env.features.find((x) => x.id === n.feature) : undefined;
+    const f = raw ? view(raw) : null;
+    if (!f || n.cause !== 'primitive' || !['box', 'cylinder', 'prism'].includes(f.kind) || !rotated(f) || !quarterTurns(f.rotate!)) { world.push(own[i]); continue; }
+    turned = f;
+    if (n.part === 'side') { world.push(own[i]); continue; }
+    const w = await primitiveFace(n, f, env, nameText(n), true);
+    if (!w.ok) return null;
+    world.push(names(w));
+  }
+  if (!turned) return null;
+  const same = (a: Set<string>, b: Set<string>) => a.size === b.size && [...a].every((x) => b.has(x));
+  if ((same(own[0], world[0]) && same(own[1], world[1])) || (same(own[0], world[1]) && same(own[1], world[0]))) return null;
+  const show = (s: Set<string>[]) => s.map((x) => [...x].join('+')).join(' ^ ');
+  return fail(`${t}: ${turned.id} is rotated; this demo resolves primitive faces only on unrotated primitives unless the name means one edge either way, and after this turn it does not (${show(own)} in ${turned.id}'s own frame, ${show(world)} in the world frame); nothing is picked`);
 }
 
 /** A face name inside `between` may resolve to a whole SET of engine faces (a cylinder's two wall halves). */
