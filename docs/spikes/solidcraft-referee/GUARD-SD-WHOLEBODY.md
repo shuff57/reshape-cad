@@ -111,3 +111,17 @@ No built row disagrees with an agreeing pair of references.
   change). Without the new decisions, LAYER-CONTRACT.md and LAYER-CONTRACT-ROWS.md come out byte-identical to b76922b8 (md5 checked).
 - **Untouched:** `dependsOn` / `VOCABULARY`, `archive/`, the gate scripts. The brep-rs pkg is gitignored wasm; it was copied in for the oracle and removed
   again. No kernel is named outside the adapter, and `reshape-script.ts` is not imported anywhere new.
+
+## 6. Task 2: the corner of two adjacent rounds, recorded in the contract (contract text only)
+
+The owner ruled the 23 adjacent-round fc rows RIGHT (GUARD-WRONG-EDGE.md, "The corner of two adjacent rounds"). The convention is now written into
+**fillet-chamfer row 36** (the grouped translator's touching edges in one operation). It goes in as an `ownerDecisions` entry with `confirmed: true`,
+through the mechanism cb1e45e7 set up, and its note reads "CONFIRMED supported (status kept)".
+
+- **The convention.** Where two touching rounds of the same size meet at a box corner, the host builds the literal mitre: the box minus the union of the
+  removal prisms, as the fc closed forms describe. OCCT's direct multi-edge build rolls a ball through the corner instead. That is a different solid, so
+  OCCT direct is not this row's reference.
+- **The evidence** (`we-evidence/mitre-*`): 23 / 23 are RIGHT by both of the mitre closed form with a centre of mass and OCCT's intersection of
+  single-rounded boxes.
+
+No behaviour changed. The row keeps "supported", and three blends at one corner stay refused (row 38). LAYER-CONTRACT-ROWS.md changes on row 36 only.
