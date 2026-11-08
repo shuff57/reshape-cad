@@ -433,7 +433,7 @@ async function resolveEdge(name: NameOf<'between'>, env: ResolveEnv): Promise<Fa
  * body; what the resolver picks) and the world frame (the face parts are world directions after the turn; what the OCCT and brep-rs referees
  * pick). Where both readings name a face for each part and the two pairs differ, the name is refused: building either edge could be the wrong
  * solid. Where they name the same pair, or the world frame names no face for a part (a cylinder lying on its side has no world top face, so
- * only the primitive's own reading exists), the pick is resolved as before. A 'side' part (a cylinder's wall) is the same face in both frames.
+ * only the primitive's own reading exists), the pick is resolved as before (except a cylinder's BOTTOM with no world reading: refused, see below). A 'side' part (a cylinder's wall) is the same face in both frames.
  */
 async function turnedFrameClash(name: NameOf<'between'>, env: ResolveEnv, A: FaceResolved & { ok: true }, B: FaceResolved & { ok: true }, t: string): Promise<Fail | null> {
   if (!env.followTurns) return null;
@@ -441,6 +441,7 @@ async function turnedFrameClash(name: NameOf<'between'>, env: ResolveEnv, A: Fac
   const own = [names(A), names(B)];
   const world: Set<string>[] = [];
   let turned: FeatureView | null = null;
+  let noWorld = false; let noWorldBottom: FeatureView | null = null;
   for (let i = 0; i < 2; i++) {
     const n = name.of[i];
     const raw = n?.cause === 'primitive' ? env.features.find((x) => x.id === n.feature) : undefined;
@@ -449,9 +450,18 @@ async function turnedFrameClash(name: NameOf<'between'>, env: ResolveEnv, A: Fac
     turned = f;
     if (n.part === 'side') { world.push(own[i]); continue; }
     const w = await primitiveFace(n, f, env, nameText(n), true);
-    if (!w.ok) return null;
+    if (!w.ok) {
+      // a cylinder lying on its side: no cap faces world +z or -z. Its own frame is the only reading of the part, and for its TOP rim the referees'
+      // world-frame lookup (a tie-break, topo-resolve.ts) lands on that same rim (measured: centre of mass to 2.4e-7). For its BOTTOM rim the
+      // tie-break lands on the top rim, so no second oracle confirms the build (AGENTS.md): refused, owner decision (audit FM-1).
+      if (f.kind === 'cylinder' && n.part === '-z') noWorldBottom = f;
+      noWorld = true;
+      continue;
+    }
     world.push(names(w));
   }
+  if (noWorldBottom) return fail(`${t}: ${noWorldBottom.id} is rotated; this demo resolves primitive faces only on unrotated primitives, and the bottom of a cylinder turned onto its side has no world-frame reading that a second oracle confirms; nothing is picked`);
+  if (noWorld) return null;
   if (!turned) return null;
   const same = (a: Set<string>, b: Set<string>) => a.size === b.size && [...a].every((x) => b.has(x));
   if ((same(own[0], world[0]) && same(own[1], world[1])) || (same(own[0], world[1]) && same(own[1], world[0]))) return null;

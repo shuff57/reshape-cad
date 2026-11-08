@@ -11,3 +11,7 @@ scratch base tree are the run's own, as in the other spike evidence).
 
 Result, both rigs alike: 31 wrong builds now refused (21 fc, 10 mt), 3 fccombined docs refused earlier or with another sentence, 0 new wrong, 0 right build
 of a measured feature lost. Details and the per-row reading: AUDIT-HOST-GUARDS.md FM-1, contract-overrides.json `ownerDecisions`.
+
+Bottom rim (owner decision 2026-11-08): `run-rim.sh` re-runs every doc with a fillet/bevel (bool, sd, fc, mt, combined, rgcombined, fccombined; 2447 docs)
+on the tree with the change, `rimcmp.py` compares it with the sweep before. Both rigs: exactly 4 changed, the bottom-rim bevels of a cylinder turned
+x90/y90, COM-OFF -> refused; the 4 top rims stay RIGHT. `fm1-host-route.json` `bottomRim`.

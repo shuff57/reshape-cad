@@ -18352,5 +18352,88 @@ null
 ]
 }
 }
+},
+"bottomRim": {
+"what": "owner decision 2026-11-08: the bottom rim of a cylinder turned onto its side is refused. Every doc with a fillet/bevel in the bool, sd, fc, mt, combined, rgcombined and fccombined corpora re-run on the tree with the change and compared with the sweep of 95130e4e+beb87953 (rimcmp.py).",
+"rigs": {
+"021c": {
+"compared": 2447,
+"changed": [
+{
+"corpus": "fc",
+"id": "b-cyl-turn-x90-bottom-rim-bevel3",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "b-cyl-turn-y90-bottom-rim-bevel3",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "r-cyl-turn-x90-bottom-rim-bevel",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "r-cyl-turn-y90-bottom-rim-bevel",
+"before": "COM-OFF",
+"after": "REFUSED"
+}
+],
+"turnedCylinderRims": {
+"b-cyl-turn-x90-bottom-rim-bevel3": "REFUSED",
+"b-cyl-turn-x90-top-rim-round3": "RIGHT",
+"b-cyl-turn-y90-bottom-rim-bevel3": "REFUSED",
+"b-cyl-turn-y90-top-rim-round3": "RIGHT",
+"r-cyl-turn-x90-bottom-rim-bevel": "REFUSED",
+"r-cyl-turn-x90-top-rim": "RIGHT",
+"r-cyl-turn-y90-bottom-rim-bevel": "REFUSED",
+"r-cyl-turn-y90-top-rim": "RIGHT"
+}
+},
+"030": {
+"compared": 2447,
+"changed": [
+{
+"corpus": "fc",
+"id": "b-cyl-turn-x90-bottom-rim-bevel3",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "b-cyl-turn-y90-bottom-rim-bevel3",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "r-cyl-turn-x90-bottom-rim-bevel",
+"before": "COM-OFF",
+"after": "REFUSED"
+},
+{
+"corpus": "fc",
+"id": "r-cyl-turn-y90-bottom-rim-bevel",
+"before": "COM-OFF",
+"after": "REFUSED"
+}
+],
+"turnedCylinderRims": {
+"b-cyl-turn-x90-bottom-rim-bevel3": "REFUSED",
+"b-cyl-turn-x90-top-rim-round3": "RIGHT",
+"b-cyl-turn-y90-bottom-rim-bevel3": "REFUSED",
+"b-cyl-turn-y90-top-rim-round3": "RIGHT",
+"r-cyl-turn-x90-bottom-rim-bevel": "REFUSED",
+"r-cyl-turn-x90-top-rim": "RIGHT",
+"r-cyl-turn-y90-bottom-rim-bevel": "REFUSED",
+"r-cyl-turn-y90-top-rim": "RIGHT"
+}
+}
+}
 }
 }

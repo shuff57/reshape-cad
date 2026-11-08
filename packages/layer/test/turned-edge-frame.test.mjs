@@ -4,7 +4,8 @@
 // was top-front before the turn, while both referees round the 20 mm world top-front edge. Pinned here on hand-made topology (no kernel):
 //   - the two readings name different edges: refused, and the student sees the existing "was turned" sentence (fc-sentences.ts);
 //   - the two readings agree (a turn by a whole turn): resolved as before;
-//   - the world frame names no face (a cylinder lying on its side has no world top face): resolved as before, in the primitive's own frame;
+//   - the world frame names no face (a cylinder lying on its side has no world top face): its TOP rim resolves as before, in the primitive's own
+//     frame; its BOTTOM rim is refused (the referees' tie-break lands on the top rim, so no second oracle confirms it; owner decision);
 //   - flag off: the standing refusal of any rotated primitive, unchanged.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -75,4 +76,25 @@ test('a cylinder lying on its side (no world top face) is resolved in its own fr
   const r = await resolveName(edge('+z', 'side'), envOf(feat, faces, edges), 'edge');
   assert.equal(r.ok, true, r.sentence);
   assert.deepEqual(r.evidence.engineEdges.sort(), ['F1:side#0|F1:top', 'F1:side#1|F1:top']);
+});
+
+test('the BOTTOM rim of a cylinder lying on its side is refused (no second oracle), with the existing "was turned" sentence', async () => {
+  // same cylinder turned [90,0,0]: local -z (bottom) faces world +y. The referees' world-frame lookup ties and lands on the top rim, so nothing
+  // confirms the bottom-rim build: refused (owner decision, audit FM-1). The top rim, where the tie-break lands on the same rim, builds (test above).
+  const feat = { id: 'box1', kind: 'cylinder', radius: 10, height: 20, center: [0, 0, 0], rotate: [90, 0, 0] };
+  const faces = [
+    face('F1:top', [0, -1, 0], [0, -10, 0], 314.16), face('F1:bottom', [0, 1, 0], [0, 10, 0], 314.16),
+    { name: 'F1:side#0', area: 628.3, centroid: [0, 0, 6.4], plane_normal: null }, { name: 'F1:side#1', area: 628.3, centroid: [0, 0, -6.4], plane_normal: null },
+  ];
+  const edges = [
+    { name: 'F1:bottom|F1:side#0', start: [10, 10, 0], mid: [0, 10, 10], end: [-10, 10, 0], length: 31.4159 },
+    { name: 'F1:bottom|F1:side#1', start: [-10, 10, 0], mid: [0, 10, -10], end: [10, 10, 0], length: 31.4159 },
+  ];
+  for (const of of [['-z', 'side'], ['side', '-z']]) {
+    const r = await resolveName(edge(...of), envOf(feat, faces, edges), 'edge');
+    assert.equal(r.ok, false);
+    assert.match(r.sentence, /the bottom of a cylinder turned onto its side has no world-frame reading/);
+    assert.equal(plainSentence(`bevel1 (fillet): ${r.sentence}`).sentence,
+      'The part for bevel1 was turned, so its edge cannot be found reliably and bevel1 is shown without it -- round or bevel the edge before you turn the part.');
+  }
 });
