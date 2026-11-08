@@ -27,7 +27,7 @@ import { BASE_PROFILE, planFeature, refuse, resolveNamesFor, membersOf } from '.
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
-import { motionRefusal } from './move-turn.js';
+import { motionRefusal, motionRepair } from './move-turn.js';
 import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
@@ -112,7 +112,9 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
   let lastFail: RunResult | null = null;
   let timedOut = false;
   let errored = false; // an engine reply with an errored body (errored-body.ts)
-  for (const variant of plan.variants) {
+  for (const variant0 of plan.variants) {
+    let variant = variant0;
+    let repaired: { pads: number; reason: string } | undefined;
     let res: RunResult;
     // time: a groove's engine runs carry { budgetS } (advice to the host, see the header); every other run is as in the original (no option)
     try { res = f.kind === 'groove' ? await ctx.runSC([...accepted, ...variant], { budgetS: RG_BUDGET_S + 1.5 * rs.lastRunS }) : await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
@@ -121,14 +123,18 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
       if (res.timedOut && f.kind === 'groove') { timedOut = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : 'TIME BUDGET: the run did not finish'; lastFail = res; continue; }
       lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue;
     }
-    const m = aggregateRG(res, plan.produces);
+    let m = aggregateRG(res, plan.produces);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { st.refused[f.id] = sv; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
-    if (mv) { st.refused[f.id] = mv.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // the move-turn group's chain repair: the same feature with one or two no-op moves appended, re-checked by the same invariant (move-turn.ts motionRepair)
+    const fx = mv ? await motionRepair(f, st, ctx, mv, plan.produces, accepted, variant, ctx.runSC) : null;
+    const m2 = fx ? aggregateRG(fx.res, plan.produces) : null;
+    if (mv && fx && m2) { variant = fx.variant; res = fx.res; m = m2; repaired = { pads: fx.pads, reason: mv.sentence }; }
+    else if (mv) { st.refused[f.id] = mv.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
     const bl = blendRefusal(f, blendOf(plan), beforeOf(st, (f as unknown as { target?: string }).target), m, ctx);
     if (bl) { st.refused[f.id] = bl.sentence; if (onRefused(rgView(f), st)) rs.chained[f.id] = true; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, commands: variant }); return; }
@@ -149,7 +155,7 @@ export async function rgStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
       if (c === f.id) continue;
       if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? (f as unknown as { target: string }).target : (f as unknown as { into: string }).into)) st.head[c] = f.id; } else st.stale[c] = f.id;
     }
-    note({ status: 'built', commands: variant, measure: m, ...(rg ? { rg } : {}), pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
+    note({ status: 'built', commands: variant, measure: m, ...(rg ? { rg } : {}), pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant0) + 1, ...(repaired ? { repaired } : {}) });
     return;
   }
   let sentence: string; let code: string | undefined;

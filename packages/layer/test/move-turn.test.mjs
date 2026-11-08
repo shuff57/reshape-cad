@@ -191,3 +191,62 @@ test('ctx.skipMoveTurn switches every one of them off (measuring only)', async (
     }
   }
 });
+
+// ---- the chain repair (the padded half of the group's round 4 repair, GUARD-OVERREFUSAL.md) ------------------------------------------------------------------------
+// The pinned kernel's fault comes and goes with the number of moves a body has been through (the group measured a revolve-built cone wrong at 6, 8, 15, 17 ... moves
+// and right at every other count). `counted(bad)` reports a body's volume wrong while its move count is in `bad`, and right again at any other count.
+const counted = (bad, factor = 0.7) => async (cmds) => {
+  const r = await fake()(cmds);
+  const n = {}; for (const c of cmds) if (c.command === 'solid.move') for (const b of c.params.bodies) n[b] = (n[b] ?? 0) + 1;
+  for (const b of r.measure.bodies) if (bad.includes(n[b.name] ?? 0)) b.volume_mm3 *= factor;
+  return r;
+};
+const NOOP = (b) => ({ command: 'solid.move', params: { bodies: [b], translate: [0, 0, 0] } });
+test('a move the invariant refuses is built with one or two no-op moves appended when that brings the part back, in every set; otherwise the sentence stands', async () => {
+  const doc = docOf('let a = cone(13, 9, { at: [5, 10, -10] })\nmove(a, [-27, 15, -14])\nmove(a, [8, 26, 14])');
+  const V = Math.PI * 6.5 ** 2 * 9 / 3;
+  for (const set of ALL_SETS) {
+    // wrong at 1 move: move1 + one no-op (2 moves) is right; move2 then counts 3, right
+    const r1 = await run(set, doc, counted([1]));
+    const m1 = feat(r1, 'move1');
+    assert.equal(m1.status, 'built', `${set}: ${JSON.stringify(m1).slice(0, 300)}`);
+    assert.equal(m1.repaired?.pads, 1, set);
+    assert.match(m1.repaired.reason, /^Move 1 is not built: moving Cone 1 would change its volume/, set);
+    const body = m1.commands[0].params.bodies[0];
+    assert.deepEqual(m1.commands.slice(1), [NOOP(body)], `${set}: the padding is the feature's own commands`);
+    assert.ok(Math.abs(m1.measure.volume - V) < 1e-9 * V, set);
+    assert.equal(feat(r1, 'move2').status, 'built', set);
+    assert.equal(feat(r1, 'move2').repaired, undefined, set);
+    assert.equal(r1.commands.filter((c) => c.command === 'solid.move').length, 3, `${set}: the accepted list carries the padding`);
+    // wrong at 1 and 2: two no-ops; move2 is the 4th move, right
+    const r2 = await run(set, doc, counted([1, 2]));
+    assert.equal(feat(r2, 'move1').status, 'built', set);
+    assert.equal(feat(r2, 'move1').repaired?.pads, 2, set);
+    assert.deepEqual(feat(r2, 'move1').commands.slice(1), [NOOP(body), NOOP(body)], set);
+    assert.equal(feat(r2, 'move2').status, 'built', set);
+    // wrong at 1, 2 and 3: no repair, the invariant's sentence as before, and what depends on it is refused
+    const r3 = await run(set, doc, counted([1, 2, 3]));
+    assert.equal(feat(r3, 'move1').status, 'refused', set);
+    assert.equal(feat(r3, 'move1').guard, mtg.MT_INVARIANT_GUARD, set);
+    assert.equal(feat(r3, 'move1').refusal, `Move 1 is not built: moving Cone 1 would change its volume (${(V * 0.7).toFixed(0)} mm3 instead of ${V.toFixed(0)} mm3), which a move must never do, so it is shown without it -- try fewer separate moves, or build the part where you want it.`, set);
+    assert.equal(feat(r3, 'move2').status, 'refused', set);
+    // a later move wrong at its own count is repaired against the padded part before it
+    const r4 = await run(set, doc, counted([2]));
+    assert.equal(feat(r4, 'move1').repaired, undefined, set);
+    assert.equal(feat(r4, 'move2').status, 'built', set);
+    assert.equal(feat(r4, 'move2').repaired?.pads, 1, set);
+  }
+});
+test('the repair is for the invariant only: a primitive off its closed form, a fault no padding undoes, and ctx.skipMoveTurnRepair stay refused', async () => {
+  const doc = docOf('let a = cone(13, 9, { at: [5, 10, -10] })\nmove(a, [-27, 15, -14])');
+  for (const set of ALL_SETS) {
+    const p = await run(set, doc, fake({ primFault: 1.01 }));
+    assert.equal(feat(p, 'cone1').guard, mtg.MT_PRIMITIVE_GUARD, set);
+    assert.equal(feat(p, 'cone1').repaired, undefined, set);
+    const k = await run(set, doc, fake({ moveFault: (n, kk) => (kk === 1 ? { vol: 0.5 } : null) })); // the volume stays wrong after any number of no-op moves
+    assert.equal(feat(k, 'move1').guard, mtg.MT_INVARIANT_GUARD, set);
+    const off = await run(set, doc, counted([1]), { skipMoveTurnRepair: true });
+    assert.equal(feat(off, 'move1').status, 'refused', set);
+    assert.equal(feat(off, 'move1').guard, mtg.MT_INVARIANT_GUARD, set);
+  }
+});

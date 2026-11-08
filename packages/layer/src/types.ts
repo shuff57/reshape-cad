@@ -143,6 +143,11 @@ export interface TranslateCtx {
    */
   skipMoveTurn?: boolean;
   /**
+   * Every set: switch OFF the move-turn group's chain repair (move-turn.ts motionRepair: a move or turn the invariant refused is re-run with one or two no-op
+   * translations appended). For measuring only (the before/after runs of GUARD-OVERREFUSAL.md). Never set in production.
+   */
+  skipMoveTurnRepair?: boolean;
+  /**
    * Every set: switch OFF the primitives group's guard (primitives.ts). For measuring only (the before/after runs of GUARD-PRIMITIVES.md; the differential tests'
    * originals have no such guard). Never set in production.
    */

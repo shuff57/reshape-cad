@@ -19,8 +19,8 @@
 //   4. MT-PRIMITIVE (round 4, with the invariant): a primitive without a whole-shape round is checked against its closed-form volume.
 // Not ported, and why (docs/spikes/solidcraft-referee/GUARD-MOVE-TURN.md): the pick guard (the layer follows a name through moves itself, ctx.followMoves), the
 // copy mapping (the layer refuses a copying move), the multi-lump bookkeeping, the 3000 mm magnitude limit (it contradicts the primitives contract's far-placement
-// rules and the cases it guards are not wrong on the pin), the time limit (G-BUDGET), the invariant's chain repair (a retry, not a guard: a failed invariant is
-// refused here), and the invariant on a copying move (never built).
+// rules and the cases it guards are not wrong on the pin), the time limit (G-BUDGET), the folded half of the invariant's chain repair (see motionRepair below;
+// its padded half IS ported, GUARD-OVERREFUSAL.md), and the invariant on a copying move (never built).
 //
 // Bookkeeping that the original keeps per run is taken from the doc here, so it does not depend on which set's step built a feature: the move / turn count of
 // every feature (the original's st.steps: the most of its sources, plus one for a move or turn) and the display names. Both are computed once per translation
@@ -188,4 +188,38 @@ export function motionRefusal(f: Feature, st: TranslateState, ctx: Pick<Translat
   }
   const s = invariantSentence(f, st, x, r);
   return s ? { sentence: s, guard: MT_INVARIANT_GUARD } : null;
+}
+
+// ---- the round 4 chain repair, its padding half --------------------------------------------------------------------------------------------------------------
+// The original (translate-guard.mjs, "(round 4) repair") answers a failed invariant by re-running the part with other command lists, each re-checked by the SAME
+// invariant, and builds the first one that passes; the invariant's sentence stands when none does. Its reason, measured by the group: the engine's fault depends
+// on how many moves a body has been through (a revolve-built cone is wrong at 6, 8, 15, 17 ... moves and right at every other count), so one or two moves by
+// [0, 0, 0] after the move or turn bring the count back to a right one. The move-turn rows' "the translator guard must ship" is that translator, repair included.
+// Ported: the padded candidates, in the original's order (padded1, padded2): the feature's own commands, then n no-op translations of each body it leaves, as one
+// variant, so the commands already accepted for earlier features are never rewritten. Not ported: the folded candidates (simplifyChain), because a fold rewrites
+// commands that earlier features own, and this layer keeps each feature's prefix of the accepted list (st.accLen, lastRunOf, resolveAfter) fixed once accepted.
+// Only an MT-INVARIANT refusal is repaired (the original repairs MT-PRIMITIVE too; no primitive was over-refused by it, so it stays a refusal as before).
+// Off with ctx.skipMoveTurnRepair (measuring only: the before/after runs of GUARD-OVERREFUSAL.md); never set in production.
+/** the original's padList(base, n) without base: n no-op translations of every body in `names` */
+export function padCommands(names: string[], n: number): Cmd[] {
+  return Array.from({ length: n }, () => names.map((nm): Cmd => ({ command: 'solid.move', params: { bodies: [nm], translate: [0, 0, 0] } }))).flat();
+}
+/**
+ * A step calls this when motionRefusal refused a variant. `first` is that refusal. Returns the repaired variant (the feature's commands plus the padding) and the reply
+ * of the run that built it, when that run passes motionRefusal against the same part before; null when there is no repair (the step refuses with `first`).
+ */
+export async function motionRepair(
+  f: Feature, st: TranslateState, ctx: Pick<TranslateCtx, 'skipMoveTurn' | 'skipSketchVolume' | 'skipMoveTurnRepair'>, first: { guard: string },
+  produces: string[], accepted: Cmd[], variant: Cmd[], run: (cmds: Cmd[]) => RunResult | Promise<RunResult>,
+): Promise<{ variant: Cmd[]; res: RunResult; pads: number } | null> {
+  if (ctx.skipMoveTurnRepair || first.guard !== MT_INVARIANT_GUARD || !isStep(f.kind) || FV(f).copy || !produces.length) return null;
+  for (const n of [1, 2]) {
+    const v2 = [...variant, ...padCommands(produces, n)];
+    let res: RunResult;
+    try { res = await run([...accepted, ...v2]); } catch { continue; }
+    if (!res?.ok || !res.measure) continue;
+    if (!measureOf(res, produces)) continue;
+    if (motionRefusal(f, st, ctx, res, produces, accepted) === null) return { variant: v2, res, pads: n };
+  }
+  return null;
 }

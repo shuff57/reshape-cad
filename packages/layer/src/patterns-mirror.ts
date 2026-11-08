@@ -27,7 +27,7 @@ import { BASE_PROFILE, planFeature, frameWithMt, resolveNamesFor } from './trans
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
-import { motionRefusal } from './move-turn.js';
+import { motionRefusal, motionRepair } from './move-turn.js';
 import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { isVerbatimGuard } from './translate.js';
@@ -615,8 +615,10 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     return r;
   };
   let errored = false; // an engine reply with an errored body (errored-body.ts)
-  for (const [vi, variant] of plan.variants.entries()) {
-    const res = await callSC([...accepted, ...variant]);
+  for (const [vi, variant0] of plan.variants.entries()) {
+    let variant = variant0;
+    let repaired: { pads: number; reason: string } | undefined;
+    let res = await callSC([...accepted, ...variant]);
     if (!res.ok) {
       if (res.erroredBody) errored = true;
       lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown');
@@ -626,15 +628,19 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
     }
     // patch 'fresh': bodies the command created that the plan did not name (a mirror or pattern of several bodies leaves the copies as 'b (2)', 'b (3)' ...) are measured too
     const known = pm.known ?? new Set<string>();
-    const fresh = res.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n) && !plan.produces.includes(n));
-    const m = aggregatePM(res, [...plan.produces, ...fresh]);
+    let fresh = res.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n) && !plan.produces.includes(n));
+    let m = aggregatePM(res, [...plan.produces, ...fresh]);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces) : null;
     if (sv) { refusedNote(sv, sv, variant, SKETCH_VOLUME_GUARD); return; }
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
-    if (mv) { refusedNote(mv.sentence, mv.sentence, variant, mv.guard); return; }
+    // the move-turn group's chain repair: the same feature with one or two no-op moves appended, re-checked by the same invariant (move-turn.ts motionRepair)
+    const fx = mv ? await motionRepair(f, st, ctx, mv, plan.produces, accepted, variant, callSC) : null;
+    const m2 = fx ? aggregatePM(fx.res, [...plan.produces, ...fx.res.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n) && !plan.produces.includes(n))]) : null;
+    if (mv && fx && m2) { variant = fx.variant; res = fx.res; m = m2; repaired = { pads: fx.pads, reason: mv.sentence }; fresh = res.measure!.bodies.map((b) => b.name).filter((n) => !known.has(n) && !plan.produces.includes(n)); }
+    else if (mv) { refusedNote(mv.sentence, mv.sentence, variant, mv.guard); return; }
     // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
     const bl = blendRefusal(f, blendOf(plan), beforeOf(st, g.target), m, ctx);
     if (bl) { refusedNote(bl.sentence, bl.sentence, variant, bl.guard); return; }
@@ -793,7 +799,7 @@ export async function pmStep(f: Feature, idx: number, env: LoopEnv): Promise<voi
       if (c === f.id) continue;
       if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? g.target : g.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
     }
-    note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, variantsTried: plan.variants.indexOf(variant) + 1, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, ...(plan.mirrorAt ? { mirrorAt: plan.mirrorAt } : {}), wallMs: res.wallMs });
+    note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, variantsTried: plan.variants.indexOf(variant0) + 1, ...(repaired ? { repaired } : {}), pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, ...(plan.mirrorAt ? { mirrorAt: plan.mirrorAt } : {}), wallMs: res.wallMs });
     return;
   }
   if (errored) { refusedNote(`${f.id} (${f.kind}): solidcraft refused it -- ${lastErr}`, erroredBodySentence(f), plan.variants[0], ERRORED_BODY_GUARD); return; }

@@ -21,7 +21,7 @@ import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
 import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
-import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal } from './move-turn.js';
+import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal, motionRepair } from './move-turn.js';
 import type { MotionInfo } from './move-turn.js';
 import { PRIMITIVES_GUARD, primitiveEffects, primitiveRefusal } from './primitives.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence, withErroredBodies } from './errored-body.js';
@@ -773,6 +773,8 @@ export interface FeatureResult {
   group?: string[];
   groupSize?: number;
   measureRefused?: Aggregate | null;
+  /** every set: a move or turn the rigid-motion invariant refused and the chain repair built (move-turn.ts motionRepair): the no-op moves appended, the first sentence. */
+  repaired?: { pads: number; reason: string };
   partial?: true;
 }
 export interface TranslateResult {
@@ -878,12 +880,14 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
   let verifyGuard: string | undefined;
   let errored = false;
   const checks: unknown[] = [];
-  for (const variant of plan.variants) {
+  for (const variant0 of plan.variants) {
+    let variant = variant0;
+    let repaired: FeatureResult['repaired'];
     let res: RunResult;
     try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
     if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
-    const m = aggregate(res, plan.produces, profile.verifies);
+    let m = aggregate(res, plan.produces, profile.verifies);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
     if (profile.verifies) {
       const bad = plan.verify && !ctx.skipVerify ? await plan.verify(m, { accepted: accepted.slice(), variant, runSC: ctx.runSC, checks, scene: st.scene! }) : null;
@@ -894,7 +898,11 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     if (sv) { verifyRefusal = sv; verifyGuard = SKETCH_VOLUME_GUARD; lastErr = null; continue; }
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces, accepted);
-    if (mv) { verifyRefusal = mv.sentence; verifyGuard = mv.guard; lastErr = null; continue; }
+    // the move-turn group's chain repair: the same feature with one or two no-op moves appended, re-checked by the same invariant (move-turn.ts motionRepair)
+    const fx = mv ? await motionRepair(f, st, ctx, mv, plan.produces, accepted, variant, ctx.runSC) : null;
+    const m2 = fx ? aggregate(fx.res, plan.produces, profile.verifies) : null;
+    if (mv && fx && m2) { variant = fx.variant; res = fx.res; m = m2; repaired = { pads: fx.pads, reason: mv.sentence }; }
+    else if (mv) { verifyRefusal = mv.sentence; verifyGuard = mv.guard; lastErr = null; continue; }
     // every set but fillet-chamfer and unified: a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
     const bl = blendRefusal(f, plan.blend, beforeOf(st, (f as { target?: string }).target), m, ctx);
     if (bl) { verifyRefusal = bl.sentence; verifyGuard = bl.guard; lastErr = null; continue; }
@@ -914,7 +922,7 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
       if (c === f.id) continue;
       if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? f.target : f.into)) st.head[c] = f.id; } else st.stale[c] = f.id;
     }
-    note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant) + 1 });
+    note({ status: 'built', ...(profile.verifies ? { checks } : {}), commands: variant, measure: m, pickedFrom: plan.pickedFrom, evidence: plan.evidence ?? null, pick: (variant.find((c) => c.params.edges || c.params.faces)?.params) ?? null, variantsTried: plan.variants.indexOf(variant0) + 1, ...(repaired ? { repaired } : {}) });
     return;
   }
   // an errored body (errored-body.ts): the owner's sentence, whatever the set's wording of an engine failure

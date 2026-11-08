@@ -19,7 +19,7 @@ import { removedVolume, holeProfile } from './holes-volume.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
 import { hollowRefusal } from './hollow-check.js';
-import { motionRefusal } from './move-turn.js';
+import { motionRefusal, motionRepair } from './move-turn.js';
 import { beforeOf, blendOf, blendRefusal } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import type { VolTool } from './holes-volume.js';
@@ -286,8 +286,10 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   if (plan.noop) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let errored = false; // an engine reply with an errored body (errored-body.ts)
-  for (const variant of plan.variants!) {
-    const res = await runB([...accepted, ...variant]);
+  for (const variant0 of plan.variants!) {
+    let variant = variant0;
+    let repaired: { pads: number; reason: string } | undefined;
+    let res = await runB([...accepted, ...variant]);
     if (res.timedOut && off.has('G-BUDGET')) { // negative control: no budget, the run was killed at the control limit (H4_CTL_S) so the control could end
       st.refused[f.id] = `CONTROL: no result within ${res.failed?.error} (a hang)`;
       note({ status: 'refused', refusal: st.refused[f.id], guard: 'CONTROL-KILL', raw: res.failed?.error, cpuMs: res.cpuMs, commands: variant });
@@ -300,15 +302,19 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       return;
     }
     if (!res.ok) { if (res.erroredBody) errored = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
-    const m = aggregateOf(res, plan.produces!);
+    let m = aggregateOf(res, plan.produces!);
     if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces!.join(', ')} came back`; continue; }
-    const allBodies: BodyRow[] = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
+    let allBodies: BodyRow[] = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
     // every set: the built pull against its sketch (sketch-volume.ts)
     const sv = f.kind === 'extrude' ? sketchVolumeRefusal(f, st.sketches[f.target], ctx, res, plan.produces!) : null;
     if (sv) { st.refused[f.id] = sv; note({ status: 'refused', refusal: sv, guard: SKETCH_VOLUME_GUARD, commands: variant }); return; }
     // every set: a move or turn against the part it started from, a primitive against its closed-form volume (move-turn.ts)
     const mv = motionRefusal(f, st, ctx, res, plan.produces!, accepted);
-    if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
+    // the move-turn group's chain repair: the same feature with one or two no-op moves appended, re-checked by the same invariant (move-turn.ts motionRepair)
+    const fx = mv ? await motionRepair(f, st, ctx, mv, plan.produces!, accepted, variant, runB) : null;
+    const m2 = fx ? aggregateOf(fx.res, plan.produces!) : null;
+    if (mv && fx && m2) { variant = fx.variant; res = fx.res; m = m2; repaired = { pads: fx.pads, reason: mv.sentence }; allBodies = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 })); }
+    else if (mv) { st.refused[f.id] = mv.sentence; note({ status: 'refused', refusal: mv.sentence, guard: mv.guard, commands: variant }); return; }
     // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
     const bl = blendRefusal(f, blendOf(plan), beforeOf(st, fv.target), m, ctx);
     if (bl) { st.refused[f.id] = bl.sentence; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox }, commands: variant }); return; }
@@ -341,7 +347,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       if (c === f.id) continue;
       if (f.kind === 'hole' || f.kind === 'pocket' || f.kind === 'groove') { if (c === (f.kind === 'hole' ? (f as unknown as HoleView).target : (fv as unknown as { into: string }).into)) st.head[c] = f.id; } else st.stale[c] = f.id;
     }
-    note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, probe: plan.probe, variantsTried: plan.variants!.indexOf(variant) + 1 });
+    note({ status: 'built', commands: variant, measure: m, pickedFrom: plan.pickedFrom, probe: plan.probe, variantsTried: plan.variants!.indexOf(variant0) + 1, ...(repaired ? { repaired } : {}) });
     return;
   }
   if (errored) { const s = erroredBodySentence(f); st.refused[f.id] = s; note({ status: 'refused', refusal: s, raw: lastErr, guard: ERRORED_BODY_GUARD, commands: plan.variants![0] }); return; }
