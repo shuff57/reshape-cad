@@ -255,7 +255,7 @@ async function translateGroup(run: Feature[], prefix: Feature[], env: LoopEnv): 
   for (const m of run) {
     const renv = makeEnv(st, accepted, prefix, ctx, shapeCache);
     let rr: Resolved = await resolveName(FV(m).edge as never, renv, 'edge');
-    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: f0.target! });
+    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId: f0.target!, features: prefix });
     if (!rr.ok || rr.kind !== 'edge') { refuseAll(`${m.id} (fillet): ${rr.ok ? `the edge could not be resolved to a single edge (it names ${rr.kind})` : rr.sentence}`); flush(); return; }
     points.push(rr.point); evidences.push(rr.evidence);
   }

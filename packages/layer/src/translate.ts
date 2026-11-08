@@ -657,14 +657,29 @@ export function aggregate(res: RunResult, names: string[], pieces = false): Aggr
   };
 }
 
-export interface ConfirmArgs { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; targetId: string }
+export interface ConfirmArgs { st: TranslateState; accepted: Cmd[]; ctx: TranslateCtx; targetId: string; /** the features before the one that uses the name: with them an edge found where the named edge was, after a move or a turn, must be the same edge by name */ features?: Feature[] }
+
+/** The first move or turn (a `rotate` feature) on the way from the target back to the feature the name was resolved on, if any. */
+function moveOrTurnBetween(features: Feature[], targetId: string, rootId: string): { id: string; kind: string } | null {
+  const byId = new Map(features.map((f) => [f.id, f as unknown as { id: string; kind: string; target?: string; into?: string; targets?: string[] }]));
+  const seen = new Set<string>();
+  for (let cur: string | undefined = targetId; cur && cur !== rootId && !seen.has(cur); ) {
+    seen.add(cur);
+    const g = byId.get(cur);
+    if (!g) return null;
+    if (g.kind === 'move' || g.kind === 'rotate') return g;
+    cur = g.target ?? g.into ?? g.targets?.[0];
+  }
+  return null;
+}
+const edgePair = (n: string): string | null => { const p = n.replace(/~\d+$/, '').split('|'); return p.length === 2 ? [...p].sort().join('|') : null; };
 
 /**
  * The name was resolved on the own shape of the feature it names; the pick lands on the TARGET body as it is now. Redo, ON THE
  * TARGET: the candidate count (every face coplanar with the named plane, or every edge matching), the engine's own pick-hit
  * test and the choice of an interior point. More than one candidate, or no safe point, is a refusal with the count.
  */
-export async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId }: ConfirmArgs): Promise<Resolved> {
+export async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetId, features }: ConfirmArgs): Promise<Resolved> {
   if (!rr.ok || rr.kind === 'faceset') return rr;
   const headId = (id: string): string => { let h = id; const seen = new Set<string>(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; } return h; };
   const tb = st.bodies[headId(targetId)];
@@ -687,6 +702,14 @@ export async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetI
     const miss = per.filter((m) => m.length === 0).length;
     if (miss) return { ok: false, sentence: `${nm} resolves to ${er.evidence.engineEdges.join(', ')} on ${er.shape.featureId}, but ${miss === er.edges.length ? 'that edge is' : 'part of that edge is'} no longer present whole on ${tb[0]} (an operation after ${er.shape.featureId} changed or removed it); nothing is picked` };
     if (per.some((m) => m.length > 1)) return { ok: false, sentence: `${nm} matches more than one edge on ${tb[0]} (${per.flat().map((q) => q.name).join(', ')}); nothing is picked` };
+    // after a move or a turn the edge is looked for where it WAS (edges are not carried through a move); another edge of the moved part can sit
+    // exactly there (a box moved by its own depth puts its back edge where its front edge was). solidcraft's persistent labels travel with the
+    // body, so the edge found there must carry the named edge's own label, else it is another edge and nothing is picked.
+    const mt = features ? moveOrTurnBetween(features, targetId, er.shape.featureId) : null;
+    if (mt) {
+      const other = er.edges.map((e, i) => [e.name, per[i][0].name] as const).filter(([a, b]) => edgePair(a) !== null && edgePair(b) !== null && edgePair(a) !== edgePair(b));
+      if (other.length) return { ok: false, sentence: `${nm} resolves to ${er.evidence.engineEdges.join(', ')} on ${er.shape.featureId}, but that edge is no longer present whole on ${tb[0]}: after ${mt.id} (a ${mt.kind}) the edge at its place is ${other.map(([, b]) => b).join(', ')}, another edge of the part; nothing is picked` };
+    }
     er.evidence.target = { body: tb[0], candidates: er.edges.length, edges: per.flat().map((q) => q.name), point: er.point };
     return er;
   }
@@ -806,7 +829,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
     let rr = await resolveName(nameVal, menv, nameField === 'edge' ? 'edge' : 'face');
     const targetId = (f as { target: string }).target;
     if (ctx.followMoves) rr = followMoves(rr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
-    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId });
+    rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId, features: prefix });
     if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
     else resolved.set(nameVal, rr);
     // a fillet that starts a run of named fillets: every member's edge on the part before the run, for one call per connected chain (fillet-chain.ts)
@@ -821,7 +844,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
           if (!nm || typeof nm !== 'object') return null;
           let mr = await resolveName(nm, makeEnv(st, accepted, prefix, ctx, shapeCache), 'edge');
           if (ctx.followMoves) mr = followMoves(mr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
-          mr = await confirmOnTarget(mr, { st, accepted, ctx, targetId });
+          mr = await confirmOnTarget(mr, { st, accepted, ctx, targetId, features: prefix });
           return edgeOf(mr);
         }, 1);
       }
@@ -944,5 +967,5 @@ export async function resolveAfter(tr: TranslateResult, doc: { features: Feature
   }
   let rr = await resolveName(name, makeEnv(st, accepted, doc.features, ctx, shapeCache), want);
   if (targetId && ctx.followMoves) rr = followMoves(rr, { features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features, bboxOf: (id) => st.measure[id]?.bbox, targetId });
-  return targetId ? confirmOnTarget(rr, { st, accepted, ctx, targetId }) : rr;
+  return targetId ? confirmOnTarget(rr, { st, accepted, ctx, targetId, features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features }) : rr;
 }
