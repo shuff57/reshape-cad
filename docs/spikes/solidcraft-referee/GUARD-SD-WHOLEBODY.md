@@ -125,3 +125,9 @@ through the mechanism cb1e45e7 set up, and its note reads "CONFIRMED supported (
   single-rounded boxes.
 
 No behaviour changed. The row keeps "supported", and three blends at one corner stay refused (row 38). LAYER-CONTRACT-ROWS.md changes on row 36 only.
+
+## 7. Follow-up: x/y pulls, the Body Draft path and hollows after a draft
+
+See [GUARD-DRAFT-PULL.md](GUARD-DRAFT-PULL.md): every draft row those referee defects reach, in every corpus and in the stored picks-naming-params evidence, was
+re-scored (424 rows: 185 built, all RIGHT by two corrected references; 239 refused; 0 wrong). It also records a third referee defect: a hollow after a draft
+is built closed.

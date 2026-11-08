@@ -1,0 +1,10 @@
+[
+ {
+  "id": "pnpev:draft whole",
+  "script": "const b = box(40,30,20)\ndraft(b, 5, {whole:true})"
+ },
+ {
+  "id": "pnpev:draft face front pull y via from front",
+  "script": "const b = box(40,30,20,{at:[5,-3,2]})\ndraft(b.face('right'), 5, {from:'left'})"
+ }
+]
