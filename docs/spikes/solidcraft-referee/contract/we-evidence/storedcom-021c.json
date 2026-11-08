@@ -1,0 +1,1981 @@
+{
+ "sd:hollow-wall-11-disc60x12": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:hollow-wall-11.9-disc60x12": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:hollow-wall-11.9-cyl24x30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.194818653303547e-09
+   ]
+  ]
+ },
+ "sd:hollow-hole-offcentre-top": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.826599045848778e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-offcentre-bottom": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.826599045478704e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-centred-top": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.643758422380075e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-x-top": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.004499523379262e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-x-right": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.240425079334793e-07
+   ]
+  ]
+ },
+ "sd:hollow-holes-corner-top": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.01149608536354e-07
+   ]
+  ]
+ },
+ "sd:hollow-round-edge-vertical-r1": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:hollow-round-edge-vertical-r3": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.374555786594107e-07
+   ]
+  ]
+ },
+ "sd:hollow-round-edge-top-r1": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:hollow-bevel-edge-top-1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.5768837507417206e-10
+   ]
+  ]
+ },
+ "sd:hollow-bevel-edge-top-2": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.5698543038994444e-10
+   ]
+  ]
+ },
+ "sd:hollow-bevel-edge-vertical": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.401486830834377e-17
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-0_0": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.643758422380075e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-8_5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.826599045848778e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-12_12": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.3239898569568827e-06
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-6_6": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.619949284950947e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-3.5_-7.2": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.943939141645077e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos-6.2_1.1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.840614259021974e-07
+   ]
+  ]
+ },
+ "sd:hollow-hole-pos--10.5_-11": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.2136573689776794e-06
+   ]
+  ]
+ },
+ "sd:dnc-L-left-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    0.0
+   ]
+  ]
+ },
+ "sd:dnc-L-left-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.3194447360621941e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-left-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    9.895835520466456e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.440300370279048e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.962635700270483e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.823852719275543e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.075305255429287e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.357366494670278e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-left-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.479602789551022e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-front-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.597223680310971e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    9.895835520466456e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    9.895835520466456e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.238827544042429e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.102054979404432e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.9100458551023745e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.2960728602608495e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.355942611935569e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-front-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.8377026719317267e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-right-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.597223680310971e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.59722368031097e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.2986118401554854e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-in45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.298611840155484e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.2201501851395235e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.987545233423494e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.647705438551086e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.5376526277146434e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.571786391472445e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-right-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.3525106124823757e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-back-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.597223680310971e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.2986118401554854e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.2986118401554854e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.477655088084858e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.0510274897022154e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.820091710204749e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.2960728602608495e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.355942611935569e-16
+   ]
+  ]
+ },
+ "sd:dnc-L-back-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.8377026719317267e-16
+   ]
+  ]
+ },
+ "sd:dnc-T-left-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    0.0
+   ]
+  ]
+ },
+ "sd:dnc-T-left-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.25194642938943e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-right-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.4503892858778863e-16
+   ]
+  ]
+ },
+ "sd:dnc-T-right-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.625973214694716e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-front-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.625973214694716e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-front-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.251946429389432e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-back-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.251946429389432e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-back-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.25194642938943e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-front-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.781956890866297e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-front-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    9.43411126652338e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-left-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.901779121321296e-17
+   ]
+  ]
+ },
+ "sd:dnc-join-right-in45": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:dnc-join-right-in60": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:dnc-join-back-in45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.638360521155014e-17
+   ]
+  ]
+ },
+ "sd:dnc-join-back-in60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.865300434295845e-17
+   ]
+  ]
+ },
+ "sd:dnc-join-left-in60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.638360521155014e-17
+   ]
+  ]
+ },
+ "sd:dnc-join-front-in60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.184480694873352e-17
+   ]
+  ]
+ },
+ "sd:dnc-join-right-out60": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "sd:dnc-join-back-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.689596005876721e-16
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.336768246230143e-18
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.220446049250313e-17
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.401486830834377e-18
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.7766565202217473e-17
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.821836465437448e-18
+   ]
+  ]
+ },
+ "sd:dnc-slot-right-out80": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.890770946858399e-16
+   ]
+  ]
+ },
+ "sd:dnc-slot-left-in30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.1102230246251566e-17
+   ]
+  ]
+ },
+ "sd:dnc-slot-left-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.124445529134044e-17
+   ]
+  ]
+ },
+ "sd:dnc-boss-right-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.4433258833958693e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-right-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.0354088784794535e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-right-in10": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.2027416100105861e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-left-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.700743415417188e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-left-in45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.401486830834377e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-back-in45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.661338147750939e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-back-in60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.921189464667501e-17
+   ]
+  ]
+ },
+ "sd:dnc-notch-right-out45": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.121270024666099e-17
+   ]
+  ]
+ },
+ "sd:dnc-hole-right-in5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.375044040975477e-07
+   ]
+  ]
+ },
+ "sd:dnc-hole-right-in10": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    4.7110246667036996e-07
+   ]
+  ]
+ },
+ "sd:dnc-hole-right-in20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.462539287237611e-07
+   ]
+  ]
+ },
+ "sd:dnc-hole-right-out20": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.618168697494398e-07
+   ]
+  ]
+ },
+ "sd:dnc-hole-right-out60": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.2066013286956085e-07
+   ]
+  ]
+ },
+ "sd:dnc-L-seq-fbopp-30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    6.597223680310971e-17
+   ]
+  ]
+ },
+ "sd:dnc-L-seq-mixed-in-out": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.647705438551086e-17
+   ]
+  ]
+ },
+ "sd:dnc-T-seq-lr-22": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    3.625973214694716e-17
+   ]
+  ]
+ },
+ "sd:dnc-slot-seq-lr-30": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.960594732333751e-17
+   ]
+  ]
+ },
+ "sd:hc2-then-turn": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.552729205990288e-17
+   ]
+  ]
+ },
+ "sd:dw2-extrude-circle": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    7.479848217562493e-08
+   ]
+  ]
+ },
+ "sd:dw2-cylinder-5-0": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.05590762595171e-08
+   ]
+  ]
+ },
+ "sd:dw2-cylinder--5-0": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.0662178153883835e-08
+   ]
+  ]
+ },
+ "sd:dw2-cylinder-5--15": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.868200762722639e-08
+   ]
+  ]
+ },
+ "sd:dw2-cylinder-20-5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.4287971721481444e-07
+   ]
+  ]
+ },
+ "sd:dw2-cylinder--10-15": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    2.3532302528820646e-07
+   ]
+  ]
+ },
+ "sd:dw2-cylinder-moved": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    5.055907619494641e-08
+   ]
+  ]
+ },
+ "sd:dw2-cylinder-from-bottom": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    8.868200762722639e-08
+   ]
+  ]
+ },
+ "sd:dw2-L-2": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L-5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L-10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L--5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L--10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L--25": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L-steep-15": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-L-neutral-top": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T-2": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T-5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T-10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T--5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T--10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T--25": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-T-neutral-top": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U-2": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U-5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U-10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U--5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U--10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U--25": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U-steep-15": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-U-neutral-top": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin-2": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin-5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin--5": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin--10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin--25": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-Lthin-neutral-top": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-0": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-1": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-2": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-4": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-6": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-7": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-9": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-10": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-11": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-14": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-15": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-16": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-18": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-19": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-23": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-24": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-28": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-30": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-33": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-34": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-36": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-37": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-38": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:dw2-fuzz-poly-39": {
+  "judge": "no stored COM",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    "volume differs"
+   ]
+  ]
+ },
+ "sd:hd2-right-top-neutral": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.0815634406588899e-16
+   ]
+  ]
+ },
+ "sd:hd2-contract-case": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT (group runner)",
+    1.0322798954393623e-16
+   ]
+  ]
+ },
+ "sd:hm2-join-adjacent": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-circle-in-rect": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.5742967006807213e-17
+   ]
+  ]
+ },
+ "ep:sp-rect-in-circle": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.1458177611311869e-16
+   ]
+  ]
+ },
+ "ep:sp-two-holes": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    2.091474164218872e-17
+   ]
+  ]
+ },
+ "ep:sp-polygon-with-hole": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    9.105864411474879e-17
+   ]
+  ]
+ },
+ "ep:sp-disjoint-circles": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-rect-circle-apart": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-four-circles": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-island-far-disc": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-holed-plate-far-rect": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-ring-geom-rows": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    9.79482343182696e-17
+   ]
+  ]
+ },
+ "ep:spk-two-holes": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-rect-circle": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-ring": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    5.145060944580906e-07
+   ]
+  ]
+ },
+ "ep:spk-three-deep": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-through-two-holes": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-through-ring-far-rect": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-blind-ring-far-rect": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:spk-soup-midplane": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:sp-slot-hole-pocket": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.288238598612673e-07
+   ]
+  ]
+ },
+ "ep:tm-mid-10": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-15": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid--3": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-0": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-12": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-circle": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-reversed": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.741861189847285e-17
+   ]
+  ]
+ },
+ "ep:tm-mid-front": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.741861189847285e-17
+   ]
+  ]
+ },
+ "ep:mp-pocket-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-pocket-left": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-pocket-both": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-pocket-through-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-join-inside-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-join-on-top-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-join-overlap-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:mp-split-slot": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:mp-split-then-pocket-left": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:mp-split-then-pocket-right": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    2.786977903755656e-16
+   ]
+  ]
+ },
+ "ep:mp-split-then-join": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.3611530181679418e-16
+   ]
+  ]
+ },
+ "ep:mp-ring-island": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.096514164465497e-16
+   ]
+  ]
+ },
+ "ep:dg-h-0.001": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    0.0
+   ]
+  ]
+ },
+ "ep:dg-h-0.01": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.256073652928646e-16
+   ]
+  ]
+ },
+ "ep:dg-s-0.001": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.1102219144037971e-16
+   ]
+  ]
+ },
+ "ep:dg-s-0.01": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    5.5505600948663224e-17
+   ]
+  ]
+ },
+ "ep:dg-c-0.5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    7.297770149654585e-17
+   ]
+  ]
+ },
+ "ep:dg-c-1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    8.740987848593866e-17
+   ]
+  ]
+ },
+ "ep:dg-pk-0.001": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:dg-pk-0.01": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:dg-wall-1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:dg-wall-thru-1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:nf-join-step-0.5": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.0371198380549516e-16
+   ]
+  ]
+ },
+ "ep:jcc-overlap-corner": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.2311987519873782e-16
+   ]
+  ]
+ },
+ "ep:jcc-pin-in-bore": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    8.316273692523919e-17
+   ]
+  ]
+ },
+ "ep:jcc-L-face-pad": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    7.894919286223336e-17
+   ]
+  ]
+ },
+ "ep:od-polygon-dup-L": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:od-polygon-dup-round": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-holes-2": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-holes-4": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-holes-8": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-holes-12": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-holes-24": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:ct-pull-24-discs": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "ep:fl-floor-0.0002": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.393488951877828e-16
+   ]
+  ]
+ },
+ "ep:fl-floor-0.0005": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    2.0902334278167418e-16
+   ]
+  ]
+ },
+ "ep:fl-floor-0.001": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.0451167139083709e-16
+   ]
+  ]
+ },
+ "ep:fl-floor-0.01": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:fl-floor-0.1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    6.96744475938914e-17
+   ]
+  ]
+ },
+ "ep:fl-step-0.1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    3.47836847477474e-17
+   ]
+  ]
+ },
+ "ep:fl-step10-1": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    5.565389559639585e-17
+   ]
+  ]
+ },
+ "halt:halt3:mp-join-inside-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "halt:halt3:mp-join-on-top-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "halt:halt3:mp-join-overlap-right": {
+  "judge": "no stored COM",
+  "refs": []
+ },
+ "halt:halt3:mp-split-then-join": {
+  "judge": "COM agrees",
+  "refs": [
+   [
+    "stored OCCT",
+    1.3611530181679418e-16
+   ]
+  ]
+ }
+}

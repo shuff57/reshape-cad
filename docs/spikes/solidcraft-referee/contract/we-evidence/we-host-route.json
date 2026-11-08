@@ -1,0 +1,1648 @@
+{
+ "what": "GUARD-WRONG-EDGE: host-route-com.mjs (hg/, md5 5f306da1) over all 15 corpora on 5180994a, both rigs; validation on 7183ea8f; adjudication of every flag",
+ "probeMd5": "5f306da1f0e671ac9f816710b8436fe5",
+ "tol": {
+  "planar": 1e-06,
+  "curved": 0.0002
+ },
+ "brepDeflection": 2e-05,
+ "validate": {
+  "021c": {
+   "counts": {
+    "REFUSED -> REFUSED": 147,
+    "COM-OFF -> ORACLES-SPLIT": 4,
+    "COM-OFF -> COM-OFF": 19,
+    "RIGHT -> RIGHT": 124,
+    "WRONG -> WRONG": 9
+   },
+   "rims": {
+    "fc:r-cyl-turn-x90-bottom-rim-bevel": "COM-OFF",
+    "fc:r-cyl-turn-y90-bottom-rim-bevel": "COM-OFF",
+    "fc:r-cyl-turn-z30-bottom-rim-bevel": "REFUSED",
+    "fc:b-cyl-turn-x90-bottom-rim-bevel3": "COM-OFF",
+    "fc:b-cyl-turn-y90-bottom-rim-bevel3": "COM-OFF",
+    "fc:b-cyl-turn-z30-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x45-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x30y40-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x30y40z50-bottom-rim-bevel3": "REFUSED"
+   },
+   "misses": []
+  },
+  "030": {
+   "counts": {
+    "REFUSED -> REFUSED": 147,
+    "COM-OFF -> ORACLES-SPLIT": 4,
+    "COM-OFF -> COM-OFF": 19,
+    "RIGHT -> RIGHT": 124,
+    "WRONG -> WRONG": 9
+   },
+   "rims": {
+    "fc:r-cyl-turn-x90-bottom-rim-bevel": "COM-OFF",
+    "fc:r-cyl-turn-y90-bottom-rim-bevel": "COM-OFF",
+    "fc:r-cyl-turn-z30-bottom-rim-bevel": "REFUSED",
+    "fc:b-cyl-turn-x90-bottom-rim-bevel3": "COM-OFF",
+    "fc:b-cyl-turn-y90-bottom-rim-bevel3": "COM-OFF",
+    "fc:b-cyl-turn-z30-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x45-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x30y40-bottom-rim-bevel3": "REFUSED",
+    "fc:b-cyl-turn-x30y40z50-bottom-rim-bevel3": "REFUSED"
+   },
+   "misses": []
+  }
+ },
+ "021c": {
+  "perCorpus": {
+   "halt": {
+    "n": 62,
+    "verdicts": {
+     "REFUSED": 50,
+     "BUILT-ORACLES-REFUSE": 2,
+     "RIGHT": 10
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 4,
+    "wrongIds": []
+   },
+   "ep": {
+    "n": 466,
+    "verdicts": {
+     "RIGHT": 295,
+     "REFUSED": 171
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 69,
+    "wrongIds": []
+   },
+   "bool": {
+    "n": 1158,
+    "verdicts": {
+     "RIGHT": 529,
+     "REFUSED": 618,
+     "ORACLES-SPLIT": 3,
+     "WRONG": 1,
+     "PIPELINE-DIFF": 7
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "fz7-067-box-sph-sub"
+    ]
+   },
+   "holes": {
+    "n": 357,
+    "verdicts": {
+     "RIGHT": 201,
+     "REFUSED": 155,
+     "PIPELINE-DIFF": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "sd": {
+    "n": 1097,
+    "verdicts": {
+     "RIGHT": 622,
+     "REFUSED": 475
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 168,
+    "wrongIds": []
+   },
+   "pm": {
+    "n": 455,
+    "verdicts": {
+     "RIGHT": 262,
+     "REFUSED": 181,
+     "ORACLES-SPLIT": 10,
+     "HANG": 2
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "rg": {
+    "n": 990,
+    "verdicts": {
+     "RIGHT": 363,
+     "REFUSED": 597,
+     "ORACLES-SPLIT": 12,
+     "BUILT-ORACLES-REFUSE": 7,
+     "WRONG": 11
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "sf5-11-top-90",
+     "sf5-21-top-90",
+     "sf5-22-top-180",
+     "sf5-27-top--90",
+     "sf5-38-top--90",
+     "sf5-40-front-90",
+     "sf5-51-side--90",
+     "sf5-72-front-90",
+     "sf5-8-top-90",
+     "sf5-81-top--180",
+     "sf5-82-top-360"
+    ]
+   },
+   "fc": {
+    "n": 2309,
+    "verdicts": {
+     "RIGHT": 825,
+     "REFUSED": 1252,
+     "ORACLES-SPLIT": 77,
+     "WRONG": 110,
+     "BUILT-ORACLES-REFUSE": 45
+    },
+    "rightByVolBoxFlagged": [
+     [
+      "ch-fillet-2adj-share-corner",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "ch-fillet-overlap-r11",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-top-right-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-front-right-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r6-top-right-r6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-top-left-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a1-b1",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a2-b2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a2-b2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a3-b3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a3-b3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a4-b4",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a4-b4",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a5-b5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a5-b5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a6-b6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a6-b6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a2-adj-round-3-3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a2-adj-round-2-2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-8",
+      "ORACLES-SPLIT"
+     ]
+    ],
+    "rightNoComOracle": 4,
+    "wrongIds": [
+     "a2-adj-vert-round-2-2",
+     "a3-adj2-round-3-as-list",
+     "a3-adj2-vert-round-3",
+     "a3-bot4-round-3",
+     "a3-top4-round-1",
+     "a3-top4-round-3",
+     "a3-top4-round-3-as-list",
+     "a3-top4-round-5",
+     "a3-top4-round-9",
+     "a3-top4-round-9.99",
+     "a4-L-rim-bevel-1",
+     "a4-L-rim-bevel-3",
+     "a4-L-rim-round-3",
+     "a4-hex-rim-bevel-1",
+     "a4-hex-rim-bevel-3",
+     "a4-hex-rim-round-3",
+     "a4-tri-rim-bevel-1",
+     "a4-tri-rim-bevel-3",
+     "a4-tri-rim-round-3",
+     "c-hole-near-then-top4-round-3",
+     "c-hole-then-top4-round-1",
+     "c-pull-rect-top4-round-2",
+     "c-top4-round-1-then-hole",
+     "ch-fillet-top-loop4",
+     "fc seed 101",
+     "fc seed 122",
+     "fc seed 134",
+     "fc seed 14",
+     "fc seed 146",
+     "fc seed 158",
+     "fc seed 195",
+     "fc seed 321",
+     "fc seed 338",
+     "fc seed 386",
+     "fc seed 398",
+     "fc seed 441",
+     "fc seed 508",
+     "fc seed 52",
+     "fc seed 542",
+     "fc seed 597",
+     "fc seed 74",
+     "fc seed 75",
+     "fzg-2027-000",
+     "fzg-2027-002",
+     "fzg-2027-005",
+     "fzg-2027-008",
+     "fzg-2027-009",
+     "fzg-2027-019",
+     "fzg-2027-021",
+     "fzg-2027-026",
+     "fzg-2027-029",
+     "fzg-2027-031",
+     "fzg-2027-032",
+     "fzg-2027-039",
+     "fzg-2027-041",
+     "fzg-2027-052",
+     "fzg-2027-053",
+     "fzg-2027-054",
+     "fzg-2027-055",
+     "fzg-2027-058",
+     "fzg-2027-064",
+     "fzg-2027-065",
+     "fzg-2027-077",
+     "fzg-2027-078",
+     "fzg-2027-082",
+     "fzg-2027-084",
+     "fzg-2027-090",
+     "fzg-2027-092",
+     "fzg-2027-097",
+     "fzp-2027-003",
+     "fzp-2027-004",
+     "fzp-2027-016",
+     "fzp-2027-017",
+     "fzp-2027-022",
+     "fzp-2027-025",
+     "fzp-2027-030",
+     "fzp-2027-033",
+     "fzp-2027-036",
+     "fzp-2027-038",
+     "fzp-2027-043",
+     "fzp-2027-045",
+     "fzp-2027-046",
+     "fzp-2027-049",
+     "fzp-2027-052",
+     "fzp-2027-054",
+     "fzp-2027-055",
+     "fzp-2027-060",
+     "fzp-2027-062",
+     "fzp-2027-064",
+     "fzp-2027-069",
+     "fzp-2027-070",
+     "fzp-2027-074",
+     "fzp-2027-075",
+     "fzp-2027-076",
+     "fzp-2027-078",
+     "fzp-2027-089",
+     "fzp-2027-091",
+     "fzp-2027-094",
+     "fzp-2027-095",
+     "ls-round-2adj",
+     "ls-round-top4",
+     "rg-ch-fillet-2adj-share-corner",
+     "rg-ch-fillet-top-loop4",
+     "rg-ls-round-2adj",
+     "rg-ls-round-top4",
+     "rg-ring4-one-by-one-r3",
+     "rg-sg-V-a1-b1",
+     "rg-sg-V-a2-b2",
+     "rg-sq-f-top-front-r3-top-right-r3",
+     "ring4-one-by-one-r3"
+    ]
+   },
+   "sg": {
+    "n": 1087,
+    "verdicts": {
+     "REFUSED": 351,
+     "RIGHT": 726,
+     "BUILT-ORACLES-REFUSE": 5,
+     "WRONG": 3,
+     "ORACLES-SPLIT": 2
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "guard:fuzz-098",
+     "round3:frame-shear-5e-7",
+     "round3:frame-shear-9e-7"
+    ]
+   },
+   "mt": {
+    "n": 1930,
+    "verdicts": {
+     "REFUSED": 1397,
+     "RIGHT": 533
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "prim": {
+    "n": 2303,
+    "verdicts": {
+     "REFUSED": 1311,
+     "RIGHT": 992
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "sc": {
+    "n": 86,
+    "verdicts": {
+     "RIGHT": 54,
+     "REFUSED": 26,
+     "PIPELINE-DIFF": 6
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 9,
+    "wrongIds": []
+   },
+   "combined": {
+    "n": 600,
+    "verdicts": {
+     "REFUSED": 564,
+     "RIGHT": 28,
+     "ORACLES-SPLIT": 7,
+     "WRONG": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "combined seed 50"
+    ]
+   },
+   "rgcombined": {
+    "n": 400,
+    "verdicts": {
+     "REFUSED": 400
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "fccombined": {
+    "n": 400,
+    "verdicts": {
+     "REFUSED": 383,
+     "RIGHT": 16,
+     "ORACLES-SPLIT": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   }
+  },
+  "twoOracleRows": 4115,
+  "falsePositives": [],
+  "noise": {
+   "False": {
+    "n": 1515,
+    "max": 1.8510893288940426e-10,
+    "p99": 1.6207521315441898e-14,
+    "top": [
+     [
+      3.8294513758860134e-13,
+      "sg",
+      "fartilt:ft-axis-rect-1e5"
+     ],
+     [
+      3.8294513758860134e-13,
+      "sg",
+      "fartilt:ft-named-rect-1e5"
+     ],
+     [
+      6.1271222014176215e-12,
+      "sg",
+      "fartilt:ft-named-rect-1e6"
+     ],
+     [
+      1.675276554734064e-10,
+      "fc",
+      "fc seed 306"
+     ],
+     [
+      1.8510893288940426e-10,
+      "fc",
+      "b-edge-then-hollow-bevel2"
+     ]
+    ]
+   },
+   "True": {
+    "n": 2600,
+    "max": 6.10403684654517e-05,
+    "p99": 1.765516083538583e-05,
+    "top": [
+     [
+      3.1952892917703544e-05,
+      "bool",
+      "dis-union-curved"
+     ],
+     [
+      3.648888561150392e-05,
+      "fc",
+      "fc seed 331"
+     ],
+     [
+      4.151595591226954e-05,
+      "fc",
+      "p-rim-fillet-offcentre"
+     ],
+     [
+      4.151595591226954e-05,
+      "fc",
+      "rg-p-rim-fillet-offcentre"
+     ],
+     [
+      6.10403684654517e-05,
+      "fc",
+      "fc seed 62"
+     ]
+    ]
+   }
+  },
+  "mitreOracle": {
+   "flagged": {
+    "RIGHT by two oracles": 23
+   },
+   "triagedWrong": {
+    "RIGHT by two oracles": 19,
+    "not a plain blend chain on one box": 87,
+    "closed only (OCCT\u2229 did not build)": 4
+   },
+   "triagedWrongRightByTwo": [
+    "a2-adj-vert-round-2-2",
+    "a3-adj2-round-3-as-list",
+    "a3-adj2-vert-round-3",
+    "a3-bot4-round-3",
+    "a3-top4-round-1",
+    "a3-top4-round-3",
+    "a3-top4-round-3-as-list",
+    "a3-top4-round-5",
+    "a3-top4-round-9",
+    "a3-top4-round-9.99",
+    "c-pull-rect-top4-round-2",
+    "ch-fillet-top-loop4",
+    "rg-ch-fillet-2adj-share-corner",
+    "rg-ch-fillet-top-loop4",
+    "rg-ring4-one-by-one-r3",
+    "rg-sg-V-a1-b1",
+    "rg-sg-V-a2-b2",
+    "rg-sq-f-top-front-r3-top-right-r3",
+    "ring4-one-by-one-r3"
+   ]
+  },
+  "storedCom": {
+   "counts": {
+    "no stored COM": 91,
+    "COM agrees": 150
+   },
+   "noStoredCom": [
+    "ep:ct-holes-12",
+    "ep:ct-holes-2",
+    "ep:ct-holes-24",
+    "ep:ct-holes-4",
+    "ep:ct-holes-8",
+    "ep:ct-pull-24-discs",
+    "ep:mp-join-inside-right",
+    "ep:mp-join-on-top-right",
+    "ep:mp-join-overlap-right",
+    "ep:mp-pocket-both",
+    "ep:mp-pocket-left",
+    "ep:mp-pocket-right",
+    "ep:mp-pocket-through-right",
+    "ep:od-polygon-dup-L",
+    "ep:od-polygon-dup-round",
+    "ep:sp-disjoint-circles",
+    "ep:sp-four-circles",
+    "ep:sp-holed-plate-far-rect",
+    "ep:sp-island-far-disc",
+    "ep:sp-rect-circle-apart",
+    "ep:spk-blind-ring-far-rect",
+    "ep:spk-rect-circle",
+    "ep:spk-soup-midplane",
+    "ep:spk-three-deep",
+    "ep:spk-through-ring-far-rect",
+    "ep:spk-through-two-holes",
+    "ep:spk-two-holes",
+    "halt:halt3:mp-join-inside-right",
+    "halt:halt3:mp-join-on-top-right",
+    "halt:halt3:mp-join-overlap-right",
+    "sd:dnc-join-right-in45",
+    "sd:dnc-join-right-in60",
+    "sd:dnc-join-right-out60",
+    "sd:dw2-L--10",
+    "sd:dw2-L--25",
+    "sd:dw2-L--5",
+    "sd:dw2-L-10",
+    "sd:dw2-L-2",
+    "sd:dw2-L-5",
+    "sd:dw2-L-neutral-top",
+    "sd:dw2-L-steep-15",
+    "sd:dw2-Lthin--10",
+    "sd:dw2-Lthin--25",
+    "sd:dw2-Lthin--5",
+    "sd:dw2-Lthin-2",
+    "sd:dw2-Lthin-5",
+    "sd:dw2-Lthin-neutral-top",
+    "sd:dw2-T--10",
+    "sd:dw2-T--25",
+    "sd:dw2-T--5",
+    "sd:dw2-T-10",
+    "sd:dw2-T-2",
+    "sd:dw2-T-5",
+    "sd:dw2-T-neutral-top",
+    "sd:dw2-U--10",
+    "sd:dw2-U--25",
+    "sd:dw2-U--5",
+    "sd:dw2-U-10",
+    "sd:dw2-U-2",
+    "sd:dw2-U-5",
+    "sd:dw2-U-neutral-top",
+    "sd:dw2-U-steep-15",
+    "sd:dw2-fuzz-poly-0",
+    "sd:dw2-fuzz-poly-1",
+    "sd:dw2-fuzz-poly-10",
+    "sd:dw2-fuzz-poly-11",
+    "sd:dw2-fuzz-poly-14",
+    "sd:dw2-fuzz-poly-15",
+    "sd:dw2-fuzz-poly-16",
+    "sd:dw2-fuzz-poly-18",
+    "sd:dw2-fuzz-poly-19",
+    "sd:dw2-fuzz-poly-2",
+    "sd:dw2-fuzz-poly-23",
+    "sd:dw2-fuzz-poly-24",
+    "sd:dw2-fuzz-poly-28",
+    "sd:dw2-fuzz-poly-30",
+    "sd:dw2-fuzz-poly-33",
+    "sd:dw2-fuzz-poly-34",
+    "sd:dw2-fuzz-poly-36",
+    "sd:dw2-fuzz-poly-37",
+    "sd:dw2-fuzz-poly-38",
+    "sd:dw2-fuzz-poly-39",
+    "sd:dw2-fuzz-poly-4",
+    "sd:dw2-fuzz-poly-6",
+    "sd:dw2-fuzz-poly-7",
+    "sd:dw2-fuzz-poly-9",
+    "sd:hm2-join-adjacent",
+    "sd:hollow-round-edge-top-r1",
+    "sd:hollow-round-edge-vertical-r1",
+    "sd:hollow-wall-11-disc60x12",
+    "sd:hollow-wall-11.9-disc60x12"
+   ],
+   "storedOracleDisagrees": [
+    "sd:dw2-L--10",
+    "sd:dw2-L--25",
+    "sd:dw2-L--5",
+    "sd:dw2-L-10",
+    "sd:dw2-L-2",
+    "sd:dw2-L-5",
+    "sd:dw2-L-neutral-top",
+    "sd:dw2-L-steep-15",
+    "sd:dw2-Lthin--10",
+    "sd:dw2-Lthin--25",
+    "sd:dw2-Lthin--5",
+    "sd:dw2-Lthin-2",
+    "sd:dw2-Lthin-5",
+    "sd:dw2-Lthin-neutral-top",
+    "sd:dw2-T--10",
+    "sd:dw2-T--25",
+    "sd:dw2-T--5",
+    "sd:dw2-T-10",
+    "sd:dw2-T-2",
+    "sd:dw2-T-5",
+    "sd:dw2-T-neutral-top",
+    "sd:dw2-U--10",
+    "sd:dw2-U--25",
+    "sd:dw2-U--5",
+    "sd:dw2-U-10",
+    "sd:dw2-U-2",
+    "sd:dw2-U-5",
+    "sd:dw2-U-neutral-top",
+    "sd:dw2-U-steep-15",
+    "sd:dw2-fuzz-poly-0",
+    "sd:dw2-fuzz-poly-1",
+    "sd:dw2-fuzz-poly-10",
+    "sd:dw2-fuzz-poly-11",
+    "sd:dw2-fuzz-poly-14",
+    "sd:dw2-fuzz-poly-15",
+    "sd:dw2-fuzz-poly-16",
+    "sd:dw2-fuzz-poly-18",
+    "sd:dw2-fuzz-poly-19",
+    "sd:dw2-fuzz-poly-2",
+    "sd:dw2-fuzz-poly-23",
+    "sd:dw2-fuzz-poly-24",
+    "sd:dw2-fuzz-poly-28",
+    "sd:dw2-fuzz-poly-30",
+    "sd:dw2-fuzz-poly-33",
+    "sd:dw2-fuzz-poly-34",
+    "sd:dw2-fuzz-poly-36",
+    "sd:dw2-fuzz-poly-37",
+    "sd:dw2-fuzz-poly-38",
+    "sd:dw2-fuzz-poly-39",
+    "sd:dw2-fuzz-poly-4",
+    "sd:dw2-fuzz-poly-6",
+    "sd:dw2-fuzz-poly-7",
+    "sd:dw2-fuzz-poly-9"
+   ]
+  }
+ },
+ "030": {
+  "perCorpus": {
+   "halt": {
+    "n": 62,
+    "verdicts": {
+     "REFUSED": 50,
+     "BUILT-ORACLES-REFUSE": 2,
+     "RIGHT": 10
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 4,
+    "wrongIds": []
+   },
+   "ep": {
+    "n": 466,
+    "verdicts": {
+     "RIGHT": 295,
+     "REFUSED": 171
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 69,
+    "wrongIds": []
+   },
+   "bool": {
+    "n": 1158,
+    "verdicts": {
+     "RIGHT": 528,
+     "REFUSED": 619,
+     "ORACLES-SPLIT": 3,
+     "WRONG": 1,
+     "PIPELINE-DIFF": 7
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "fz7-067-box-sph-sub"
+    ]
+   },
+   "holes": {
+    "n": 357,
+    "verdicts": {
+     "RIGHT": 201,
+     "REFUSED": 155,
+     "PIPELINE-DIFF": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "sd": {
+    "n": 1097,
+    "verdicts": {
+     "RIGHT": 622,
+     "REFUSED": 475
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 168,
+    "wrongIds": []
+   },
+   "pm": {
+    "n": 455,
+    "verdicts": {
+     "RIGHT": 262,
+     "REFUSED": 181,
+     "ORACLES-SPLIT": 10,
+     "HANG": 2
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "rg": {
+    "n": 990,
+    "verdicts": {
+     "RIGHT": 363,
+     "REFUSED": 597,
+     "ORACLES-SPLIT": 12,
+     "BUILT-ORACLES-REFUSE": 7,
+     "WRONG": 11
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "sf5-11-top-90",
+     "sf5-21-top-90",
+     "sf5-22-top-180",
+     "sf5-27-top--90",
+     "sf5-38-top--90",
+     "sf5-40-front-90",
+     "sf5-51-side--90",
+     "sf5-72-front-90",
+     "sf5-8-top-90",
+     "sf5-81-top--180",
+     "sf5-82-top-360"
+    ]
+   },
+   "fc": {
+    "n": 2309,
+    "verdicts": {
+     "RIGHT": 825,
+     "REFUSED": 1252,
+     "ORACLES-SPLIT": 77,
+     "WRONG": 110,
+     "BUILT-ORACLES-REFUSE": 45
+    },
+    "rightByVolBoxFlagged": [
+     [
+      "ch-fillet-2adj-share-corner",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "ch-fillet-overlap-r11",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-top-right-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-front-right-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r6-top-right-r6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sq-f-top-front-r3-top-left-r3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a1-b1",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a2-b2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a2-b2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a3-b3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a3-b3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a4-b4",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a4-b4",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a5-b5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a5-b5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-V-a6-b6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "sg-H-a6-b6",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a2-adj-round-3-3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a2-adj-round-2-2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-2",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-3",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-5",
+      "ORACLES-SPLIT"
+     ],
+     [
+      "a3-adj2-round-8",
+      "ORACLES-SPLIT"
+     ]
+    ],
+    "rightNoComOracle": 4,
+    "wrongIds": [
+     "a2-adj-vert-round-2-2",
+     "a3-adj2-round-3-as-list",
+     "a3-adj2-vert-round-3",
+     "a3-bot4-round-3",
+     "a3-top4-round-1",
+     "a3-top4-round-3",
+     "a3-top4-round-3-as-list",
+     "a3-top4-round-5",
+     "a3-top4-round-9",
+     "a3-top4-round-9.99",
+     "a4-L-rim-bevel-1",
+     "a4-L-rim-bevel-3",
+     "a4-L-rim-round-3",
+     "a4-hex-rim-bevel-1",
+     "a4-hex-rim-bevel-3",
+     "a4-hex-rim-round-3",
+     "a4-tri-rim-bevel-1",
+     "a4-tri-rim-bevel-3",
+     "a4-tri-rim-round-3",
+     "c-hole-near-then-top4-round-3",
+     "c-hole-then-top4-round-1",
+     "c-pull-rect-top4-round-2",
+     "c-top4-round-1-then-hole",
+     "ch-fillet-top-loop4",
+     "fc seed 101",
+     "fc seed 122",
+     "fc seed 134",
+     "fc seed 14",
+     "fc seed 146",
+     "fc seed 158",
+     "fc seed 195",
+     "fc seed 321",
+     "fc seed 338",
+     "fc seed 386",
+     "fc seed 398",
+     "fc seed 441",
+     "fc seed 508",
+     "fc seed 52",
+     "fc seed 542",
+     "fc seed 597",
+     "fc seed 74",
+     "fc seed 75",
+     "fzg-2027-000",
+     "fzg-2027-002",
+     "fzg-2027-005",
+     "fzg-2027-008",
+     "fzg-2027-009",
+     "fzg-2027-019",
+     "fzg-2027-021",
+     "fzg-2027-026",
+     "fzg-2027-029",
+     "fzg-2027-031",
+     "fzg-2027-032",
+     "fzg-2027-039",
+     "fzg-2027-041",
+     "fzg-2027-052",
+     "fzg-2027-053",
+     "fzg-2027-054",
+     "fzg-2027-055",
+     "fzg-2027-058",
+     "fzg-2027-064",
+     "fzg-2027-065",
+     "fzg-2027-077",
+     "fzg-2027-078",
+     "fzg-2027-082",
+     "fzg-2027-084",
+     "fzg-2027-090",
+     "fzg-2027-092",
+     "fzg-2027-097",
+     "fzp-2027-003",
+     "fzp-2027-004",
+     "fzp-2027-016",
+     "fzp-2027-017",
+     "fzp-2027-022",
+     "fzp-2027-025",
+     "fzp-2027-030",
+     "fzp-2027-033",
+     "fzp-2027-036",
+     "fzp-2027-038",
+     "fzp-2027-043",
+     "fzp-2027-045",
+     "fzp-2027-046",
+     "fzp-2027-049",
+     "fzp-2027-052",
+     "fzp-2027-054",
+     "fzp-2027-055",
+     "fzp-2027-060",
+     "fzp-2027-062",
+     "fzp-2027-064",
+     "fzp-2027-069",
+     "fzp-2027-070",
+     "fzp-2027-074",
+     "fzp-2027-075",
+     "fzp-2027-076",
+     "fzp-2027-078",
+     "fzp-2027-089",
+     "fzp-2027-091",
+     "fzp-2027-094",
+     "fzp-2027-095",
+     "ls-round-2adj",
+     "ls-round-top4",
+     "rg-ch-fillet-2adj-share-corner",
+     "rg-ch-fillet-top-loop4",
+     "rg-ls-round-2adj",
+     "rg-ls-round-top4",
+     "rg-ring4-one-by-one-r3",
+     "rg-sg-V-a1-b1",
+     "rg-sg-V-a2-b2",
+     "rg-sq-f-top-front-r3-top-right-r3",
+     "ring4-one-by-one-r3"
+    ]
+   },
+   "sg": {
+    "n": 1087,
+    "verdicts": {
+     "REFUSED": 344,
+     "RIGHT": 733,
+     "BUILT-ORACLES-REFUSE": 5,
+     "WRONG": 3,
+     "ORACLES-SPLIT": 2
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "guard:fuzz-098",
+     "round3:frame-shear-5e-7",
+     "round3:frame-shear-9e-7"
+    ]
+   },
+   "mt": {
+    "n": 1930,
+    "verdicts": {
+     "REFUSED": 1397,
+     "RIGHT": 533
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "prim": {
+    "n": 2303,
+    "verdicts": {
+     "REFUSED": 1311,
+     "RIGHT": 992
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "sc": {
+    "n": 86,
+    "verdicts": {
+     "RIGHT": 54,
+     "REFUSED": 26,
+     "PIPELINE-DIFF": 6
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 9,
+    "wrongIds": []
+   },
+   "combined": {
+    "n": 600,
+    "verdicts": {
+     "REFUSED": 564,
+     "RIGHT": 28,
+     "ORACLES-SPLIT": 7,
+     "WRONG": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": [
+     "combined seed 50"
+    ]
+   },
+   "rgcombined": {
+    "n": 400,
+    "verdicts": {
+     "REFUSED": 400
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   },
+   "fccombined": {
+    "n": 400,
+    "verdicts": {
+     "REFUSED": 383,
+     "RIGHT": 16,
+     "ORACLES-SPLIT": 1
+    },
+    "rightByVolBoxFlagged": [],
+    "rightNoComOracle": 0,
+    "wrongIds": []
+   }
+  },
+  "twoOracleRows": 4117,
+  "falsePositives": [],
+  "noise": {
+   "False": {
+    "n": 1515,
+    "max": 1.8510893288940426e-10,
+    "p99": 1.6207521315441898e-14,
+    "top": [
+     [
+      3.8294513758860134e-13,
+      "sg",
+      "fartilt:ft-axis-rect-1e5"
+     ],
+     [
+      3.8294513758860134e-13,
+      "sg",
+      "fartilt:ft-named-rect-1e5"
+     ],
+     [
+      6.1271222014176215e-12,
+      "sg",
+      "fartilt:ft-named-rect-1e6"
+     ],
+     [
+      1.675276554734064e-10,
+      "fc",
+      "fc seed 306"
+     ],
+     [
+      1.8510893288940426e-10,
+      "fc",
+      "b-edge-then-hollow-bevel2"
+     ]
+    ]
+   },
+   "True": {
+    "n": 2602,
+    "max": 6.10403684654517e-05,
+    "p99": 1.7644089293546796e-05,
+    "top": [
+     [
+      3.1952892917703544e-05,
+      "bool",
+      "dis-union-curved"
+     ],
+     [
+      3.648888561150392e-05,
+      "fc",
+      "fc seed 331"
+     ],
+     [
+      4.151595591226954e-05,
+      "fc",
+      "p-rim-fillet-offcentre"
+     ],
+     [
+      4.151595591226954e-05,
+      "fc",
+      "rg-p-rim-fillet-offcentre"
+     ],
+     [
+      6.10403684654517e-05,
+      "fc",
+      "fc seed 62"
+     ]
+    ]
+   }
+  },
+  "mitreOracle": {
+   "flagged": {
+    "RIGHT by two oracles": 23
+   },
+   "triagedWrong": {
+    "RIGHT by two oracles": 19,
+    "not a plain blend chain on one box": 87,
+    "closed only (OCCT\u2229 did not build)": 4
+   },
+   "triagedWrongRightByTwo": [
+    "a2-adj-vert-round-2-2",
+    "a3-adj2-round-3-as-list",
+    "a3-adj2-vert-round-3",
+    "a3-bot4-round-3",
+    "a3-top4-round-1",
+    "a3-top4-round-3",
+    "a3-top4-round-3-as-list",
+    "a3-top4-round-5",
+    "a3-top4-round-9",
+    "a3-top4-round-9.99",
+    "c-pull-rect-top4-round-2",
+    "ch-fillet-top-loop4",
+    "rg-ch-fillet-2adj-share-corner",
+    "rg-ch-fillet-top-loop4",
+    "rg-ring4-one-by-one-r3",
+    "rg-sg-V-a1-b1",
+    "rg-sg-V-a2-b2",
+    "rg-sq-f-top-front-r3-top-right-r3",
+    "ring4-one-by-one-r3"
+   ]
+  },
+  "storedCom": {
+   "counts": {
+    "no stored COM": 91,
+    "COM agrees": 150
+   },
+   "noStoredCom": [
+    "ep:ct-holes-12",
+    "ep:ct-holes-2",
+    "ep:ct-holes-24",
+    "ep:ct-holes-4",
+    "ep:ct-holes-8",
+    "ep:ct-pull-24-discs",
+    "ep:mp-join-inside-right",
+    "ep:mp-join-on-top-right",
+    "ep:mp-join-overlap-right",
+    "ep:mp-pocket-both",
+    "ep:mp-pocket-left",
+    "ep:mp-pocket-right",
+    "ep:mp-pocket-through-right",
+    "ep:od-polygon-dup-L",
+    "ep:od-polygon-dup-round",
+    "ep:sp-disjoint-circles",
+    "ep:sp-four-circles",
+    "ep:sp-holed-plate-far-rect",
+    "ep:sp-island-far-disc",
+    "ep:sp-rect-circle-apart",
+    "ep:spk-blind-ring-far-rect",
+    "ep:spk-rect-circle",
+    "ep:spk-soup-midplane",
+    "ep:spk-three-deep",
+    "ep:spk-through-ring-far-rect",
+    "ep:spk-through-two-holes",
+    "ep:spk-two-holes",
+    "halt:halt3:mp-join-inside-right",
+    "halt:halt3:mp-join-on-top-right",
+    "halt:halt3:mp-join-overlap-right",
+    "sd:dnc-join-right-in45",
+    "sd:dnc-join-right-in60",
+    "sd:dnc-join-right-out60",
+    "sd:dw2-L--10",
+    "sd:dw2-L--25",
+    "sd:dw2-L--5",
+    "sd:dw2-L-10",
+    "sd:dw2-L-2",
+    "sd:dw2-L-5",
+    "sd:dw2-L-neutral-top",
+    "sd:dw2-L-steep-15",
+    "sd:dw2-Lthin--10",
+    "sd:dw2-Lthin--25",
+    "sd:dw2-Lthin--5",
+    "sd:dw2-Lthin-2",
+    "sd:dw2-Lthin-5",
+    "sd:dw2-Lthin-neutral-top",
+    "sd:dw2-T--10",
+    "sd:dw2-T--25",
+    "sd:dw2-T--5",
+    "sd:dw2-T-10",
+    "sd:dw2-T-2",
+    "sd:dw2-T-5",
+    "sd:dw2-T-neutral-top",
+    "sd:dw2-U--10",
+    "sd:dw2-U--25",
+    "sd:dw2-U--5",
+    "sd:dw2-U-10",
+    "sd:dw2-U-2",
+    "sd:dw2-U-5",
+    "sd:dw2-U-neutral-top",
+    "sd:dw2-U-steep-15",
+    "sd:dw2-fuzz-poly-0",
+    "sd:dw2-fuzz-poly-1",
+    "sd:dw2-fuzz-poly-10",
+    "sd:dw2-fuzz-poly-11",
+    "sd:dw2-fuzz-poly-14",
+    "sd:dw2-fuzz-poly-15",
+    "sd:dw2-fuzz-poly-16",
+    "sd:dw2-fuzz-poly-18",
+    "sd:dw2-fuzz-poly-19",
+    "sd:dw2-fuzz-poly-2",
+    "sd:dw2-fuzz-poly-23",
+    "sd:dw2-fuzz-poly-24",
+    "sd:dw2-fuzz-poly-28",
+    "sd:dw2-fuzz-poly-30",
+    "sd:dw2-fuzz-poly-33",
+    "sd:dw2-fuzz-poly-34",
+    "sd:dw2-fuzz-poly-36",
+    "sd:dw2-fuzz-poly-37",
+    "sd:dw2-fuzz-poly-38",
+    "sd:dw2-fuzz-poly-39",
+    "sd:dw2-fuzz-poly-4",
+    "sd:dw2-fuzz-poly-6",
+    "sd:dw2-fuzz-poly-7",
+    "sd:dw2-fuzz-poly-9",
+    "sd:hm2-join-adjacent",
+    "sd:hollow-round-edge-top-r1",
+    "sd:hollow-round-edge-vertical-r1",
+    "sd:hollow-wall-11-disc60x12",
+    "sd:hollow-wall-11.9-disc60x12"
+   ],
+   "storedOracleDisagrees": [
+    "sd:dw2-L--10",
+    "sd:dw2-L--25",
+    "sd:dw2-L--5",
+    "sd:dw2-L-10",
+    "sd:dw2-L-2",
+    "sd:dw2-L-5",
+    "sd:dw2-L-neutral-top",
+    "sd:dw2-L-steep-15",
+    "sd:dw2-Lthin--10",
+    "sd:dw2-Lthin--25",
+    "sd:dw2-Lthin--5",
+    "sd:dw2-Lthin-2",
+    "sd:dw2-Lthin-5",
+    "sd:dw2-Lthin-neutral-top",
+    "sd:dw2-T--10",
+    "sd:dw2-T--25",
+    "sd:dw2-T--5",
+    "sd:dw2-T-10",
+    "sd:dw2-T-2",
+    "sd:dw2-T-5",
+    "sd:dw2-T-neutral-top",
+    "sd:dw2-U--10",
+    "sd:dw2-U--25",
+    "sd:dw2-U--5",
+    "sd:dw2-U-10",
+    "sd:dw2-U-2",
+    "sd:dw2-U-5",
+    "sd:dw2-U-neutral-top",
+    "sd:dw2-U-steep-15",
+    "sd:dw2-fuzz-poly-0",
+    "sd:dw2-fuzz-poly-1",
+    "sd:dw2-fuzz-poly-10",
+    "sd:dw2-fuzz-poly-11",
+    "sd:dw2-fuzz-poly-14",
+    "sd:dw2-fuzz-poly-15",
+    "sd:dw2-fuzz-poly-16",
+    "sd:dw2-fuzz-poly-18",
+    "sd:dw2-fuzz-poly-19",
+    "sd:dw2-fuzz-poly-2",
+    "sd:dw2-fuzz-poly-23",
+    "sd:dw2-fuzz-poly-24",
+    "sd:dw2-fuzz-poly-28",
+    "sd:dw2-fuzz-poly-30",
+    "sd:dw2-fuzz-poly-33",
+    "sd:dw2-fuzz-poly-34",
+    "sd:dw2-fuzz-poly-36",
+    "sd:dw2-fuzz-poly-37",
+    "sd:dw2-fuzz-poly-38",
+    "sd:dw2-fuzz-poly-39",
+    "sd:dw2-fuzz-poly-4",
+    "sd:dw2-fuzz-poly-6",
+    "sd:dw2-fuzz-poly-7",
+    "sd:dw2-fuzz-poly-9"
+   ]
+  }
+ },
+ "mpJoinLive030": [
+  {
+   "id": "mp-join-inside-right",
+   "host": {
+    "volume": 12000,
+    "com": [
+     0,
+     0,
+     7.5
+    ]
+   },
+   "occt": null,
+   "occtRefused": "built nothing",
+   "brep": {
+    "volume": 12000,
+    "com": [
+     0,
+     0,
+     7.5
+    ]
+   },
+   "dComOCCT": null,
+   "dComBrep": 0
+  },
+  {
+   "id": "mp-join-on-top-right",
+   "host": {
+    "volume": 12500,
+    "com": [
+     0.8,
+     0,
+     7.9
+    ]
+   },
+   "occt": null,
+   "occtRefused": "built nothing",
+   "brep": {
+    "volume": 12499.999999999996,
+    "com": [
+     0.7999999999999999,
+     0,
+     7.8999999999999995
+    ]
+   },
+   "dComOCCT": null,
+   "dComBrep": 1.3389793477436899e-17
+  },
+  {
+   "id": "mp-join-overlap-right",
+   "host": {
+    "volume": 12500,
+    "com": [
+     1,
+     0,
+     7.9
+    ]
+   },
+   "occt": null,
+   "occtRefused": "built nothing",
+   "brep": {
+    "volume": 12499.999999999996,
+    "com": [
+     0.9999999999999999,
+     0,
+     7.8999999999999995
+    ]
+   },
+   "dComOCCT": null,
+   "dComBrep": 1.3389793477436899e-17
+  }
+ ],
+ "fm1OpenNote030": {
+  "fc:ch-fillet-2adj-share-corner": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:ch-fillet-overlap-r11": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:p-rim-fillet-offcentre": [
+   "RIGHT",
+   4.151595591226954e-05,
+   2.3262351804180097e-07,
+   ""
+  ],
+  "fc:sq-f-top-front-r3-top-right-r3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sq-f-top-front-r1-top-right-r1": [
+   "RIGHT",
+   6.708206456118128e-05,
+   null,
+   ""
+  ],
+  "fc:sq-f-top-front-r3-front-right-r3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sq-f-top-front-r6-top-right-r6": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sq-f-top-front-r3-top-left-r3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-V-a1-b1": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a1-b1": [
+   "RIGHT",
+   6.708206456118128e-05,
+   null,
+   ""
+  ],
+  "fc:sg-V-a2-b2": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a2-b2": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-V-a3-b3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a3-b3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-V-a4-b4": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a4-b4": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-V-a5-b5": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a5-b5": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-V-a6-b6": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:sg-H-a6-b6": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a2-adj-round-3-3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a2-adj-round-1-1": [
+   "RIGHT",
+   6.708206456118128e-05,
+   null,
+   ""
+  ],
+  "fc:a2-adj-round-2-2": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a3-adj2-round-1": [
+   "RIGHT",
+   6.708206456118128e-05,
+   null,
+   ""
+  ],
+  "fc:a3-adj2-round-2": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a3-adj2-round-3": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a3-adj2-round-5": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:a3-adj2-round-8": [
+   "ORACLES-SPLIT",
+   null,
+   null,
+   "RIGHT by two oracles"
+  ],
+  "fc:rg-p-rim-fillet-offcentre": [
+   "RIGHT",
+   4.151595591226954e-05,
+   2.3262351804180097e-07,
+   ""
+  ],
+  "fc:fzp-2027-009": [
+   "RIGHT",
+   3.641595224354777e-05,
+   null,
+   ""
+  ],
+  "fc:fzp-2027-027": [
+   "RIGHT",
+   3.151605595348827e-05,
+   2.9216089310432555e-07,
+   ""
+  ],
+  "fc:fzp-2027-058": [
+   "RIGHT",
+   3.874906092270883e-05,
+   null,
+   ""
+  ],
+  "fc:fc seed 62": [
+   "RIGHT",
+   6.10403684654517e-05,
+   2.5086174200927683e-05,
+   ""
+  ],
+  "fc:fc seed 220": [
+   "RIGHT",
+   5.9297276109619724e-05,
+   null,
+   ""
+  ],
+  "pm:rl-z": [
+   "RIGHT",
+   5.763262618457167e-17,
+   0,
+   ""
+  ],
+  "pm:r3-cone2-y6": [
+   "RIGHT",
+   4.408458742280007e-05,
+   null,
+   ""
+  ],
+  "rg:Z-spin-r105-5deg": [
+   "RIGHT",
+   3.138120162415789e-05,
+   1.854740517065799e-05,
+   ""
+  ]
+ }
+}

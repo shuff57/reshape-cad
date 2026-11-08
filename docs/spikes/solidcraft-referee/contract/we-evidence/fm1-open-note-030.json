@@ -1,0 +1,224 @@
+{
+ "fc:ch-fillet-2adj-share-corner": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:ch-fillet-overlap-r11": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:p-rim-fillet-offcentre": [
+  "RIGHT",
+  4.151595591226954e-05,
+  2.3262351804180097e-07,
+  ""
+ ],
+ "fc:sq-f-top-front-r3-top-right-r3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sq-f-top-front-r1-top-right-r1": [
+  "RIGHT",
+  6.708206456118128e-05,
+  null,
+  ""
+ ],
+ "fc:sq-f-top-front-r3-front-right-r3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sq-f-top-front-r6-top-right-r6": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sq-f-top-front-r3-top-left-r3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-V-a1-b1": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a1-b1": [
+  "RIGHT",
+  6.708206456118128e-05,
+  null,
+  ""
+ ],
+ "fc:sg-V-a2-b2": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a2-b2": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-V-a3-b3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a3-b3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-V-a4-b4": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a4-b4": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-V-a5-b5": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a5-b5": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-V-a6-b6": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:sg-H-a6-b6": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a2-adj-round-3-3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a2-adj-round-1-1": [
+  "RIGHT",
+  6.708206456118128e-05,
+  null,
+  ""
+ ],
+ "fc:a2-adj-round-2-2": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a3-adj2-round-1": [
+  "RIGHT",
+  6.708206456118128e-05,
+  null,
+  ""
+ ],
+ "fc:a3-adj2-round-2": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a3-adj2-round-3": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a3-adj2-round-5": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:a3-adj2-round-8": [
+  "ORACLES-SPLIT",
+  null,
+  null,
+  "RIGHT by two oracles"
+ ],
+ "fc:rg-p-rim-fillet-offcentre": [
+  "RIGHT",
+  4.151595591226954e-05,
+  2.3262351804180097e-07,
+  ""
+ ],
+ "fc:fzp-2027-009": [
+  "RIGHT",
+  3.641595224354777e-05,
+  null,
+  ""
+ ],
+ "fc:fzp-2027-027": [
+  "RIGHT",
+  3.151605595348827e-05,
+  2.9216089310432555e-07,
+  ""
+ ],
+ "fc:fzp-2027-058": [
+  "RIGHT",
+  3.874906092270883e-05,
+  null,
+  ""
+ ],
+ "fc:fc seed 62": [
+  "RIGHT",
+  6.10403684654517e-05,
+  2.5086174200927683e-05,
+  ""
+ ],
+ "fc:fc seed 220": [
+  "RIGHT",
+  5.9297276109619724e-05,
+  null,
+  ""
+ ],
+ "pm:rl-z": [
+  "RIGHT",
+  5.763262618457167e-17,
+  0,
+  ""
+ ],
+ "pm:r3-cone2-y6": [
+  "RIGHT",
+  4.408458742280007e-05,
+  null,
+  ""
+ ],
+ "rg:Z-spin-r105-5deg": [
+  "RIGHT",
+  3.138120162415789e-05,
+  1.854740517065799e-05,
+  ""
+ ]
+}

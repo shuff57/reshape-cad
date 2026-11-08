@@ -1,0 +1,45 @@
+halt        n=   62 {'REFUSED': 50, 'BUILT-ORACLES-REFUSE': 2, 'RIGHT': 10}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 4
+ep          n=  466 {'RIGHT': 295, 'REFUSED': 171}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 69
+bool        n= 1158 {'RIGHT': 529, 'REFUSED': 618, 'ORACLES-SPLIT': 3, 'WRONG': 1, 'PIPELINE-DIFF': 7}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+holes       n=  357 {'RIGHT': 201, 'REFUSED': 155, 'PIPELINE-DIFF': 1}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+sd          n= 1097 {'RIGHT': 622, 'REFUSED': 475}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 168
+pm          n=  455 {'RIGHT': 262, 'REFUSED': 181, 'ORACLES-SPLIT': 10, 'HANG': 2}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+rg          n=  990 {'RIGHT': 363, 'REFUSED': 597, 'ORACLES-SPLIT': 12, 'BUILT-ORACLES-REFUSE': 7, 'WRONG': 11}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+fc          n= 2309 {'RIGHT': 825, 'REFUSED': 1252, 'ORACLES-SPLIT': 77, 'WRONG': 110, 'BUILT-ORACLES-REFUSE': 45}  RIGHT-by-vol+box flagged: 23  RIGHT with no COM oracle: 4
+sg          n= 1087 {'REFUSED': 351, 'RIGHT': 726, 'BUILT-ORACLES-REFUSE': 5, 'WRONG': 3, 'ORACLES-SPLIT': 2}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+mt          n= 1930 {'REFUSED': 1397, 'RIGHT': 533}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+prim        n= 2303 {'REFUSED': 1311, 'RIGHT': 992}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+sc          n=   86 {'RIGHT': 54, 'REFUSED': 26, 'PIPELINE-DIFF': 6}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 9
+combined    n=  600 {'REFUSED': 564, 'RIGHT': 28, 'ORACLES-SPLIT': 7, 'WRONG': 1}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+rgcombined  n=  400 {'REFUSED': 400}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+fccombined  n=  400 {'REFUSED': 383, 'RIGHT': 16, 'ORACLES-SPLIT': 1}  RIGHT-by-vol+box flagged: 0  RIGHT with no COM oracle: 0
+
+flagged rows (RIGHT by volume+box, wrong by COM or with no second oracle):
+  fc     ch-fillet-2adj-share-corner              ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 14340.678448490798
+  fc     ch-fillet-overlap-r11                    ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 12709.925869762767
+  fc     sq-f-top-front-r3-top-right-r3           ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11867.389342186247
+  fc     sq-f-top-front-r3-front-right-r3         ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11906.017672774706
+  fc     sq-f-top-front-r6-top-right-r6           ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11479.911365728407
+  fc     sq-f-top-front-r3-top-left-r3            ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11867.389342186247
+  fc     sg-V-a1-b1                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11989.365778517005
+  fc     sg-V-a2-b2                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11957.846595456554
+  fc     sg-H-a2-b2                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11940.678448528352
+  fc     sg-V-a3-b3                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11906.017672901447
+  fc     sg-H-a3-b3                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11867.389342312988
+  fc     sg-V-a4-b4                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11834.45423293448
+  fc     sg-H-a4-b4                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11765.781645221663
+  fc     sg-V-a5-b5                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11743.731497638455
+  fc     sg-H-a5-b5                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11636.430579337179
+  fc     sg-V-a6-b6                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11634.424689096168
+  fc     sg-H-a6-b6                               ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11479.91136674233
+  fc     a2-adj-round-3-3                         ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11867.389342064998
+  fc     a2-adj-round-2-2                         ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11940.678448454873
+  fc     a3-adj2-round-2                          ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11940.678448454873
+  fc     a3-adj2-round-3                          ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11867.389342064998
+  fc     a3-adj2-round-5                          ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11636.430578189083
+  fc     a3-adj2-round-8                          ORACLES-SPLIT  dComO None (vb False) dComB None (vb None) curved True closed 11087.669385050143
+
+rows with two agreeing oracles (OCCT and brep-rs agree with the host on volume+box and with each other on the COM): 4115
+  curved=False n=1515 host dCom (max over the two) p50 3.56e-17 p99 1.62e-14 max 1.85e-10; top [('3.8e-13', 'sg', 'fartilt:ft-axis-rect-1e5'), ('3.8e-13', 'sg', 'fartilt:ft-named-rect-1e5'), ('6.1e-12', 'sg', 'fartilt:ft-named-rect-1e6'), ('1.7e-10', 'fc', 'fc seed 306'), ('1.9e-10', 'fc', 'b-edge-then-hollow-bevel2')]
+  curved=True n=2600 host dCom (max over the two) p50 6.28e-08 p99 1.77e-05 max 6.10e-05; top [('3.2e-05', 'bool', 'dis-union-curved'), ('3.6e-05', 'fc', 'fc seed 331'), ('4.2e-05', 'fc', 'p-rim-fillet-offcentre'), ('4.2e-05', 'fc', 'rg-p-rim-fillet-offcentre'), ('6.1e-05', 'fc', 'fc seed 62')]
+  flagged COM-OFF among them (false positives): 0 of 4115: []

@@ -1,0 +1,6163 @@
+[
+ {
+  "id": "ch-fillet-2adj-share-corner",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14340.656515022425,
+   "com": [
+    14.965913911461639,
+    -6.9659139634349465,
+    2.9770302103625697
+   ]
+  },
+  "closed": {
+   "volume": 14340.678456509177,
+   "com": [
+    14.965926388178858,
+    -6.965926388178858,
+    2.977038313854701
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14340.67844849794,
+   "com": [
+    14.96592638436605,
+    -6.965926384416783,
+    2.9770383122024513
+   ]
+  },
+  "caseClosed": 14340.678448490798,
+  "dVolClosed": 0.0000015300196841438279,
+  "dComClosed": 2.4264402787323295e-7,
+  "dVolOI": 0.000001529461046066244,
+  "dComOI": 2.4256987735452226e-7,
+  "dComClosedVsOI": 7.415051871067465e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "ch-fillet-3corner",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14330.90583243932,
+   "com": [
+    14.952614956598373,
+    -6.956011151330457,
+    2.97722874990875
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 14331.447333238062,
+   "com": [
+    14.953310216675364,
+    -6.956530797052581,
+    2.9774218274423307
+   ]
+  },
+  "caseClosed": 14330.949831877611,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.00003778552486999928,
+  "dComOI": 0.000013521241408808459,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "ch-fillet-top-loop4",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14282.847537190884,
+   "com": [
+    15.000000000000002,
+    -6.999999999999998,
+    2.9544910225289067
+   ]
+  },
+  "closed": {
+   "volume": 14282.890837485422,
+   "com": [
+    14.999999999999998,
+    -7.000000000000001,
+    2.954507112008248
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14282.890822433264,
+   "com": [
+    14.999999999998629,
+    -7.0000000000004725,
+    2.954507109294092
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000003031628981871706,
+  "dComClosed": 3.129041081388832e-7,
+  "dVolOI": 0.000003030575119377968,
+  "dComOI": 3.128513239220684e-7,
+  "dComClosedVsOI": 5.278421681482468e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "ch-fillet-vertical4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14358.769410135144,
+   "com": [
+    14.999999997884673,
+    -7.00000000176277,
+    2.9999999997649502
+   ]
+  },
+  "closed": {
+   "volume": 14358.796453217583,
+   "com": [
+    15.000000000000002,
+    -6.999999999999999,
+    2.999999999999999
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14358.796447411562,
+   "com": [
+    14.999999999999996,
+    -6.999999999999999,
+    2.9999999999999996
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.00000188338440892986,
+  "dComClosed": 4.113836867580458e-11,
+  "dVolOI": 0.0000018829800552420612,
+  "dComOI": 4.1138265037394515e-11,
+  "dComClosedVsOI": 1.0363841006514291e-16,
+  "occtDirectDCom": 4.1138299583531216e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ch-fillet-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14331.28237097684,
+   "com": [
+    15.000000001570221,
+    -7.0000000038469,
+    3.0000000006282432
+   ]
+  },
+  "closed": {
+   "volume": 14331.327422029306,
+   "com": [
+    14.999999999999998,
+    -7,
+    2.9999999999999996
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14331.327412323055,
+   "com": [
+    14.999999999999996,
+    -7,
+    2.9999999999999996
+   ]
+  },
+  "caseClosed": 14331.327412287183,
+  "dVolClosed": 0.0000031435464949957443,
+  "dComClosed": 7.481352816599808e-11,
+  "dVolOI": 0.000003142869217771184,
+  "dComOI": 7.481352816599808e-11,
+  "dComClosedVsOI": 3.4546136688380964e-17,
+  "occtDirectDCom": 7.481352816599811e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ch-fillet-all12-sequential",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14128.988907257217,
+   "com": [
+    14.999999993980705,
+    -6.999999996112622,
+    3.000000000495453
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 14133.136275534045,
+   "com": [
+    14.999999999997055,
+    -7.000000000001008,
+    3.000000000000006
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.0002935360983048135,
+  "dComOI": 1.1700444853442425e-10,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "ch-fillet-overlap-r11",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 11,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 11,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 12709.329185083181,
+   "com": [
+    14.093711905346275,
+    -6.09371190442765,
+    2.5390059584454607
+   ]
+  },
+  "closed": {
+   "volume": 12709.926043442523,
+   "com": [
+    14.0940292444861,
+    -6.094029244486098,
+    2.5391099648438806
+   ]
+  },
+  "occtIntersect": {
+   "volume": 12709.925866351796,
+   "com": [
+    14.09402922350411,
+    -6.094029221142489,
+    2.539109894148921
+   ]
+  },
+  "caseClosed": 12709.925869762767,
+  "dVolClosed": 0.00004696222362724517,
+  "dComClosed": 0.0000061715488648911815,
+  "dVolOI": 0.000046948289711074715,
+  "dComOI": 0.000006171122947333803,
+  "dComClosedVsOI": 1.3748576218269933e-9,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "ch-bevel-2adj",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14262.666666666666,
+   "com": [
+    14.922267925586612,
+    -6.922267925586613,
+    2.948677199214733
+   ]
+  },
+  "closed": {
+   "volume": 14262.666666665,
+   "com": [
+    14.92226792558269,
+    -6.92226792558269,
+    2.948677199222089
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14262.666666666666,
+   "com": [
+    14.922267925586615,
+    -6.922267925586613,
+    2.9486771992147327
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 1.1682207350060798e-13,
+  "dComClosed": 1.4305555202658564e-13,
+  "dVolOI": 0,
+  "dComOI": 6.909227337676195e-17,
+  "dComClosedVsOI": 1.4306418856075772e-13,
+  "occtDirectDCom": 6.909227337676195e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ch-bevel-top-loop4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14130.666666666666,
+   "com": [
+    15,
+    -7,
+    2.898471409699944
+   ]
+  },
+  "closed": {
+   "volume": 14130.66666666,
+   "com": [
+    15,
+    -7.000000000000001,
+    2.898471409713106
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14130.666666666664,
+   "com": [
+    15,
+    -6.999999999999999,
+    2.8984714096999435
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 4.717821403091784e-13,
+  "dComClosed": 2.5596959979255885e-13,
+  "dVolOI": 1.287263684336094e-16,
+  "dComOI": 1.7273068344190488e-17,
+  "dComClosedVsOI": 2.5597823632673097e-13,
+  "occtDirectDCom": 0,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ch-bevel-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14240,
+   "com": [
+    15,
+    -7,
+    3
+   ]
+  },
+  "closed": {
+   "volume": 14240,
+   "com": [
+    15,
+    -7,
+    3
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14239.999999999996,
+   "com": [
+    15,
+    -7.000000000000002,
+    3.000000000000001
+   ]
+  },
+  "caseClosed": 14240,
+  "dVolClosed": 0,
+  "dComClosed": 0,
+  "dVolOI": 2.5547603982385627e-16,
+  "dComOI": 3.4546136688380976e-17,
+  "dComClosedVsOI": 3.4546136688380976e-17,
+  "occtDirectDCom": 0,
+  "occtDirectVB": true
+ },
+ {
+  "id": "m-at-offset-edge",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14305.641187738749,
+   "com": [
+    100.08108689221122,
+    -49.96504700004425,
+    30.009031697468377
+   ]
+  },
+  "closed": {
+   "volume": 14305.663711014653,
+   "com": [
+    100.08108676559563,
+    -49.96506942283811,
+    30.009039882599154
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14305.663706159241,
+   "com": [
+    100.08108676562058,
+    -49.9650694187173,
+    30.009039881399072
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000015744331629996773,
+  "dComClosed": 4.360728005201945e-7,
+  "dVolOI": 0.0000015740937575874864,
+  "dComOI": 4.3599265997775113e-7,
+  "dComClosedVsOI": 8.014054244334635e-11,
+  "occtDirectDCom": 4.359926601159362e-7,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ov-c-pair-top-front-back-14",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 14,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 14,
+    "f": "top",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 16160.000000000002,
+   "com": [
+    -8.85716142893036e-15,
+    7.0051775161695025e-15,
+    -2.5874587458745864
+   ]
+  },
+  "closed": {
+   "volume": 16160,
+   "com": [
+    0,
+    0,
+    -2.587458743044536
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": 16160,
+  "dVolClosed": 1.1256122546694654e-16,
+  "dComClosed": 5.255271691010433e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 1.644733586833963e-16,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ov-f-pair-top-front-back-14",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 14,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 14,
+    "f": "top",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 20633.798686964128,
+   "com": [
+    7.346318174135028e-18,
+    0,
+    -1.1211242366614556
+   ]
+  },
+  "closed": {
+   "volume": 20635.04367943594,
+   "com": [
+    0,
+    0,
+    -1.1207553052861272
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": 20635.04320207199,
+  "dVolClosed": 0.00006033753118855293,
+  "dComClosed": 0.000006850883650572105,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 0.000006846185150431453,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ov-c-pair-vert-19-20",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 19,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "bevel",
+    "s": 20,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 16390.000000000004,
+   "com": [
+    -0.2438478747203582,
+    3.9426479560707737,
+    -1.4732526319044554e-16
+   ]
+  },
+  "closed": {
+   "volume": 16390,
+   "com": [
+    -0.24384787486538861,
+    3.9426479522933313,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": 16390,
+  "dVolClosed": 2.2196331952969568e-16,
+  "dComClosed": 7.01453436282088e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 2.3193364501093255e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ov-c-pair-plate-front-4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 4,
+    "f": "bottom",
+    "g": "front"
+   }
+  ],
+  "host": {
+   "volume": 11360,
+   "com": [
+    20,
+    15.769953051643192,
+    5
+   ]
+  },
+  "closed": {
+   "volume": 11360,
+   "com": [
+    20,
+    15.76995305169014,
+    5
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11360,
+   "com": [
+    19.999999999999996,
+    15.769953051643189,
+    4.999999999999999
+   ]
+  },
+  "caseClosed": 11360,
+  "dVolClosed": 0,
+  "dComClosed": 9.20712987729478e-13,
+  "dVolOI": 0,
+  "dComOI": 6.96744475938914e-17,
+  "dComClosedVsOI": 9.207826621770718e-13,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ov-f-pair-plate-front-4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "front"
+   }
+  ],
+  "host": {
+   "volume": 11725.1295059106,
+   "com": [
+    19.999999991473437,
+    15.330686653954526,
+    4.999999999361757
+   ]
+  },
+  "closed": {
+   "volume": 11725.309688117217,
+   "com": [
+    20.000000000000004,
+    15.330475430208685,
+    5.000000000000001
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11725.309649183902,
+   "com": [
+    20,
+    15.330475467125183,
+    4.999999999999999
+   ]
+  },
+  "caseClosed": 11725.309649148734,
+  "dVolClosed": 0.000015367182641898923,
+  "dComClosed": 0.000004142438468386333,
+  "dVolOI": 0.000015363862140024737,
+  "dComOI": 0.000004141714476289336,
+  "dComClosedVsOI": 7.239920969966805e-10,
+  "occtDirectDCom": 0.000004141714476289338,
+  "occtDirectVB": true
+ },
+ {
+  "id": "sq-f-top-front-r3-top-right-r3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": 11867.389342186247,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sq-f-top-front-r1-top-right-r1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11985.068181097484,
+   "com": [
+    19.989530315907274,
+    15.010469658662869,
+    4.9940497491455735
+   ]
+  },
+  "closed": {
+   "volume": 11985.073743848103,
+   "com": [
+    19.98953423191192,
+    15.010465768088077,
+    4.994051905112394
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11985.073741786182,
+   "com": [
+    19.989534230607433,
+    15.010465769376381,
+    4.994051904810499
+   ]
+  },
+  "caseClosed": 11985.07374178026,
+  "dVolClosed": 4.6414008956290763e-7,
+  "dComClosed": 7.679916966829977e-8,
+  "dVolOI": 4.6396804874810363e-7,
+  "dComOI": 7.67735865349578e-8,
+  "dComClosedVsOI": 2.5583133341972617e-11,
+  "occtDirectDCom": 0.00006708206456118128,
+  "occtDirectVB": true
+ },
+ {
+  "id": "sq-f-top-front-r05-top-right-r05",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 0.5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 0.5,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11996.25092106476,
+   "com": [
+    19.997347571189,
+    15.002652429590983,
+    4.998472377110012
+   ]
+  },
+  "closed": {
+   "volume": 11996.256452177127,
+   "com": [
+    19.997351461288872,
+    15.002648538711124,
+    4.99847459997105
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11996.256451658399,
+   "com": [
+    19.997351460946483,
+    15.002648539049577,
+    4.998474599900083
+   ]
+  },
+  "caseClosed": 11996.25645165226,
+  "dVolClosed": 4.610700795896369e-7,
+  "dComClosed": 7.6306432009753e-8,
+  "dVolOI": 4.6102683870649934e-7,
+  "dComOI": 7.629979440382853e-8,
+  "dComClosedVsOI": 6.714805212413685e-12,
+  "occtDirectDCom": 0.00001707842084264015,
+  "occtDirectVB": true
+ },
+ {
+  "id": "sq-f-top-front-r3-front-right-r3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11905.983235430787,
+   "com": [
+    19.97279520655111,
+    15.113095779601082,
+    4.972795514181625
+   ]
+  },
+  "closed": {
+   "volume": 11906.017684766892,
+   "com": [
+    19.972804637834088,
+    15.113055247774618,
+    4.97280464059565
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11906.017672730726,
+   "com": [
+    19.972804636786197,
+    15.11305525912175,
+    4.972804638101782
+   ]
+  },
+  "caseClosed": 11906.017672774706,
+  "dVolClosed": 0.0000028934473888663903,
+  "dComClosed": 7.948945156214903e-7,
+  "dVolOI": 0.000002892436454671896,
+  "dComOI": 7.94671980034389e-7,
+  "dComClosedVsOI": 2.2253558710134786e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sq-f-top-front-r6-top-right-r6",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 6,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 6,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11479.72322456991,
+   "com": [
+    19.656139163816583,
+    15.343860673891626,
+    4.835150015897336
+   ]
+  },
+  "closed": {
+   "volume": 11479.911428786221,
+   "com": [
+    19.656260230666774,
+    15.343739769333222,
+    4.835198114775236
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11479.911365213891,
+   "com": [
+    19.656260205986243,
+    15.343739794181985,
+    4.835198099079456
+   ]
+  },
+  "caseClosed": 11479.911365728407,
+  "dVolClosed": 0.000016394490758088338,
+  "dComClosed": 0.0000023743162752851296,
+  "dVolOI": 0.000016388952965171194,
+  "dComOI": 0.0000023738322502420684,
+  "dComClosedVsOI": 4.873243371781923e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sq-f-top-front-r3-top-left-r3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497826612,
+   "com": [
+    20.090235394043766,
+    15.090235243665287,
+    4.951660440038183
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    20.090202651757462,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151906,
+   "com": [
+    20.090202660996873,
+    15.090202660929668,
+    4.9516767126773065
+   ]
+  },
+  "caseClosed": 11867.389342186247,
+  "dVolClosed": 0.000004117336295684874,
+  "dComClosed": 6.421290645617533e-7,
+  "dVolOI": 0.0000041158611150733526,
+  "dComOI": 6.419478648038505e-7,
+  "dComClosedVsOI": 1.8119975790287225e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sq-f-three-at-corner-r2",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14330.905832439332,
+   "com": [
+    -0.047385043401619954,
+    0.04398884866954113,
+    -0.022771250091249723
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "ls-round-2adj",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14340.656515022425,
+   "com": [
+    -0.034086088538366296,
+    0.03408603656504886,
+    -0.022969789637430422
+   ]
+  },
+  "closed": {
+   "volume": 14340.678456509177,
+   "com": [
+    -0.034073611821142165,
+    0.03407361182114218,
+    -0.022961686145298858
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000015300196841438279,
+  "dComClosed": 2.4264402798294394e-7,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "ls-round-3corner",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14330.905832439332,
+   "com": [
+    -0.047385043401619954,
+    0.04398884866954113,
+    -0.022771250091249723
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "ls-round-top4",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14282.847537190886,
+   "com": [
+    0,
+    -2.046921869442977e-17,
+    -0.04550897747108991
+   ]
+  },
+  "closed": {
+   "volume": 14282.890837485422,
+   "com": [
+    0,
+    0,
+    -0.045492887991751996
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.000003031628981744351,
+  "dComClosed": 3.1290410807329945e-7,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "ls-round-vert4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14358.76941013515,
+   "com": [
+    -2.115323475391541e-9,
+    -1.7627720148131174e-9,
+    -2.3505148177287584e-10
+   ]
+  },
+  "closed": {
+   "volume": 14358.796453217583,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000018833844085498152,
+  "dComClosed": 4.113827374104063e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 4.113827538669093e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ls-round-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14331.282370976836,
+   "com": [
+    1.5702268282311375e-9,
+    -3.846896401086899e-9,
+    6.282435784205651e-10
+   ]
+  },
+  "closed": {
+   "volume": 14331.327422029306,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000031435464952495938,
+  "dComClosed": 7.481346424902903e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 7.481345591822724e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ls-bevel-2adj",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14262.666666666666,
+   "com": [
+    -0.07773207441338702,
+    0.07773207441338716,
+    -0.051322800785267006
+   ]
+  },
+  "closed": {
+   "volume": 14262.666666665,
+   "com": [
+    -0.07773207441731067,
+    0.07773207441731066,
+    -0.05132280077791104
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 1.1682207350060798e-13,
+  "dComClosed": 1.4305690148505002e-13,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 1.7542960037068464e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ls-bevel-top4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14130.666666666666,
+   "com": [
+    0,
+    5.363598684733724e-16,
+    -0.10152859030005656
+   ]
+  },
+  "closed": {
+   "volume": 14130.66666666,
+   "com": [
+    0,
+    0,
+    -0.10152859028689454
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 4.717821403091784e-13,
+  "dComClosed": 2.5597175892610187e-13,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 1.3384264695460681e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ls-bevel-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14240,
+   "com": [
+    -2.170481855003512e-14,
+    1.3944733840385486e-14,
+    1.0992122734296231e-14
+   ]
+  },
+  "closed": {
+   "volume": 14240,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0,
+  "dComClosed": 4.221097989969064e-16,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 4.2210979899690676e-16,
+  "occtDirectVB": true
+ },
+ {
+  "id": "ring4-one-by-one-r3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11739.86031344749,
+   "com": [
+    20,
+    14.999999999999998,
+    4.904303909366449
+   ]
+  },
+  "closed": {
+   "volume": 11739.955714393112,
+   "com": [
+    19.999999999999996,
+    15,
+    4.904336225556656
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11739.955682654365,
+   "com": [
+    19.999999999999968,
+    14.999999999999996,
+    4.904336220591342
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008126241971765797,
+  "dComClosed": 6.337726325688012e-7,
+  "dVolOI": 0.000008123538468766722,
+  "dComOI": 6.336752547595878e-7,
+  "dComClosedVsOI": 9.737780921336987e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-V-a1-b1",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11989.361833165442,
+   "com": [
+    19.996616490550988,
+    15.013110527077934,
+    4.9966165316313065
+   ]
+  },
+  "closed": {
+   "volume": 11989.365779971271,
+   "com": [
+    19.99661775415027,
+    15.01310570409119,
+    4.996617754251842
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11989.365778512585,
+   "com": [
+    19.996617753816352,
+    15.0131057056386,
+    4.9966177539915835
+   ]
+  },
+  "caseClosed": 11989.365778517005,
+  "dVolClosed": 3.2919231935120495e-7,
+  "dComClosed": 9.458655200955468e-8,
+  "dVolOI": 3.290706543433606e-7,
+  "dComOI": 9.455620481618402e-8,
+  "dComClosedVsOI": 3.0347193370652536e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a1-b1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11985.068181097484,
+   "com": [
+    19.989530315907274,
+    15.010469658662869,
+    4.9940497491455735
+   ]
+  },
+  "closed": {
+   "volume": 11985.073743848103,
+   "com": [
+    19.98953423191192,
+    15.010465768088077,
+    4.994051905112394
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11985.073741786182,
+   "com": [
+    19.989534230607433,
+    15.010465769376381,
+    4.994051904810499
+   ]
+  },
+  "caseClosed": 11985.073741784954,
+  "dVolClosed": 4.6414008956290763e-7,
+  "dComClosed": 7.679916966829977e-8,
+  "dVolOI": 4.6396804874810363e-7,
+  "dComOI": 7.67735865349578e-8,
+  "dComClosedVsOI": 2.5583133341972617e-11,
+  "occtDirectDCom": 0.00006708206456118128,
+  "occtDirectVB": true
+ },
+ {
+  "id": "sg-V-a2-b2",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11957.831050921444,
+   "com": [
+    19.987205006528384,
+    15.051309421562717,
+    4.987205156108253
+   ]
+  },
+  "closed": {
+   "volume": 11957.846601001851,
+   "com": [
+    19.987209616533466,
+    15.05129080003027,
+    4.987209617348162
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11957.846595417053,
+   "com": [
+    19.987209615663655,
+    15.051290805632553,
+    4.987209616293179
+   ]
+  },
+  "caseClosed": 11957.846595456554,
+  "dVolClosed": 0.0000013004097766948304,
+  "dComClosed": 3.6519829739701607e-7,
+  "dVolOI": 0.0000012999427356681433,
+  "dComOI": 3.6508842758641913e-7,
+  "dComClosedVsOI": 1.0986981059692628e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a2-b2",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11940.656518806165,
+   "com": [
+    19.95906281912874,
+    15.040937119795375,
+    4.977383290164212
+   ]
+  },
+  "closed": {
+   "volume": 11940.678456509177,
+   "com": [
+    19.95907781012958,
+    15.040922189870418,
+    4.977391182978299
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11940.678448496687,
+   "com": [
+    19.95907780549915,
+    15.040922194456199,
+    4.97739118166536
+   ]
+  },
+  "caseClosed": 11940.678448528352,
+  "dVolClosed": 0.0000018372275408051113,
+  "dComClosed": 2.939977146379175e-7,
+  "dVolOI": 0.0000018365565148813756,
+  "dComOI": 2.93906904446646e-7,
+  "dComClosedVsOI": 9.081019127149828e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-V-a3-b3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11905.983235430787,
+   "com": [
+    19.97279520655111,
+    15.113095779601082,
+    4.972795514181625
+   ]
+  },
+  "closed": {
+   "volume": 11906.017684766892,
+   "com": [
+    19.972804637834088,
+    15.113055247774618,
+    4.97280464059565
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11906.017672730726,
+   "com": [
+    19.972804636786197,
+    15.11305525912175,
+    4.972804638101782
+   ]
+  },
+  "caseClosed": 11906.017672901447,
+  "dVolClosed": 0.0000028934473888663903,
+  "dComClosed": 7.948945156214903e-7,
+  "dVolOI": 0.000002892436454671896,
+  "dComOI": 7.94671980034389e-7,
+  "dComClosedVsOI": 2.2253558710134786e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a3-b3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": 11867.389342312988,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-V-a4-b4",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11834.394063550184,
+   "com": [
+    19.954326554762428,
+    15.197206253180896,
+    4.954326928319682
+   ]
+  },
+  "closed": {
+   "volume": 11834.45425294154,
+   "com": [
+    19.95434160364224,
+    15.197136527255271,
+    4.95434161022775
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11834.454232498963,
+   "com": [
+    19.95434160328676,
+    15.1971365452153,
+    4.954341605446809
+   ]
+  },
+  "caseClosed": 11834.45423293448,
+  "dVolClosed": 0.00000508597153619907,
+  "dComClosed": 0.0000013674379052559155,
+  "dVolOI": 0.000005084244149407843,
+  "dComOI": 0.0000013670856800906687,
+  "dComClosedVsOI": 3.5222516524695147e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a4-b4",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11765.696037714913,
+   "com": [
+    19.842501064322256,
+    15.15749880335294,
+    4.918419285342721
+   ]
+  },
+  "closed": {
+   "volume": 11765.781674970844,
+   "com": [
+    19.842557270323113,
+    15.157442729676887,
+    4.918445576879118
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11765.781644796187,
+   "com": [
+    19.84255725584747,
+    15.15744274409528,
+    4.9184455707676955
+   ]
+  },
+  "caseClosed": 11765.781645221663,
+  "dVolClosed": 0.000007278554167608398,
+  "dComClosed": 0.0000011022903659492788,
+  "dVolOI": 0.000007275989537629096,
+  "dComOI": 0.0000011020064752526497,
+  "dComClosedVsOI": 2.838906966291857e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-V-a5-b5",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11743.639215346526,
+   "com": [
+    19.932664476641076,
+    15.302587613158009,
+    4.9326646809608095
+   ]
+  },
+  "closed": {
+   "volume": 11743.731527200955,
+   "com": [
+    19.932685287856856,
+    15.302482056268046,
+    4.9326853008185445
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11743.731496762915,
+   "com": [
+    19.932685289498366,
+    15.302482080891881,
+    4.932685292592019
+   ]
+  },
+  "caseClosed": 11743.731497638455,
+  "dVolClosed": 0.000007860583311188505,
+  "dComClosed": 0.000002070140929676078,
+  "dVolOI": 0.000007857991436675229,
+  "dComOI": 0.000002069658016532689,
+  "dComClosedVsOI": 4.829131433893517e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a5-b5",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11636.298528569152,
+   "com": [
+    19.757855241918413,
+    15.242144656992874,
+    4.879113932946687
+   ]
+  },
+  "closed": {
+   "volume": 11636.430624121744,
+   "com": [
+    19.757940711304084,
+    15.242059288695915,
+    4.879151106028986
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11636.430578470518,
+   "com": [
+    19.757940691522503,
+    15.242059308489397,
+    4.87915109580552
+   ]
+  },
+  "caseClosed": 11636.430579337179,
+  "dVolClosed": 0.000011352025067706741,
+  "dComClosed": 0.0000016761925590278946,
+  "dVolOI": 0.000011348101893506508,
+  "dComOI": 0.0000016758046103102028,
+  "dComClosedVsOI": 3.8818212709117846e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-V-a6-b6",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 6,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 6,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11634.293834924465,
+   "com": [
+    19.908613442134847,
+    15.428375249781915,
+    4.908613753732502
+   ]
+  },
+  "closed": {
+   "volume": 11634.424729220284,
+   "com": [
+    19.908640441997928,
+    15.42822722780579,
+    4.908640464606155
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11634.424687559718,
+   "com": [
+    19.908640447303704,
+    15.428227258309866,
+    4.908640451353629
+   ]
+  },
+  "caseClosed": 11634.424689096168,
+  "dVolClosed": 0.000011250729754270205,
+  "dComClosed": 0.0000029029497873186615,
+  "dVolOI": 0.000011247148912500086,
+  "dComOI": 0.0000029023515531752446,
+  "dComClosedVsOI": 5.982341434171289e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "sg-H-a6-b6",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 6,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 6,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11479.72322456991,
+   "com": [
+    19.656139163816583,
+    15.343860673891626,
+    4.835150015897336
+   ]
+  },
+  "closed": {
+   "volume": 11479.911428786221,
+   "com": [
+    19.656260230666774,
+    15.343739769333222,
+    4.835198114775236
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11479.911365213891,
+   "com": [
+    19.656260205986243,
+    15.343739794181985,
+    4.835198099079456
+   ]
+  },
+  "caseClosed": 11479.91136674233,
+  "dVolClosed": 0.000016394490758088338,
+  "dComClosed": 0.0000023743162752851296,
+  "dVolOI": 0.000016388952965171194,
+  "dComOI": 0.0000023738322502420684,
+  "dComClosedVsOI": 4.873243371781923e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a2-adj-round-3-3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": 11867.389342064998,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a2-adj-round-1-1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11985.068181097484,
+   "com": [
+    19.989530315907274,
+    15.010469658662869,
+    4.9940497491455735
+   ]
+  },
+  "closed": {
+   "volume": 11985.073743848103,
+   "com": [
+    19.98953423191192,
+    15.010465768088077,
+    4.994051905112394
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11985.073741786182,
+   "com": [
+    19.989534230607433,
+    15.010465769376381,
+    4.994051904810499
+   ]
+  },
+  "caseClosed": 11985.07374177577,
+  "dVolClosed": 4.6414008956290763e-7,
+  "dComClosed": 7.679916966829977e-8,
+  "dVolOI": 4.6396804874810363e-7,
+  "dComOI": 7.67735865349578e-8,
+  "dComClosedVsOI": 2.5583133341972617e-11,
+  "occtDirectDCom": 0.00006708206456118128,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a2-adj-round-2-2",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11940.656518806165,
+   "com": [
+    19.95906281912874,
+    15.040937119795375,
+    4.977383290164212
+   ]
+  },
+  "closed": {
+   "volume": 11940.678456509177,
+   "com": [
+    19.95907781012958,
+    15.040922189870418,
+    4.977391182978299
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11940.678448496687,
+   "com": [
+    19.95907780549915,
+    15.040922194456199,
+    4.97739118166536
+   ]
+  },
+  "caseClosed": 11940.678448454873,
+  "dVolClosed": 0.0000018372275408051113,
+  "dComClosed": 2.939977146379175e-7,
+  "dVolOI": 0.0000018365565148813756,
+  "dComOI": 2.93906904446646e-7,
+  "dComClosedVsOI": 9.081019127149828e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a2-adj-vert-round-2-2",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11957.831050921444,
+   "com": [
+    19.987205006528384,
+    15.051309421562717,
+    4.987205156108253
+   ]
+  },
+  "closed": {
+   "volume": 11957.846601001851,
+   "com": [
+    19.987209616533466,
+    15.05129080003027,
+    4.987209617348162
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11957.846595417053,
+   "com": [
+    19.987209615663655,
+    15.051290805632553,
+    4.987209616293179
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000013004097766948304,
+  "dComClosed": 3.6519829739701607e-7,
+  "dVolOI": 0.0000012999427356681433,
+  "dComOI": 3.6508842758641913e-7,
+  "dComClosedVsOI": 1.0986981059692628e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a2-adj-bevel-2-2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11862.666666666666,
+   "com": [
+    19.906541530853097,
+    15.093458469146903,
+    4.949870742947061
+   ]
+  },
+  "closed": {
+   "volume": 11862.666666665,
+   "com": [
+    19.90654153084838,
+    15.093458469151624,
+    4.949870742956046
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11862.666666666666,
+   "com": [
+    19.906541530853097,
+    15.093458469146906,
+    4.94987074294706
+   ]
+  },
+  "caseClosed": 11862.66666666665,
+  "dVolClosed": 1.4045697653546177e-13,
+  "dComClosed": 1.7620667796495132e-13,
+  "dVolOI": 0,
+  "dComOI": 6.967444759389139e-17,
+  "dComClosedVsOI": 1.762240965768498e-13,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-top4-round-1",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11970.328094111419,
+   "com": [
+    20,
+    14.999999999999993,
+    4.988162839013064
+   ]
+  },
+  "closed": {
+   "volume": 11970.33922825459,
+   "com": [
+    19.999999999999996,
+    14.999999999999996,
+    4.988167162162474
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11970.339224237878,
+   "com": [
+    20,
+    14.999999999999998,
+    4.988167161714303
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 9.301451959888436e-7,
+  "dComClosed": 8.47839353916603e-8,
+  "dVolOI": 9.298096402398103e-7,
+  "dComOI": 8.477514602977078e-8,
+  "dComClosedVsOI": 8.7893618895218e-12,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-round-3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11739.86031344749,
+   "com": [
+    20,
+    14.999999999999998,
+    4.904303909366449
+   ]
+  },
+  "closed": {
+   "volume": 11739.955714393112,
+   "com": [
+    19.999999999999996,
+    15,
+    4.904336225556656
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11739.955682654365,
+   "com": [
+    19.999999999999968,
+    14.999999999999996,
+    4.904336220591342
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008126241971765797,
+  "dComClosed": 6.337726325688012e-7,
+  "dVolOI": 0.000008123538468766722,
+  "dComOI": 6.336752547595878e-7,
+  "dComClosedVsOI": 9.737780921336987e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-round-5",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11296.5783394661,
+   "com": [
+    19.999999999999996,
+    15.000000000000004,
+    4.760183427088448
+   ]
+  },
+  "closed": {
+   "volume": 11296.82881804145,
+   "com": [
+    19.999999999999996,
+    14.999999999999991,
+    4.7602572372896175
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11296.828741897756,
+   "com": [
+    19.999999999999677,
+    14.99999999999982,
+    4.760257221099094
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000022172959618651618,
+  "dComClosed": 0.0000014475371387173322,
+  "dVolOI": 0.00002216621919771515,
+  "dComOI": 0.0000014472196164261288,
+  "dComClosedVsOI": 3.175222912035785e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-round-9",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 9,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 9,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 9,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 9,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 9845.238615003242,
+   "com": [
+    19.999999999999986,
+    15.000000000000004,
+    4.369455013988642
+   ]
+  },
+  "closed": {
+   "volume": 9845.973252286902,
+   "com": [
+    20.000000000000007,
+    15.000000000000005,
+    4.369601020885869
+   ]
+  },
+  "occtIntersect": {
+   "volume": 9845.973084011555,
+   "com": [
+    19.999999999997907,
+    14.99999999999909,
+    4.369600958454354
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.00007461853515063917,
+  "dComClosed": 0.000002863430838780619,
+  "dVolOI": 0.00007460144309701317,
+  "dComOI": 0.000002862206456036008,
+  "dComClosedVsOI": 1.224382744611334e-9,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-round-9.99",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 9.99,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 9.99,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 9.99,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 9.99,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 9383.029704022905,
+   "com": [
+    20.000000000000004,
+    14.999999999999998,
+    4.26571088064323
+   ]
+  },
+  "closed": {
+   "volume": 9383.912383406157,
+   "com": [
+    20.000000000000004,
+    15,
+    4.265860123924152
+   ]
+  },
+  "occtIntersect": {
+   "volume": 9383.912200028686,
+   "com": [
+    20.00000000000359,
+    15.00000000000241,
+    4.265860046185353
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.00009407189480321162,
+  "dComClosed": 0.000002926901544977058,
+  "dVolOI": 0.00009405235127866626,
+  "dComOI": 0.0000029253769617056595,
+  "dComClosedVsOI": 1.5245832713985947e-9,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-bevel-1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11931.333333333334,
+   "com": [
+    20,
+    15,
+    4.973151924903616
+   ]
+  },
+  "closed": {
+   "volume": 11931.333333332499,
+   "com": [
+    20.000000000000004,
+    15.000000000000005,
+    4.9731519249056735
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11931.333333333328,
+   "com": [
+    19.999999999999996,
+    14.999999999999996,
+    4.973151924903614
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 6.997676729850378e-14,
+  "dComClosed": 4.0358923768761584e-14,
+  "dVolOI": 4.573644921470835e-16,
+  "dComOI": 6.967444759389139e-17,
+  "dComClosedVsOI": 4.0393760992558533e-14,
+  "occtDirectDCom": 3.48372237969457e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-top4-bevel-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11405.999999999998,
+   "com": [
+    20,
+    15,
+    4.792477643345608
+   ]
+  },
+  "closed": {
+   "volume": 11405.999999977503,
+   "com": [
+    19.999999999999996,
+    14.999999999999998,
+    4.792477643401417
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11405.999999999996,
+   "com": [
+    20,
+    15,
+    4.792477643345607
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 1.9722463575005795e-12,
+  "dComClosed": 1.0945158972524397e-12,
+  "dVolOI": 1.5947653897473758e-16,
+  "dComOI": 1.7418611898472848e-17,
+  "dComClosedVsOI": 1.0945333158643383e-12,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-top4-bevel-9.99",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 9.99,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 9.99,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 9.99,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 9.99,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 6343.330331999998,
+   "com": [
+    20,
+    15,
+    3.6852387342028146
+   ]
+  },
+  "closed": {
+   "volume": 6343.330331169105,
+   "com": [
+    20.00000000000001,
+    15.000000000000005,
+    3.685238737305646
+   ]
+  },
+  "occtIntersect": {
+   "volume": 6343.330331999994,
+   "com": [
+    20,
+    15.000000000000004,
+    3.685238734202815
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 1.3098679844486854e-10,
+  "dComClosed": 6.085152874854717e-11,
+  "dVolOI": 5.73512432221812e-16,
+  "dComOI": 6.967444759389139e-17,
+  "dComClosedVsOI": 6.085152003924123e-11,
+  "occtDirectDCom": 3.4837223796945695e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-top4-round-3-as-list",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11739.86031344749,
+   "com": [
+    20,
+    14.999999999999998,
+    4.904303909366449
+   ]
+  },
+  "closed": {
+   "volume": 11739.955714393112,
+   "com": [
+    19.999999999999996,
+    15,
+    4.904336225556656
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11739.955682654365,
+   "com": [
+    19.999999999999968,
+    14.999999999999996,
+    4.904336220591342
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008126241971765797,
+  "dComClosed": 6.337726325688012e-7,
+  "dVolOI": 0.000008123538468766722,
+  "dComOI": 6.336752547595878e-7,
+  "dComClosedVsOI": 9.737780921336987e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4-bevel-3-as-list",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11405.999999999998,
+   "com": [
+    20,
+    15,
+    4.792477643345608
+   ]
+  },
+  "closed": {
+   "volume": 11405.999999977503,
+   "com": [
+    19.999999999999996,
+    14.999999999999998,
+    4.792477643401417
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11405.999999999996,
+   "com": [
+    20,
+    15,
+    4.792477643345607
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 1.9722463575005795e-12,
+  "dComClosed": 1.0945158972524397e-12,
+  "dVolOI": 1.5947653897473758e-16,
+  "dComOI": 1.7418611898472848e-17,
+  "dComClosedVsOI": 1.0945333158643383e-12,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-vert4-round-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11922.69265572389,
+   "com": [
+    19.999999996992802,
+    14.999999997346583,
+    4.999999999705147
+   ]
+  },
+  "closed": {
+   "volume": 11922.74334978297,
+   "com": [
+    20.000000000000004,
+    14.999999999999996,
+    5.000000000000001
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11922.743338868975,
+   "com": [
+    20.000000000000004,
+    15,
+    5.000000000000002
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000004251896827685567,
+  "dComClosed": 5.897607551474456e-11,
+  "dVolOI": 0.000004250981430891899,
+  "dComOI": 5.897607551474456e-11,
+  "dComClosedVsOI": 6.967444759389139e-17,
+  "occtDirectDCom": 5.897600584029697e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-vert4-round-14",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 14,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 14,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 14,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 14,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 10316.89933906029,
+   "com": [
+    19.999999999659533,
+    14.999999999148823,
+    4.999999999905414
+   ]
+  },
+  "closed": {
+   "volume": 10317.52183971797,
+   "com": [
+    20,
+    15.000000000000004,
+    4.999999999999998
+   ]
+  },
+  "occtIntersect": {
+   "volume": 10317.521601087694,
+   "com": [
+    20,
+    14.999999999999998,
+    4.999999999999999
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.00006033795980966463,
+  "dComClosed": 1.6693022201230062e-11,
+  "dVolOI": 0.000060314829771376595,
+  "dComOI": 1.669291768955867e-11,
+  "dComClosedVsOI": 1.0451167139083708e-16,
+  "occtDirectDCom": 1.6692917689558674e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-bot4-round-3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11739.86031344749,
+   "com": [
+    20,
+    14.999999999999998,
+    5.09569609063355
+   ]
+  },
+  "closed": {
+   "volume": 11739.955714393112,
+   "com": [
+    19.999999999999996,
+    15,
+    5.095663774443342
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11739.955682653199,
+   "com": [
+    19.99999999999999,
+    15.000000000000032,
+    5.09566377940897
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008126241971765797,
+  "dComClosed": 6.337726325862201e-7,
+  "dVolOI": 0.000008123538369449339,
+  "dComOI": 6.336752486108181e-7,
+  "dComClosedVsOI": 9.738397540198197e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-top4bot4-round-2",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11765.695104651684,
+   "com": [
+    20,
+    15,
+    5.000000000000001
+   ]
+  },
+  "closed": {
+   "volume": 11765.781674970844,
+   "com": [
+    20,
+    14.999999999999998,
+    5
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11765.781644870298,
+   "com": [
+    20,
+    14.999999999999998,
+    4.999999999999964
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000007357858451145605,
+  "dComClosed": 3.483722379694567e-17,
+  "dVolOI": 0.000007355300119875529,
+  "dComOI": 7.31581699735859e-16,
+  "dComClosedVsOI": 7.141630878373862e-16,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-top4bot4-round-4.9",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 10647.025113322827,
+   "com": [
+    20.000000000000004,
+    14.999999999999996,
+    5
+   ]
+  },
+  "closed": {
+   "volume": 10647.507317371288,
+   "com": [
+    20.000000000000007,
+    15.000000000000004,
+    5.000000000000002
+   ]
+  },
+  "occtIntersect": {
+   "volume": 10647.507169958919,
+   "com": [
+    19.999999999998913,
+    14.9999999999991,
+    5.0000000000001
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000045290026399772,
+  "dComClosed": 1.3934889518778268e-16,
+  "dVolOI": 0.0000452761809952934,
+  "dComOI": 2.139005541132464e-14,
+  "dComClosedVsOI": 2.1459729858918534e-14,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-top4bot4-bevel-4.9",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 4.9,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 8952.330666666667,
+   "com": [
+    19.999999999999996,
+    15.000000000000002,
+    5
+   ]
+  },
+  "closed": {
+   "volume": 8952.330666470581,
+   "com": [
+    20,
+    15,
+    5.000000000000003
+   ]
+  },
+  "occtIntersect": {
+   "volume": 8952.330666666663,
+   "com": [
+    19.999999999999996,
+    14.999999999999998,
+    5
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 2.1903261397945063e-11,
+  "dComClosed": 6.967444759389139e-17,
+  "dVolOI": 4.0637225573419163e-16,
+  "dComOI": 6.967444759389139e-17,
+  "dComClosedVsOI": 6.967444759389139e-17,
+  "occtDirectDCom": 1.0451167139083708e-16,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-all12-round-1",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "bottom",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11932.623757857109,
+   "com": [
+    19.999999996244828,
+    15.00000000256667,
+    5.000000000293342
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11933.164147935364,
+   "com": [
+    20.00000000000067,
+    14.99999999999951,
+    5.000000000000009
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.000045286777595668,
+  "dComOI": 7.365815380951972e-11,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-all12-round-2",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11735.860672423754,
+   "com": [
+    19.99999999309842,
+    15.000000004500048,
+    5.000000000335521
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11740.003534282592,
+   "com": [
+    20.00000000000524,
+    14.999999999996378,
+    4.999999999999672
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.00035300878005245826,
+  "dComOI": 1.3545388454394143e-10,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-all12-round-4",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 10986.367531908612,
+   "com": [
+    19.999999988352098,
+    15.000000006882361,
+    5.000000000079637
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11018.789675237895,
+   "com": [
+    20.00000000003676,
+    14.999999999971564,
+    5.0000000000003
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.002951124949635631,
+  "dComOI": 2.2915507766945307e-10,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-adj2-round-1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11985.068181097484,
+   "com": [
+    19.989530315907274,
+    15.010469658662869,
+    4.9940497491455735
+   ]
+  },
+  "closed": {
+   "volume": 11985.073743848103,
+   "com": [
+    19.98953423191192,
+    15.010465768088077,
+    4.994051905112394
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11985.073741786182,
+   "com": [
+    19.989534230607433,
+    15.010465769376381,
+    4.994051904810499
+   ]
+  },
+  "caseClosed": 11985.07374177577,
+  "dVolClosed": 4.6414008956290763e-7,
+  "dComClosed": 7.679916966829977e-8,
+  "dVolOI": 4.6396804874810363e-7,
+  "dComOI": 7.67735865349578e-8,
+  "dComClosedVsOI": 2.5583133341972617e-11,
+  "occtDirectDCom": 0.00006708206456118128,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-adj2-round-2",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11940.656518806165,
+   "com": [
+    19.95906281912874,
+    15.040937119795375,
+    4.977383290164212
+   ]
+  },
+  "closed": {
+   "volume": 11940.678456509177,
+   "com": [
+    19.95907781012958,
+    15.040922189870418,
+    4.977391182978299
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11940.678448496687,
+   "com": [
+    19.95907780549915,
+    15.040922194456199,
+    4.97739118166536
+   ]
+  },
+  "caseClosed": 11940.678448454873,
+  "dVolClosed": 0.0000018372275408051113,
+  "dComClosed": 2.939977146379175e-7,
+  "dVolOI": 0.0000018365565148813756,
+  "dComOI": 2.93906904446646e-7,
+  "dComClosedVsOI": 9.081019127149828e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-adj2-round-3",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": 11867.389342064998,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-adj2-round-5",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 5,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11636.298528569152,
+   "com": [
+    19.757855241918413,
+    15.242144656992874,
+    4.879113932946687
+   ]
+  },
+  "closed": {
+   "volume": 11636.430624121744,
+   "com": [
+    19.757940711304084,
+    15.242059288695915,
+    4.879151106028986
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11636.430578470518,
+   "com": [
+    19.757940691522503,
+    15.242059308489397,
+    4.87915109580552
+   ]
+  },
+  "caseClosed": 11636.430578189083,
+  "dVolClosed": 0.000011352025067706741,
+  "dComClosed": 0.0000016761925590278946,
+  "dVolOI": 0.000011348101893506508,
+  "dComOI": 0.0000016758046103102028,
+  "dComClosedVsOI": 3.8818212709117846e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-adj2-round-8",
+  "verdict": "ORACLES-SPLIT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 8,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 8,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11087.342291724488,
+   "com": [
+    19.401389413779327,
+    15.59861035624863,
+    4.738832248837376
+   ]
+  },
+  "closed": {
+   "volume": 11087.669491356488,
+   "com": [
+    19.401600500639468,
+    15.598399499360532,
+    4.738898455580911
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11087.669386065523,
+   "com": [
+    19.401600468964883,
+    15.598399531904175,
+    4.738898424215971
+   ]
+  },
+  "caseClosed": 11087.669385050143,
+  "dVolClosed": 0.000029511096833746516,
+  "dComClosed": 0.000004139753918922821,
+  "dVolOI": 0.00002950160033206549,
+  "dComOI": 0.0000041391327292088295,
+  "dComClosedVsOI": 6.382333380129629e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-adj2-bevel-1",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 1,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11965.333333333334,
+   "com": [
+    19.975892160686428,
+    15.024107839313572,
+    4.986481780699799
+   ]
+  },
+  "closed": {
+   "volume": 11965.333333333125,
+   "com": [
+    19.975892160685834,
+    15.024107839314171,
+    4.986481780700922
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11965.333333333332,
+   "com": [
+    19.975892160686428,
+    15.024107839313572,
+    4.986481780699798
+   ]
+  },
+  "caseClosed": 11965.333333333332,
+  "dVolClosed": 1.7482486745690898e-14,
+  "dComClosed": 2.2017125439669682e-14,
+  "dVolOI": 1.5202162387557303e-16,
+  "dComOI": 3.48372237969457e-17,
+  "dComClosedVsOI": 2.205196266346663e-14,
+  "occtDirectDCom": 0,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-adj2-bevel-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11694,
+   "com": [
+    19.795183427398666,
+    15.204816572601334,
+    4.895523345305285
+   ]
+  },
+  "closed": {
+   "volume": 11693.999999994376,
+   "com": [
+    19.795183427382813,
+    15.204816572617183,
+    4.8955233453357785
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11693.999999999998,
+   "com": [
+    19.79518342739867,
+    15.204816572601336,
+    4.895523345305285
+   ]
+  },
+  "caseClosed": 11693.999999999944,
+  "dVolClosed": 4.809573487056429e-13,
+  "dComClosed": 5.980332023102683e-13,
+  "dVolOI": 1.5554894848177327e-16,
+  "dComOI": 6.967444759389139e-17,
+  "dComClosedVsOI": 5.980332023102683e-13,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-adj2-bevel-5",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 5,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 5,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11166.666666666666,
+   "com": [
+    19.45195895522388,
+    15.54804104477612,
+    4.752798507462686
+   ]
+  },
+  "closed": {
+   "volume": 11166.666666640625,
+   "com": [
+    19.451958955149724,
+    15.548041044850276,
+    4.752798507607865
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11166.666666666666,
+   "com": [
+    19.45195895522388,
+    15.54804104477612,
+    4.752798507462686
+   ]
+  },
+  "caseClosed": 11166.666666666406,
+  "dVolClosed": 2.3319987135369386e-12,
+  "dComClosed": 2.8471940450886765e-12,
+  "dVolOI": 0,
+  "dComOI": 0,
+  "dComClosedVsOI": 2.8471940450886765e-12,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-adj2-round-3-as-list",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-adj2-vert-round-3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11905.983235430787,
+   "com": [
+    19.97279520655111,
+    15.113095779601082,
+    4.972795514181625
+   ]
+  },
+  "closed": {
+   "volume": 11906.017684766892,
+   "com": [
+    19.972804637834088,
+    15.113055247774618,
+    4.97280464059565
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11906.017672730726,
+   "com": [
+    19.972804636786197,
+    15.11305525912175,
+    4.972804638101782
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000028934473888663903,
+  "dComClosed": 7.948945156214903e-7,
+  "dVolOI": 0.000002892436454671896,
+  "dComOI": 7.94671980034389e-7,
+  "dComClosedVsOI": 2.2253558710134786e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "a3-corner3-round-2",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11932.623774104248,
+   "com": [
+    19.945906311912772,
+    15.05073475873487,
+    4.97757860127816
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11933.164147927531,
+   "com": [
+    19.94673978897514,
+    15.05011171631035,
+    4.977765653016626
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.0000452854153045717,
+  "dComOI": 0.000016345830019800978,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-corner3-round-4",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11735.860702318865,
+   "com": [
+    19.793876258618557,
+    15.193440159550294,
+    4.919757238445459
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11740.003533960418,
+   "com": [
+    19.800265246088937,
+    15.188756004425603,
+    4.920943279262654
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.00035300620437106554,
+  "dComOI": 0.0001252983530137289,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "a3-parallel2-round-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 11845.385350825272,
+   "com": [
+    19.999999999999996,
+    15,
+    4.943487455814655
+   ]
+  },
+  "closed": {
+   "volume": 11845.48669956594,
+   "com": [
+    19.999999999999996,
+    14.999999999999998,
+    4.94352055328303
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11845.486677688363,
+   "com": [
+    19.999999999999996,
+    15.000000000000002,
+    4.943520548942704
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008555968224377093,
+  "dComClosed": 6.490947580713211e-7,
+  "dVolOI": 0.000008554121296136258,
+  "dComOI": 6.490096372689981e-7,
+  "dComClosedVsOI": 8.512080232293583e-11,
+  "occtDirectDCom": 6.490096372515798e-7,
+  "occtDirectVB": true
+ },
+ {
+  "id": "a3-two-disjoint-round-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 11845.385343324158,
+   "com": [
+    20.000000003166257,
+    14.999999992164133,
+    5.000000000238097
+   ]
+  },
+  "closed": {
+   "volume": 11845.48669956594,
+   "com": [
+    19.999999999999996,
+    14.999999999999998,
+    4.999999999999999
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11845.486677690475,
+   "com": [
+    20,
+    15,
+    5.000000000000001
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008556601481793667,
+  "dComClosed": 1.5367396161308683e-10,
+  "dVolOI": 0.000008554754731836001,
+  "dComOI": 1.5367399645031062e-10,
+  "dComClosedVsOI": 6.967444759389138e-17,
+  "occtDirectDCom": 1.5367406612475825e-10,
+  "occtDirectVB": true
+ },
+ {
+  "id": "c-pull-rect-top4-round-2",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 4717.196763422721,
+   "com": [
+    0,
+    2.5653860916400707e-17,
+    3.937750194624516
+   ]
+  },
+  "closed": {
+   "volume": 4717.227126470772,
+   "com": [
+    0,
+    0,
+    3.9377715512439355
+   ]
+  },
+  "occtIntersect": {
+   "volume": 4717.227116258089,
+   "com": [
+    1.9549904933866617e-14,
+    1.2532183454023441e-14,
+    3.9377715474103914
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000006436671941823915,
+  "dComClosed": 5.782628912806488e-7,
+  "dVolOI": 0.0000064345069519418755,
+  "dComOI": 5.781590922532945e-7,
+  "dComClosedVsOI": 1.0379902735435186e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "c-pull-rect-top4-bevel-3",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 4386,
+   "com": [
+    8.881784197001252e-16,
+    1.2960195818697678e-16,
+    3.718878248974008
+   ]
+  },
+  "closed": {
+   "volume": 4385.999999977499,
+   "com": [
+    0,
+    0,
+    3.7188782490726013
+   ]
+  },
+  "occtIntersect": {
+   "volume": 4385.999999999999,
+   "com": [
+    9.720146864023261e-17,
+    1.0368156654958145e-16,
+    3.718878248974007
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 5.1301639128732885e-12,
+  "dComClosed": 2.669558763440322e-12,
+  "dVolOI": 2.0736313309916284e-16,
+  "dComOI": 3.607316852386793e-17,
+  "dComClosedVsOI": 2.669594836608846e-12,
+  "occtDirectDCom": 2.404877901591195e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "c-top4-round-3-then-bottom4-round-3",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "bottom",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11479.720626894981,
+   "com": [
+    20.000000000000004,
+    15.000000000000002,
+    5
+   ]
+  },
+  "closed": {
+   "volume": 11479.911428786225,
+   "com": [
+    19.999999999999993,
+    15,
+    4.999999999999998
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11479.911365315442,
+   "com": [
+    19.999999999999947,
+    15.00000000000003,
+    5.000000000000299
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000016620778278923757,
+  "dComClosed": 2.09023342781674e-16,
+  "dVolOI": 0.000016615249330517762,
+  "dComOI": 5.870072209785345e-15,
+  "dComClosedVsOI": 5.904909433582291e-15,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "c-top4-round-3-then-vert4-round-3",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11670.22587953831,
+   "com": [
+    19.999999997849315,
+    14.999999998102332,
+    4.906529773826033
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 11677.140955525507,
+   "com": [
+    20.000000000008228,
+    14.999999999994213,
+    4.908773620879861
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.0005925400295226196,
+  "dComOI": 0.00004400546120379408,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "rg-sq-f-top-front-r3-top-right-r3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11867.340497827101,
+   "com": [
+    19.909764606520778,
+    15.090235244087825,
+    4.951660440038305
+   ]
+  },
+  "closed": {
+   "volume": 11867.389359658377,
+   "com": [
+    19.909797348242535,
+    15.090202651757465,
+    4.951676715873111
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11867.389342151913,
+   "com": [
+    19.909797339003134,
+    15.090202660929656,
+    4.951676712677301
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000041173362544532126,
+  "dComClosed": 6.421179928739838e-7,
+  "dVolOI": 0.000004115861074454799,
+  "dComOI": 6.419367933251043e-7,
+  "dComClosedVsOI": 1.8119954887952944e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ls-round-2adj",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14340.656515022425,
+   "com": [
+    -0.034086088538366296,
+    0.03408603656504886,
+    -0.022969789637430422
+   ]
+  },
+  "closed": {
+   "volume": 14340.678456509177,
+   "com": [
+    -0.034073611821142165,
+    0.03407361182114218,
+    -0.022961686145298858
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000015300196841438279,
+  "dComClosed": 2.4264402798294394e-7,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ls-round-vert4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14358.76941013515,
+   "com": [
+    -2.115323475391541e-9,
+    -1.7627720148131174e-9,
+    -2.3505148177287584e-10
+   ]
+  },
+  "closed": {
+   "volume": 14358.796453217583,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000018833844085498152,
+  "dComClosed": 4.113827374104063e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 4.113827538669093e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ls-bevel-top4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14130.666666666666,
+   "com": [
+    0,
+    5.363598684733724e-16,
+    -0.10152859030005656
+   ]
+  },
+  "closed": {
+   "volume": 14130.66666666,
+   "com": [
+    0,
+    0,
+    -0.10152859028689454
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 4.717821403091784e-13,
+  "dComClosed": 2.5597175892610187e-13,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 1.3384264695460681e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ring4-one-by-one-r3",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 3,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 11739.86031344749,
+   "com": [
+    20,
+    14.999999999999998,
+    4.904303909366449
+   ]
+  },
+  "closed": {
+   "volume": 11739.955714393112,
+   "com": [
+    19.999999999999996,
+    15,
+    4.904336225556656
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11739.955682654365,
+   "com": [
+    19.999999999999968,
+    14.999999999999996,
+    4.904336220591342
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000008126241971765797,
+  "dComClosed": 6.337726325688012e-7,
+  "dVolOI": 0.000008123538468766722,
+  "dComOI": 6.336752547595878e-7,
+  "dComClosedVsOI": 9.737780921336987e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-sg-V-a2-b2",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11957.831050921444,
+   "com": [
+    19.987205006528384,
+    15.051309421562717,
+    4.987205156108253
+   ]
+  },
+  "closed": {
+   "volume": 11957.846601001851,
+   "com": [
+    19.987209616533466,
+    15.05129080003027,
+    4.987209617348162
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11957.846595417053,
+   "com": [
+    19.987209615663655,
+    15.051290805632553,
+    4.987209616293179
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000013004097766948304,
+  "dComClosed": 3.6519829739701607e-7,
+  "dVolOI": 0.0000012999427356681433,
+  "dComOI": 3.6508842758641913e-7,
+  "dComClosedVsOI": 1.0986981059692628e-10,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ch-fillet-2adj-share-corner",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14340.656515022425,
+   "com": [
+    14.965913911461639,
+    -6.9659139634349465,
+    2.9770302103625697
+   ]
+  },
+  "closed": {
+   "volume": 14340.678456509177,
+   "com": [
+    14.965926388178858,
+    -6.965926388178858,
+    2.977038313854701
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14340.67844849794,
+   "com": [
+    14.96592638436605,
+    -6.965926384416783,
+    2.9770383122024513
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000015300196841438279,
+  "dComClosed": 2.4264402787323295e-7,
+  "dVolOI": 0.000001529461046066244,
+  "dComOI": 2.4256987735452226e-7,
+  "dComClosedVsOI": 7.415051871067465e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ch-fillet-top-loop4",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14282.847537190884,
+   "com": [
+    15.000000000000002,
+    -6.999999999999998,
+    2.9544910225289067
+   ]
+  },
+  "closed": {
+   "volume": 14282.890837485422,
+   "com": [
+    14.999999999999998,
+    -7.000000000000001,
+    2.954507112008248
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14282.890822433264,
+   "com": [
+    14.999999999998629,
+    -7.0000000000004725,
+    2.954507109294092
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000003031628981871706,
+  "dComClosed": 3.129041081388832e-7,
+  "dVolOI": 0.000003030575119377968,
+  "dComOI": 3.128513239220684e-7,
+  "dComClosedVsOI": 5.278421681482468e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ch-bevel-2adj",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14262.666666666666,
+   "com": [
+    14.922267925586612,
+    -6.922267925586613,
+    2.948677199214733
+   ]
+  },
+  "closed": {
+   "volume": 14262.666666665,
+   "com": [
+    14.92226792558269,
+    -6.92226792558269,
+    2.948677199222089
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14262.666666666666,
+   "com": [
+    14.922267925586615,
+    -6.922267925586613,
+    2.9486771992147327
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 1.1682207350060798e-13,
+  "dComClosed": 1.4305555202658564e-13,
+  "dVolOI": 0,
+  "dComOI": 6.909227337676195e-17,
+  "dComClosedVsOI": 1.4306418856075772e-13,
+  "occtDirectDCom": 6.909227337676195e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ch-bevel-top-loop4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14130.666666666666,
+   "com": [
+    15,
+    -7,
+    2.898471409699944
+   ]
+  },
+  "closed": {
+   "volume": 14130.66666666,
+   "com": [
+    15,
+    -7.000000000000001,
+    2.898471409713106
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14130.666666666664,
+   "com": [
+    15,
+    -6.999999999999999,
+    2.8984714096999435
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 4.717821403091784e-13,
+  "dComClosed": 2.5596959979255885e-13,
+  "dVolOI": 1.287263684336094e-16,
+  "dComOI": 1.7273068344190488e-17,
+  "dComClosedVsOI": 2.5597823632673097e-13,
+  "occtDirectDCom": 0,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ch-fillet-3corner",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "verdictVB": "BUILT-ORACLES-REFUSE",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14330.90583243932,
+   "com": [
+    14.952614956598373,
+    -6.956011151330457,
+    2.97722874990875
+   ]
+  },
+  "closed": {
+   "why": "three blends at one corner"
+  },
+  "occtIntersect": {
+   "volume": 14331.447333238062,
+   "com": [
+    14.953310216675364,
+    -6.956530797052581,
+    2.9774218274423307
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": null,
+  "dComClosed": null,
+  "dVolOI": 0.00003778552486999928,
+  "dComOI": 0.000013521241408808459,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": null
+ },
+ {
+  "id": "rg-ch-fillet-vertical4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "front",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "left"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "back",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 14358.769410135144,
+   "com": [
+    14.999999997884673,
+    -7.00000000176277,
+    2.9999999997649502
+   ]
+  },
+  "closed": {
+   "volume": 14358.796453217583,
+   "com": [
+    15.000000000000002,
+    -6.999999999999999,
+    2.999999999999999
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14358.796447411562,
+   "com": [
+    14.999999999999996,
+    -6.999999999999999,
+    2.9999999999999996
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.00000188338440892986,
+  "dComClosed": 4.113836867580458e-11,
+  "dVolOI": 0.0000018829800552420612,
+  "dComOI": 4.1138265037394515e-11,
+  "dComClosedVsOI": 1.0363841006514291e-16,
+  "occtDirectDCom": 4.1138299583531216e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ch-fillet-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14331.28237097684,
+   "com": [
+    15.000000001570221,
+    -7.0000000038469,
+    3.0000000006282432
+   ]
+  },
+  "closed": {
+   "volume": 14331.327422029306,
+   "com": [
+    14.999999999999998,
+    -7,
+    2.9999999999999996
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14331.327412323055,
+   "com": [
+    14.999999999999996,
+    -7,
+    2.9999999999999996
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.0000031435464949957443,
+  "dComClosed": 7.481352816599808e-11,
+  "dVolOI": 0.000003142869217771184,
+  "dComOI": 7.481352816599808e-11,
+  "dComClosedVsOI": 3.4546136688380964e-17,
+  "occtDirectDCom": 7.481352816599811e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ch-bevel-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14240,
+   "com": [
+    15,
+    -7,
+    3
+   ]
+  },
+  "closed": {
+   "volume": 14240,
+   "com": [
+    15,
+    -7,
+    3
+   ]
+  },
+  "occtIntersect": {
+   "volume": 14239.999999999996,
+   "com": [
+    15,
+    -7.000000000000002,
+    3.000000000000001
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0,
+  "dComClosed": 0,
+  "dVolOI": 2.5547603982385627e-16,
+  "dComOI": 3.4546136688380976e-17,
+  "dComClosedVsOI": 3.4546136688380976e-17,
+  "occtDirectDCom": 0,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ov-c-pair-top-front-back-14",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 14,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 14,
+    "f": "top",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 16160.000000000002,
+   "com": [
+    -8.85716142893036e-15,
+    7.0051775161695025e-15,
+    -2.5874587458745864
+   ]
+  },
+  "closed": {
+   "volume": 16160,
+   "com": [
+    0,
+    0,
+    -2.587458743044536
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 1.1256122546694654e-16,
+  "dComClosed": 5.255271691010433e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 1.644733586833963e-16,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ov-f-pair-top-front-back-14",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 14,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 14,
+    "f": "top",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 20633.798686964128,
+   "com": [
+    7.346318174135028e-18,
+    0,
+    -1.1211242366614556
+   ]
+  },
+  "closed": {
+   "volume": 20635.04367943594,
+   "com": [
+    0,
+    0,
+    -1.1207553052861272
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.00006033753118855293,
+  "dComClosed": 0.000006850883650572105,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 0.000006846185150431453,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ov-c-pair-vert-19-20",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 19,
+    "f": "front",
+    "g": "left"
+   },
+   {
+    "st": "bevel",
+    "s": 20,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 16390.000000000004,
+   "com": [
+    -0.2438478747203582,
+    3.9426479560707737,
+    -1.4732526319044554e-16
+   ]
+  },
+  "closed": {
+   "volume": 16390,
+   "com": [
+    -0.24384787486538861,
+    3.9426479522933313,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 2.2196331952969568e-16,
+  "dComClosed": 7.01453436282088e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 2.3193364501093255e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ov-c-pair-plate-front-4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 4,
+    "f": "bottom",
+    "g": "front"
+   }
+  ],
+  "host": {
+   "volume": 11360,
+   "com": [
+    20,
+    15.769953051643192,
+    5
+   ]
+  },
+  "closed": {
+   "volume": 11360,
+   "com": [
+    20,
+    15.76995305169014,
+    5
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11360,
+   "com": [
+    19.999999999999996,
+    15.769953051643189,
+    4.999999999999999
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0,
+  "dComClosed": 9.20712987729478e-13,
+  "dVolOI": 0,
+  "dComOI": 6.96744475938914e-17,
+  "dComClosedVsOI": 9.207826621770718e-13,
+  "occtDirectDCom": 6.96744475938914e-17,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ov-f-pair-plate-front-4",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 4,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 4,
+    "f": "bottom",
+    "g": "front"
+   }
+  ],
+  "host": {
+   "volume": 11725.1295059106,
+   "com": [
+    19.999999991473437,
+    15.330686653954526,
+    4.999999999361757
+   ]
+  },
+  "closed": {
+   "volume": 11725.309688117217,
+   "com": [
+    20.000000000000004,
+    15.330475430208685,
+    5.000000000000001
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11725.309649183902,
+   "com": [
+    20,
+    15.330475467125183,
+    4.999999999999999
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 0.000015367182641898923,
+  "dComClosed": 0.000004142438468386333,
+  "dVolOI": 0.000015363862140024737,
+  "dComOI": 0.000004141714476289336,
+  "dComClosedVsOI": 7.239920969966805e-10,
+  "occtDirectDCom": 0.000004141714476289338,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ls-round-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14331.282370976836,
+   "com": [
+    1.5702268282311375e-9,
+    -3.846896401086899e-9,
+    6.282435784205651e-10
+   ]
+  },
+  "closed": {
+   "volume": 14331.327422029306,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.0000031435464952495938,
+  "dComClosed": 7.481346424902903e-11,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 7.481345591822724e-11,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-ls-bevel-parallel2",
+  "verdict": "RIGHT",
+  "verdictVB": "RIGHT",
+  "blends": [
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "bevel",
+    "s": 2,
+    "f": "bottom",
+    "g": "back"
+   }
+  ],
+  "host": {
+   "volume": 14240,
+   "com": [
+    -2.170481855003512e-14,
+    1.3944733840385486e-14,
+    1.0992122734296231e-14
+   ]
+  },
+  "closed": {
+   "volume": 14240,
+   "com": [
+    0,
+    0,
+    0
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0,
+  "dComClosed": 4.221097989969064e-16,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": 4.2210979899690676e-16,
+  "occtDirectVB": true
+ },
+ {
+  "id": "rg-sg-V-a1-b1",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 1,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 1,
+    "f": "front",
+    "g": "right"
+   }
+  ],
+  "host": {
+   "volume": 11989.361833165442,
+   "com": [
+    19.996616490550988,
+    15.013110527077934,
+    4.9966165316313065
+   ]
+  },
+  "closed": {
+   "volume": 11989.365779971271,
+   "com": [
+    19.99661775415027,
+    15.01310570409119,
+    4.996617754251842
+   ]
+  },
+  "occtIntersect": {
+   "volume": 11989.365778512585,
+   "com": [
+    19.996617753816352,
+    15.0131057056386,
+    4.9966177539915835
+   ]
+  },
+  "caseClosed": null,
+  "dVolClosed": 3.2919231935120495e-7,
+  "dComClosed": 9.458655200955468e-8,
+  "dVolOI": 3.290706543433606e-7,
+  "dComOI": 9.455620481618402e-8,
+  "dComClosedVsOI": 3.0347193370652536e-11,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ },
+ {
+  "id": "rg-ls-round-top4",
+  "verdict": "WRONG",
+  "verdictVB": "WRONG",
+  "blends": [
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "front"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "right"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "back"
+   },
+   {
+    "st": "round",
+    "s": 2,
+    "f": "top",
+    "g": "left"
+   }
+  ],
+  "host": {
+   "volume": 14282.847537190886,
+   "com": [
+    0,
+    -2.046921869442977e-17,
+    -0.04550897747108991
+   ]
+  },
+  "closed": {
+   "volume": 14282.890837485422,
+   "com": [
+    0,
+    0,
+    -0.045492887991751996
+   ]
+  },
+  "occtIntersect": null,
+  "caseClosed": null,
+  "dVolClosed": 0.000003031628981744351,
+  "dComClosed": 3.1290410807329945e-7,
+  "dVolOI": null,
+  "dComOI": null,
+  "dComClosedVsOI": null,
+  "occtDirectDCom": null,
+  "occtDirectVB": false
+ }
+]

@@ -1,0 +1,44 @@
+{
+ "021c": {
+  "counts": {
+   "REFUSED -> REFUSED": 147,
+   "COM-OFF -> ORACLES-SPLIT": 4,
+   "COM-OFF -> COM-OFF": 19,
+   "RIGHT -> RIGHT": 124,
+   "WRONG -> WRONG": 9
+  },
+  "rims": {
+   "fc:r-cyl-turn-x90-bottom-rim-bevel": "COM-OFF",
+   "fc:r-cyl-turn-y90-bottom-rim-bevel": "COM-OFF",
+   "fc:r-cyl-turn-z30-bottom-rim-bevel": "REFUSED",
+   "fc:b-cyl-turn-x90-bottom-rim-bevel3": "COM-OFF",
+   "fc:b-cyl-turn-y90-bottom-rim-bevel3": "COM-OFF",
+   "fc:b-cyl-turn-z30-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x45-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x30y40-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x30y40z50-bottom-rim-bevel3": "REFUSED"
+  },
+  "misses": []
+ },
+ "030": {
+  "counts": {
+   "REFUSED -> REFUSED": 147,
+   "COM-OFF -> ORACLES-SPLIT": 4,
+   "COM-OFF -> COM-OFF": 19,
+   "RIGHT -> RIGHT": 124,
+   "WRONG -> WRONG": 9
+  },
+  "rims": {
+   "fc:r-cyl-turn-x90-bottom-rim-bevel": "COM-OFF",
+   "fc:r-cyl-turn-y90-bottom-rim-bevel": "COM-OFF",
+   "fc:r-cyl-turn-z30-bottom-rim-bevel": "REFUSED",
+   "fc:b-cyl-turn-x90-bottom-rim-bevel3": "COM-OFF",
+   "fc:b-cyl-turn-y90-bottom-rim-bevel3": "COM-OFF",
+   "fc:b-cyl-turn-z30-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x45-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x30y40-bottom-rim-bevel3": "REFUSED",
+   "fc:b-cyl-turn-x30y40z50-bottom-rim-bevel3": "REFUSED"
+  },
+  "misses": []
+ }
+}

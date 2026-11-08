@@ -1,0 +1,426 @@
+// COM copy (reshape-we, 2026-11-08): host-route.mjs (unchanged beside it; other evidence points at it) plus the measured feature's CENTRE OF MASS against
+// OCCT and brep-rs. The old verdict passed a build on (feature score OR scene score), the scene score carried no COM, brep-rs gave no COM and a fc closed
+// form scored volume only, so a round or bevel of the WRONG EDGE (same volume, same box) scored RIGHT. Here:
+//   - brep-rs COM = divergence-theorem COM of its own mesh_feature tessellation (deflection 2e-5 of its box diagonal, --brep-deflection=); the scene COM = volume-weighted body COM;
+//   - per oracle X: vb = volume+box agree (feature or scene, the old rule); com = |COM - X.com|max / X diag <= COMTOL, taken at the level (feature, else scene)
+//     whose volume+box agreed; an oracle whose volume+box disagree says nothing about the COM;
+//   - verdictVB = the old verdict (volume and box only); verdict = verdictVB, except a RIGHT (or PIPELINE-DIFF) where an oracle that agrees on volume+box
+//     disagrees on the COM becomes COM-OFF, and a RIGHT with no oracle able to check the COM is kept RIGHT with final.comChecked = false (reported apart);
+//   - a fc closed-form RIGHT that OCCT or brep-rs built and disagree with on volume+box is ORACLES-SPLIT (splitKind 'closed-vs-kernel-oracle'): one oracle only;
+//   - COMTOL (of the diagonal): planar 1e-6, curved 2e-4 (--comtol-curved=, --comtol-planar=). Justified in GUARD-WRONG-EDGE.md from data: the host's own
+//     curved COM noise on rows both oracles agree on, and the smallest COM shift of the known wrong-edge builds.
+//   - OCCT's COM is per solid, volume-weighted (its whole-compound COM is wrong on a pattern of separate solids, pm rl-z);
+//   - faces: host / OCCT / brep-rs face counts are recorded (final.faces), not scored (truck merges and splits faces; sg-core faceVerdict).
+// HG copy (reshape-hg, 2026-11-07, SG-13 / PNP-7 / PM-4): ../port/host-route.mjs + pane.js run()'s preflightScript(srcText) (PM-4), which refuses the whole
+// run before translateDoc: every feature of the doc is recorded refused with its sentence, guard PM-PREFLIGHT. SG-13 and G-STALE are inside host-entry translateDoc.
+// PORT copy (reshape-port, 2026-11-07): step2c/host-route.mjs + pane.js's fromUsage (f0b2cd05) in the host ctx. Otherwise unchanged.
+// Stage B step 2 (resume 4): EVERY group's case scripts through the SHIPPED HOST ROUTE, scored against live OCCT and live brep-rs (and a stored
+// closed form where the case carries one). Adapted from packages/layer/test/live-unified-join.mjs (same scoring, same scene rule, same chunked child
+// with a no-progress watchdog); only the host level is run.
+//
+// HOST ROUTE, mirrored and stated: packages/solidcraft-host/pane/src/host-entry.mjs translateDoc (the host's own entry: planners 'unified', it sets
+// ctx.unifiedEpJoinChecks = HOST_EP_JOIN_CHECKS = 'full' after the caller's ctx, and refuses 'blend' as PILOT-NOT-YET), called with pane.js's ctx
+// { arc, mt, runSC, soups: {}, followMoves: true, topologyOf }. topologyOf is test/topology-upstream.mjs on the rig's topology pkg (the node rig's
+// stand-in for bridge.topologyOf; its reply carries the measure of the same run, as live-replay-unified.mjs gives it). runSC is in-process
+// (sg-core runSC on $SOLIDCRAFT_REFEREE_PKG), it ignores { budgetS }, as the layer's other live replays do.
+//
+//   WT=<worktree> SOLIDCRAFT_REFEREE_PKG=<pkg> SOLIDCRAFT_TOPOLOGY_PKG=<pkg> node host-route.mjs --corpus=<c> --out=<dir> [--no-oracle] [--only=id,id] [--timeout=S]
+//   corpora: ep bool holes sd pm rg fc sg mt prim sc halt combined rgcombined fccombined
+//
+// Verdicts (measured feature = the case's measure id, else the last feature): REFUSED; RIGHT (layer measure or scene matches every oracle that built,
+// at least one); WRONG (matches none that built); ORACLES-SPLIT (matches some, not others); BUILT-ORACLES-REFUSE (built, and OCCT and brep-rs both refuse
+// and no closed form: an open outline, a self-touching sketch... needs a human); BUILT-NO-REF (no oracle answered). --no-oracle records the host result only.
+import { writeFileSync, mkdirSync, appendFileSync, readFileSync, existsSync, readdirSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+
+const WT = process.env.WT; if (!WT) { console.error('FATAL: WT unset'); process.exit(2); }
+const R = path.join(process.env.HOME, '.cache/solidcraft-0.30.1-rig');
+const CONTRACT = path.join(WT, 'docs/spikes/solidcraft-referee/contract');
+const TEST = path.join(WT, 'packages/layer/test');
+const SG = path.join(CONTRACT, 'sketch-geometry-harness');
+if (!process.env.SOLIDCRAFT_REFEREE_PKG || !process.env.SOLIDCRAFT_TOPOLOGY_PKG) { console.error('FATAL: SOLIDCRAFT_REFEREE_PKG / SOLIDCRAFT_TOPOLOGY_PKG unset'); process.exit(2); }
+const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
+const CORPUS = arg('corpus');
+const ALL = ['ep', 'bool', 'holes', 'sd', 'pm', 'rg', 'fc', 'sg', 'mt', 'prim', 'sc', 'halt', 'combined', 'rgcombined', 'fccombined', 'pnp'];
+if (!ALL.includes(CORPUS)) { console.error('FATAL: --corpus=' + ALL.join('|')); process.exit(2); }
+const NO_ORACLE = process.argv.includes('--no-oracle');
+const OUT = path.resolve(arg('out') || '.');
+mkdirSync(OUT, { recursive: true });
+const JSONL = path.join(OUT, `hr-${CORPUS}.jsonl`);
+const COMTOL = { planar: Number(arg('comtol-planar') || 1e-6), curved: Number(arg('comtol-curved') || 2e-4) };
+const imp = (p, q = '') => import(pathToFileURL(p).href + q);
+
+// ---- driver ----------------------------------------------------------------------------------------------------------------------------------------------
+if (!process.argv.includes('--child')) {
+  mkdirSync(OUT, { recursive: true });
+  const timeoutMs = Number(arg('timeout') || 300) * 1000;
+  const done = new Set(existsSync(JSONL) ? readFileSync(JSONL, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).i) : []);
+  let from = 0; let total = null;
+  while (total === null || from < total) {
+    while (done.has(from)) from++;
+    if (total !== null && from >= total) break;
+    const res = await new Promise((resolve) => {
+      const ch = spawn(process.execPath, [fileURLToPath(import.meta.url), ...process.argv.slice(2), '--child', `--from=${from}`], { stdio: ['ignore', 'pipe', 'inherit'], env: process.env });
+      let cur = null; let timer = null; let buf = ''; let lastDone = from - 1;
+      const arm = () => { clearTimeout(timer); timer = setTimeout(() => { ch.kill('SIGKILL'); }, timeoutMs); };
+      arm();
+      ch.stdout.on('data', (d) => {
+        buf += d; let k;
+        while ((k = buf.indexOf('\n')) >= 0) {
+          const ln = buf.slice(0, k); buf = buf.slice(k + 1);
+          if (ln.startsWith('@@TOTAL@@')) total = Number(ln.slice(9));
+          else if (ln.startsWith('@@START@@')) { cur = JSON.parse(ln.slice(9)); arm(); }
+          else if (ln.startsWith('@@DONE@@')) { lastDone = Number(ln.slice(8)); done.add(lastDone); cur = null; arm(); }
+          else console.log(ln);
+        }
+      });
+      ch.on('exit', (code, sig) => { clearTimeout(timer); resolve({ code, sig, cur, lastDone }); });
+    });
+    if (res.cur) {
+      appendFileSync(JSONL, JSON.stringify({ i: res.cur.i, id: res.cur.id, corpus: CORPUS, hang: res.sig === 'SIGKILL', crashed: res.sig !== 'SIGKILL', code: res.code, sig: res.sig }) + '\n');
+      console.log(`${res.cur.id}\t${res.sig === 'SIGKILL' ? 'HANG' : `CRASH code=${res.code} sig=${res.sig}`}`);
+      done.add(res.cur.i); from = res.cur.i + 1;
+    } else if (res.code !== 0) { console.error(`FATAL: child exited ${res.code} ${res.sig} outside a case`); process.exit(1); }
+    else from = res.lastDone + 1;
+    if (total === null) { console.error('FATAL: child gave no total'); process.exit(1); }
+  }
+  console.log(`ALL DONE ${CORPUS} ${total} -> ${JSONL}`);
+  process.exit(0);
+}
+
+// ---- child -----------------------------------------------------------------------------------------------------------------------------------------------
+const C = await imp(path.join(SG, 'sg-core.mjs'));
+const L = await imp(path.join(WT, 'packages/layer/dist/index.js'));
+const H = await imp(path.join(WT, 'packages/solidcraft-host/pane/src/host-entry.mjs'));
+if (H.HOST_EP_JOIN_CHECKS !== 'full') { console.error(`FATAL: host-entry.mjs HOST_EP_JOIN_CHECKS is ${H.HOST_EP_JOIN_CHECKS}, expected 'full'`); process.exit(2); }
+const up = (await imp(path.join(TEST, 'topology-upstream.mjs'))).loadUpstream(process.env.SOLIDCRAFT_TOPOLOGY_PKG);
+const topologyOf = async (cmds) => { const t = await up.topologyOf(cmds); if (!t.ok) return t; const m = await up.runSC(cmds); return m.ok ? { ...t, measure: m.measure } : t; };
+const FROM = Number(arg('from') || 0);
+const CHUNK = Number(arg('chunk') || 100);
+
+// items: { id, script? | features?, patch?, measureId?, ref? (stored, ep), analytic?, curved?, expect? }
+const items = [];
+const seen = new Set();
+const addS = (id, script, extra = {}) => { const key = `${id}\u0000${script}`; if (seen.has(key)) return; seen.add(key); items.push({ id, script, ...extra }); };
+const addF = (id, features, extra = {}) => { const key = `${id}\u0000${JSON.stringify(features)}`; if (seen.has(key)) return; seen.add(key); items.push({ id, features, ...extra }); };
+const num = (v) => (typeof v === 'number' && Number.isFinite(v) ? v : null);
+if (CORPUS === 'ep') {
+  for (const c of JSON.parse(readFileSync(path.join(R, 'step2b/intree/docs/spikes/solidcraft-referee/contract/ep-results.json'), 'utf8'))) {
+    const ref = c.analytic?.volume != null ? { src: 'analytic', ...c.analytic } : c.occt?.volume != null ? { src: 'occt', ...c.occt } : c.brep?.volume != null ? { src: 'brep', ...c.brep } : null;
+    addS(c.id, c.script, { measureId: c.finalId, ref, curved: !!c.curved, expect: c.expect });
+  }
+} else if (CORPUS === 'bool') {
+  const { CASES } = await imp(path.join(CONTRACT, 'boolean-cases.mjs'));
+  for (const f of ['r2', 'r3', 'r4', 'r5', 'r6']) await imp(path.join(CONTRACT, `boolean-cases-${f}.mjs`));
+  for (const c of CASES) { const ex = { measureId: c.measure, analytic: num(c.analytic) }; if (c.script !== undefined) addS(c.id, c.script, ex); else addF(c.id, c.features, ex); }
+} else if (CORPUS === 'holes') {
+  // the holes group's stored kernel-independent references (contract/measured-0.21.0/holes4-results.json): its closed form, and occt2, the corrected OCCT referee
+  // (plain OCCT drops a counterbore or countersink recess); a holes3 / holes case without them gets live OCCT and brep-rs
+  const h4 = new Map(JSON.parse(readFileSync(path.join(CONTRACT, 'measured-0.21.0/holes4-results.json'), 'utf8')).map((r) => [r.id, r]));
+  for (const f of ['holes4-cases.mjs', 'holes3-cases.mjs', 'holes-cases.mjs']) for (const c of (await imp(path.join(CONTRACT, f))).CASES) {
+    const s = h4.get(c.id); addS(c.id, c.script, s ? { analytic: num(s.closed?.volume), occtStored: s.occt2?.volume != null ? { src: 'occt', ...s.occt2 } : null } : {});
+  }
+} else if (CORPUS === 'sd') {
+  const P = await imp(path.join(CONTRACT, 'shell-draft-polytope.mjs'));
+  const env = { P, sigma: -1, rel: (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1) };
+  const { CASES_FN } = await imp(path.join(CONTRACT, 'shell-draft-cases.mjs'));
+  const { STEEP_FN } = await imp(path.join(CONTRACT, 'shell-draft-cases-steep.mjs'));
+  const { R2_FN } = await imp(path.join(CONTRACT, 'shell-draft-cases-r2.mjs'));
+  // references: the group's own, stored by shell-draft-runner.mjs in the 0.30.1 raw run (kernel-independent: closed form > OCCT > brep-rs, an OCCT pick on a tie,
+  // and "should refuse" for a collapse / vanish / shouldRefuse case), because the plain OCCT and brep-rs builders here do not apply a named open face
+  const runs = new Map(JSON.parse(readFileSync(path.join(R, 'step2c/intree030/docs/spikes/solidcraft-referee/contract/shell-draft-runs.json'), 'utf8')).rows.map((r) => [r.id, r]));
+  for (const c of [...CASES_FN(env), ...STEEP_FN(env), ...R2_FN(env)]) {
+    const s = runs.get(c.id); let ref = null; let shouldRefuse = !!c.shouldRefuse;
+    if (s) {
+      if (s.closed?.collapse || s.closed?.vanish) shouldRefuse = true;
+      else if (s.closed?.ambiguous) ref = s.occt?.refused ? null : { src: 'occt', ...s.occt };
+      else if (s.closed?.volume != null) ref = { src: 'closed', ...s.closed };
+      else if (s.occt && !s.occt.refused) ref = { src: 'occt', ...s.occt };
+      else if (s.brep && !s.brep.refused) ref = { src: 'brep', ...s.brep };
+    }
+    addS(c.id, c.script, { patch: c.patch, ref, shouldRefuse, noRef: !ref });
+  }
+} else if (CORPUS === 'pm') {
+  const mods = await Promise.all(['pm-cases.mjs', 'pm-cases-r2.mjs', 'pm-cases-r3.mjs', 'pm-cases-r4.mjs', 'pm-cases-r6.mjs'].map((f) => imp(path.join(CONTRACT, f))));
+  for (const c of mods.flatMap((m) => Object.values(m).filter(Array.isArray).flat()).filter((c) => c && typeof c.src === 'string')) addS(c.id, c.src, { maxCopies: 60 });
+} else if (CORPUS === 'rg') {
+  const rigDir = path.join(CONTRACT, 'revolve-groove-rig');
+  const { allCases } = await imp(path.join(rigDir, 'rg-cases.mjs'));
+  const src = [...allCases('/nonexistent-rg-dir', [])];
+  for (const f of ['cases-r3.mjs', 'cases-r3-chainprobe.mjs', 'cases-r3-fuzz.mjs', 'cases-r3-sliver.mjs', 'cases-r3-spinfuzz.mjs', 'cases-r4-graze.mjs', 'cases-r5-regress.mjs', 'cases-r5-wall.mjs']) src.push(...(await imp(path.join(rigDir, f))).cases);
+  for (const c of src) if (typeof c.src === 'string') addS(c.id, c.src);
+} else if (CORPUS === 'fc') {
+  const FC = path.join(CONTRACT, 'fillet-chamfer-evidence');
+  // the group's closed form (cases.mjs: `closed: () => number | {volume}`; live/fc4-*: `closedForm: {volume, faces}`) is the PRIMARY reference when a case has one,
+  // at the group's bars (fc-eval.mjs: 1e-8 planar, 3e-4 curved); OCCT (named-edge blends resolved its own way) and brep-rs are recorded beside it
+  const closedOf = (c) => { try { const v = typeof c.closed === 'function' ? c.closed() : c.closed ?? c.closedForm; return num(v) ?? num(v?.volume); } catch { return null; } };
+  const addFc = (c) => { const a = closedOf(c); const ex = { analytic: a, primaryAnalytic: a != null, planarTol: 1e-8 }; if (c.doc) addF(c.id, c.doc.features ?? c.doc, ex); else if (typeof c.script === 'string') addS(c.id, c.script, ex); };
+  for (const f of ['cases.mjs', 'cases-r2.mjs', 'cases-r2b.mjs', 'cases-r2c.mjs', 'cases-r3.mjs', 'cases-r3f.mjs', 'cases-seq.mjs', 'cases-fc.mjs', 'live/fc4-cases-a.mjs', 'live/fc4-cases-b.mjs', 'live/fc4-cases-c.mjs', 'live/fc4-cases-regress.mjs']) { try { for (const c of (await imp(path.join(FC, f))).CASES) addFc(c); } catch (e) { console.error(`NOTE: ${f} did not load: ${e.message}`); } }
+  for (const fz of ['single', 'group', 'pocket']) { process.env.FZ = fz; process.env.SEED = '2027'; process.env.N = '100'; for (const c of (await imp(path.join(FC, 'live/fc4-cases-fuzz.mjs'), `?fz=${fz}`)).CASES) addFc(c); }
+  const { fcDoc } = await imp(path.join(TEST, 'fc-docs.mjs'));
+  for (let i = 0; i < 600; i++) addF(`fc seed ${i}`, fcDoc(i).features);
+} else if (CORPUS === 'sg') {
+  for (const f of readdirSync(SG).filter((f) => /^cases-.*\.mjs$/.test(f)).sort()) {
+    let m; try { m = await imp(path.join(SG, f)); } catch (e) { console.error(`NOTE: ${f} did not load: ${e.message}`); continue; }
+    for (const c of m.cases ?? []) if (!c.custom && typeof c.script === 'string') addS(`${f.slice(6, -4)}:${c.id}`, c.script, { measureId: c.measure ?? c.measureId });
+  }
+} else if (CORPUS === 'mt') {
+  const dirs = [path.join(R, 'step2c/intree030/docs/spikes/solidcraft-referee/contract/move-turn-harness'), path.join(CONTRACT, 'move-turn-harness')];
+  const files = new Map();
+  for (const d of dirs) for (const f of readdirSync(d).filter((f) => f.endsWith('-results.json'))) if (!files.has(f)) files.set(f, path.join(d, f));
+  for (const [f, p] of [...files].sort()) {
+    let d; try { d = JSON.parse(readFileSync(p, 'utf8')); } catch { continue; }
+    const rows = Array.isArray(d) ? d : (d.rows ?? d.results ?? []);
+    rows.forEach((r, k) => { if (r && typeof r.script === 'string') addS(`${f.replace(/-results\.json$/, '')}:${r.id ?? r.name ?? r.scenario ?? ''}#${k}`, r.script); });
+  }
+} else if (CORPUS === 'prim') {
+  const d = path.join(R, 'step2c/intree030/docs/spikes/solidcraft-referee/contract/primitives-r4/results');
+  for (const f of readdirSync(d).filter((f) => f.endsWith('.json')).sort()) {
+    let rows; try { rows = JSON.parse(readFileSync(path.join(d, f), 'utf8')); } catch { continue; }
+    if (!Array.isArray(rows)) rows = rows.rows ?? rows.cases ?? [];
+    for (const r of rows) if (r?.doc?.features) addF(r.id, r.doc.features, { analytic: num(r.an) });
+  }
+} else if (CORPUS === 'sc') {
+  // the round-5 case table: a written script, else the stored soup (geoms + rules, the group's soupScript), closed form = area x 10 (the extrude height H)
+  const m = await imp(path.join(CONTRACT, 'sketch-constraints-r5/cases.mjs'));
+  for (const c of m.CASES) {
+    const ex = { analytic: c.expect === 'build' && typeof c.area === 'number' ? c.area * m.H : null, curved: !!c.curved, expect: c.expect };
+    if (typeof c.script === 'string') addS(c.id, c.script, ex); else if (c.geoms && c.rules) addS(c.id, m.soupScript(c.geoms, c.rules), ex);
+  }
+} else if (CORPUS === 'halt') {
+  // HALT-1 (floor-chamfer and its boundary sweep), HALT-2 (the gap sweep and the open pocket), HALT-3 (the eight joins + mp-split-then-join), and step 2b's exit cases
+  for (const c of JSON.parse(readFileSync(path.join(R, 'step2b/exit-cases.json'), 'utf8'))) addS(`exit:${c.id}`, c.script);
+  const gs = JSON.parse(readFileSync(path.join(R, 'step2/gap-sweep.json'), 'utf8'));
+  for (const c of (Array.isArray(gs) ? gs : gs.cases ?? [])) if (typeof c.script === 'string') addS(`gap:${c.id}`, c.script);
+  const gc = JSON.parse(readFileSync(path.join(R, 'step2/gap-cases.json'), 'utf8'));
+  for (const c of (Array.isArray(gc) ? gc : gc.cases ?? [])) if (typeof c.script === 'string') addS(`gapcase:${c.id}`, c.script);
+  for (const d of ['5e-5', '1e-4', '1.2e-4', '1.5e-4', '2e-4', '2.5e-4', '3e-4']) addS(`floor-chamfer-${d}`, `const sk = sketch('top'); sk.rect(40, 30); sk.chamfer(1, ${Number(d)}); extrude(sk, 10)`, { analytic: (1200 - Number(d) ** 2 / 2) * 10 });
+  const ep = JSON.parse(readFileSync(path.join(R, 'step2b/intree/docs/spikes/solidcraft-referee/contract/ep-results.json'), 'utf8'));
+  for (const id of ['mp-join-inside-right', 'mp-join-on-top-right', 'mp-join-overlap-right', 'mp-join-bridge', 'fl-step-0.002', 'fl-step-0.01', 'nf-join-step-0.01', 'fl-step10-0.1', 'mp-split-then-join']) {
+    const c = ep.find((x) => x.id === id); const ref = c.analytic?.volume != null ? { src: 'analytic', ...c.analytic } : c.occt?.volume != null ? { src: 'occt', ...c.occt } : null;
+    addS(`halt3:${id}`, c.script, { measureId: c.finalId, ref, curved: !!c.curved, expect: c.expect });
+  }
+} else if (CORPUS === 'pnp') {
+  // HG: picks-naming-params round 5 G-STALE cases, verbatim from contract/picks-naming-params.evidence/r5a-stale.mjs (that file runs its cases on import)
+  const base = `const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] });\nconst p = extrude(sk1, 10);\nconst sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] });\n`;
+  const cases = {
+    'stale pocket uncaptured + round top|front': base + `pocket(sk2, p, 4);\nround(p.edge('top','front'), 1);`,
+    'captured pocket + round top|front (control)': base + `const q = pocket(sk2, p, 4);\nround(q.edge('top','front'), 1);`,
+    'stale pocket uncaptured + hollow bottom': base + `pocket(sk2, p, 4);\nhollow(p, { wall: 1, open: 'bottom' });`,
+    'captured pocket + hollow bottom (control)': base + `const q = pocket(sk2, p, 4);\nhollow(q, { wall: 1, open: 'bottom' });`,
+    'stale pocket uncaptured + draft right 5': base + `pocket(sk2, p, 4);\ndraft(p.face('right'), 5);`,
+    'captured pocket + draft right 5 (control)': base + `const q = pocket(sk2, p, 4);\ndraft(q.face('right'), 5);`,
+    'stale hole uncaptured + round top|front': base + `hole(p, { across: 6, at: [20, 15], deep: 5 });\nround(p.edge('top','front'), 1);`,
+    'captured hole + round top|front (control)': base + `const q = hole(p, { across: 6, at: [20, 15], deep: 5 });\nround(q.edge('top','front'), 1);`,
+    'stale groove uncaptured + round top|front': `const b = box(40,40,20); const sk = sketch('front'); sk.polygon([[0,15],[8,15],[8,22],[0,22]]);\ngroove(sk, b, 180);\nround(b.edge('top','front'), 1);`,
+    'captured groove + round top|front (control)': `const b = box(40,40,20); const sk = sketch('front'); sk.polygon([[0,15],[8,15],[8,22],[0,22]]);\nconst g = groove(sk, b, 180);\nround(g.edge('top','front'), 1);`,
+    'stale join uncaptured + round (already guarded)': `const a = cuboid(20,20,10); const b = cuboid(10,10,10,{at:[15,0,0]}); join(a,b);\nround(a.edge('top','front'),1);`,
+    // HG: a stale hollow with a feature after it (the dependent sentence), and a round made before the pocket (no stale pick: must build)
+    'stale pocket uncaptured + hollow + move': base + `pocket(sk2, p, 4);\nconst h = hollow(p, { wall: 1, open: 'bottom' });\nmove(h, [0, 0, 5]);`,
+    'round before the pocket (control)': base + `const r = round(p.edge('top','front'), 1);\npocket(sk2, r, 4);`,
+  };
+  for (const [k, v] of Object.entries(cases)) addS(k, v);
+}
+else if (CORPUS === 'combined') { const { combinedDoc } = await imp(path.join(TEST, 'unified-docs.mjs')); for (let i = 0; i < 600; i++) addF(`combined seed ${i}`, combinedDoc(i).features); }
+else if (CORPUS === 'rgcombined') { const { rgCombinedDoc } = await imp(path.join(TEST, 'rg-docs.mjs')); for (let i = 0; i < 400; i++) addF(`rg combined seed ${i}`, rgCombinedDoc(i).features); }
+else if (CORPUS === 'fccombined') { const { fcCombinedDoc } = await imp(path.join(TEST, 'fc-docs.mjs')); for (let i = 0; i < 400; i++) addF(`fc combined seed ${i}`, fcCombinedDoc(i).features); }
+
+const ONLY = arg('only').split(',').filter(Boolean);
+const ready = []; const skipped = [];
+for (const it of items) {
+  if (ONLY.length && !ONLY.includes(it.id)) continue;
+  let raw;
+  if (it.script !== undefined) { const r = C.runScript(it.script); if (r.errors.length) { skipped.push({ id: it.id, why: 'script error' }); continue; } raw = r.doc; if (it.patch) it.patch(raw); }
+  else raw = { version: 1, features: it.features };
+  let doc; try { doc = C.solveDoc(structuredClone(raw)); } catch (e) { skipped.push({ id: it.id, why: 'solve threw' }); continue; }
+  if (it.maxCopies && doc.features.some((f) => f.kind === 'pattern' && f.count > it.maxCopies)) { skipped.push({ id: it.id, why: `pattern over ${it.maxCopies} copies` }); continue; }
+  if (!doc.features.length) { skipped.push({ id: it.id, why: 'no features' }); continue; }
+  ready.push({ ...it, raw: { version: 1, features: raw.features }, doc, measureId: it.measureId ?? raw.features[raw.features.length - 1].id });
+}
+if (FROM === 0) writeFileSync(path.join(OUT, `hr-${CORPUS}.skipped.json`), JSON.stringify({ items: items.length, ready: ready.length, skipped }, null, 1));
+console.log('@@TOTAL@@' + ready.length);
+
+const relV = (a, b) => (typeof a === 'number' && Number.isFinite(a) ? Math.abs(a - b) / (Math.abs(b) > 0 ? Math.abs(b) : 1) : Infinity);
+function score(m, ref, curved) {
+  if (m.apart === false) return { apart: false, ok: false };
+  const t = curved ? C.TOL.curved : C.TOL.planar;
+  const dVol = relV(m.volume, ref.volume);
+  const dBbox = m.bbox && ref.bbox ? C.worstArr(m.bbox, ref.bbox) : null;
+  const diag = ref.bbox ? Math.max(Math.hypot(ref.bbox[3] - ref.bbox[0], ref.bbox[4] - ref.bbox[1], ref.bbox[5] - ref.bbox[2]), 1) : 1;
+  const dCom = m.com && ref.com ? Math.max(...m.com.map((v, i) => Math.abs(v - ref.com[i]))) / diag : null;
+  const comTol = curved ? COMTOL.curved : COMTOL.planar;
+  const tb = ref.src === 'occt' ? Math.max(t, 2e-7) : t;
+  const solidsOk = ref.solids == null || m.nBodies == null || m.nBodies === ref.solids;
+  const vb = dVol <= t && (dBbox === null || dBbox <= tb) && solidsOk;
+  const comOk = dCom === null ? null : dCom <= comTol;
+  return { dVol, dBbox, dCom, comTol, tol: t, vb, comOk, ok: vb && comOk !== false, solidsOk };
+}
+const fm = (f) => (f?.measure ? { volume: f.measure.volume, bbox: f.measure.bbox, com: f.measure.com, faces: f.measure.faces, curved: !!f.measure.curved, nBodies: f.measure.bodies?.length ?? null } : null);
+async function sceneOf(commands) {
+  const all = await C.runSC(commands);
+  if (!all.ok) return { ok: false };
+  const bs = all.measure?.bodies ?? [];
+  if (!bs.length) return { ok: true, volume: 0, nBodies: 0, bbox: null, bodies: [] };
+  const mn = [0, 1, 2].map((k) => Math.min(...bs.map((b) => b.bbox.min[k]))); const mx = [0, 1, 2].map((k) => Math.max(...bs.map((b) => b.bbox.max[k])));
+  const sep = (a, b) => [0, 1, 2].some((k) => a.bbox.max[k] < b.bbox.min[k] - 1e-9 || b.bbox.max[k] < a.bbox.min[k] - 1e-9);
+  let apart = true; for (let x = 0; x < bs.length; x++) for (let y = x + 1; y < bs.length; y++) if (!sep(bs[x], bs[y])) apart = false;
+  const V = bs.reduce((s, b) => s + b.volume_mm3, 0);
+  const com = bs.every((b) => Array.isArray(b.center_of_mass)) && V > 0 ? [0, 1, 2].map((k) => bs.reduce((s, b) => s + b.volume_mm3 * b.center_of_mass[k], 0) / V) : null;
+  return { ok: true, volume: V, com, nBodies: bs.length, bbox: [...mn, ...mx], apart, bodies: bs.map((b) => ({ name: b.name, volume: b.volume_mm3, bbox: [...b.bbox.min, ...b.bbox.max] })) };
+}
+async function runHost(doc, script) {
+  let calls = 0;
+  const pf = typeof script === 'string' && H.preflightScript ? H.preflightScript(script) : null;
+  if (pf) return { ms: 0, calls, pf: pf.why, tr: { commands: [], features: [] }, feats: doc.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: 'refused', guard: 'PM-PREFLIGHT', refusal: pf.sentence, m: null })) };
+  const runSC = async (cmds) => { calls++; return C.runSC(cmds); };
+  // pane.js run() since f0b2cd05: fromUsage: draftFromUsage(srcText) (the script text; a doc-only case has none, as translateRaw)
+  const ctx = { arc: C.arc, mt: C.mt, runSC, soups: {}, followMoves: true, ...(typeof script === 'string' ? { fromUsage: H.draftFromUsage(script) } : {}), topologyOf };
+  const t0 = performance.now(); let tr;
+  try { tr = await H.translateDoc(structuredClone(doc), ctx); } catch (e) { return { threw: String(e?.message ?? e), ms: performance.now() - t0, calls }; }
+  return { ms: performance.now() - t0, calls, tr, feats: tr.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: f.status, guard: f.guard ?? null, refusal: f.refusal ?? null, m: fm(f) })) };
+}
+// Oracles get the SOLVED doc (the same input the kernel got: a kernel check, independent of both kernels). The case's closed form, and, when there
+// is none, OCCT/brep-rs on the RAW (unsolved) doc, check the pipeline (script + our sketch solver) on top: a disagreement there with the kernel
+// check RIGHT is PIPELINE-DIFF (the solid is not the one the script asked for, and the kernel built its input exactly).
+// NOT sg-core's buildOCCT / buildBrep: those return the shape a refused feature leaves ("... is shown without it") as if it were the feature's result.
+// Here a feature in the referee's refusals map is a refusal.
+const { buildDoc } = await imp(path.join(WT, 'packages/brep-adapter/dist/occt-build.js'));
+const refusalOf = (rf, id) => (rf == null ? null : rf instanceof Map ? rf.get(id) ?? null : rf[id] ?? null);
+const occtOf = (doc, id) => {
+  try {
+    const built = buildDoc(C.oc, doc, C.arc); const rf = refusalOf(built.refusals, id);
+    if (rf) return { refused: String(rf).slice(0, 300) };
+    const shape = built.shapes.get(id); if (!shape) return { refused: 'OCCT built nothing' };
+    const m = C.occtMeasure(shape); return { src: 'occt', volume: m.volume, bbox: m.bbox, com: occtSolidsCom(shape) ?? m.com, comWhole: m.com, solids: m.solids, faces: m.faces };
+  } catch (e) { return { refused: `OCCT threw: ${String(e.message).slice(0, 250)}` }; }
+};
+// OCCT's COM of a compound (GProp over the whole shape) is wrong on a linear pattern of separate solids (pm rl-z: 22.5 for three cubes at z 0, 25, 50,
+// each solid's own COM right): the COM is taken per solid and volume-weighted
+function occtSolidsCom(shape) {
+  try {
+    const ex = new C.oc.TopExp_Explorer(shape, C.oc.TopAbs_ShapeEnum.TopAbs_SOLID, C.oc.TopAbs_ShapeEnum.TopAbs_SHAPE); let V = 0; const c = [0, 0, 0]; let n = 0;
+    for (; ex.More(); ex.Next()) { const g = new C.oc.GProp_GProps(); C.oc.BRepGProp.VolumeProperties(ex.Current(), g, 1e-7, false, false); const m = g.Mass(); const p = g.CentreOfMass(); V += m; c[0] += m * p.X(); c[1] += m * p.Y(); c[2] += m * p.Z(); n++; }
+    return n && V > 0 ? c.map((x) => x / V) : null;
+  } catch { return null; }
+}
+const brepOf = (doc, id) => {
+  try {
+    const got = JSON.parse(C.brep.measure_doc(JSON.stringify(doc))); const rf = got.refusals?.[id];
+    if (rf) return { refused: String(rf).slice(0, 300) };
+    const s = got.shapes?.[id]; if (!s) return { refused: 'no shape' };
+    const bbox = [...s.bbox[0], ...s.bbox[1]];
+    return { src: 'brep', volume: s.volume, bbox, faces: s.faces, ...brepCom(doc, id, bbox) };
+  } catch (e) { return { refused: `brep-rs threw: ${String(e.message).slice(0, 250)}` }; }
+};
+
+// brep-rs's COM: its own tessellation of the feature (mesh_feature), divergence theorem; meshVolume is recorded so a coarse mesh shows
+function brepCom(doc, id, bbox) {
+  try {
+    const diag = Math.hypot(bbox[3] - bbox[0], bbox[4] - bbox[1], bbox[5] - bbox[2]);
+    const g = JSON.parse(C.brep.mesh_feature(JSON.stringify(doc), id, Math.max(diag, 1) * Number(arg('brep-deflection') || 2e-5)));
+    if (g.error || !g.positions) return { comWhy: g.error ?? 'no mesh' };
+    // about the box centre: a part far from the origin (sg far:/fartilt:, mt p-magnitude) loses every digit in absolute coordinates
+    const o = [0, 1, 2].map((k) => (bbox[k] + bbox[k + 3]) / 2);
+    const P = g.positions.map((v, i) => v - o[i % 3]); const I = g.indices; let V = 0; const c = [0, 0, 0];
+    for (let t = 0; t < I.length; t += 3) {
+      const a = I[t] * 3, b = I[t + 1] * 3, d = I[t + 2] * 3;
+      const ax = P[a], ay = P[a + 1], az = P[a + 2], bx = P[b], by = P[b + 1], bz = P[b + 2], dx = P[d], dy = P[d + 1], dz = P[d + 2];
+      const v = (ax * (by * dz - bz * dy) - ay * (bx * dz - bz * dx) + az * (bx * dy - by * dx)) / 6;
+      V += v; c[0] += v * (ax + bx + dx) / 4; c[1] += v * (ay + by + dy) / 4; c[2] += v * (az + bz + dz) / 4;
+    }
+    if (!(Math.abs(V) > 0)) return { comWhy: 'zero mesh volume' };
+    return { com: c.map((x, k) => x / V + o[k]), meshVolume: Math.abs(V) };
+  } catch (e) { return { comWhy: `mesh threw: ${String(e.message).slice(0, 120)}` }; }
+}
+
+function verdictOf(it, lv, id, scene) {
+  const f = lv.feats?.find((x) => x.id === id);
+  if (!f) return { verdict: lv.threw ? 'THREW' : 'MISSING', threw: lv.threw ?? null };
+  if (f.status !== 'built') return { verdict: 'REFUSED', guard: f.guard, refusal: f.refusal };
+  if (NO_ORACLE) return { verdict: 'BUILT', m: f.m };
+  if (it.shouldRefuse) return { verdict: 'BUILT-SHOULD-REFUSE', m: f.m };
+  if (it.noRef) return { verdict: 'BUILT-NO-REF', m: f.m };
+  const curved = (it.curved || f.m?.curved) ?? false;
+  const sc = (ref) => ({ f: score(f.m, ref, curved), s: scene?.ok ? score({ volume: scene.volume, bbox: scene.bbox, com: scene.com, nBodies: scene.nBodies, apart: scene.apart }, ref, curved) : null });
+  // per oracle: vb (volume+box, feature or scene: the old rule) and com (at the level whose volume+box agreed: feature first)
+  const vbc = (s) => { if (!s) return { vb: null, com: null, dCom: null }; const lvl = s.f.vb ? s.f : s.s?.vb ? s.s : null; return { vb: !!lvl, com: lvl ? lvl.comOk : null, dCom: lvl ? lvl.dCom : null, at: lvl === s.f ? 'feature' : lvl ? 'scene' : null }; };
+  const faces = { host: f.m?.faces ?? null };
+  if (it.ref) {
+    const s = sc(it.ref); const R = vbc(s); let verdictVB = R.vb ? (it.expect === 'refuse' ? 'RIGHT(expect refuse)' : 'RIGHT') : 'WRONG'; let verdict = verdictVB;
+    if (R.vb && R.com === false) verdict = 'COM-OFF';
+    return { verdict, verdictVB, comChecked: R.com !== null, comR: R, s, ref: 'stored ' + it.ref.src, m: f.m, faces };
+  }
+  const okOf = (ref) => { if (ref.volume == null) return { v: null, s: null, c: { vb: null, com: null, dCom: null } }; const s = sc(ref.src === 'brep' ? { ...ref, solids: undefined } : ref); const c = vbc(s); return { v: c.vb, s, c }; };
+  const o = it.occtStored && id === it.measureId ? it.occtStored : occtOf(it.doc, id); const b = brepOf(it.doc, id);
+  const O = okOf(o); const B = okOf(b);
+  const tol = curved ? C.TOL.curved : (it.planarTol ?? C.TOL.planar);
+  const an = it.analytic != null ? relV(f.m.volume, it.analytic) <= tol || (!!scene?.ok && scene.apart && relV(scene.volume, it.analytic) <= tol) : null;
+  const xs = [O.v, B.v];
+  let verdict;
+  if (it.primaryAnalytic) verdict = an ? 'RIGHT' : 'WRONG';
+  else if (xs.every((x) => x === null)) verdict = an === null ? (o.refused && b.refused ? 'BUILT-ORACLES-REFUSE' : 'BUILT-NO-REF') : (an ? 'RIGHT' : 'WRONG');
+  else if (xs.some((x) => x === true) && !xs.some((x) => x === false)) verdict = 'RIGHT';
+  else if (xs.some((x) => x === false) && !xs.some((x) => x === true)) verdict = 'WRONG';
+  else verdict = 'ORACLES-SPLIT';
+  // pipeline check, only when the kernel check is RIGHT
+  let raw = null;
+  const vbOnly = verdict;
+  if (verdict === 'RIGHT') {
+    if (an === false) verdict = 'PIPELINE-DIFF';
+    else if (an === null && JSON.stringify(it.raw.features) !== JSON.stringify(it.doc.features.map(({ solved, ...x }) => x)) && it.raw.features.some((x) => x.kind === 'sketch')) {
+      const ro = occtOf(it.raw, id); const rb = brepOf(it.raw, id); const RO = okOf(ro); const RB = okOf(rb);
+      raw = { occt: ro, brep: rb, okO: RO.v, okB: RB.v };
+      if ((RO.v === false || RB.v === false) && RO.v !== true && RB.v !== true) verdict = 'PIPELINE-DIFF';
+    }
+  }
+  // the centre of mass: every oracle that agrees on volume+box must agree on the COM
+  const verdictVB = verdict;
+  const comX = [O.c, B.c].filter((c) => c.vb === true);
+  const comChecked = comX.some((c) => c.com !== null);
+  const comOff = comX.some((c) => c.com === false);
+  if (comOff && (verdict === 'RIGHT' || verdict === 'PIPELINE-DIFF')) verdict = 'COM-OFF';
+  // a closed-form RIGHT that OCCT or brep-rs built and disagree with on volume+box: the closed form is the only oracle (FM-1: the m-turn-* closed forms
+  // were written for the edge the host picks), so no second oracle on volume or COM
+  let splitKind = null;
+  if (verdict === 'RIGHT' && it.primaryAnalytic && (O.v === false || B.v === false)) { verdict = 'ORACLES-SPLIT'; splitKind = 'closed-vs-kernel-oracle'; }
+  // the two oracles' own COMs, where both agree with the host on volume+box (a split here means no second oracle on the COM)
+  let oracleComSplit = null;
+  if (O.c.vb && B.c.vb && o.com && b.com) { const dg = Math.max(Math.hypot(o.bbox[3] - o.bbox[0], o.bbox[4] - o.bbox[1], o.bbox[5] - o.bbox[2]), 1); const d = Math.max(...o.com.map((v, i) => Math.abs(v - b.com[i]))) / dg; oracleComSplit = { d, split: d > (curved ? COMTOL.curved : COMTOL.planar) }; }
+  faces.occt = o.faces ?? null; faces.brep = b.faces ?? null;
+  return { verdict, verdictVB, vbOnly, splitKind, comChecked, comOff, comO: O.c, comB: B.c, oracleComSplit, faces, okO: O.v, okB: B.v, an, analytic: it.analytic ?? null, occt: o, brep: b, sO: O.s, sB: B.s, raw, m: f.m };
+}
+
+// --detail (with --only): per item, the host route and every planner set with the host's ctx, then the host's own set (unified at 'full') without followMoves and
+// without topologyOf, printed with the live oracles; no rows written. For the halt report: which sets build a flagged doc, and which ctx input makes the difference.
+if (process.argv.includes('--detail')) {
+  const NINE = ['unified', 'base', 'extrude-pocket', 'holes', 'shell-draft', 'patterns-mirror', 'booleans', 'revolve-groove', 'fillet-chamfer'];
+  const TRS = Object.fromEntries(NINE.map((p) => [p, L.createTranslator({ planners: p })]));
+  const one = async (fn, id) => { try { const tr = await fn(); const f = tr.features.find((x) => x.id === id); const bad = tr.features.filter((x) => x.status !== 'built' && x.status !== 'noop').map((x) => x.id); return `${f?.status} ${f?.measure?.volume ?? ''} ${f?.guard ?? ''}${f?.refusal ? ' "' + f.refusal.slice(0, 160) + '"' : ''}${f?.status === 'built' && bad.length ? ` (refused elsewhere: ${bad.join(',')})` : ''}`; } catch (e) { return `threw ${e.message}`; } };
+  for (const it of ready) {
+    const id = it.measureId; const base = { arc: C.arc, mt: C.mt, runSC: C.runSC, soups: {} };
+    const o = occtOf(it.doc, id); const b = brepOf(it.doc, id);
+    console.log(`\n## ${it.id}  measure=${id}\n   script: ${(it.script ?? JSON.stringify(it.features)).replace(/\n/g, ' ').slice(0, 600)}`);
+    console.log(`   OCCT (solved doc) ${o.volume ?? 'refused: ' + o.refused} ${JSON.stringify(o.bbox ?? '')} | brep-rs ${b.volume ?? 'refused: ' + b.refused} ${JSON.stringify(b.bbox ?? '')} | closed ${it.analytic ?? it.ref?.volume ?? '-'}`);
+    console.log(`   HOST ROUTE               ${await one(() => H.translateDoc(structuredClone(it.doc), { ...base, followMoves: true, topologyOf }), id)}`);
+    for (const s of NINE) console.log(`   ${s.padEnd(24)} ${await one(() => TRS[s].translateDoc(structuredClone(it.doc), { ...base, followMoves: true, topologyOf, ...(s === 'unified' ? { unifiedEpJoinChecks: 'full' } : {}) }), id)}`);
+    console.log(`   unified:full -followMoves ${await one(() => TRS.unified.translateDoc(structuredClone(it.doc), { ...base, topologyOf, unifiedEpJoinChecks: 'full' }), id)}`);
+    console.log(`   unified:full -topologyOf  ${await one(() => TRS.unified.translateDoc(structuredClone(it.doc), { ...base, followMoves: true, unifiedEpJoinChecks: 'full' }), id)}`);
+  }
+  process.exit(0);
+}
+let n = 0;
+for (let i = FROM; i < ready.length && n < CHUNK; i++, n++) {
+  const it = ready[i];
+  console.log('@@START@@' + JSON.stringify({ i, id: it.id }));
+  const lv = await runHost(it.doc, it.script);
+  const fin = lv.feats?.find((x) => x.id === it.measureId);
+  const scene = fin?.status === 'built' ? await sceneOf(lv.tr.commands) : null;
+  const final = verdictOf(it, lv, it.measureId, scene);
+  const row = { i, id: it.id, corpus: CORPUS, measureId: it.measureId, ms: lv.ms, calls: lv.calls, threw: lv.threw ?? null, feats: lv.feats?.map(({ m, ...r }) => ({ ...r, volume: m?.volume ?? null, bbox: m?.bbox ?? null, faces: m?.faces ?? null })) ?? null, scene: scene && { ok: scene.ok, volume: scene.volume, com: scene.com, nBodies: scene.nBodies, bbox: scene.bbox, apart: scene.apart }, final };
+  appendFileSync(JSONL, JSON.stringify(row) + '\n');
+  console.log(`${it.id}\t${final.verdict}\t${fin?.guard ?? ''}\t${lv.calls}r ${lv.ms?.toFixed(0)}ms`);
+  console.log('@@DONE@@' + i);
+}
+process.exit(0);
