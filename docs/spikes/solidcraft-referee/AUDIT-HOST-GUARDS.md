@@ -206,7 +206,7 @@ has landed yet.
 | PNP-12 | every pnp refusal | `plainFor` one-sentence rewrite | none | NOT-PORTED (wording only) | |
 | PNP-13 | picks-naming-params#49 | whole-body draft refused | shell-draft supports it | N/A (the row is stale; owner re-status) | |
 | PNP-14 | picks-naming-params#48 (sliders),56-65,67,72-76 | page sliders / generatedParams | — | N/A | no sliders on the pane |
-| FM-1 | move-turn#1-5; picks-naming-params#20; fillet-chamfer#18,51 | refuse a named pick after a move or turn | follow-moves.ts:59; translate.ts:750; fc-sentences.ts:96 | **PORTED-BUT-UNREACHABLE by `followMoves:true`** (pane.js:562) | HALT-4: 22 fc docs build, right by the group's closed form; OCCT and brep-rs name the edge in the primitive's frame. Not a wrong solid under that convention, but the rows still say refused. Owner decision |
+| FM-1 | move-turn#1-5; picks-naming-params#20; fillet-chamfer#18,51 | refuse a named pick after a move or turn | follow-moves.ts:59; translate.ts:750; fc-sentences.ts:96; **resolve-names.ts turnedFrameClash, translate.ts confirmOnTarget label check** | **RESOLVED** (95130e4e, beb87953; rows in contract-overrides.json `ownerDecisions`) | Owner: keep `followMoves`, update the contract. Re-measured on 1ced28e3 (contract/fm1-evidence): the HALT-4 "22 right by closed form" did not hold. The host names a turned primitive's edge in the PRIMITIVE frame and OCCT / brep-rs in the WORLD frame (the reverse of what this row said), and the probe's RIGHT dropped the centre of mass (scene score). With it: 21 fc and 3 mt quarter-turn builds and 7 mt move/turn builds were the wrong edge. 95130e4e refuses an edge whose two frames disagree; beb87953 refuses an edge another edge replaced after a move or turn. Both rigs, full 15-corpus sweep: those 31 now refused, 3 fccombined docs refused earlier (an intermediate round on a turned primitive), 0 new wrong, 0 right measured build lost. Rows re-statused in contract-overrides.json `ownerDecisions` |
 | MT-2 | move-turn#6,7,9,12; HALT-4 class B | rigid-motion invariant + chain repair | none | BEING-PORTED | |
 | MT-3 | move-turn#13 | cone chain limit (3) | none | BEING-PORTED | |
 | MT-4 | move-turn#21 | move/turn of a part that pocket/groove cut | none | BEING-PORTED | same root as PNP-7 |
@@ -301,9 +301,19 @@ Sentences are quoted verbatim from the source named; `${...}` is the source's ow
     - "Sketch sk1 sits on the front plane with an offset of 5, and on that plane the offset and the pull run in opposite directions, so the part would land 10 mm away from where other CAD programs put it; sketch on the top or side plane, or give the sketch an explicit frame { origin, u, v } to place it exactly."
     - "Arc 1 is set to radius 7 but its ends are 10 from its centre, and no rule pins the radius, so the arc would not be the one you set; add a radius rule, or make the radius and the ends agree."
     - "This curved shape sits up to 10000 mm from the origin but the part is only about 38 mm across, and more than 150 times its own size away from the origin the 3D build puts its centre of mass out of place; draw it nearer the origin (or move the finished part afterwards)."
-13. **FM-1: `followMoves:true` versus the "refused" rows** (move-turn#1-5, picks-naming-params#20, fillet-chamfer#18, #51). An owner decision: either re-status
-    these rows (the oracle being the group's closed form), or exclude fillet targets from followMoves. The sentence with the flag off (fc-sentences.ts:96):
+13. **FM-1: `followMoves:true` versus the "refused" rows. RESOLVED** (95130e4e, beb87953, and the contract rows). The owner kept `followMoves` and had the contract follow the host.
+    Re-measured on 1ced28e3 (fc, mt and sd pick-after-move/turn docs, both rigs, `contract/fm1-evidence/`). Three findings changed the picture:
+    - the host reads a turned primitive's edge in the primitive's own frame (solidcraft's labels turn with the body), OCCT and brep-rs in the world frame;
+    - the host-route probe passes a build on the scene score, which has no centre of mass, so a build of the wrong edge with the right volume scored RIGHT
+      (`fm1-evidence/rescore.py` adds the feature-level centre of mass against OCCT);
+    - a pick after a move or a turn of a derived shape is looked for where the edge was, and another edge of the part can sit there (a box moved by its own depth).
+    Fixes, no new wording: 95130e4e (`resolve-names.ts`) refuses a quarter-turned primitive's edge when its two frames name different edges, with the existing sentence (fc-sentences.ts:96):
     `` `The part for ${id} was turned, so its edge cannot be found reliably and ${id} is shown without it -- round or bevel the edge before you turn the part.` ``
+    beb87953 (`translate.ts` confirmOnTarget) requires the edge found at the old place after a move or turn to carry the named edge's label; the student sees the existing
+    "The edge for round1 was already changed by an earlier move (step / hole or turn), ..." sentence. 9 WRONG + 12 COM-OFF fc docs and 10 COM-OFF mt docs are now refused (full sweep, both rigs: 0 new wrong).
+    Open, owner review: the 4 turned-cylinder bottom-rim bevels build (no world bottom face, so the cylinder's own frame is the only reading); OCCT's tie-break bevels the
+    other rim, so they have no second oracle on the centre of mass. Also open: the probe's scene-score pass hides other COM-OFF builds (fc 38 including those 4, pm 2, rg 1 on both rigs, untouched here). Rows: move-turn#2 supported, #1 #3 #4 refused, #5 superseded on the host;
+    picks-naming-params#20 and fillet-chamfer#18, #51 split into a and b.
 14. **Wording only (still refused): BOOL-7, BOOL-8, RG-4, PNP-12, SG-16, SC-1.** Map the interpreter's `e0.message` (pane.js:524) through `explainCombineArgs`,
     `explainFront` and the revolve-groove `scriptSentence`. The regexes have not been checked against the current interpreter text. Examples:
     - booleans#85: "cut() takes the shapes one after another, not in a list; write cut(a, b) instead of cut([a, b])."

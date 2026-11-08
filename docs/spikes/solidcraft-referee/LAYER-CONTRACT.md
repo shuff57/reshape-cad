@@ -19,18 +19,18 @@ Measured on SolidCraft `fe3717f2e400010a4cd0e7dd4f294e7091c25625` (engine 0.9.0,
 | blend-loft | 45 | 12 | 27 | 4 | 2 | accepted |
 | booleans | 126 | 57 | 62 | 7 | 0 | unresolved after 3 critic reviews |
 | extrude-pocket | 104 | 34 | 53 | 14 | 3 | accepted |
-| fillet-chamfer | 80 | 28 | 39 | 12 | 1 | accepted |
+| fillet-chamfer | 82 | 30 | 39 | 12 | 1 | accepted |
 | holes | 91 | 39 | 47 | 0 | 5 | accepted |
-| move-turn | 29 | 13 | 11 | 4 | 1 | accepted after 2 critic reviews |
+| move-turn | 29 | 14 | 14 | 0 | 1 | accepted after 2 critic reviews |
 | patterns-mirror | 90 | 40 | 40 | 10 | 0 | unresolved after 3 critic reviews |
-| picks-naming-params | 76 | 16 | 29 | 12 | 19 | accepted after 2 critic reviews |
+| picks-naming-params | 77 | 17 | 29 | 12 | 19 | accepted after 2 critic reviews |
 | primitives | 62 | 26 | 5 | 23 | 8 | accepted after 2 critic reviews |
 | revolve-groove | 45 | 15 | 28 | 2 | 0 | unresolved after 3 critic reviews |
 | shell-draft | 100 | 46 | 54 | 0 | 0 | accepted |
 | sketch-constraints | 139 | 92 | 31 | 14 | 2 | accepted after 3 critic reviews |
 | sketch-dof-diagnosis | 45 | 19 | 5 | 12 | 9 | accepted |
 | sketch-geometry | 87 | 29 | 44 | 11 | 3 | unresolved after 3 critic reviews |
-| **total** | 1119 | 466 | 475 | 125 | 53 | |
+| **total** | 1122 | 470 | 478 | 121 | 53 | |
 
 Accepted: blend-loft, extrude-pocket, fillet-chamfer, holes, move-turn, picks-naming-params, primitives, shell-draft, sketch-constraints, sketch-dof-diagnosis.
 Unresolved (still rejected after the two allowed fix rounds): booleans, patterns-mirror, revolve-groove, sketch-geometry. The critics' live replays of sampled rows in these groups matched, but a critic found a silent wrong solid the guards do not cover, so the group as a whole is not accepted and the defects below are open.
@@ -99,12 +99,6 @@ The plan (Phase 1) lists these as what brep-rs supported: chamfer on convex edge
 - row 60: TODAY: bevel(part.edge(part.wall(sk,1), part.wall(sk,2)), d) on a CONCAVE pocket corner with d >= the width of the wall (10x6x4 pocket, 6 wide wall, plate 12000 - 240 = 11760): a silent GARBAGE solid for d > 6
 - row 65: TODAY: round then hollow(open face) with the fillet radius equal to or larger than the wall (2 and 2, 3 and 2) on an edge of the open face: a zero-thickness knife-edge rim built silently
 - row 73: toScript() round trip of blend features (doc -> script text -> doc)
-
-### move-turn (4)
-- row 1: move(shape,[x,y,z]) then round/bevel of an edge named on that shape (name written before the move)
-- row 2: move(shape,[x,y,z]) then hollow(shape,{open:face}) or draft(shape.face(..)) on that shape
-- row 3: turn(derived shape) then round/bevel of an edge named on that shape
-- row 4: turn(derived shape) then hollow(shape,{open:face}) or draft(shape.face(..)) on that shape
 
 ### patterns-mirror (10)
 - row 32: WRONG (AS-IS translator): mirror(curved part symmetric about the mirror plane) -- cylinder(10,10) / cylinder(100,20) / a disc extrusion / a drilled cylinder centred on the origin, mirror(c,'top-bottom') or 'left-right'. The reflection face is chosen from truc…

@@ -38,5 +38,108 @@
       "evidence": "The guard judges only sketch ids the script returned from sketch(), so copy sketches are skipped; setting the offset to -12 or 6 builds with no sentence while the same offset on sk1 is refused. Contradicts the claim in row 3.",
       "source": "critic-verdicts/sketch-geometry.round3.json"
     }
-  ]
+  ],
+  "ownerDecisions": [
+    {
+      "group": "move-turn",
+      "row": 1,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "status": "refused",
+      "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+      "evidence": "Host route, mt corpus, both rigs: 22 move-then-round/bevel docs. Before the moved-edge label check, 4 built a WRONG solid (k-pickguard round1#0, #3, bevel1#10, #13: the pre-move pick point lands on another edge of the moved part, e.g. box(30,30,10) moved [0,-30,0] rounds top-back; volume and box match OCCT, centre of mass 6e-4 to 4.4e-3 of the diagonal off) and the probe scored them RIGHT on the scene. Now every one is refused (translate.ts confirmOnTarget: the edge at the old place must carry the named label). The 3 that build are no move of the named part: round1#9 moves by [0,0,0], round1#128 and k2-guard-scope#2 round the original of a copying move. Sentences: the one below, its \"earlier step\" / \"earlier move or hole\" / \"earlier move or mirror\" forms, and \"round1 builds on move1 ...\" for a dependent."
+    },
+    {
+      "group": "move-turn",
+      "row": 2,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "status": "supported",
+      "sentence": null,
+      "evidence": "Host route, mt + sd corpora, both rigs, face names followed through a non-copy move (follow-moves.ts): hollow 97 built RIGHT (centre of mass included) / 10 refused, draft 15 RIGHT / 11 refused, 0 wrong. The refusals are honest sentences (a face not found after the move, from: that the move invalidates, a pattern's inside corners). Also the real-kernel proof packages/layer/test/evidence/live-moved-picks-0.21.0.json: 254 cases, 221 built right, 0 built wrong."
+    },
+    {
+      "group": "move-turn",
+      "row": 3,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "status": "refused",
+      "sentence": "The edge for round1 was already changed by an earlier hole or turn, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+      "evidence": "Host route, mt corpus, both rigs: 16 docs turn a derived shape, then round a named edge. Before the label check, 3 built a WRONG solid (k-pickguard round1#86, #89, #90: a holed box turned 180 degrees puts another edge where top-front was; centre of mass up to 2.2e-3 of the diagonal off OCCT, which follows the edge through the turn). Now all 16 are refused. Sentences: the one below, its \"earlier step\" form, and \"Those two faces do not meet in an edge on the part as it is now, so round1 is shown without it -- name two neighbouring faces, such as top and front.\" (8, after a join)."
+    },
+    {
+      "group": "move-turn",
+      "row": 4,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "status": "refused",
+      "sentence": "shell1: the top face cannot be found reliably after the part was turned or copied, so shell1 is shown without it -- apply it before turning the part.",
+      "evidence": "Host route, mt + sd corpora, both rigs: every hollow (open face) or draft (named face) after a turn() step is refused, 26 of 26 (follow-moves.ts follows a quarter-turn rotate on the plane, but the planners refuse first). Sentences: the one below with each face name; \"draft1: the right face cannot be found reliably after the part was turned or copied, so draft1 is shown without it -- apply it before turning the part.\"; \"shell1 (hollow): the top face of turn1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.\"; \"draft1 (draft): the right face of turn1 could not be found on the part as it is now, so draft1 is shown without it.\"; for no open side, \"shell1 (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and turn1 has been changed by a turn, so shell1 is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.\""
+    },
+    {
+      "group": "move-turn",
+      "row": 5,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "status": "refused",
+      "superseded": true,
+      "evidence": "The translator guard that refuses every pick after a move or a turn is not what the host runs: the host passes followMoves:true (pane.js), which follows a face through a non-copy move or a quarter turn, refuses an edge whose two frames disagree, and refuses an edge another edge replaced after a move or turn (rows 1 to 4, picks-naming-params 20a/20b, fillet-chamfer 18a/18b, 51a/51b). The guard and its sentence still apply with the flag off."
+    },
+    {
+      "group": "picks-naming-params",
+      "row": 20,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "split": [
+        {
+          "label": "20a",
+          "status": "supported",
+          "sentence": null,
+          "feature": "pick after move() or a quarter turn of a primitive: hollow(open) after a non-copy move or a quarter turn of the primitive (the face is followed), and round/bevel(edge) on a primitive turned by whole quarter turns where its own frame and the world frame name the same edge",
+          "evidence": "On the host (followMoves on) a named edge of a primitive turned by whole quarter turns is read two ways: in the primitive's own frame (the face parts turn with the body; solidcraft's labels do) and in the world frame (the face parts are world directions after the turn; what the OCCT and brep-rs referees read, brep-adapter topo-resolve.ts). It is built only where both name the same edge, or where the world frame names no face (a cylinder lying on its side has no world top or bottom face, so its own frame is the only reading); otherwise it is refused (resolve-names.ts turnedFrameClash). Hollow after a move: see move-turn row 2 (97 RIGHT, 0 wrong; real-kernel proof 221 right, 0 wrong). Edge after a quarter turn: fc corpus, every box case names two different edges, so all 21 are refused (20b), and the 3 in the move-turn corpus; the 8 turned-cylinder rim cases build (fillet-chamfer 18a)."
+        },
+        {
+          "label": "20b",
+          "status": "refused",
+          "feature": "pick after move() or turn() otherwise: round/bevel(edge) after a move, after a turn by any other angle, after a quarter turn where the two frames name different edges, after a copying move or a mirror; hollow(open) after a turn() step, a copying move or a mirror",
+          "evidence": "Host route, fc + mt + sd corpora, both rigs: refused, 0 built. The current row sentence is the contract guard's; the host shows the fillet-chamfer sentences (\"The part for round1 was turned ...\", \"The edge for round1 was already changed by an earlier move ...\") and the shell-draft ones (move-turn row 4)."
+        }
+      ]
+    },
+    {
+      "group": "fillet-chamfer",
+      "row": 18,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "split": [
+        {
+          "label": "18a",
+          "status": "supported",
+          "sentence": null,
+          "feature": "round/bevel(cylinder.edge(top|bottom, side),size) on a cylinder turned by whole quarter turns: supported where the primitive frame and the world frame name the same edge (a cylinder lying on its side has no world top or bottom face, so its own frame is the only reading)",
+          "evidence": "On the host (followMoves on) a named edge of a primitive turned by whole quarter turns is read two ways: in the primitive's own frame (the face parts turn with the body; solidcraft's labels do) and in the world frame (the face parts are world directions after the turn; what the OCCT and brep-rs referees read, brep-adapter topo-resolve.ts). It is built only where both name the same edge, or where the world frame names no face (a cylinder lying on its side has no world top or bottom face, so its own frame is the only reading); otherwise it is refused (resolve-names.ts turnedFrameClash). fc corpus, both rigs: 8 of 8 built (r-cyl-turn-x90/y90 top-rim and bottom-rim-bevel, b-cyl-turn the same). Volume matches the group closed form and OCCT (4e-5, 1.1e-4) on all 8; the 4 top rims match OCCT's centre of mass to 2.4e-7. The 4 bottom-rim bevels are 1.45e-2 of the diagonal off OCCT's centre of mass, and that is an OCCT artefact: OCCT finds no cap facing world -z, its tie-break takes the local top cap for bottom as it does for top (its centre-of-mass shift is the same for both names), so it bevels the top rim; the build bevels the named bottom rim. Not a second-oracle confirmation of those 4: an owner review item."
+        },
+        {
+          "label": "18b",
+          "status": "refused",
+          "feature": "round/bevel(cylinder.edge(top|bottom, side),size) on a cylinder turned by any other angle (one or two axes), or move()d",
+          "evidence": "Host route, fc corpus, both rigs: r-cyl-turn-z30 top-rim and bottom-rim-bevel refused with the sentence below; mv-cyl-333-round refused with \"The edge for round1 was already changed by an earlier move ...\"."
+        }
+      ]
+    },
+    {
+      "group": "fillet-chamfer",
+      "row": 51,
+      "source": "owner decision 2026-11-07 (audit FM-1, item 13); evidence contract/fm1-evidence/fm1-host-route.json (host route, both rigs, rescored with the centre of mass by fm1-evidence/rescore.py)",
+      "split": [
+        {
+          "label": "51a",
+          "status": "supported",
+          "sentence": null,
+          "feature": "round/bevel a named edge AFTER a quarter turn of a primitive (whole multiples of 90 degrees): supported where the primitive frame and the world frame name the same edge, refused otherwise",
+          "evidence": "On the host (followMoves on) a named edge of a primitive turned by whole quarter turns is read two ways: in the primitive's own frame (the face parts turn with the body; solidcraft's labels do) and in the world frame (the face parts are world directions after the turn; what the OCCT and brep-rs referees read, brep-adapter topo-resolve.ts). It is built only where both name the same edge, or where the world frame names no face (a cylinder lying on its side has no world top or bottom face, so its own frame is the only reading); otherwise it is refused (resolve-names.ts turnedFrameClash). fc corpus, both rigs: no box case names the same edge both ways (a single quarter turn about one axis changes the face pair of every box edge), so all 21 are refused with the sentence of 51b; so are the 3 move-turn corpus cases (k-pickguard round1#119, #121, #122: box(30,20,10) turned [0,0,180], [180,0,0], [90,0,0], then round(top, front)), which built the other edge before (centre of mass off OCCT). Before this check 9 of them built a WRONG solid against OCCT and brep-rs and 12 built the other edge with the same volume (centre of mass 5e-4 to 1.5e-2 of the diagonal off OCCT); the 6 m-turn cases matched only the group closed form, which is written in the primitive frame. The supported branch is pinned by packages/layer/test/turned-edge-frame.test.mjs (a whole turn); no corpus case reaches it."
+        },
+        {
+          "label": "51b",
+          "status": "refused",
+          "feature": "round/bevel a named edge AFTER move() of the shape, AFTER turn() of the shape by any other angle, after a quarter turn where the two frames name different edges, or after mirror()",
+          "evidence": "Host route, fc corpus, both rigs: 28 after a move refused (\"The edge for round1 was already changed by an earlier move ...\"), 43 after another angle refused (the sentence below, or the move sentence for a move-and-turn), 21 quarter-turn box cases refused (the sentence below); mirror: move-turn corpus k2-guard-scope#5 refused (\"... an earlier move or mirror ...\"). 0 built."
+        }
+      ]
+    }
+  ],
+  "_ownerDecisionsNote": "Owner decisions on rows the group files carry: a re-status, or a split into an \"a\" and a \"b\" row (the \"a\" row takes the original number's place, the \"b\" row follows it; every other row keeps its number). build-contract.mjs applies them after the critic overrides. Each entry cites its evidence."
 }

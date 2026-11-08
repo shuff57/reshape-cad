@@ -52,6 +52,26 @@ for (const g of GROUPS) {
     r.note = `OVERRIDDEN ${r.status} -> ${o.status}: ${o.reason} (${o.source})`; r.status = o.status;
   }
   for (const a of overrides.addedRows.filter((x) => x.group === g)) rows.push({ n: rows.length + 1, feature: a.feature, status: a.status, sentence: null, note: `ADDED by the final critic, not in ${g}.json: ${a.evidence} (${a.source})` });
+  // owner decisions (contract-overrides.json `ownerDecisions`): a row re-statused, or split in two ("18a" in its place, "18b" right after it).
+  // Every other row keeps its number; the group file is not edited.
+  for (const d of (overrides.ownerDecisions ?? []).filter((x) => x.group === g)) {
+    const i = rows.findIndex((r) => r.n === d.row);
+    if (i < 0) throw new Error(`ownerDecisions: ${g} has no row ${d.row}`);
+    const apply = (t, p) => {
+      const was = t.status;
+      if (p.label) t.n = p.label;
+      if (p.feature) t.feature = p.feature;
+      t.status = p.status;
+      if ('sentence' in p) t.sentence = p.sentence;
+      const head = p.superseded ? `SUPERSEDED on the host (status kept ${p.status})` : `OWNER-DECIDED ${was} -> ${p.status}`;
+      t.note = `${head}: ${p.evidence} (${d.source})${t.sentence ? ` Sentence: ${t.sentence}` : ''}`;
+    };
+    if (d.split) {
+      const b = { ...rows[i] };
+      apply(rows[i], d.split[0]); apply(b, d.split[1]);
+      rows.splice(i + 1, 0, b);
+    } else apply(rows[i], d);
+  }
   const counts = { supported: 0, refused: 0, wrong: 0, unsupported: 0 };
   for (const r of rows) counts[r.status] = (counts[r.status] ?? 0) + 1;
   const v = verdictOf(g);
@@ -62,7 +82,7 @@ for (const g of GROUPS) {
 // the comparison table is only allowed to say what the rows say
 const bad = [];
 for (const c of notes.comparison) for (const [n, want] of c.rows) {
-  const r = data[c.group].rows[n - 1];
+  const r = data[c.group].rows.find((x) => x.n === n);
   if (!r || r.status !== want) bad.push(`${c.capability}: ${c.group} row ${n} is ${r?.status}, notes say ${want}`);
 }
 if (bad.length) { console.error('comparison table disagrees with the rows:\n  ' + bad.join('\n  ')); process.exit(1); }
