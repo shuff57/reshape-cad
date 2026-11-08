@@ -63,7 +63,9 @@ for (const g of GROUPS) {
       if (p.feature) t.feature = p.feature;
       t.status = p.status;
       if ('sentence' in p) t.sentence = p.sentence;
-      const head = p.superseded ? `SUPERSEDED on the host (status kept ${p.status})` : `OWNER-DECIDED ${was} -> ${p.status}`;
+      // confirmed: the status is unchanged and the decision records the evidence (and, for a convention, which solid the row means)
+      if (p.confirmed && was !== p.status) throw new Error(`ownerDecisions: ${g} row ${d.row} is confirmed as ${p.status} but is ${was}`);
+      const head = p.superseded ? `SUPERSEDED on the host (status kept ${p.status})` : p.confirmed ? `CONFIRMED ${p.status} (status kept)` : `OWNER-DECIDED ${was} -> ${p.status}`;
       t.note = `${head}: ${p.evidence} (${d.source})${t.sentence ? ` Sentence: ${t.sentence}` : ''}`;
     };
     if (d.split) {

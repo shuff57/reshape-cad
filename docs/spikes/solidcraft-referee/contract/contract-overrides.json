@@ -139,6 +139,24 @@
           "evidence": "Host route, fc corpus, both rigs: 28 after a move refused (\"The edge for round1 was already changed by an earlier move ...\"), 43 after another angle refused (the sentence below, or the move sentence for a move-and-turn), 21 quarter-turn box cases refused (the sentence below); mirror: move-turn corpus k2-guard-scope#5 refused (\"... an earlier move or mirror ...\"). 0 built."
         }
       ]
+    },
+    {
+      "group": "shell-draft",
+      "row": 63,
+      "source": "the owner's rule 2026-11-08 (a built row is right when two independent references agree with the host); evidence contract/sd-wholebody-evidence/ (sdw-oracle.mjs, sdw-results.json; GUARD-SD-WHOLEBODY.md), host route on both rigs (host-route-com.mjs)",
+      "status": "supported",
+      "confirmed": true,
+      "sentence": null,
+      "evidence": "Right by two independent references, measured live, both rigs (0.21.0 corrected and 0.30.1): the 29 built rows (dw2-{L,T,U,Lthin}-*) agree with (1) OCCT built now, the extrude through the referee's buildDoc and ONE BRepOffsetAPI_DraftAngle with every side face, neutral plane at the given height (worst host delta: volume, box and centre of mass 3.6e-15), and (2) an exact polyhedron, the mitre offset of the outline at the bottom and the top joined by planar side quads, with volume, box and centre of mass by the divergence theorem (worst 4.9e-15). The two agree with each other to 7e-15, and the group's Simpson closed form agrees with the polyhedron to 6e-16. brep-rs refuses every one (it only drafts an axis-aligned box). The 15 rows the host refuses (row 64) are the ones the polyhedron says close up, and OCCT refuses those too. The group's stored OCCT run (shell-draft-runs.json) disagrees with the closed form because the OCCT referee's Body Draft is defective, not because of another convention or a closed-form error: occt-build.ts's `whole` branch drafts one face at a time with face handles taken from the undrafted shape, so every face next to one already drafted is no longer IsSame in the current shape and is skipped without a word (a box keeps only its two x sides drafted), and topo-history.ts drafted() puts the neutral plane through (0, 0, neutral) whatever the pull, so a pull along x or y drafts about x = 0 or y = 0. Re-run live, that branch reproduces the stored volume on every row it disagrees on."
+    },
+    {
+      "group": "shell-draft",
+      "row": 66,
+      "source": "the owner's rule 2026-11-08 (a built row is right when two independent references agree with the host); evidence contract/sd-wholebody-evidence/ (sdw-oracle.mjs, sdw-results.json; GUARD-SD-WHOLEBODY.md), host route on both rigs (host-route-com.mjs)",
+      "status": "supported",
+      "confirmed": true,
+      "sentence": null,
+      "evidence": "Right by two independent references, measured live, both rigs: of the 71 built fuzz rows, the 24 non-convex outlines (dw2-fuzz-poly-*) agree with OCCT one-call DraftAngle (worst host delta 1.0e-14) and the exact polyhedron (1.1e-14); the 20 prisms agree with OCCT one-call DraftAngle (3.1e-15) and the half-space closed form with its centre of mass; the 27 boxes agree with OCCT one-call DraftAngle (4.7e-15), the half-space closed form and brep-rs. The 29 rows the host refuses (row 67) are the ones the closed form says vanish, and OCCT refuses those too. The group's stored OCCT run (shell-draft-runs.json) disagrees with the closed form because the OCCT referee's Body Draft is defective, not because of another convention or a closed-form error: occt-build.ts's `whole` branch drafts one face at a time with face handles taken from the undrafted shape, so every face next to one already drafted is no longer IsSame in the current shape and is skipped without a word (a box keeps only its two x sides drafted), and topo-history.ts drafted() puts the neutral plane through (0, 0, neutral) whatever the pull, so a pull along x or y drafts about x = 0 or y = 0. Re-run live, that branch reproduces the stored volume on every row it disagrees on."
     }
   ],
   "_ownerDecisionsNote": "Owner decisions on rows the group files carry: a re-status, or a split into an \"a\" and a \"b\" row (the \"a\" row takes the original number's place, the \"b\" row follows it; every other row keeps its number). build-contract.mjs applies them after the critic overrides. Each entry cites its evidence."

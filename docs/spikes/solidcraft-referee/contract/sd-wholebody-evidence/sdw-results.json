@@ -1,0 +1,107 @@
+{
+ "what": "GUARD-SD-WHOLEBODY: live references for the sd whole-body drafts (sdw-oracle.mjs), scored at host-route-com.mjs planar bars (volume 1e-9, 1e-8 vs OCCT; box 1e-9, 2e-7 vs OCCT; COM 1e-6 of the diagonal)",
+ "the53": {
+  "ids": [
+   "dw2-L--10",
+   "dw2-L--25",
+   "dw2-L--5",
+   "dw2-L-10",
+   "dw2-L-2",
+   "dw2-L-5",
+   "dw2-L-neutral-top",
+   "dw2-L-steep-15",
+   "dw2-Lthin--10",
+   "dw2-Lthin--25",
+   "dw2-Lthin--5",
+   "dw2-Lthin-2",
+   "dw2-Lthin-5",
+   "dw2-Lthin-neutral-top",
+   "dw2-T--10",
+   "dw2-T--25",
+   "dw2-T--5",
+   "dw2-T-10",
+   "dw2-T-2",
+   "dw2-T-5",
+   "dw2-T-neutral-top",
+   "dw2-U--10",
+   "dw2-U--25",
+   "dw2-U--5",
+   "dw2-U-10",
+   "dw2-U-2",
+   "dw2-U-5",
+   "dw2-U-neutral-top",
+   "dw2-U-steep-15",
+   "dw2-fuzz-poly-0",
+   "dw2-fuzz-poly-1",
+   "dw2-fuzz-poly-10",
+   "dw2-fuzz-poly-11",
+   "dw2-fuzz-poly-14",
+   "dw2-fuzz-poly-15",
+   "dw2-fuzz-poly-16",
+   "dw2-fuzz-poly-18",
+   "dw2-fuzz-poly-19",
+   "dw2-fuzz-poly-2",
+   "dw2-fuzz-poly-23",
+   "dw2-fuzz-poly-24",
+   "dw2-fuzz-poly-28",
+   "dw2-fuzz-poly-30",
+   "dw2-fuzz-poly-33",
+   "dw2-fuzz-poly-34",
+   "dw2-fuzz-poly-36",
+   "dw2-fuzz-poly-37",
+   "dw2-fuzz-poly-38",
+   "dw2-fuzz-poly-39",
+   "dw2-fuzz-poly-4",
+   "dw2-fuzz-poly-6",
+   "dw2-fuzz-poly-7",
+   "dw2-fuzz-poly-9"
+  ],
+  "n": 53,
+  "hostBuiltRightBothRigs": 53,
+  "agreeOcctOneCall": 53,
+  "worstVsOcctOneCall": 1.021405182655144e-14,
+  "agreePolyhedron": 53,
+  "worstVsPolyhedron": 1.0658141036401503e-14,
+  "polyhedronVsOcctOneCall": 7.105427357601002e-15,
+  "simpsonVsPolyhedronVolume": 5.607131382830915e-16,
+  "sideQuadNonPlanarity": 3.700180998010653e-15,
+  "brepRefuses": {
+   "brep-rs can only Body Draft an axis-aligned box yet -- draft1 is shown without it.": 53
+  },
+  "refereeBodyDraftEqualsStored": 53,
+  "sequentialReFoundFacesAgreeOneCall": 49,
+  "sequentialReFoundFacesOcctRefusedAFace": [
+   "dw2-fuzz-poly-15",
+   "dw2-fuzz-poly-16",
+   "dw2-fuzz-poly-28",
+   "dw2-fuzz-poly-36"
+  ]
+ },
+ "allDw2": {
+  "n": 224,
+  "groups": {
+   "built | OCCT one-call agrees | stored OCCT differs from the closed form | referee Body Draft = stored": 147,
+   "built | OCCT one-call differs | stored OCCT differs from the closed form | referee Body Draft = stored": 1,
+   "built | OCCT one-call agrees | stored OCCT agrees | referee Body Draft = stored": 2,
+   "refused by the host | OCCT one-call builds | no vanish (refused for another reason)": 14,
+   "refused by the host | OCCT one-call refuses | closed form / polyhedron: vanish": 48,
+   "refused by the host | OCCT one-call refuses | no vanish (refused for another reason)": 3,
+   "built | curved side (one-call variant drafts planar faces only: not a reference) | stored OCCT agrees | referee Body Draft = stored": 8,
+   "refused by the host | OCCT one-call builds | closed form / polyhedron: vanish": 1
+  },
+  "builtPlanarOcctOneCallDiffers": [
+   {
+    "id": "dw2-box-small",
+    "host": 14399.91203571274,
+    "occtOneCall": 14400,
+    "closed": 14399.91203571273,
+    "d": {
+     "dVol": 6.108631059760228e-06,
+     "dBox": 1.0471975513048904e-05,
+     "dCom": 4.7519956176009546e-07,
+     "ok": false
+    }
+   }
+  ]
+ }
+}
