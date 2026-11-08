@@ -1,6 +1,8 @@
 // The primitives group's guard, in every planner set. Source: docs/spikes/solidcraft-referee/contract/primitives.guard.mjs (round 4, the ENFORCEMENT half of the
 // primitives contract; the original is untouched). guardFeature below is that file's, line for line, with types: every constant (LIM), every rule in the same
 // order, every sentence and every number format (num, down, up) unchanged. Its sentences are the ones contract/primitives.json quotes (primitives.sentences.mjs).
+// One deliberate difference, where the original is narrower than its own row: cone-turned-slender refuses a turn with an x or y part only, as the row says
+// ("cone turned (not about Z only)"); a cone turned about Z alone is judged by every other rule (GUARD-OVERREFUSAL.md).
 //
 // Why (~/.cache/solidcraft-0.30.1-rig/HALT-4-host-route.md, class C): the guard was never folded in, so the 23 contract primitives rows marked `wrong` were built
 // by the host route: 214 wrong solids on 0.30.1 and on the 0.21.0 pin, e.g. a flat cone turned and placed off the origin built -129.57 mm3 where OCCT, brep-rs and the
@@ -132,6 +134,7 @@ export function guardFeature(f: PrimF): PrimVerdict | null {
   const curved = isCurved(f);
   const cx = f.center ?? [0, 0, 0];
   const turned = !!(f.rotate && f.rotate.some((v) => v));
+  const turnedOffZ = !!(f.rotate && (f.rotate[0] || f.rotate[1]));
 
   // ---- numbers that are not numbers (a stored document or a slider can hold them; the interpreter only checked the typed ones)
   for (const [name, v] of D) {
@@ -201,7 +204,9 @@ export function guardFeature(f: PrimF): PrimVerdict | null {
   if (kind === 'cone') {
     const across = 2 * f.radius; const t = f.height / across; const moved = cx.some((v) => v !== 0);
     if (t < LIM.coneFlatMin) return refuse('cone-too-flat', `cone(${num(across)}, ${num(f.height)}): too flat for its width -- a cone this flat is built with the wrong number of faces, so tall has to be at least ${num(up(LIM.coneFlatMin * across))}, one hundredth of across.`);
-    if (turned && t > LIM.coneTurnedSlender) return refuse('cone-turned-slender', `cone(${num(across)}, ${num(f.height)}): too long to be turned -- a turned cone this long is built with a seam through its side, so tall has to be at most ${LIM.coneTurnedSlender} times across, or leave the cone unturned.`);
+    // the row (contract/primitives.json): "cone turned (not about Z only) with tall/across above 10", and its evidence: "A turn about Z only (z90) keeps 2 faces".
+    // The original refuses any turn; this port refuses what the row calls wrong, a turn with an x or y part (turnedOffZ). GUARD-OVERREFUSAL.md.
+    if (turnedOffZ && t > LIM.coneTurnedSlender) return refuse('cone-turned-slender', `cone(${num(across)}, ${num(f.height)}): too long to be turned -- a turned cone this long is built with a seam through its side, so tall has to be at most ${LIM.coneTurnedSlender} times across, or leave the cone unturned.`);
     if (turned && moved && t < LIM.coneTurnedMovedMinT) return refuse('cone-turned-moved-flat', `cone(${num(across)}, ${num(f.height)}): a cone that is turned and not at the origin has to be at least as tall as it is across -- a flatter one is built with the wrong volume and position, so make tall ${num(up(across))} or more, or leave it unturned or at the origin.`);
   }
   // ---- rounded plates and discs at a large aspect (E24/E26c/E27a/E27b)

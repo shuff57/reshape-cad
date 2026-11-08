@@ -117,3 +117,33 @@ test('the contract\'s own guard inputs (primitives.sentences.mjs): the layer ref
 test('ctx.skipPrimitives switches it off (measuring only)', async () => {
   for (const set of ['base', 'unified']) for (const doc of Object.values(CLASS_C)) assert.notEqual(feat(await run(set, doc, { skipPrimitives: true }), 'f1').guard, pg.PRIMITIVES_GUARD, set);
 });
+
+// GUARD-OVERREFUSAL.md: the one place the original guard is narrower than its own row. The row is "cone turned (not about Z only) with tall/across above 10",
+// and its evidence says "A turn about Z only (z90) keeps 2 faces"; the original refuses any turn. The probe's own Z-only inputs (e23-a-*-z90, e21-tcone-*-0_0_90)
+// built right on 0.30.1 (2 faces, OCCT and brep-rs 2 faces, volume inside the curved bar).
+test('cone-turned-slender: a slender cone turned about Z only is judged by the other rules, as its row says; any x or y part is refused as before', async () => {
+  const slender = (rotate, center = [0, 0, 0]) => D({ kind: 'cone', radius: 1, height: 36, center, rotate });
+  for (const [doc, status, origRefuses] of [
+    [slender([0, 0, 90]), 'built', true],            // e23-a-r1-t18-z90's cone (tall / across 18): the original refuses it
+    [slender([0, 0, 30], [5, 0, 0]), 'built', true], // about Z, off the origin: tall / across 18 is above the turned-and-moved floor of 1
+    [slender([90, 0, 0]), 'refused', true],
+    [slender([0, 1e-9, 90]), 'refused', true],       // the smallest y part is a turn off Z
+    [slender([0, 0, 0]), 'built', false],            // unturned: nothing changes
+  ]) {
+    assert.equal(!!G.guardFirst(doc), origRefuses, `${JSON.stringify(doc.features[0].rotate)}: the original`);
+    const want = status === 'refused' ? G.guardFirst(doc).sentence : null;
+    for (const set of ALL_SETS) {
+      const f = feat(await run(set, doc), 'f1');
+      assert.equal(f.status, status, `${set} ${JSON.stringify(doc.features[0])}: ${JSON.stringify(f).slice(0, 300)}`);
+      if (want) { assert.equal(f.refusal, want, set); assert.equal(f.guard, pg.PRIMITIVES_GUARD, set); }
+    }
+  }
+  // the turn() of a script, folded into the cone: about Z builds, about X is refused with the row's sentence
+  const z = docOf('const c = cone(2, 36); turn(c, [0, 0, 90]);'); const x = docOf('const c = cone(2, 36); turn(c, [0, 0, 90]); turn(c, [10, 0, 0]);');
+  for (const set of ALL_SETS) {
+    assert.equal(feat(await run(set, z), 'cone1').status, 'built', set);
+    const fx = feat(await run(set, x), 'cone1');
+    assert.equal(fx.status, 'refused', set);
+    assert.equal(fx.refusal, 'cone(2, 36): too long to be turned -- a turned cone this long is built with a seam through its side, so tall has to be at most 10 times across, or leave the cone unturned.', set);
+  }
+});
