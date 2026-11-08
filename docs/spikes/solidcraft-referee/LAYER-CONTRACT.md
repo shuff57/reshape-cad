@@ -23,14 +23,14 @@ Measured on SolidCraft `fe3717f2e400010a4cd0e7dd4f294e7091c25625` (engine 0.9.0,
 | holes | 91 | 39 | 47 | 0 | 5 | accepted |
 | move-turn | 29 | 14 | 14 | 0 | 1 | accepted after 2 critic reviews |
 | patterns-mirror | 90 | 40 | 40 | 10 | 0 | unresolved after 3 critic reviews |
-| picks-naming-params | 77 | 17 | 29 | 12 | 19 | accepted after 2 critic reviews |
+| picks-naming-params | 77 | 18 | 28 | 12 | 19 | accepted after 2 critic reviews |
 | primitives | 62 | 26 | 5 | 23 | 8 | accepted after 2 critic reviews |
 | revolve-groove | 45 | 15 | 28 | 2 | 0 | unresolved after 3 critic reviews |
 | shell-draft | 100 | 46 | 54 | 0 | 0 | accepted |
 | sketch-constraints | 139 | 92 | 31 | 14 | 2 | accepted after 3 critic reviews |
 | sketch-dof-diagnosis | 45 | 19 | 5 | 12 | 9 | accepted |
 | sketch-geometry | 87 | 29 | 44 | 11 | 3 | unresolved after 3 critic reviews |
-| **total** | 1122 | 470 | 478 | 121 | 53 | |
+| **total** | 1122 | 471 | 477 | 121 | 53 | |
 
 Accepted: blend-loft, extrude-pocket, fillet-chamfer, holes, move-turn, picks-naming-params, primitives, shell-draft, sketch-constraints, sketch-dof-diagnosis.
 Unresolved (still rejected after the two allowed fix rounds): booleans, patterns-mirror, revolve-groove, sketch-geometry. The critics' live replays of sampled rows in these groups matched, but a critic found a silent wrong solid the guards do not cover, so the group as a whole is not accepted and the defects below are open.
