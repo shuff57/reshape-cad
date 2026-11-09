@@ -1,0 +1,473 @@
+{
+ "halt": {
+  "nA": 62,
+  "nB": 62,
+  "A": {
+   "REFUSED": 50,
+   "BUILT-ORACLES-REFUSE": 2,
+   "RIGHT": 10
+  },
+  "B": {
+   "REFUSED": 50,
+   "BUILT-ORACLES-REFUSE": 2,
+   "RIGHT": 10
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "ep": {
+  "nA": 466,
+  "nB": 466,
+  "A": {
+   "RIGHT": 295,
+   "REFUSED": 171
+  },
+  "B": {
+   "RIGHT": 295,
+   "REFUSED": 171
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "bool": {
+  "nA": 1158,
+  "nB": 1158,
+  "A": {
+   "RIGHT": 529,
+   "REFUSED": 618,
+   "ORACLES-SPLIT": 3,
+   "WRONG": 1,
+   "PIPELINE-DIFF": 7
+  },
+  "B": {
+   "RIGHT": 528,
+   "REFUSED": 619,
+   "ORACLES-SPLIT": 3,
+   "WRONG": 1,
+   "PIPELINE-DIFF": 7
+  },
+  "changed": [
+   [
+    "r6h-top-keep-r120-d5",
+    "RIGHT",
+    "REFUSED"
+   ]
+  ],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    4.000259688939254e-05,
+    "fz23-095-box-cyl-int"
+   ],
+   [
+    1.5113287896633588e-05,
+    "fz17-079-cyl-box-int"
+   ],
+   [
+    1.2110714996565852e-05,
+    "r6h-pull-keep-r150-d8"
+   ],
+   [
+    7.318053358959258e-06,
+    "fz17-009-cyl-box-int"
+   ],
+   [
+    5.302422242731507e-11,
+    "fz23-087-sph-box-uni"
+   ]
+  ],
+  "volDriftN": 12
+ },
+ "holes": {
+  "nA": 357,
+  "nB": 357,
+  "A": {
+   "RIGHT": 201,
+   "REFUSED": 155,
+   "PIPELINE-DIFF": 1
+  },
+  "B": {
+   "RIGHT": 201,
+   "REFUSED": 155,
+   "PIPELINE-DIFF": 1
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    5.368978733560739e-16,
+    "round-box-hole-37"
+   ],
+   [
+    2.3394064591619454e-16,
+    "round-box-hole-through"
+   ]
+  ],
+  "volDriftN": 2
+ },
+ "sd": {
+  "nA": 1097,
+  "nB": 1097,
+  "A": {
+   "RIGHT": 622,
+   "REFUSED": 475
+  },
+  "B": {
+   "RIGHT": 622,
+   "REFUSED": 475
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "pm": {
+  "nA": 455,
+  "nB": 455,
+  "A": {
+   "RIGHT": 262,
+   "REFUSED": 181,
+   "ORACLES-SPLIT": 10,
+   "HANG": 2
+  },
+  "B": {
+   "RIGHT": 262,
+   "REFUSED": 181,
+   "ORACLES-SPLIT": 10,
+   "HANG": 2
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    3.202851931921554e-16,
+    "r4-round-box-repeat"
+   ]
+  ],
+  "volDriftN": 1
+ },
+ "rg": {
+  "nA": 990,
+  "nB": 990,
+  "A": {
+   "RIGHT": 363,
+   "REFUSED": 597,
+   "ORACLES-SPLIT": 12,
+   "BUILT-ORACLES-REFUSE": 7,
+   "WRONG": 11
+  },
+  "B": {
+   "RIGHT": 363,
+   "REFUSED": 597,
+   "ORACLES-SPLIT": 12,
+   "BUILT-ORACLES-REFUSE": 7,
+   "WRONG": 11
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "fc": {
+  "nA": 2309,
+  "nB": 2309,
+  "A": {
+   "RIGHT": 825,
+   "REFUSED": 1252,
+   "ORACLES-SPLIT": 77,
+   "WRONG": 110,
+   "BUILT-ORACLES-REFUSE": 45
+  },
+  "B": {
+   "RIGHT": 825,
+   "REFUSED": 1252,
+   "ORACLES-SPLIT": 77,
+   "WRONG": 110,
+   "BUILT-ORACLES-REFUSE": 45
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    1.9285000042951734e-12,
+    "pf-corner-then-join"
+   ],
+   [
+    8.193539978095007e-16,
+    "fzg-2027-098"
+   ],
+   [
+    4.4389901429841734e-16,
+    "fzg-2027-082"
+   ],
+   [
+    3.6883449691475494e-16,
+    "fzg-2027-041"
+   ],
+   [
+    3.608949583089933e-16,
+    "fzg-2027-032"
+   ]
+  ],
+  "volDriftN": 30
+ },
+ "sg": {
+  "nA": 1087,
+  "nB": 1087,
+  "A": {
+   "REFUSED": 351,
+   "RIGHT": 726,
+   "BUILT-ORACLES-REFUSE": 5,
+   "WRONG": 3,
+   "ORACLES-SPLIT": 2
+  },
+  "B": {
+   "REFUSED": 344,
+   "RIGHT": 733,
+   "BUILT-ORACLES-REFUSE": 5,
+   "WRONG": 3,
+   "ORACLES-SPLIT": 2
+  },
+  "changed": [
+   [
+    "attacks:a5-C-far-rect-round",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "far:far-grid-rr-s0.25-at-1e5",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "far:far-grid-rr-s0.25-at-1e6",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "far:far-grid-rr-s0.25-at-300000",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "far:far-grid-rr-s1-at-1e6",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "far:far-rrect-at-1e6",
+    "REFUSED",
+    "RIGHT"
+   ],
+   [
+    "fartilt:ft-named-rrect-1e6",
+    "REFUSED",
+    "RIGHT"
+   ]
+  ],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    1.6432160026842565e-11,
+    "far:far-grid-rr-s0.25-at-1e3"
+   ],
+   [
+    1.2598301690934345e-11,
+    "fartilt:ft-named-rrect-1e4"
+   ],
+   [
+    9.79907610073389e-12,
+    "far:far-grid-rr-s1-at-3000"
+   ],
+   [
+    3.1532875512015865e-12,
+    "far:far-grid-rr-s0.25-at-3000"
+   ],
+   [
+    3.1150742313326625e-12,
+    "far:far-rrect-at-1e4"
+   ]
+  ],
+  "volDriftN": 18
+ },
+ "mt": {
+  "nA": 1930,
+  "nB": 1930,
+  "A": {
+   "REFUSED": 1397,
+   "RIGHT": 533
+  },
+  "B": {
+   "REFUSED": 1397,
+   "RIGHT": 533
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "prim": {
+  "nA": 2303,
+  "nB": 2303,
+  "A": {
+   "REFUSED": 1311,
+   "RIGHT": 992
+  },
+  "B": {
+   "REFUSED": 1311,
+   "RIGHT": 992
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    5.271555353261938e-16,
+    "e17-box-A-x-max"
+   ],
+   [
+    3.953666514946449e-16,
+    "e17-box-A-y-min"
+   ],
+   [
+    2.672288772465616e-16,
+    "e27-a-plate-t40-asp100-q0.9"
+   ],
+   [
+    2.61238696150538e-16,
+    "e26-c-plate-L100-t4-q0.5"
+   ],
+   [
+    2.6096570045328043e-16,
+    "e27-a-plate-t4-asp100-q0.9"
+   ]
+  ],
+  "volDriftN": 21
+ },
+ "sc": {
+  "nA": 86,
+  "nB": 86,
+  "A": {
+   "RIGHT": 54,
+   "REFUSED": 26,
+   "PIPELINE-DIFF": 6
+  },
+  "B": {
+   "RIGHT": 54,
+   "REFUSED": 26,
+   "PIPELINE-DIFF": 6
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [
+   [
+    7.379033680670236e-12,
+    "rect-lock-offset-corner"
+   ],
+   [
+    5.031347239530351e-12,
+    "square-by-equal-lines"
+   ],
+   [
+    2.814842376325466e-12,
+    "right-trapezoid-par-perp-neg-dx"
+   ],
+   [
+    2.9540387913538925e-13,
+    "own-l-shape-dims"
+   ],
+   [
+    2.863529032748092e-13,
+    "hexagon-equal-pointOn-circle"
+   ]
+  ],
+  "volDriftN": 13
+ },
+ "combined": {
+  "nA": 600,
+  "nB": 600,
+  "A": {
+   "REFUSED": 564,
+   "RIGHT": 28,
+   "ORACLES-SPLIT": 7,
+   "WRONG": 1
+  },
+  "B": {
+   "REFUSED": 564,
+   "RIGHT": 28,
+   "ORACLES-SPLIT": 7,
+   "WRONG": 1
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "rgcombined": {
+  "nA": 400,
+  "nB": 400,
+  "A": {
+   "REFUSED": 400
+  },
+  "B": {
+   "REFUSED": 400
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "fccombined": {
+  "nA": 400,
+  "nB": 400,
+  "A": {
+   "REFUSED": 383,
+   "RIGHT": 16,
+   "ORACLES-SPLIT": 1
+  },
+  "B": {
+   "REFUSED": 383,
+   "RIGHT": 16,
+   "ORACLES-SPLIT": 1
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ },
+ "pnp": {
+  "nA": 13,
+  "nB": 13,
+  "A": {
+   "REFUSED": 9,
+   "RIGHT": 4
+  },
+  "B": {
+   "REFUSED": 9,
+   "RIGHT": 4
+  },
+  "changed": [],
+  "onlyA": [],
+  "onlyB": [],
+  "volDriftTop": [],
+  "volDriftN": 0
+ }
+}
