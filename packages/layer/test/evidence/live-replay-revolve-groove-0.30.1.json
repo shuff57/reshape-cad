@@ -1,0 +1,8959 @@
+{
+ "pkg": null,
+ "cases": 990,
+ "same": 990,
+ "differ": 0,
+ "flakyRetried": 0,
+ "noDoc": 8,
+ "excluded": 0,
+ "skippedLarge": 0,
+ "hangOrCrash": 0,
+ "builtWrong": 0,
+ "missingMeasure": 0,
+ "rebuiltFromCases": "/home/shuff57/.cache/solidcraft-0.30.1-rig/stageB/s3/loop/out/rg/cases",
+ "rows": [
+  {
+   "id": "C-front180-side180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 112,
+   "load1": 3.3
+  },
+  {
+   "id": "C-front360-side360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 277,
+   "load1": 3.3
+  },
+  {
+   "id": "C-front360-top360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 281,
+   "load1": 3.3
+  },
+  {
+   "id": "C-top180-top360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 588,
+   "load1": 3.3
+  },
+  {
+   "id": "C-top360-top360-form",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 376,
+   "load1": 3.3
+  },
+  {
+   "id": "C-top360-top360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 358,
+   "load1": 3.3
+  },
+  {
+   "id": "C-top90-top90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 399,
+   "load1": 3.3
+  },
+  {
+   "id": "P-groove-400-patched",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 167,
+   "load1": 3.1
+  },
+  {
+   "id": "P-groove-neg90-patched",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 162,
+   "load1": 3.1
+  },
+  {
+   "id": "P-spin-0-patched",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 255,
+   "load1": 3.1
+  },
+  {
+   "id": "P-spin-800-patched",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 236,
+   "load1": 3.8
+  },
+  {
+   "id": "R3-box-circle-d6p7-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-circle-d6p7-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-circle-d6p7-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-cone-tri-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-cone-tri-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-cone-tri-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-flat-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-round-corner-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-round-corner-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-round-corner-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-trapezoid-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-trapezoid-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-box-trapezoid-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.3
+  },
+  {
+   "id": "R3-boxwall-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 66510.85935277563,
+   "wallMs": 3978,
+   "load1": 3.3
+  },
+  {
+   "id": "R3-boxwall-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 66324.76604957586,
+   "wallMs": 2457,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 64407.29122917295,
+   "wallMs": 363,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69455.56461059573,
+   "wallMs": 257,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68090.65083828714,
+   "wallMs": 572,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-thin-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68537.59036737542,
+   "wallMs": 2241,
+   "load1": 3.3
+  },
+  {
+   "id": "R3-boxwall-flat-thin-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68505.32717483242,
+   "wallMs": 2091,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-thin-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 67540.58354161787,
+   "wallMs": 514,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-thin-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70822.02087092119,
+   "wallMs": 961,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-boxwall-flat-thin-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69787.49267152829,
+   "wallMs": 1171,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-chain-both-built-into-form",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 384,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-chain-both-built",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 389,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-chain-into-form-refused-then-groove",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-chain-same-handle-refused-then-groove",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 67,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-chain-same-handle-then-extrude-combine",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,built,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-chain-sealed-then-groove",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-cost-post-coaxial-360-rep1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.833837496866,
+   "wallMs": 682,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-cost-post-coaxial-360-rep2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.833837496866,
+   "wallMs": 672,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-cost-post-coaxial-360-rep3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.833837496866,
+   "wallMs": 680,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-fz-groove-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-fz-groove-13",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-fz-groove-37",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-gn-box-front-off-5-300",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-crit-gn-box-yz-off4-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-crit-gv-cyl-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-gv-cyl-front-lift-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-crit-seq-two-grooves-same-target",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 65,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-datum-groove-box-front-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,noop,built",
+   "volume": 29834.581031488957,
+   "wallMs": 400,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-groove-box-front-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,noop,built",
+   "volume": 31458.657244665763,
+   "wallMs": 741,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-groove-box-top-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-groove-top-lift-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-groove-top-lift-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,noop,built",
+   "volume": 36500.83383749509,
+   "wallMs": 676,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-groove-top-lift-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-frame-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 238,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-front3--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 215,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-front3-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 14137.152685377027,
+   "wallMs": 389,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-front3-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 21203.70094879953,
+   "wallMs": 439,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-front3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 401,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-front3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 235,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-negside-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 213,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-side-5--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 223,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-side-5-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 14137.152685377027,
+   "wallMs": 394,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-side-5-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 21203.70094879953,
+   "wallMs": 438,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-side-5-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 405,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-datum-spin-side-5-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 244,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-top4--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 209,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-top4-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 14137.152685377021,
+   "wallMs": 390,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-top4-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 21203.70094879953,
+   "wallMs": 425,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-top4-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 392,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-datum-spin-top4-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 236,
+   "load1": 3.7
+  },
+  {
+   "id": "R3-ground-front-180-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 123,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-front-270-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30616.984068041915,
+   "wallMs": 720,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-ground-front-360-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.10286227787,
+   "wallMs": 432,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-ground-front-360-nudge-offset-3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.466296673087,
+   "wallMs": 424,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.466296673094,
+   "wallMs": 431,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-ground-front-90-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 95,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-hang-below-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.322497571105,
+   "wallMs": 466,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-hang-below-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-180-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.14040339857,
+   "wallMs": 1155,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-270-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29233.968135603285,
+   "wallMs": 1106,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-360-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.102862277854,
+   "wallMs": 442,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.322497571073,
+   "wallMs": 470,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-90-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30617.02879357513,
+   "wallMs": 641,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-ground-side-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-bigring-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 142115.343610588,
+   "wallMs": 1002,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-bigring-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 141172.7878618994,
+   "wallMs": 1126,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-bigring-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 140230.7761365402,
+   "wallMs": 396,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-bigring-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 143057.61387380437,
+   "wallMs": 653,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxfront-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxfront-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxfront-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxfront-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxside-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxside-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 38,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxside-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxside-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-120",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-150",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-170",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-175",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-179",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-181",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 39,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-185",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-190",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-200",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-225",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-250",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-300",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-315",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-359",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-boxtop-45",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-boxtop-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-join-boss-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 667,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 147,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-150",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-170",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-175",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-179",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-181",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-185",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-190",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 164,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-200",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-225",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-250",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-300",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-315",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-359",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-sealed-post-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-ecc-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-ecc-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-ecc-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-post-ecc-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-sealed-tube-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 252,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-starter-deliberate-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-starter-remedy-moved-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 31428.521268134133,
+   "wallMs": 168,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-starter-undrawn-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.6
+  },
+  {
+   "id": "R3-tilt15-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tilt15-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71646.60515399782,
+   "wallMs": 304,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt15-post-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tilt15-post-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 160,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tilt30-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt30-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71646.60515399782,
+   "wallMs": 297,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt30-post-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt30-post-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt45-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt45-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71646.60515399782,
+   "wallMs": 297,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt45-post-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt45-post-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt90-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt90-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tilt90-post-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36849.05152762675,
+   "wallMs": 861,
+   "load1": 3.5
+  },
+  {
+   "id": "R3-tilt90-post-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 37485.08955712476,
+   "wallMs": 1205,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tiltwall15-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tiltwall15-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 68260.66670282379,
+   "wallMs": 4445,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tiltwall30-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.4
+  },
+  {
+   "id": "R3-tiltwall30-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 67942.85085042893,
+   "wallMs": 4628,
+   "load1": 3.3
+  },
+  {
+   "id": "R3-tiltwall45-box-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.3
+  },
+  {
+   "id": "R3-tiltwall45-box-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 67248.87803456651,
+   "wallMs": 8476,
+   "load1": 3.3
+  },
+  {
+   "id": "R4-frustum-bottomlip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 209,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-frustum-lip001-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 214,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-frustum-lip005-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 206,
+   "load1": 4
+  },
+  {
+   "id": "R4-frustum-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 207,
+   "load1": 4
+  },
+  {
+   "id": "R4-frustum-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 212,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-lip005-mid-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 204,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-lip03-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 50358.6283345852,
+   "wallMs": 2233,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-lip03-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 205,
+   "load1": 4
+  },
+  {
+   "id": "R4-frustum-lip03-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 55024.10243226821,
+   "wallMs": 1725,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-sealed-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 57332.78710529097,
+   "wallMs": 1629,
+   "load1": 3.8
+  },
+  {
+   "id": "R4-frustum-sealed-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 56547.39405528745,
+   "wallMs": 1649,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-frustum-sealed-200",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 56198.35839629791,
+   "wallMs": 1908,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-frustum-sealed-225",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 55762.07253928157,
+   "wallMs": 2036,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-frustum-sealed-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 54976.955412636635,
+   "wallMs": 1903,
+   "load1": 4
+  },
+  {
+   "id": "R4-frustum-sealed-315",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 54191.23778421427,
+   "wallMs": 2100,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-sealed-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 217,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-frustum-sealed-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 58903.58277840254,
+   "wallMs": 1293,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-frustum-sealed-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 58118.26109382449,
+   "wallMs": 1426,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-frustum-tangent-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 58740.21298738033,
+   "wallMs": 882,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-pocket-floor-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 105,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-pocket-floor-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 98,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-pocket-floor-lip03-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 99,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-pocket-floor-lip03-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 99,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-pocket-top-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 108,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-pocket-top-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 103,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-pocket-wall-tangent-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 97,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-pocket-wall-tangent-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 102,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-pocket-wall-tangent-exact-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 95,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-sphere-groove-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 1592,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-sphere-sealed-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 112205.74447607464,
+   "wallMs": 6821,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-sphere-sealed-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 111911.42623684068,
+   "wallMs": 7044,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-sphere-sealed-225",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 111616.69503518201,
+   "wallMs": 7103,
+   "load1": 4
+  },
+  {
+   "id": "R4-sphere-sealed-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 111322.34019538104,
+   "wallMs": 7010,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-sphere-sealed-315",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 111027.91792748003,
+   "wallMs": 7398,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-sphere-sealed-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 1600,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-sphere-sealed-45",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 112794.82305083236,
+   "wallMs": 6794,
+   "load1": 3.8
+  },
+  {
+   "id": "R4-sphere-sealed-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 112500.3275351003,
+   "wallMs": 6543,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-step-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 102,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 104,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-lip03-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 101,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-lip03-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 98,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-sealed-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 38845.18685860243,
+   "wallMs": 363,
+   "load1": 3.8
+  },
+  {
+   "id": "R4-step-sealed-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 38460.87265456903,
+   "wallMs": 426,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-step-sealed-200",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 38289.18768536633,
+   "wallMs": 439,
+   "load1": 4
+  },
+  {
+   "id": "R4-step-sealed-225",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 38075.847478979966,
+   "wallMs": 461,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-step-sealed-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 37691.11496625311,
+   "wallMs": 494,
+   "load1": 4
+  },
+  {
+   "id": "R4-step-sealed-315",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 37306.3935654432,
+   "wallMs": 540,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-step-sealed-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 36921.59608009464,
+   "wallMs": 474,
+   "load1": 3.7
+  },
+  {
+   "id": "R4-step-sealed-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 39615.19331947582,
+   "wallMs": 278,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-step-sealed-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 39230.38345864963,
+   "wallMs": 319,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-top-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 105,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-step-top-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 101,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-tube-bore-graze005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 289,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-tube-bore-graze005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 288,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-tube-bore-graze005-wide-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 287,
+   "load1": 3.9
+  },
+  {
+   "id": "R4-tube-lip005-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 299,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-lip005-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 294,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-lip005-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 302,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-lip03-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 305,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-lip03-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 294,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-lip03-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 308,
+   "load1": 4.2
+  },
+  {
+   "id": "R4-tube-sealed-200",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 293,
+   "load1": 4.1
+  },
+  {
+   "id": "R4-tube-sealed-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 302,
+   "load1": 4.1
+  },
+  {
+   "id": "R5-frustum-wall-cross-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 206,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-cross-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 55724.52080317508,
+   "wallMs": 16533,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-frustum-wall-far-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 207,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-far-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 58705.96918112444,
+   "wallMs": 972,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-frustum-wall-low-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 216,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-low-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 209,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-mid-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 211,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-mid-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 57367.10376555615,
+   "wallMs": 18158,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-frustum-wall-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 215,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-frustum-wall-top-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 214,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-post-bottom-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-bottom-0.1-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 160,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-flush-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28270.925170098857,
+   "wallMs": 599,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-frontplane-lip-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-clear-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-clear-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36242.73975991269,
+   "wallMs": 1272,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-in-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-in-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 150,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-in-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-out-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-off-tan-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-offaxis-tangent-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36921.3117324172,
+   "wallMs": 1799,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-offaxis-tangent-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 37503.17698744687,
+   "wallMs": 1298,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-over-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28270.925170098857,
+   "wallMs": 598,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-post-over-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28270.925170098857,
+   "wallMs": 596,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-rim-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-post-top-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 150,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.2-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.2-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28645.109676589524,
+   "wallMs": 743,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-post-top-0.3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 35432.42742194369,
+   "wallMs": 1057,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-sphere-wall-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 1587,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-plate-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 324,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-plate-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 330,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 328,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 322,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 326,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 319,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 316,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-steppost-wall-0.3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 319,
+   "load1": 3.7
+  },
+  {
+   "id": "R5-tube-bore-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 296,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-bore-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 290,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-tube-bore-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 296,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-bore-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 291,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-tube-bore-0.3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 295,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-bore-0.3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 292,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-tube-bore-flush-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 305,
+   "load1": 3.9
+  },
+  {
+   "id": "R5-tube-outer-0.05-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 305,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-outer-0.05-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 294,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-outer-0.1-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 304,
+   "load1": 3.8
+  },
+  {
+   "id": "R5-tube-outer-0.1-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 293,
+   "load1": 3.8
+  },
+  {
+   "id": "X-groove-box-corner-ring-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 133523.28668796006,
+   "wallMs": 1992,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-box-corner-ring-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 130029.29392006407,
+   "wallMs": 411,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-box-corner-ring-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 140507.72885410846,
+   "wallMs": 799,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-box-front-ring-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 142353.05714810436,
+   "wallMs": 1142,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-box-interior-200",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.1
+  },
+  {
+   "id": "X-groove-box-interior-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.1
+  },
+  {
+   "id": "X-groove-box-side-ring-225",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 139286.11539912203,
+   "wallMs": 2067,
+   "load1": 3.1
+  },
+  {
+   "id": "X-groove-box-top-slot-through-top-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 142130.83533057547,
+   "wallMs": 454,
+   "load1": 3.1
+  },
+  {
+   "id": "X-groove-box-top-slot-through-top-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 143532.73359387348,
+   "wallMs": 652,
+   "load1": 3.1
+  },
+  {
+   "id": "X-groove-circle-profile-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-circle-profile-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-disjoint-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-from-axis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-from-axis-to-wall-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 31413.818942898695,
+   "wallMs": 632,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-front-yaxis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-front-yaxis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-interior-ring-179",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-interior-ring-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-interior-ring-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-interior-ring-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-interior-ring-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-partial-spin-90-by-45-wedge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 174,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-partial-spin-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 170,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-partial-spin-neg90-by-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-spun-tube-inner-coincident-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 248,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-spun-tube-inner-coincident-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 251,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-into-spun-tube-outer-coincident-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 247,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-outer-overhang-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-outer-overhang-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.833837496866,
+   "wallMs": 660,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-outer-overhang-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-removes-everything-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 250,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-rounded-profile-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-rounded-profile-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 164,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-side-xaxis-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-through-height-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 35621.77307099827,
+   "wallMs": 2215,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-through-height-360-splits",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 33548.71171412439,
+   "wallMs": 963,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-through-height-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36658.23604750949,
+   "wallMs": 1538,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-top-offset-neg3-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-top-offset3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.83383749618,
+   "wallMs": 667,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-top-offset3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-two-successive-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 441,
+   "load1": 3.2
+  },
+  {
+   "id": "X-groove-two-successive-90-then-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 163,
+   "load1": 3.2
+  },
+  {
+   "id": "X-spin-400-clamped-to-360-patch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 408,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-L-270-axis-edge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1743.4160440401226,
+   "wallMs": 290,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-L-neg-200-axis-edge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1291.3921836270486,
+   "wallMs": 205,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-circle-crossing-axis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 6283.100082306129,
+   "wallMs": 282,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 12565.280609792826,
+   "wallMs": 108,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-custom-frame-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 228,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-horn-torus-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2467.1258066386877,
+   "wallMs": 6739,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-neg400-clamped-patch",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 395,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-oblique-frame-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 9423.166518423786,
+   "wallMs": 223,
+   "load1": 3.2
+  },
+  {
+   "id": "X-spin-rect-crossing-axis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-rect-crossing-axis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-rect-negative-side-of-axis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.679056500227,
+   "wallMs": 411,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-rect-negative-side-of-axis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 214,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-rod-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3392.585094800627,
+   "wallMs": 132,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-rounded-arc-bulge",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 21029.786640078582,
+   "wallMs": 2216,
+   "load1": 3.2
+  },
+  {
+   "id": "X-spin-torus-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 9868.156051109992,
+   "wallMs": 4619,
+   "load1": 3.4
+  },
+  {
+   "id": "X-spin-torus-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2467.032999463788,
+   "wallMs": 2426,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-torus-neg-200-front",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5482.303996008767,
+   "wallMs": 3115,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-0p5deg",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-135-front-offset-neg7",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 10602.880391802726,
+   "wallMs": 306,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-359p9deg",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28261.828952839587,
+   "wallMs": 479,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-360p5deg-script-allows",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 395,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-lifted-top-5-neg-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 218,
+   "load1": 3.2
+  },
+  {
+   "id": "X-spin-tube-neg-270-side",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 21203.700948799535,
+   "wallMs": 390,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-tube-neg-360p5deg-script-allows",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 403,
+   "load1": 3.3
+  },
+  {
+   "id": "X-spin-two-sketches-two-spins",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 13351.066643486312,
+   "wallMs": 489,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-box-0p3deg-negside",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-box-0p5deg",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-negside-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-negside-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 162,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-negside-box-corner-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 133523.28668796006,
+   "wallMs": 1997,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-groove-negside-box-corner-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 140507.72885410846,
+   "wallMs": 805,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-spin-negside--180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 14137.152685377025,
+   "wallMs": 390,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 236,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 21203.70094879954,
+   "wallMs": 385,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3533.9371844484917,
+   "wallMs": 167,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 221,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-L-axis-edge-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1743.4160440401213,
+   "wallMs": 293,
+   "load1": 3.2
+  },
+  {
+   "id": "Y-spin-negside-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2467.032999463791,
+   "wallMs": 2019,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 214,
+   "load1": 3.1
+  },
+  {
+   "id": "Y-spin-negside-side-neg135-offset4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 10602.880391802724,
+   "wallMs": 303,
+   "load1": 3.1
+  },
+  {
+   "id": "Z-coin-box-front-ring11-17-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-front-ring11-17-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 44,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-coin-box-front-ring11-17-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29888.93311518469,
+   "wallMs": 361,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-coin-box-front-ring5-9-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-front-ring5-9-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 46,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-coin-box-front-ring5-9-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31296.32927237198,
+   "wallMs": 372,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-coin-box-side-ring11-17-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-side-ring11-17-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-side-ring11-17-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29889.17445511965,
+   "wallMs": 361,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-side-ring5-9-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-side-ring5-9-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-side-ring5-9-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31296.362260097365,
+   "wallMs": 389,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-top-ring11-17-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30416.92619544858,
+   "wallMs": 3356,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-coin-box-top-ring11-17-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29889.04277029184,
+   "wallMs": 7071,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-coin-box-top-ring11-17-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29889.232092936854,
+   "wallMs": 355,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-coin-box-top-ring5-9-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31472.20546692524,
+   "wallMs": 5054,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-coin-box-top-ring5-9-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31296.352144048727,
+   "wallMs": 8342,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-coin-box-top-ring5-9-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31296.410698607844,
+   "wallMs": 383,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-crit-bore-axis-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-bore-axis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 163,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-bore-axis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-box-front0-180-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 122,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-180-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 115,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-180-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 31309.537269597884,
+   "wallMs": 1137,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-270-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30616.984068041915,
+   "wallMs": 705,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-270-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30849.92445657997,
+   "wallMs": 730,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-270-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29814.283281395517,
+   "wallMs": 1147,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-360-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.10286227787,
+   "wallMs": 455,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-360-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29699.970401739425,
+   "wallMs": 365,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-360-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28318.875993670357,
+   "wallMs": 527,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.466296673094,
+   "wallMs": 418,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-90-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 102,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front0-90-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 103,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-front0-90-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 31654.769004903104,
+   "wallMs": 649,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-front0-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 56,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front4-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front4-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front4-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.466296673094,
+   "wallMs": 421,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-front4-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 56,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side-4-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side-4-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side-4-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.32249757109,
+   "wallMs": 465,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side-4-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-180-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.14040339857,
+   "wallMs": 1142,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-180-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29699.872340874008,
+   "wallMs": 1173,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-180-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.251702693622,
+   "wallMs": 633,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-crit-box-side0-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-270-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29233.968135603285,
+   "wallMs": 1108,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-side0-270-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29699.84891324826,
+   "wallMs": 1157,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-270-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28664.26133549858,
+   "wallMs": 848,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-360-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29234.102862277854,
+   "wallMs": 440,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-side0-360-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29699.970401739425,
+   "wallMs": 385,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-side0-360-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 28318.875993670357,
+   "wallMs": 543,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-crit-box-side0-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 29009.322497571073,
+   "wallMs": 469,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-box-side0-90-lift1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30617.02879357513,
+   "wallMs": 652,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-crit-box-side0-90-lift3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30849.940513487516,
+   "wallMs": 657,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-crit-box-side0-90-liftn3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30504.750297141403,
+   "wallMs": 417,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-crit-box-side0-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-crit-groove-after-join",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 611,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-crit-miss-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-miss-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-miss-height",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-straddle-outer-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 32197.200011069635,
+   "wallMs": 664,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-straddle-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 35810.246002920096,
+   "wallMs": 685,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-crit-through-ring-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30156.410251629102,
+   "wallMs": 961,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-groove-bowtie-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-bowtie-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 146,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-box-0p5",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 39,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-box-1",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 143975.99305468795,
+   "wallMs": 537,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-box-2",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 143951.93407752019,
+   "wallMs": 528,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn100",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.491494439262,
+   "wallMs": 1211,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn130",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.39060686989,
+   "wallMs": 1178,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn160",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.490208711777,
+   "wallMs": 1204,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn20",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.490208711784,
+   "wallMs": 1159,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn40",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.49020837343,
+   "wallMs": 1139,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn60",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.476778736906,
+   "wallMs": 1347,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180-turn80",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.491494439266,
+   "wallMs": 1170,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.315464266667,
+   "wallMs": 1365,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30375.919234042085,
+   "wallMs": 1436,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn100",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.83547024318,
+   "wallMs": 389,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn130",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.738989254834,
+   "wallMs": 377,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn160",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.78577368861,
+   "wallMs": 383,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn20",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.785773688753,
+   "wallMs": 385,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn40",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.785773688694,
+   "wallMs": 385,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn60",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.78875764887,
+   "wallMs": 384,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360-turn80",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.835470243106,
+   "wallMs": 378,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.58103148895,
+   "wallMs": 401,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring11-17-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31458.657244693648,
+   "wallMs": 741,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring5-9-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring5-9-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-front-ring5-9-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-front-ring5-9-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 38,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-groove-box-side-ring11-17-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30917.315464266667,
+   "wallMs": 1381,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring11-17-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 30375.919234042085,
+   "wallMs": 1380,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring11-17-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 29834.581031488964,
+   "wallMs": 405,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring11-17-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 31458.657244693648,
+   "wallMs": 751,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring5-9-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring5-9-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring5-9-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-side-ring5-9-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.4
+  },
+  {
+   "id": "Z-groove-box-split-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 11584.560543551212,
+   "wallMs": 1367,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-box-split-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 11169.120711008492,
+   "wallMs": 377,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-box-then-groove-split-piece",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 237,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-collinear-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 150,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-cross-axis-1e-3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 149,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-cross-axis-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-disjoint-above-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 149,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-disjoint-above-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-disjoint-below-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-disjoint-r30-35-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-disjoint-r30-35-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-dup-vertex-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 149,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-eccentric-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 162,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-eccentric-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 163,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-join-base-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 640,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-join-base-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 653,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-join-boss-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 631,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-join-cylprims-360",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 631,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-join-cylprims-boss-360",
+   "same": true,
+   "retried": false,
+   "status": "built,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 611,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-negside-interior-179",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-negside-interior-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-negside-interior-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-groove-negside-interior-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.6
+  },
+  {
+   "id": "Z-groove-ring-inside-hollow-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 251,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-soup-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-stacked-overlap-360-then-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 441,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-stacked-overlap-90-then-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-turns-away-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 169,
+   "load1": 3.7
+  },
+  {
+   "id": "Z-groove-undrawn-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 149,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-groove-undrawn-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 149,
+   "load1": 3.8
+  },
+  {
+   "id": "Z-spin-bowtie-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-bowtie-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-bowtie-negside-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-collinear-4pt-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-collinear-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-cross-axis-1e-3-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-cross-axis-1e-3-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-cross-axis-1e-7-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-cross-axis-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-dup-vertex-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-neg-small-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 157.07165793557496,
+   "wallMs": 131,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-negside-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.679056500227,
+   "wallMs": 407,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-arc-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 21029.78664007843,
+   "wallMs": 2186,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3141.5495745343123,
+   "wallMs": 194,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-custom-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404661,
+   "wallMs": 220,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-oblique-120",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 9423.166518423786,
+   "wallMs": 212,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-offset5-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 211,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-offset5-neg90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.8784254046595,
+   "wallMs": 239,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-torus-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2467.032999463791,
+   "wallMs": 1971,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-torus-neg90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2467.032999463791,
+   "wallMs": 2381,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-touch-axis-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2355.9618713893196,
+   "wallMs": 135,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-negside-touch-axis-neg90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2355.9618713893196,
+   "wallMs": 138,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-over360-360p5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 410,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-400",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 401,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-720",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 396,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-cone-500",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 12565.280609792826,
+   "wallMs": 112,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-neg360p5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 410,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-neg400",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 407,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-neg720",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 399,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-over360-negside-400",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.679056500227,
+   "wallMs": 411,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-pinch-vertex-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-posside-arc-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 21029.786640078582,
+   "wallMs": 2267,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-r105-2deg",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1099.5434727952181,
+   "wallMs": 130,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-r105-5deg",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2748.8390565338414,
+   "wallMs": 128,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-r35-5deg",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 916.2796855113638,
+   "wallMs": 144,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-small-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 78.53881948520659,
+   "wallMs": 134,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-small-2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 157.07165793557496,
+   "wallMs": 134,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-small-5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 392.6679306220813,
+   "wallMs": 138,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-tiny-0p5",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-tiny-0p99",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.2
+  },
+  {
+   "id": "Z-spin-undrawn-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 3,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-undrawn-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 2,
+   "load1": 3.5
+  },
+  {
+   "id": "Z-spin-zero-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,refused",
+   "volume": null,
+   "wallMs": 4,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-0-post-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-1-boxC-side-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71889.3422598345,
+   "wallMs": 1107,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-10-boxG-top-round-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-100-boxC-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-101-boxC-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-102-post-front-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 160,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-103-post-top-round-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-104-boxG-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-105-boxG-side-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-106-boxG-side-circle-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-107-tube-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 254,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-108-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-109-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-11-boxC-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-110-tube-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 250,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-111-join-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 645,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-112-boxC-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 70875.19158693815,
+   "wallMs": 372,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-113-join-side-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 649,
+   "load1": 3.5
+  },
+  {
+   "id": "fzc1-114-boxG-front-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-115-post-top-circle-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-116-boxG-top-circle-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 56,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-117-post-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-118-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-119-boxC-side-circle-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-12-boxG-front-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-13-post-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-14-tube-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 250,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-15-post-front-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-16-post-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-17-boxG-front-flat-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-18-boxC-top-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71440.75338093135,
+   "wallMs": 1595,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-19-join-top-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 632,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-2-post-top-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-20-post-top-round-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-21-post-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-22-join-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 635,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-23-tube-top-round-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 249,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-24-tube-top-circle-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 247,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-25-boxC-side-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-26-post-front-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-27-boxG-front-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-28-post-side-round-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-29-join-side-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 640,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-3-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-30-post-side-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-31-join-front-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 640,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-32-join-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 643,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-33-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-34-join-front-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 626,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-35-post-top-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-36-boxC-top-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-37-post-side-round-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-38-boxC-side-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 70818.30369785205,
+   "wallMs": 1100,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-39-tube-front-circle-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 240,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-4-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-40-tube-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 246,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-41-post-side-round-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 160,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-42-boxC-side-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-43-tube-front-flat-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 238,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-44-join-top-circle-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 627,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-45-tube-front-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 246,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-46-post-top-round-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-47-post-top-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-48-tube-top-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 244,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-49-boxG-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69110.70089504762,
+   "wallMs": 316,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-5-boxG-top-round-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-50-post-front-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-51-tube-side-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 259,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-52-boxG-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68864.67195974114,
+   "wallMs": 387,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-53-post-top-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-54-boxC-front-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-55-post-top-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-56-join-front-round-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 638,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-57-tube-top-flat-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 247,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-58-boxC-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-59-post-side-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-6-boxG-top-circle-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-60-boxC-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-61-post-top-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-62-boxG-top-circle-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 56,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-63-tube-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 247,
+   "load1": 3.4
+  },
+  {
+   "id": "fzc1-64-boxG-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70734.32908969783,
+   "wallMs": 345,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-65-join-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 643,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-66-post-top-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-67-post-top-circle-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-68-post-top-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-69-post-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 33819.2096153246,
+   "wallMs": 900,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-7-boxC-top-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-70-post-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-71-boxC-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-72-post-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-73-boxC-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-74-boxG-top-circle-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-75-post-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-76-boxC-side-circle-45",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-77-join-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 635,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-78-tube-top-circle-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 243,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-79-post-top-circle-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-8-boxG-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70370.05896364692,
+   "wallMs": 382,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-80-join-side-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 628,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-81-join-top-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 640,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-82-boxC-side-circle-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc1-83-boxC-front-flat-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 68457.85561260629,
+   "wallMs": 1525,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-84-post-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-85-tube-top-circle-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 238,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-86-tube-top-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 242,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-87-join-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 626,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-88-post-top-circle-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-89-boxC-top-round-360",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-9-boxG-front-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69928.18874407253,
+   "wallMs": 346,
+   "load1": 3.3
+  },
+  {
+   "id": "fzc1-90-post-side-round-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-91-join-front-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null,
+   "wallMs": 624,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-92-post-top-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 155,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-93-post-side-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-94-post-top-circle-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-95-tube-side-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 255,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-96-tube-side-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 253,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-97-boxG-front-round-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-98-post-top-round-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 162,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc1-99-post-front-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 162,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc2-118-post-top-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 37300.59613944033,
+   "wallMs": 916,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc2-138-boxC-top-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71403.40126760198,
+   "wallMs": 1839,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc2-148-boxC-front-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71720.94553811473,
+   "wallMs": 591,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc2-26-boxC-front-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71995.58623030627,
+   "wallMs": 592,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc2-44-post-top-flat-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 37409.88121837419,
+   "wallMs": 998,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc2-66-boxG-top-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70385.76094472797,
+   "wallMs": 1088,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc2-83-post-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 35951.744841711836,
+   "wallMs": 603,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc2-88-boxC-top-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71693.04909461208,
+   "wallMs": 1087,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc2-99-boxG-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69311.32582186659,
+   "wallMs": 380,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc21-11-boxC-side-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc21-110-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc21-116-boxC-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc21-120-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-122-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-130-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-131-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-133-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-136-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-138-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-14-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-146-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-150-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-158-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-166-boxC-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-167-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-168-boxC-side-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-17-boxC-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-172-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-173-post-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-177-post-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-182-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-183-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-185-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-192-boxC-front-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-200-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 55,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-208-boxC-side-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-212-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-214-boxC-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-215-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-23-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-233-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 56,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-234-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-235-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 157,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-237-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-244-post-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 151,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-249-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-25-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-255-post-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-259-boxC-front-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-269-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-270-boxC-front-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 42,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-275-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-284-boxG-top-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-289-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 57,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-293-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-30-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-33-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 164,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-4-boxC-front-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-44-boxG-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-46-boxC-top-cone-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 43,
+   "load1": 3.8
+  },
+  {
+   "id": "fzc21-53-boxC-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-55-boxG-top-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-58-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-60-post-top-cone-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-64-boxG-top-cone-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-72-boxC-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-73-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-76-boxG-top-cone-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-86-boxC-front-cone-135",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc21-88-boxC-side-cone-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.7
+  },
+  {
+   "id": "fzc3-11-post-top-flat-135",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36822.076276695814,
+   "wallMs": 1397,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc3-33-boxC-top-flat-270",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,built",
+   "volume": 71848.75809747957,
+   "wallMs": 1991,
+   "load1": 3.6
+  },
+  {
+   "id": "fzc3-39-post-top-flat-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 30414.785950632988,
+   "wallMs": 680,
+   "load1": 3.6
+  },
+  {
+   "id": "groove--90",
+   "skipped": "script error: groove(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got -90. A negative angle or one past a full turn is not a turn this kernel builds."
+  },
+  {
+   "id": "groove-0",
+   "skipped": "script error: groove(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got 0. A negative angle or one past a full turn is not a turn this kernel builds."
+  },
+  {
+   "id": "groove-180-interior-ring",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 150,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 153,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-361",
+   "skipped": "script error: groove(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got 361. A negative angle or one past a full turn is not a turn this kernel builds."
+  },
+  {
+   "id": "groove-400",
+   "skipped": "script error: groove(): the angle is how far the sketch turns, more than 0 and at most 360 degrees -- got 400. A negative angle or one past a full turn is not a turn this kernel builds."
+  },
+  {
+   "id": "groove-45-inner",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-box-front-180",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 40,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-box-top-360-full",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 39,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-box-top-90-straddle",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 41,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-box-yz-half",
+   "same": true,
+   "retried": false,
+   "status": "built,noop,refused",
+   "volume": null,
+   "wallMs": 38,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-coaxial-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36500.833837496866,
+   "wallMs": 689,
+   "load1": 3.3
+  },
+  {
+   "id": "groove-half-turn-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.3
+  },
+  {
+   "id": "sf5-0-top-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2554.739305993873,
+   "wallMs": 409,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-1-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 8175.95924483758,
+   "wallMs": 620,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-10-front--234.8",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3129.7781769922367,
+   "wallMs": 260,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-11-top-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 99.37187709418104,
+   "wallMs": 155,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-12-side-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1064.0299752307392,
+   "wallMs": 330,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-13-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5479.379293456201,
+   "wallMs": 354,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-14-side-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1303.6118065739672,
+   "wallMs": 246,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-15-top-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1062.5651055079302,
+   "wallMs": 395,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-16-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2206.826903187844,
+   "wallMs": 408,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-17-side--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1442.7992785091471,
+   "wallMs": 173,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-18-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3916.558989639238,
+   "wallMs": 366,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-19-side-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 29.88470833235552,
+   "wallMs": 341,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-2-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1456.2583533393947,
+   "wallMs": 317,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-20-top-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 795.7394131619302,
+   "wallMs": 374,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-21-top-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 625.2073824629313,
+   "wallMs": 191,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-22-top-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5100.8933309428185,
+   "wallMs": 317,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-23-top--318.6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 519.8499992329008,
+   "wallMs": 293,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-24-front--136.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 4239.268724775849,
+   "wallMs": 318,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-25-side-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1671.6397431688977,
+   "wallMs": 243,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-26-side-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2762.4297713346564,
+   "wallMs": 238,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-27-top--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 70.52533747125345,
+   "wallMs": 168,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-28-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 15814.792943979322,
+   "wallMs": 298,
+   "load1": 3.7
+  },
+  {
+   "id": "sf5-29-side-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 226.01827734658966,
+   "wallMs": 165,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-3-top-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 687.4997393304037,
+   "wallMs": 445,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-30-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 328.65093660079265,
+   "wallMs": 296,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-31-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 12505.544736572867,
+   "wallMs": 377,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-32-top-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2715.071709870171,
+   "wallMs": 338,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-33-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1682.8392705998485,
+   "wallMs": 227,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-34-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3601.377898553125,
+   "wallMs": 367,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-35-top--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 6008.950028192888,
+   "wallMs": 181,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-36-side--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2877.374213724446,
+   "wallMs": 186,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-37-side--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 656.9333742386035,
+   "wallMs": 211,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-38-top--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 344.55674949281484,
+   "wallMs": 191,
+   "load1": 3.6
+  },
+  {
+   "id": "sf5-39-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 13649.509841748782,
+   "wallMs": 396,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-4-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 4545.533838199152,
+   "wallMs": 413,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-40-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 149.50291540425906,
+   "wallMs": 156,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-41-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1473.5309705772095,
+   "wallMs": 235,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-42-side--180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 285.07416218887045,
+   "wallMs": 300,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-43-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1959.7918483928731,
+   "wallMs": 557,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-44-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1344.8066634110048,
+   "wallMs": 474,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-45-top--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2227.4943255841818,
+   "wallMs": 236,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-46-top--179.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3699.909280218966,
+   "wallMs": 221,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-47-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1899.1207451097955,
+   "wallMs": 309,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-48-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5293.097280808526,
+   "wallMs": 283,
+   "load1": 4
+  },
+  {
+   "id": "sf5-49-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 8078.727096384054,
+   "wallMs": 305,
+   "load1": 4
+  },
+  {
+   "id": "sf5-5-front--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 357.5367184503475,
+   "wallMs": 194,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-50-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 698.0549090945054,
+   "wallMs": 252,
+   "load1": 4
+  },
+  {
+   "id": "sf5-51-side--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 304.8848359544841,
+   "wallMs": 175,
+   "load1": 4
+  },
+  {
+   "id": "sf5-52-side-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 273.34887885266454,
+   "wallMs": 190,
+   "load1": 4
+  },
+  {
+   "id": "sf5-53-top-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5024.68190005266,
+   "wallMs": 334,
+   "load1": 4
+  },
+  {
+   "id": "sf5-54-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2150.3139958763045,
+   "wallMs": 224,
+   "load1": 4
+  },
+  {
+   "id": "sf5-55-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5898.401982030086,
+   "wallMs": 391,
+   "load1": 4
+  },
+  {
+   "id": "sf5-56-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3473.611362311916,
+   "wallMs": 252,
+   "load1": 4
+  },
+  {
+   "id": "sf5-57-top--339.8",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 550.764399607069,
+   "wallMs": 610,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-58-front-45",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 200.13318326923635,
+   "wallMs": 174,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-59-front-149.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 9198.310005252586,
+   "wallMs": 207,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-6-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 6707.992326589158,
+   "wallMs": 310,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-60-top-231.7",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 466.9690551895798,
+   "wallMs": 386,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-61-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1545.975106055431,
+   "wallMs": 393,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-62-side--46.4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 514.5454246760409,
+   "wallMs": 164,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-63-side--188.6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3300.6847192615264,
+   "wallMs": 380,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-64-side--313",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1689.6757392674274,
+   "wallMs": 278,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-65-top-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2290.3079372166562,
+   "wallMs": 540,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-66-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 14040.518506894745,
+   "wallMs": 382,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-67-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 938.616576357364,
+   "wallMs": 255,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-68-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 22512.448894738205,
+   "wallMs": 489,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-69-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2459.3957976427555,
+   "wallMs": 311,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-7-top-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 366.9824252085844,
+   "wallMs": 225,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-70-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 15649.409633191499,
+   "wallMs": 390,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-71-side-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5018.732675706133,
+   "wallMs": 297,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-72-front-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 445.89339330946245,
+   "wallMs": 177,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-73-side--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1946.1016551754544,
+   "wallMs": 196,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-74-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 6069.049193725173,
+   "wallMs": 439,
+   "load1": 3.9
+  },
+  {
+   "id": "sf5-75-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 593.7247336197098,
+   "wallMs": 268,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-76-front-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 32453.224160661837,
+   "wallMs": 351,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-77-front--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 941.4195063110748,
+   "wallMs": 194,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-78-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 13810.093570845967,
+   "wallMs": 306,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-79-top--257",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 2287.58319184736,
+   "wallMs": 429,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-8-top-90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 352.5482074052811,
+   "wallMs": 181,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-80-front--26",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 43.48066960090133,
+   "wallMs": 148,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-81-top--180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 268.26127511583036,
+   "wallMs": 272,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-82-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1099.3711874117087,
+   "wallMs": 398,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-83-front--180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1178.4055413343726,
+   "wallMs": 251,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-84-top-159.4",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 486.42745528704353,
+   "wallMs": 271,
+   "load1": 3.8
+  },
+  {
+   "id": "sf5-85-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7430.532936390995,
+   "wallMs": 530,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-86-top-91.6",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1454.108913133876,
+   "wallMs": 220,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-87-top-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 298.4502214585894,
+   "wallMs": 250,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-88-side--255.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 896.4625636868622,
+   "wallMs": 223,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-89-front--90",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 5450.2891097508655,
+   "wallMs": 166,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-9-side--180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 730.8029179792449,
+   "wallMs": 226,
+   "load1": 3.5
+  },
+  {
+   "id": "sf5-90-front-60.9",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 266.06559817175724,
+   "wallMs": 213,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-91-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 900.7285465268283,
+   "wallMs": 290,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-92-front-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 3057.5166475167885,
+   "wallMs": 370,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-93-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 12244.6279028017,
+   "wallMs": 270,
+   "load1": 4.1
+  },
+  {
+   "id": "sf5-94-side-180",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7041.30648851967,
+   "wallMs": 349,
+   "load1": 4
+  },
+  {
+   "id": "sf5-95-front--179.7",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 598.6763764509116,
+   "wallMs": 318,
+   "load1": 4
+  },
+  {
+   "id": "sf5-96-side-360",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 408.40567425638255,
+   "wallMs": 274,
+   "load1": 4
+  },
+  {
+   "id": "sf5-97-side-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 1441.330908562513,
+   "wallMs": 743,
+   "load1": 4
+  },
+  {
+   "id": "sf5-98-top--282.9",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 14972.863165134493,
+   "wallMs": 331,
+   "load1": 4
+  },
+  {
+   "id": "sf5-99-front-270",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 8205.969264618327,
+   "wallMs": 334,
+   "load1": 4
+  },
+  {
+   "id": "sl9-0-boxlip-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-1-boxlip-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-10-postlip-p1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 34500.398664458255,
+   "wallMs": 670,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-100-boxtan-side-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-101-boxlip-side-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-102-boxlip-side-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-103-boxlip-side-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-104-boxtan-side-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70189.6630595669,
+   "wallMs": 324,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-105-boxtan-side-p0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-106-boxlip-top-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-107-postlip-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 34625.973761290334,
+   "wallMs": 669,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-108-boxtan-top-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-109-boxtan-top-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-11-boxlip-top-p0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-110-boxlip-side-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-111-boxlip-side-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 94,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-112-boxtan-side-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 71044.21795402169,
+   "wallMs": 337,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-113-boxtan-top-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-114-boxlip-top-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-115-boxlip-side-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70942.16061546383,
+   "wallMs": 337,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-116-boxtan-top-p0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-117-boxtan-top-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-118-boxtan-side-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-119-boxlip-top-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-12-boxlip-top-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70010.98816087644,
+   "wallMs": 1584,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-13-boxlip-top-p0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-14-boxlip-top-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 66970.26743081975,
+   "wallMs": 1577,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-15-boxlip-top-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-16-boxlip-top-m0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-17-boxlip-top-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-18-boxlip-top-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 71274.30133996466,
+   "wallMs": 419,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-19-boxlip-top-p0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-2-boxlip-top-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-20-boxlip-top-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-21-boxtan-side-p0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 65,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-22-boxlip-top-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 67581.00837413178,
+   "wallMs": 419,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-23-boxlip-top-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68188.15681732727,
+   "wallMs": 444,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-24-boxlip-top-p0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-25-postlip-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 34183.92737672454,
+   "wallMs": 707,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-26-boxlip-top-m0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-27-boxtan-top-p0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-28-boxlip-top-p0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-29-postlip-m0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 152,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-3-boxlip-top-p0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-30-boxtan-top-m0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-31-boxtan-top-m0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-32-boxtan-side-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-33-boxtan-top-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68894.71932887274,
+   "wallMs": 2028,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-34-boxtan-side-p0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-35-boxlip-top-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-36-boxlip-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-37-boxlip-top-p0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-38-boxlip-side-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-39-boxlip-top-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-4-boxlip-top-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-40-postlip-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36092.067181907376,
+   "wallMs": 661,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-41-boxlip-top-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-42-boxtan-side-p0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-43-boxlip-top-m0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 68063.42726905864,
+   "wallMs": 1221,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-44-boxlip-top-m0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69348.32933557408,
+   "wallMs": 431,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-45-postlip-m0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 158,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-46-boxlip-top-p0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-47-boxlip-top-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-48-boxlip-top-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-49-postlip-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36368.76380734966,
+   "wallMs": 727,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-5-boxtan-side-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-50-boxtan-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-51-boxlip-side-p0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 63,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-52-boxtan-side-p0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-53-postlip-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36361.99171040272,
+   "wallMs": 692,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-54-boxlip-side-p0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-55-boxlip-side-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 62,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-56-boxtan-side-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-57-boxtan-side-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-58-boxtan-top-p0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70608.34066754836,
+   "wallMs": 1023,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-59-boxtan-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-6-boxlip-top-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-60-boxlip-side-m0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-61-postlip-p0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-62-boxlip-side-p0.01",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-63-postlip-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-64-boxtan-side-p0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-65-boxtan-top-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-66-postlip-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 161,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-67-boxtan-top-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-68-boxtan-side-p0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-69-boxtan-top-m0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-7-boxlip-top-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-70-boxlip-top-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-71-boxtan-side-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-72-boxlip-top-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-73-boxlip-top-p0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-74-boxtan-side-p0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-75-boxlip-side-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69951.16835265506,
+   "wallMs": 341,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-76-boxtan-side-m0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-77-boxtan-top-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69148.87286418364,
+   "wallMs": 396,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-78-boxtan-side-m0.1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-79-postlip-m0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 156,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-8-postlip-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-80-postlip-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-81-boxlip-top-m1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 64244.957581049646,
+   "wallMs": 470,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-82-boxlip-side-p0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69348.08265143064,
+   "wallMs": 344,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-83-boxlip-top-p0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 64,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-84-boxlip-side-p0.15",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-85-boxtan-side-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-86-boxtan-side-p0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-87-postlip-m0.07",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 154,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-88-boxlip-top-m0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-89-boxlip-top-m0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 65072.88583251002,
+   "wallMs": 1161,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-9-boxlip-top-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 71559.60556073868,
+   "wallMs": 1316,
+   "load1": 3.6
+  },
+  {
+   "id": "sl9-90-boxlip-top-p1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 58,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-91-postlip-p0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 159,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-92-boxlip-side-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 70969.7520270267,
+   "wallMs": 3298,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-93-boxlip-top-p0.003",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 61,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-94-boxlip-top-m0.5",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-95-boxlip-side-m0.3",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 98,
+   "load1": 3.4
+  },
+  {
+   "id": "sl9-96-postlip-p1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 36585.98395804923,
+   "wallMs": 682,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-97-boxlip-top-m0.2",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 59,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-98-boxlip-side-m0.03",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,refused",
+   "volume": null,
+   "wallMs": 60,
+   "load1": 3.5
+  },
+  {
+   "id": "sl9-99-boxlip-top-m0",
+   "same": true,
+   "retried": false,
+   "status": "noop,built,noop,built",
+   "volume": 69937.00101423603,
+   "wallMs": 429,
+   "load1": 3.5
+  },
+  {
+   "id": "spin--400",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 388,
+   "load1": 3.3
+  },
+  {
+   "id": "spin--720",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 394,
+   "load1": 3.3
+  },
+  {
+   "id": "spin--721",
+   "skipped": "script error: spin(): the angle is how far the sketch turns, and -721 degrees is more than 720 -- got -721. Use a turn of at most 360 degrees (a negative one turns the other way)."
+  },
+  {
+   "id": "spin--90-asym",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 214,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-0",
+   "skipped": "script error: spin(): the angle is how far the sketch turns, and 0 degrees turns it nowhere -- got 0. Use a turn from 1 to 360 degrees (a negative one turns the other way)."
+  },
+  {
+   "id": "spin-1",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 78.53881948520659,
+   "wallMs": 127,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-180-script",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 14137.152685377025,
+   "wallMs": 389,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-360-script",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 397,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-400-script",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 398,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-720",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 28269.67905650022,
+   "wallMs": 391,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-721",
+   "skipped": "script error: spin(): the angle is how far the sketch turns, and 721 degrees is more than 720 -- got 721. Use a turn of at most 360 degrees (a negative one turns the other way)."
+  },
+  {
+   "id": "spin-90-asym",
+   "same": true,
+   "retried": false,
+   "status": "noop,built",
+   "volume": 7067.878425404659,
+   "wallMs": 233,
+   "load1": 3.3
+  },
+  {
+   "id": "spin-string",
+   "skipped": "script error: spin's angle has to be a number, and you gave it the text \"90\"."
+  }
+ ],
+ "partial": false
+}

@@ -1,0 +1,3002 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.30.1-rig/sc-referee-pkg",
+ "cases": 466,
+ "same": 465,
+ "differ": 1,
+ "noDoc": 7,
+ "rows": [
+  {
+   "id": "def-top",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10000
+  },
+  {
+   "id": "def-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10000
+  },
+  {
+   "id": "def-side",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10000
+  },
+  {
+   "id": "def-extrude-alias",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10000
+  },
+  {
+   "id": "pp-top-offset",
+   "same": true,
+   "status": "noop,built",
+   "volume": 7200
+  },
+  {
+   "id": "pp-front-offset",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "pp-side-L",
+   "same": true,
+   "status": "noop,built",
+   "volume": 5400
+  },
+  {
+   "id": "pp-neg-top",
+   "same": true,
+   "status": "noop,built",
+   "volume": 4200
+  },
+  {
+   "id": "pp-neg-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 8400
+  },
+  {
+   "id": "pp-neg-side",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2700
+  },
+  {
+   "id": "pp-circle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6361.007278393902
+  },
+  {
+   "id": "pp-circle-front-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6361.007278393896
+  },
+  {
+   "id": "pp-arc-outline",
+   "same": true,
+   "status": "noop,built",
+   "volume": 9946.314350373941
+  },
+  {
+   "id": "pp-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1600
+  },
+  {
+   "id": "pp-thin-plate",
+   "same": true,
+   "status": "noop,built",
+   "volume": 36000
+  },
+  {
+   "id": "pp-slender-post",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1920
+  },
+  {
+   "id": "pp-zero-height",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pm-top",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "pm-front-offset",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3200
+  },
+  {
+   "id": "pm-side-L",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1344
+  },
+  {
+   "id": "pm-circle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1357.0844665310963
+  },
+  {
+   "id": "pm-offset-plane",
+   "same": true,
+   "status": "noop,built",
+   "volume": 4800
+  },
+  {
+   "id": "pm-neg-height",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "pm-long-slab",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "pl-top",
+   "same": true,
+   "status": "noop,built",
+   "volume": 8400
+  },
+  {
+   "id": "pl-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 19200
+  },
+  {
+   "id": "pl-side-L",
+   "same": true,
+   "status": "noop,built",
+   "volume": 7650
+  },
+  {
+   "id": "pl-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 8400
+  },
+  {
+   "id": "pl-neg-height",
+   "same": true,
+   "status": "noop,built",
+   "volume": 8400
+  },
+  {
+   "id": "pl-circle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3053.3347886558636
+  },
+  {
+   "id": "pl-both-midplane",
+   "skipped": "script error: pull() takes midplane (the same length either side) or length2 (a second length the other way), not both."
+  },
+  {
+   "id": "pl-zero-length2",
+   "skipped": "script error: pull's length2 is the second length, a positive number. You gave it 0."
+  },
+  {
+   "id": "pr-top",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "pr-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "pr-side",
+   "same": true,
+   "status": "noop,built",
+   "volume": 5400
+  },
+  {
+   "id": "pr-neg-double",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "pr-offset",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1884.829856912443
+  },
+  {
+   "id": "pr-false",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "pt-rect-pos",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3005.7012771014383
+  },
+  {
+   "id": "pt-rect-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1877.208600567261
+  },
+  {
+   "id": "pt-rect-5",
+   "same": true,
+   "status": "noop,built",
+   "volume": 16313.965902171616
+  },
+  {
+   "id": "pt-triangle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 4477.701022469923
+  },
+  {
+   "id": "pt-L-concave",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2911.2878931040227
+  },
+  {
+   "id": "pt-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3140.4213865560464
+  },
+  {
+   "id": "pt-side",
+   "same": true,
+   "status": "noop,built",
+   "volume": 715.4600566291915
+  },
+  {
+   "id": "pt-neg-height",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3005.70127710144
+  },
+  {
+   "id": "pt-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3005.70127710144
+  },
+  {
+   "id": "pt-80deg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 464.3656015311347
+  },
+  {
+   "id": "pt-circle-pos",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3727.8727771741615
+  },
+  {
+   "id": "pt-circle-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2620.027404026989
+  },
+  {
+   "id": "pt-fold",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pt-arc-outline",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10515.271504810202
+  },
+  {
+   "id": "pt-ring",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10248.90022236427
+  },
+  {
+   "id": "pt-midplane",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pt-length2",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pt-90",
+   "skipped": "script error: pull's taper is an angle in degrees between -90 and 90, like pull(..., { taper: 5 }). You gave it 90."
+  },
+  {
+   "id": "pt-zero",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2400
+  },
+  {
+   "id": "pd-45-normal",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1999.9999999999936
+  },
+  {
+   "id": "pd-45-along",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1414.2135623727052
+  },
+  {
+   "id": "pd-30deg-y",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1599.9999999999966
+  },
+  {
+   "id": "pd-triangle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3599.999999999993
+  },
+  {
+   "id": "pd-L-concave",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2699.9999999999986
+  },
+  {
+   "id": "pd-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1999.9999999999945
+  },
+  {
+   "id": "pd-side",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1199.9999999999934
+  },
+  {
+   "id": "pd-neg-height",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1999.9999999999955
+  },
+  {
+   "id": "pd-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1999.9999999999955
+  },
+  {
+   "id": "pd-midplane",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1999.999999999999
+  },
+  {
+   "id": "pd-length2",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2799.999999999995
+  },
+  {
+   "id": "pd-parallel-down",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2000
+  },
+  {
+   "id": "pd-parallel-up",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2000
+  },
+  {
+   "id": "pd-in-plane",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pd-circle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 785.3192356241392
+  },
+  {
+   "id": "pd-arc-outline",
+   "same": true,
+   "status": "noop,built",
+   "volume": 9946.329825948415
+  },
+  {
+   "id": "pd-alongnormal-alone",
+   "skipped": "script error: pull's alongNormal only matters with a direction: add direction: [x, y, z], or drop alongNormal."
+  },
+  {
+   "id": "pd-zero-vector",
+   "skipped": "script error: pull's direction [0, 0, 0] points nowhere. Give it at least one non-zero number."
+  },
+  {
+   "id": "pd-with-taper",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kp-top-rect",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11808
+  },
+  {
+   "id": "kp-top-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11522.557234832713
+  },
+  {
+   "id": "kp-front-face",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11597.942934595909
+  },
+  {
+   "id": "kp-side-face",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11568
+  },
+  {
+   "id": "kp-bottom-face",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kp-bottom-frame",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11547.685801419599
+  },
+  {
+   "id": "kp-eq-thickness",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "kp-deeper-than-part",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11214.732294132635
+  },
+  {
+   "id": "kp-runs-off-side",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11880
+  },
+  {
+   "id": "kp-in-air",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kp-two-sequential",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 11657.228600473258
+  },
+  {
+   "id": "kp-on-cylinder",
+   "same": true,
+   "status": "built,noop,built",
+   "volume": 13995.335156732886
+  },
+  {
+   "id": "kp-on-holed-plate",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11022.732294132635
+  },
+  {
+   "id": "kt-top-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10869.214503550766
+  },
+  {
+   "id": "kt-slot",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10560
+  },
+  {
+   "id": "kt-front",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11151.910877663488
+  },
+  {
+   "id": "kt-side",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10869.214503551333
+  },
+  {
+   "id": "kt-depth-small",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "kt-mid-sketch",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "kt-triangle-thick",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 23750
+  },
+  {
+   "id": "kt-crossing-hole",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10995.936756283183
+  },
+  {
+   "id": "kt-through-reversed",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "kt-through-midplane",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "kr-mid",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kr-top-air",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kr-bottom",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11685.892917652622
+  },
+  {
+   "id": "kr-front-mid",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kr-false",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11856
+  },
+  {
+   "id": "km-mid",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "km-top",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11904
+  },
+  {
+   "id": "km-front",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "km-through-the-body",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "kl-top",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11808
+  },
+  {
+   "id": "kl-mid",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kl-reversed",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kl-front",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kk-pos",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11693.103689397742
+  },
+  {
+   "id": "kk-neg",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11816.532575893665
+  },
+  {
+   "id": "kk-deep",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11387.31018273629
+  },
+  {
+   "id": "kk-through",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11231.687288173785
+  },
+  {
+   "id": "kk-fold",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kk-midplane",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kk-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11630.41059717638
+  },
+  {
+   "id": "kd-slant",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "kd-slant-y",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11712
+  },
+  {
+   "id": "kd-up-slant",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kd-along-false",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11830.294372515229
+  },
+  {
+   "id": "kd-along-false-steep",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11627.465279944188
+  },
+  {
+   "id": "kd-parallel-down",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "kd-parallel-up",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kd-reversed",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kd-midplane",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kd-in-plane",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kd-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11858.645339279632
+  },
+  {
+   "id": "jp-on-top",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12600
+  },
+  {
+   "id": "jp-overlap-inside",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12000
+  },
+  {
+   "id": "jp-half-embedded",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12500
+  },
+  {
+   "id": "jp-side-face",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12800
+  },
+  {
+   "id": "jp-disjoint",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12600
+  },
+  {
+   "id": "jp-circle-boss",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12904.628397159562
+  },
+  {
+   "id": "jp-pad-midplane",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12400
+  },
+  {
+   "id": "jp-pad-tapered",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 13046.923463990004
+  },
+  {
+   "id": "jp-pad-reversed-into",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12000
+  },
+  {
+   "id": "jp-two-pulls",
+   "same": true,
+   "status": "noop,built,noop,noop,built,built,built",
+   "volume": 12768
+  },
+  {
+   "id": "sp-circle-in-rect",
+   "same": true,
+   "status": "noop,built",
+   "volume": 16822.098441199272
+  },
+  {
+   "id": "sp-rect-in-circle",
+   "same": true,
+   "status": "noop,built",
+   "volume": 17348.15650525186
+  },
+  {
+   "id": "sp-two-holes",
+   "same": true,
+   "status": "noop,built",
+   "volume": 32607.64351065361
+  },
+  {
+   "id": "sp-rect-rect-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 16500
+  },
+  {
+   "id": "sp-polygon-with-hole",
+   "same": true,
+   "status": "noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "sp-disjoint-rects",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "sp-disjoint-circles",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6031.1772713680675
+  },
+  {
+   "id": "sp-rect-circle-apart",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6010.440090783196
+  },
+  {
+   "id": "sp-three-deep-rects",
+   "same": true,
+   "status": "noop,built",
+   "volume": 36000
+  },
+  {
+   "id": "sp-four-circles",
+   "same": true,
+   "status": "noop,built",
+   "volume": 31415.597580610836
+  },
+  {
+   "id": "sp-island-far-disc",
+   "same": true,
+   "status": "noop,built",
+   "volume": 29451.136159074
+  },
+  {
+   "id": "sp-holed-plate-far-rect",
+   "same": true,
+   "status": "noop,built",
+   "volume": 18322.098441199272
+  },
+  {
+   "id": "sp-ring-geom-rows",
+   "same": true,
+   "status": "noop,built",
+   "volume": 14136.480098042552
+  },
+  {
+   "id": "sp-crossing-rects",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sp-crossing-circles",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sp-tangent-inside",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sp-tangent-outside",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sp-shared-edge",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sp-soup-midplane",
+   "same": true,
+   "status": "noop,built",
+   "volume": 16822.098441199272
+  },
+  {
+   "id": "sp-soup-taper",
+   "same": true,
+   "status": "noop,built",
+   "volume": 11966.731248226055
+  },
+  {
+   "id": "sp-soup-reversed-length2",
+   "same": true,
+   "status": "noop,built",
+   "volume": 15400
+  },
+  {
+   "id": "spk-two-holes",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11597.942934595567
+  },
+  {
+   "id": "spk-rect-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11657.228600473258
+  },
+  {
+   "id": "spk-ring",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10944.512158764244
+  },
+  {
+   "id": "spk-three-deep",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10793.682481444284
+  },
+  {
+   "id": "spk-through-two-holes",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10994.857336489962
+  },
+  {
+   "id": "spk-through-ring-far-rect",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 14847.266782768898
+  },
+  {
+   "id": "spk-blind-ring-far-rect",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 16738.77616331253
+  },
+  {
+   "id": "spk-soup-midplane",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11698.457200946517
+  },
+  {
+   "id": "spk-soup-taper",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11561.73350659603
+  },
+  {
+   "id": "pt-near-collapse-ok",
+   "same": true,
+   "status": "noop,built",
+   "volume": 996.9235830376397
+  },
+  {
+   "id": "pt-just-folded",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "pl-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2200
+  },
+  {
+   "id": "pr-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1600
+  },
+  {
+   "id": "kt-in-air",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "kt-below",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "kt-cylinder",
+   "same": true,
+   "status": "built,noop,built",
+   "volume": 13571.2905955647
+  },
+  {
+   "id": "sp-slot-hole",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2659.679900768431
+  },
+  {
+   "id": "sp-slot-hole-pocket",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10936.128039691937
+  },
+  {
+   "id": "sp-dimensioned",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6997.428668245074
+  },
+  {
+   "id": "kp-into-pad",
+   "same": true,
+   "status": "noop,built,noop,built,built,noop,built",
+   "volume": 12562.307150118357
+  },
+  {
+   "id": "kp-into-box",
+   "same": true,
+   "status": "built,noop,built",
+   "volume": 11808
+  },
+  {
+   "id": "pp-tilted-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 420
+  },
+  {
+   "id": "pl-tilted-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 540
+  },
+  {
+   "id": "pm-tilted-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 420
+  },
+  {
+   "id": "pt-tilted-frame",
+   "same": true,
+   "status": "noop,built",
+   "volume": 539.2171371974263
+  },
+  {
+   "id": "pp-cw-polygon",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2700
+  },
+  {
+   "id": "kp-arc-outline",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11419.326832271376
+  },
+  {
+   "id": "fc-pad-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "fc-pad-offset-neg-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1385.3157238014312
+  },
+  {
+   "id": "fc-pad-side-offset-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 4500
+  },
+  {
+   "id": "fc-pad-sym-front",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3200
+  },
+  {
+   "id": "fc-pad-sym-rect-offcentre",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "fc-pocket-front-12",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11167.335915154048
+  },
+  {
+   "id": "fc-pocket-runs-off",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11700
+  },
+  {
+   "id": "fc-pocket-two-seq",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 11694.921450355054
+  },
+  {
+   "id": "fc-pocket-through-two-seq",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 11397.303625887833
+  },
+  {
+   "id": "fc-pocket-depth-negative",
+   "skipped": "script error: pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got -3."
+  },
+  {
+   "id": "fc-pocket-depth-zero",
+   "skipped": "script error: pocket(): the depth is how far the cut goes into the material, so it has to be a positive number -- got 0."
+  },
+  {
+   "id": "tf-rect-35",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-45",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-55",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-60",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-65",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-70",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-75",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-80",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-85",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect-89",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-rect40-70",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-triangle-50",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-uslot-20",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-uslot-11.4",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-cshape-30",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-notch-30",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-roundrect-60",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-circle-60",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-L-inward",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-pocket-slot-25",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tf-pocket-neg-45",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tfc-rect-30",
+   "same": true,
+   "status": "noop,built",
+   "volume": 996.9235830376397
+  },
+  {
+   "id": "tfc-uslot-11",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6775.536189427814
+  },
+  {
+   "id": "tfc-uslot-10",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6654.68221922683
+  },
+  {
+   "id": "tfc-triangle-30",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1288.2296389910905
+  },
+  {
+   "id": "tfc-cshape-20",
+   "same": true,
+   "status": "noop,built",
+   "volume": 7124.424081772474
+  },
+  {
+   "id": "tfc-circle-40",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1242.7803112171716
+  },
+  {
+   "id": "tfc-roundrect-25",
+   "same": true,
+   "status": "noop,built",
+   "volume": 7239.753274919766
+  },
+  {
+   "id": "tf-roundrect-45",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tfc-L-outward",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10740.61413198183
+  },
+  {
+   "id": "tfc-pocket-uslot-10",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 6863.109611865603
+  },
+  {
+   "id": "bt-pull",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "bt-pocket",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "bt-pull-taper",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "bt-pull-pentagram",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "bt-vertex-touch",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "bt-control-star",
+   "same": true,
+   "status": "noop,built",
+   "volume": 642.5
+  },
+  {
+   "id": "td-slant",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "td-slant-y",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "td-slant-alongfalse",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "td-slant-mid-sketch",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "td-slant-above",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "td-slant-circle",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "td-slant-up",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "td-slant-reversed",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "td-slant-below",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "td-slant-mid",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "td-critic",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11000
+  },
+  {
+   "id": "tm-mid-10",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-5",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-15",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid--3",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-0",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-12",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11214.732294132635
+  },
+  {
+   "id": "tm-mid-reversed",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "tm-mid-front",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10560
+  },
+  {
+   "id": "tm-len2",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tm-len2-mid-sketch",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "mp-pull-two",
+   "same": true,
+   "status": "noop,built",
+   "volume": 12000
+  },
+  {
+   "id": "mp-pocket-right",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11820
+  },
+  {
+   "id": "mp-pocket-left",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11820
+  },
+  {
+   "id": "mp-pocket-both",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11640
+  },
+  {
+   "id": "mp-pocket-through-right",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11460
+  },
+  {
+   "id": "mp-join-inside-right",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12000
+  },
+  {
+   "id": "mp-join-on-top-right",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12500
+  },
+  {
+   "id": "mp-join-overlap-right",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12500
+  },
+  {
+   "id": "mp-join-bridge",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12480
+  },
+  {
+   "id": "mp-split-slot",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10200
+  },
+  {
+   "id": "mp-split-then-pocket-left",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 10152
+  },
+  {
+   "id": "mp-split-then-pocket-right",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 10152
+  },
+  {
+   "id": "mp-split-then-join",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built,built",
+   "volume": 10700
+  },
+  {
+   "id": "mp-ring-island",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 9361.450551768095
+  },
+  {
+   "id": "dg-h-1e-9",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-1e-8",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-1e-7",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-0.000001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-0.00001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-0.0001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-h-0.001",
+   "same": true,
+   "status": "noop,built",
+   "volume": 0.09999999999999999
+  },
+  {
+   "id": "dg-h-0.01",
+   "same": true,
+   "status": "noop,built",
+   "volume": 0.9999999999999999
+  },
+  {
+   "id": "dg-s-0.000001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-s-0.00001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-s-0.0001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-s-0.001",
+   "same": true,
+   "status": "noop,built",
+   "volume": 0.0000010000000000000002
+  },
+  {
+   "id": "dg-s-0.01",
+   "same": true,
+   "status": "noop,built",
+   "volume": 0.0001
+  },
+  {
+   "id": "dg-c-0.0001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-c-0.001",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-c-0.003",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-c-0.01",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-c-0.1",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-c-0.5",
+   "same": true,
+   "status": "noop,built",
+   "volume": 0.19630118868662624
+  },
+  {
+   "id": "dg-c-1",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1.5705883642136387
+  },
+  {
+   "id": "dg-pk-1e-8",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-pk-0.000001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-pk-0.00001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-pk-0.0001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-pk-0.001",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11999.952
+  },
+  {
+   "id": "dg-pk-0.01",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11999.519999999999
+  },
+  {
+   "id": "dg-wall-0.000001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-wall-thru-0.000001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-wall-0.00001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-wall-thru-0.00001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "dg-wall-0.0005",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.050000000001
+  },
+  {
+   "id": "dg-wall-thru-0.0005",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8000.100000000001
+  },
+  {
+   "id": "dg-wall-0.001",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.099999999999
+  },
+  {
+   "id": "dg-wall-thru-0.001",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8000.199999999998
+  },
+  {
+   "id": "dg-wall-0.01",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.999999999998
+  },
+  {
+   "id": "dg-wall-thru-0.01",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8002
+  },
+  {
+   "id": "dg-wall-0.1",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10010
+  },
+  {
+   "id": "dg-wall-thru-0.1",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8020
+  },
+  {
+   "id": "dg-wall-0.3",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10030
+  },
+  {
+   "id": "dg-wall-thru-0.3",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8060
+  },
+  {
+   "id": "dg-wall-1",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10100
+  },
+  {
+   "id": "dg-wall-thru-1",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 8200
+  },
+  {
+   "id": "pd-soup-hole",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sc-slant-circle-inside",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11858.645339279632
+  },
+  {
+   "id": "sc-slant-circle-exits-bottom",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sc-slant-circle-exits-side",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sc-slant-circle-join-hang",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "sc-slant-circle-join-away",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12141.357462412343
+  },
+  {
+   "id": "sc-slant-poly-through",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11520
+  },
+  {
+   "id": "nf-wall-0.00001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "nf-wall-0.00005",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "nf-wall-0.0001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "nf-wall-0.0002",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.02
+  },
+  {
+   "id": "nf-join-step-1e-5",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "nf-join-step-0.01",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "nf-join-step-0.5",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12050
+  },
+  {
+   "id": "kl-side",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11568
+  },
+  {
+   "id": "kl-circle-top",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11748.714334122313
+  },
+  {
+   "id": "kl-bottom-reversed",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11856
+  },
+  {
+   "id": "km-side",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11712
+  },
+  {
+   "id": "km-top-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11528.839376479336
+  },
+  {
+   "id": "km-bottom",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11856
+  },
+  {
+   "id": "kr-front-back",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11760
+  },
+  {
+   "id": "kr-side",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11820
+  },
+  {
+   "id": "jc-x-edge-top",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-y-edge-top",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-z-edge",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-corner-point",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-x-edge-below",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-corner-point-below",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-edge-tilted",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-pull-pull-corner",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-tangent-cylinder",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jcc-face-side",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 80000
+  },
+  {
+   "id": "jcc-face-top",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 73000
+  },
+  {
+   "id": "jcc-face-top-flush-edge",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 73000
+  },
+  {
+   "id": "jcc-face-overhang",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 76000
+  },
+  {
+   "id": "jcc-overlap-corner",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 75000
+  },
+  {
+   "id": "jcc-gap-line",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 76000
+  },
+  {
+   "id": "jcc-gap-corner",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 73000
+  },
+  {
+   "id": "jcc-pull-pull-face",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 8000
+  },
+  {
+   "id": "jcc-cyl-sunk",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 38977.70075546411
+  },
+  {
+   "id": "jcc-gap-edge-1e-3",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 76000
+  },
+  {
+   "id": "jc-gap-edge-1e-7",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jcc-pin-in-bore",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built,built",
+   "volume": 35717.28062001641
+  },
+  {
+   "id": "jc-tangent-rods",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jcc-rods-boxes-touch-apart",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jc-L-edge-touch",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "jcc-L-face-pad",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 41000
+  },
+  {
+   "id": "od-rect-zero-w",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "od-rect-zero-h",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "od-polygon-collinear",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "od-polygon-collinear-4",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "od-polygon-dup-mid",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1000
+  },
+  {
+   "id": "od-polygon-dup-last",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1000
+  },
+  {
+   "id": "od-polygon-closed-explicit",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1000
+  },
+  {
+   "id": "od-polygon-dup-triple",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1000
+  },
+  {
+   "id": "od-polygon-dup-L",
+   "same": true,
+   "status": "noop,built",
+   "volume": 4500
+  },
+  {
+   "id": "od-polygon-dup-two-places",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1000
+  },
+  {
+   "id": "od-pocket-dup",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11600
+  },
+  {
+   "id": "od-polygon-dup-round",
+   "same": true,
+   "status": "noop,built",
+   "volume": 9946.314350373941
+  },
+  {
+   "id": "od-circle-zero",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "ro-no-rules-exact",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "ro-no-rules-gap-1e-4",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "ro-no-rules-gap-1e-6",
+   "same": false,
+   "original": {
+    "feats": [
+     {
+      "id": "sk1",
+      "kind": "sketch",
+      "status": "noop",
+      "refusal": null,
+      "checks": []
+     },
+     {
+      "id": "pull1",
+      "kind": "extrude",
+      "status": "built",
+      "refusal": null,
+      "checks": []
+     }
+    ],
+    "commands": [
+     {
+      "command": "sketch.create",
+      "params": {
+       "name": "sk_sk1_0",
+       "plane": {
+        "origin": [
+         0,
+         0,
+         0
+        ],
+        "x_dir": [
+         1,
+         0,
+         0
+        ],
+        "y_dir": [
+         0,
+         1,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "command": "sketch.line",
+      "params": {
+       "points": [
+        [
+         0,
+         0
+        ],
+        [
+         30,
+         0
+        ]
+       ],
+       "ids": [
+        "g1"
+       ],
+       "connect": false
+      }
+     },
+     {
+      "command": "sketch.line",
+      "params": {
+       "points": [
+        [
+         30,
+         0
+        ],
+        [
+         30,
+         20
+        ]
+       ],
+       "ids": [
+        "g2"
+       ],
+       "connect": false
+      }
+     },
+     {
+      "command": "sketch.line",
+      "params": {
+       "points": [
+        [
+         30,
+         20
+        ],
+        [
+         0,
+         20
+        ]
+       ],
+       "ids": [
+        "g3"
+       ],
+       "connect": false
+      }
+     },
+     {
+      "command": "sketch.line",
+      "params": {
+       "points": [
+        [
+         0,
+         19.999999
+        ],
+        [
+         0,
+         0
+        ]
+       ],
+       "ids": [
+        "g4"
+       ],
+       "connect": false
+      }
+     },
+     {
+      "command": "sketch.finish",
+      "params": {}
+     },
+     {
+      "command": "solid.extrude",
+      "params": {
+       "sketch": "sk_sk1_0",
+       "operation": "new",
+       "body_name": "b_pull1",
+       "distance": 10
+      }
+     }
+    ],
+    "scene": {
+     "ok": true,
+     "volume": 5999.999925,
+     "faces": 6,
+     "bodies": 1,
+     "bbox": [
+      [
+       [
+        0,
+        0,
+        0
+       ],
+       [
+        30,
+        20,
+        10
+       ]
+      ]
+     ]
+    }
+   },
+   "layer": {
+    "feats": [
+     {
+      "id": "sk1",
+      "kind": "sketch",
+      "status": "noop",
+      "refusal": null,
+      "checks": []
+     },
+     {
+      "id": "pull1",
+      "kind": "extrude",
+      "status": "refused",
+      "refusal": "pull1: the outline does not close: two ends that should meet are a hair apart (less than 0.00001 mm); add a coincident rule between them or make them meet exactly",
+      "checks": []
+     }
+    ],
+    "commands": []
+   }
+  },
+  {
+   "id": "ro-with-rules",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6000
+  },
+  {
+   "id": "ro-no-rules-pocket",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 21600
+  },
+  {
+   "id": "sx-hole-cross",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-pocket-cross",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-clear",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-cross-a",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-cross-b",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-cross-c",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-cross-d",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-hole-cross-e",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-pocket-cross-a",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-pocket-cross-b",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-pocket-cross-c",
+   "same": true,
+   "status": "noop,built,noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-plain-block",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-pad-then-slant",
+   "same": true,
+   "status": "noop,built,noop,built,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "sx-straight-cross",
+   "same": true,
+   "status": "noop,built,noop,built,noop,built",
+   "volume": 32830.31169169671
+  },
+  {
+   "id": "sx-straight-after-slant",
+   "same": true,
+   "status": "noop,built,noop,refused,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "lf-slant-circle-pull",
+   "same": true,
+   "status": "noop,built",
+   "volume": 785.3192356241376
+  },
+  {
+   "id": "lf-straight-circle-pull",
+   "same": true,
+   "status": "noop,built",
+   "volume": 785.3095405426552
+  },
+  {
+   "id": "lf-slant-hole",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "lf-slant-hole2",
+   "same": true,
+   "status": "noop,built,built",
+   "volume": 1890.6764245550503
+  },
+  {
+   "id": "tm3-front-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-circle-rev",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-circle-off10",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-circle-rev",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-off0",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-rev-off0",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-off5",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-rev-off5",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-off20",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-rev-off20",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-off45",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-rev-off45",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-off60",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-front-rev-off60",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-off0",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-off10",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-off45",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-side-off60",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 68984.57200947021
+  },
+  {
+   "id": "tm3-top-circle",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 70994.85733649011
+  },
+  {
+   "id": "ts-ring-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 8599.873971088806
+  },
+  {
+   "id": "ts-rect-hole-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10015.842635168776
+  },
+  {
+   "id": "ts-two-rects",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2788.2178005025603
+  },
+  {
+   "id": "ts-two-circles-neg",
+   "same": true,
+   "status": "noop,built",
+   "volume": 3199.8006601051356
+  },
+  {
+   "id": "ts-nested-three",
+   "same": true,
+   "status": "noop,built",
+   "volume": 25261.448803232153
+  },
+  {
+   "id": "ts-poly-hole",
+   "same": true,
+   "status": "noop,built",
+   "volume": 6598.4825834028825
+  },
+  {
+   "id": "ts-front-ring",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10248.900222364262
+  },
+  {
+   "id": "ts-ring-negheight",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10248.900222364275
+  },
+  {
+   "id": "ts-ring-reversed",
+   "same": true,
+   "status": "noop,built",
+   "volume": 10248.900222364275
+  },
+  {
+   "id": "ts-gap-ok",
+   "same": true,
+   "status": "noop,built",
+   "volume": 2788.21780050256
+  },
+  {
+   "id": "tsk-ring",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10907.608987922778
+  },
+  {
+   "id": "tsk-two-holes-neg",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11632.085790975709
+  },
+  {
+   "id": "tsk-rect-hole-rects",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 11442.744735223749
+  },
+  {
+   "id": "tx-two-overlap",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tx-gap-just-collide",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tx-hole-closes",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tx-ring-neg-cross",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tx-island-grows-into-wall",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tx-fold-outer",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "tc-soup-taper-midplane",
+   "same": true,
+   "status": "noop,refused",
+   "volume": null
+  },
+  {
+   "id": "ct-holes-2",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 99899.48916640868
+  },
+  {
+   "id": "ct-holes-4",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 99798.97833281728
+  },
+  {
+   "id": "ct-holes-8",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 99597.95666563459
+  },
+  {
+   "id": "ct-holes-12",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 99396.93499845192
+  },
+  {
+   "id": "ct-holes-24",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 98793.86999690389
+  },
+  {
+   "id": "ct-holes-25",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "ct-holes-48",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "ct-pull-24-discs",
+   "same": true,
+   "status": "noop,built",
+   "volume": 1507.7943178414969
+  },
+  {
+   "id": "pf-collinear-3",
+   "same": true,
+   "status": "noop,built,noop,refused,refused",
+   "volume": null
+  },
+  {
+   "id": "pf-collinear-4",
+   "same": true,
+   "status": "noop,built,noop,refused,refused",
+   "volume": null
+  },
+  {
+   "id": "pf-zero-height-rect",
+   "same": true,
+   "status": "noop,built,noop,refused,refused",
+   "volume": null
+  },
+  {
+   "id": "pf-circle-zero",
+   "same": true,
+   "status": "noop,built,noop,refused,refused",
+   "volume": null
+  },
+  {
+   "id": "pf-collinear-taper",
+   "same": true,
+   "status": "noop,built,noop,refused,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-floor-0.000001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-floor-0.00001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-floor-0.00003",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-floor-0.0001",
+   "same": true,
+   "status": "noop,built,noop,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-floor-0.0002",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.04
+  },
+  {
+   "id": "fl-floor-0.0005",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.099999999999
+  },
+  {
+   "id": "fl-floor-0.001",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10000.199999999999
+  },
+  {
+   "id": "fl-floor-0.01",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10002
+  },
+  {
+   "id": "fl-floor-0.1",
+   "same": true,
+   "status": "noop,built,noop,built",
+   "volume": 10020
+  },
+  {
+   "id": "fl-step-0.000001",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.00001",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.0001",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.0002",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.0005",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.001",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.002",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.01",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step-0.1",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12010
+  },
+  {
+   "id": "fl-step10-0.001",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step10-0.01",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step10-0.1",
+   "same": true,
+   "status": "noop,built,noop,built,refused",
+   "volume": null
+  },
+  {
+   "id": "fl-step10-1",
+   "same": true,
+   "status": "noop,built,noop,built,built",
+   "volume": 12010000
+  }
+ ]
+}
