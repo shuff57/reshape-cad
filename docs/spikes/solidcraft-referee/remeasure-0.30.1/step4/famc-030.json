@@ -1,0 +1,1403 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.30.1-rig/sc-referee-pkg",
+ "brep": "/home/shuff57/.t3-desktop/worktrees/reshape-cad/t3-84337253/archive/brep-rs/pkg",
+ "occt": "/home/shuff57/.t3-desktop/worktrees/reshape-cad/t3-84337253/node_modules/replicad-opencascadejs/dist",
+ "negativeControl": false,
+ "tolerance": 0.001,
+ "cases": 11,
+ "counts": {
+  "MATCH": 1,
+  "WRONG": 0,
+  "REFUSED": 10,
+  "NOT-REACHED": 0,
+  "NO-OCCT": 0,
+  "ENGINE-FAIL": 0,
+  "NODOC": 0,
+  "ERROR": 0
+ },
+ "rows": [
+  {
+   "id": "control-plain-box-t1",
+   "family": "control",
+   "oracle": {
+    "S": 12000.000000000004,
+    "P": 2424.0000000000005
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "brep-rs resolve + moves in the history",
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 12000,
+    "shellStatus": "built",
+    "built": 2424
+   },
+   "occt": {
+    "pre": 11999.999999999998,
+    "built": 2423.999999999999,
+    "refusals": {}
+   },
+   "occtDirect": null,
+   "rel": {
+    "layerVsOcct": 3.7520408488982203e-16,
+    "layerVsP": 1.876020424449109e-16,
+    "occtVsP": 5.628061273347327e-16,
+    "preLayerVsOcct": 1.5158245029548806e-16,
+    "preLayerVsS": 3.0316490059097597e-16,
+    "preOcctVsS": 4.54747350886464e-16,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": null,
+    "preDirectVsS": null,
+    "preBuildDocVsDirect": null,
+    "layerVsRef": 3.7520408488982203e-16
+   },
+   "occtRef": "buildDoc",
+   "cls": "MATCH",
+   "ms": 2415
+  },
+  {
+   "id": "C-plain-40x30x10-t0.5-R0.75",
+   "family": "C",
+   "oracle": {
+    "S": 11983.262540462985,
+    "P": 1240.580234629037
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ],
+      [
+       -20,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11983.237558803123,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 11978.554058813641,
+    "built": 1236.377391006318,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11983.261886574752,
+    "built": 1240.5800101047305,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.003387804758936653,
+    "preLayerVsOcct": 0.0003909904289354306,
+    "preLayerVsS": 0.0000020847127214462072,
+    "preOcctVsS": 0.00039292151310592956,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": 1.80983301413702e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.0000020301460369724065,
+    "preDirectVsS": 5.456679525236389e-8,
+    "preBuildDocVsDirect": 0.00039286696774816856,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 1924
+  },
+  {
+   "id": "C-plain-40x30x10-t1-R1.5",
+   "family": "C",
+   "oracle": {
+    "S": 11933.695802520697,
+    "P": 2364.729334081044
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ],
+      [
+       -20,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11933.669690009956,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 11915.34621409747,
+    "built": 2348.2757890697535,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11933.694671035533,
+    "built": 2364.7285964650555,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.006957897791581428,
+    "preLayerVsOcct": 0.0015378047421573885,
+    "preLayerVsS": 0.000002188132760627536,
+    "preOcctVsS": 0.0015376283028222604,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": 3.1192406576820063e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.0000020933186465648266,
+    "preDirectVsS": 9.481431253927808e-8,
+    "preBuildDocVsDirect": 0.0015375336342899157,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 2547
+  },
+  {
+   "id": "C-plain-40x30x10-t1.5-R2.25",
+   "family": "C",
+   "oracle": {
+    "S": 11852.270483944887,
+    "P": 3376.059746801308
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ],
+      [
+       -20,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11852.214694168224,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 11812.071434241745,
+    "built": 3339.844531840961,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11852.26904030615,
+    "built": 3376.058591338459,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.010727065773838775,
+    "preLayerVsOcct": 0.0033984945104639838,
+    "preLayerVsS": 0.000004707096141501145,
+    "preOcctVsS": 0.003391675017676633,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": 3.4225189591224636e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000004585293983865987,
+    "preDirectVsS": 1.218027161364194e-7,
+    "preBuildDocVsDirect": 0.0033915536280609403,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 2344
+  },
+  {
+   "id": "C-plain-40x30x10-t2-R3",
+   "family": "C",
+   "oracle": {
+    "S": 11739.95738095545,
+    "P": 4278.184496932484
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ],
+      [
+       -20,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11739.860313447485,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 11670.424687636716,
+    "built": 4215.23295697059,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11739.955681799427,
+    "built": 4278.182828182674,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.014714545388828163,
+    "preLayerVsOcct": 0.0059497085726732,
+    "preLayerVsS": 0.00000826813120478396,
+    "preOcctVsS": 0.005922738138004599,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": 3.900602723532509e-7,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000008123399655570536,
+    "preDirectVsS": 1.447327249351916e-7,
+    "preBuildDocVsDirect": 0.0059225942624728705,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 1893
+  },
+  {
+   "id": "C-plain-40x30x10-t2.5-R3.75",
+   "family": "C",
+   "oracle": {
+    "S": 11597.72729247807,
+    "P": 5074.714492968753
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -15,
+       0
+      ],
+      [
+       0,
+       15,
+       0
+      ],
+      [
+       -20,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 11597.578716911072,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 11492.100942672629,
+    "built": 4978.59040210931,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 11597.725284076972,
+    "built": 5074.714141424588,
+    "preFaces": 10
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.018941773176131785,
+    "preLayerVsOcct": 0.009178284698734376,
+    "preLayerVsS": 0.000012810748455399746,
+    "preOcctVsS": 0.009107504180922358,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": 6.92736833572235e-8,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000012637578689843106,
+    "preDirectVsS": 1.7317195403083555e-7,
+    "preBuildDocVsDirect": 0.009107332586102907,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 2028
+  },
+  {
+   "id": "C-repro-s1-00475",
+   "family": "C",
+   "oracle": {
+    "S": 8627.124851671319,
+    "P": 958.01392793144
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ],
+      [
+       0,
+       12,
+       0
+      ],
+      [
+       -15,
+       0,
+       0
+      ],
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 8627.119241083963,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 8621.451183597548,
+    "built": 952.9526130387067,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 8627.124719627034,
+    "built": 958.0136395337893,
+    "preFaces": 10
+   },
+   "raw": {
+    "built": 961.6815199382609,
+    "pre": 8627.119241083963,
+    "documented": {
+     "cls": "WRONG",
+     "expectedP": 958.01392793144,
+     "built": 959.252646638659,
+     "rel": 0.001293006991969013
+    }
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.005283132891044495,
+    "preLayerVsOcct": 0.0006574365922524135,
+    "preLayerVsS": 6.503426636268173e-7,
+    "preOcctVsS": 0.0006576545687374904,
+    "rawVsOcct": 0.009159854099901247,
+    "rawVsP": 0.0038283284823843948,
+    "layerVsDirect": null,
+    "directVsP": 3.010370124045504e-7,
+    "rawVsDirect": 0.003828630671956338,
+    "preLayerVsDirect": 6.35036961814768e-7,
+    "preDirectVsS": 1.5305711531741968e-8,
+    "preBuildDocVsDirect": 0.0006576392730915956,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 2966
+  },
+  {
+   "id": "C-repro-s2-00591",
+   "family": "C",
+   "oracle": {
+    "S": 4307.124851671145,
+    "P": 640.0139279314126
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ],
+      [
+       0,
+       12,
+       0
+      ],
+      [
+       -15,
+       0,
+       0
+      ],
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 4307.119894974953,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 4304.3483083836745,
+    "built": 637.5278350725894,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 4307.12471962658,
+    "built": 640.0136395264198,
+    "preFaces": 10
+   },
+   "raw": {
+    "built": 643.66814840875,
+    "pre": 4307.119894974953,
+    "documented": {
+     "cls": "WRONG",
+     "expectedP": 640.0139279314126,
+     "built": 641.2127532809593,
+     "rel": 0.0018731238450098169
+    }
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.003884435557298741,
+    "preLayerVsOcct": 0.0006439038834009875,
+    "preLayerVsS": 0.00000115081321352019,
+    "preOcctVsS": 0.0006446396106658059,
+    "rawVsOcct": 0.009631443520362467,
+    "rawVsP": 0.0057095952413851155,
+    "layerVsDirect": null,
+    "directVsP": 4.5062299466190643e-7,
+    "rawVsDirect": 0.005710048437458904,
+    "preLayerVsDirect": 0.0000011201560068941442,
+    "preDirectVsS": 3.0657240966938506e-8,
+    "preBuildDocVsDirect": 0.0006446089731867716,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 2826
+  },
+  {
+   "id": "C-gen-s2-01562",
+   "family": "C (+through hole)",
+   "oracle": {
+    "S": 2751.6935283292028,
+    "P": 504.8259058430719
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -10,
+       0
+      ],
+      [
+       0,
+       10,
+       0
+      ],
+      [
+       -12,
+       0,
+       0
+      ],
+      [
+       12,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "HOLLOW-ROUND",
+     "refusal": "shell1 (hollow): hole1 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 2751.7305730215626,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 2748.9528545300504,
+    "built": 502.3729652778186,
+    "refusals": {}
+   },
+   "occtDirect": {
+    "pre": 2751.7292657759763,
+    "built": 504.8587697625644,
+    "preFaces": 11
+   },
+   "raw": {
+    "built": 507.23369124363245,
+    "pre": 2751.7305730215626,
+    "documented": null
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 0.004858983140250752,
+    "preLayerVsOcct": 0.0010104642161958793,
+    "preLayerVsS": 0.000013462506626712495,
+    "preOcctVsS": 0.0009959952919671345,
+    "rawVsOcct": 0.009675532526169702,
+    "rawVsP": 0.004769536136501343,
+    "layerVsDirect": null,
+    "directVsP": 0.00006509951076625027,
+    "rawVsDirect": 0.004704130389148179,
+    "preLayerVsDirect": 4.7506330021724317e-7,
+    "preDirectVsS": 0.000012987437156640495,
+    "preBuildDocVsDirect": 0.0010089696251941748,
+    "layerVsRef": null
+   },
+   "occtRef": "direct",
+   "cls": "REFUSED",
+   "ms": 4327
+  },
+  {
+   "id": "B-gen-s1-01725",
+   "family": "B (bfillet + blind)",
+   "oracle": {
+    "S": 4608.636553901178,
+    "P": 1414.1543437666915
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -8,
+       0
+      ],
+      [
+       0,
+       8,
+       0
+      ],
+      [
+       -15,
+       0,
+       0
+      ],
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "G-BLIND",
+     "refusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 4608.628627579732,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 4590.279309072958,
+    "built": 4590.279309072958,
+    "refusals": {
+     "shell1": "Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+    }
+   },
+   "occtDirect": {
+    "pre": 4608.627766037889,
+    "error": "thick solid not done"
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 2.2459535476491577,
+    "preLayerVsOcct": 0.003997429627104642,
+    "preLayerVsS": 0.000001719884254911876,
+    "preOcctVsS": 0.003983226842368392,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 1.869410780303006e-7,
+    "preDirectVsS": 0.0000019068249764782599,
+    "preBuildDocVsDirect": 0.003981327609086839,
+    "layerVsRef": null
+   },
+   "occtRef": "buildDoc",
+   "cls": "REFUSED",
+   "ms": 1960
+  },
+  {
+   "id": "B-gen-s2-00829",
+   "family": "B (bfillet + blind)",
+   "oracle": {
+    "S": 5641.380196184034,
+    "P": 2752.2761336840335
+   },
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "ctx.resolveAt (primitive frame; only fillets in the history)",
+     "pick": [
+      [
+       0,
+       -12,
+       0
+      ],
+      [
+       0,
+       12,
+       0
+      ],
+      [
+       -15,
+       0,
+       0
+      ],
+      [
+       15,
+       0,
+       0
+      ]
+     ]
+    },
+    {
+     "id": "round2",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round3",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "round4",
+     "kind": "fillet",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": "one call with round1 (round1, round2, round3, round4)",
+     "pick": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null,
+     "pickedFrom": null,
+     "pick": null
+    },
+    {
+     "id": "shell1",
+     "kind": "shell",
+     "status": "refused",
+     "guard": "G-BLIND",
+     "refusal": "Hollowing hole1 is not supported yet because the part has a blind hole, whose floor is an inside corner, so shell1 is shown without it -- hollow the plain shape first, then drill the hole.",
+     "pickedFrom": null,
+     "pick": null
+    }
+   ],
+   "layer": {
+    "pre": 5641.350547986906,
+    "shellStatus": "refused",
+    "built": null
+   },
+   "occt": {
+    "pre": 5616.198716454134,
+    "built": 5616.198716454134,
+    "refusals": {
+     "shell1": "Hollowing Hollow 1 to 2 thick did not work after the steps before it -- this kernel cannot hollow a shape that already has a hole or a round. Hollow first, then drill or round. Hollow 1 is shown without it."
+    }
+   },
+   "occtDirect": {
+    "pre": 5641.378665106505,
+    "error": "thick solid not done"
+   },
+   "rel": {
+    "layerVsOcct": null,
+    "layerVsP": null,
+    "occtVsP": 1.0405651336069335,
+    "preLayerVsOcct": 0.004478444015715327,
+    "preLayerVsS": 0.000005255486440587529,
+    "preOcctVsS": 0.004463709031157434,
+    "rawVsOcct": null,
+    "rawVsP": null,
+    "layerVsDirect": null,
+    "directVsP": null,
+    "rawVsDirect": null,
+    "preLayerVsDirect": 0.000004984086562439743,
+    "preDirectVsS": 2.714012308350141e-7,
+    "preBuildDocVsDirect": 0.004463438841309394,
+    "layerVsRef": null
+   },
+   "occtRef": "buildDoc",
+   "cls": "REFUSED",
+   "ms": 2168
+  }
+ ],
+ "shipped": {
+  "pkg": "/home/shuff57/.cache/solidcraft-0.30.1-rig/sc-referee-pkg-topology",
+  "set": "unified",
+  "rows": [
+   {
+    "id": "C-plain-40x30x10-t0.5-R0.75",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-plain-40x30x10-t1-R1.5",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-plain-40x30x10-t1.5-R2.25",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-plain-40x30x10-t2-R3",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-plain-40x30x10-t2.5-R3.75",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-repro-s1-00475",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-repro-s2-00591",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   },
+   {
+    "id": "C-gen-s2-01562",
+    "statuses": "box1:built round1:built round2:built round3:built round4:built hole1:built shell1:refused/HOLLOW-ROUND",
+    "vol": null,
+    "relOcct": null,
+    "relP": null,
+    "cls": "REFUSED"
+   }
+  ]
+ }
+}

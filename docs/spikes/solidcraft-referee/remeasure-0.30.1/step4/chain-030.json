@@ -1,0 +1,7227 @@
+{
+ "pkg": "/home/shuff57/.cache/solidcraft-0.30.1-rig/sc-referee-pkg",
+ "topo": "/home/shuff57/.cache/solidcraft-0.30.1-rig/sc-referee-pkg-topology",
+ "brep": "/home/shuff57/.t3-desktop/worktrees/reshape-cad/t3-84337253/archive/brep-rs/pkg",
+ "tolerance": 0.0001,
+ "counts": {
+  "MATCH": 44,
+  "REFUSED": 59,
+  "BUILT-NO-REF": 11,
+  "refused": 19,
+  "built": 19
+ },
+ "rows": [
+  {
+   "id": "B4",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nfillet(b.edge('bottom','front'), 1.5);\nfillet(b.edge('bottom','back'), 1.5);\nfillet(b.edge('bottom','left'), 1.5);\nfillet(b.edge('bottom','right'), 1.5);",
+   "occt": 11933.69467103551,
+   "S": 11933.695802520697,
+   "expectFaces": 10,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 436,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B base",
+     "ms": 1273,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 1306,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B holes",
+     "ms": 1289,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 1318,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 1332,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B booleans",
+     "ms": 1355,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 1333,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 343,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B unified",
+     "ms": 342,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": [
+        "round1",
+        "round2",
+        "round3",
+        "round4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A base",
+     "ms": 38,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused, so there is nothing to build on (its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 (fillet): its target round3 was refused, so there is nothing to build on (its target round2 was refused, so there is nothing to build on (its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 1392,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11933.669690009956,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11933.669690009956,
+     "faces": 10,
+     "relOcct": 0.00000209331864458331,
+     "relS": 0.000002188132760627536,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 3,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 (fillet): its target round3 was refused (round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 3,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 builds on round2, which is shown without its round, so round3 is shown without it too -- fix round2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 builds on round3, which is shown without its round, so round4 is shown without it too -- fix round3 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 builds on round2, which is shown without its round, so round3 is shown without it too -- fix round2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round4 builds on round3, which is shown without its round, so round4 is shown without it too -- fix round3 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "B3",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nfillet(b.edge('bottom','front'), 1.5);\nfillet(b.edge('bottom','back'), 1.5);\nfillet(b.edge('bottom','left'), 1.5);",
+   "occt": 11947.53317023612,
+   "S": null,
+   "expectFaces": 9,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 230,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B base",
+     "ms": 684,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 699,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B holes",
+     "ms": 655,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 653,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 675,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B booleans",
+     "ms": 654,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 659,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 235,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B unified",
+     "ms": 235,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": [
+        "round1",
+        "round2",
+        "round3"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A base",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused, so there is nothing to build on (its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 675,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11947.513536137276,
+       "faces": 9,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      3
+     ],
+     "lastStatus": "built",
+     "volume": 11947.513536137276,
+     "faces": 9,
+     "relOcct": 0.0000016433600613908075,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 (fillet): its target round2 was refused (round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 builds on round2, which is shown without its round, so round3 is shown without it too -- fix round2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round3 builds on round2, which is shown without its round, so round3 is shown without it too -- fix round2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "B2",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nfillet(b.edge('bottom','front'), 1.5);\nfillet(b.edge('bottom','back'), 1.5);",
+   "occt": 11961.371669436596,
+   "S": null,
+   "expectFaces": 8,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 232,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B base",
+     "ms": 219,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 225,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B holes",
+     "ms": 226,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 223,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 225,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B booleans",
+     "ms": 218,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 220,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 223,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B unified",
+     "ms": 223,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A base",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 159,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11961.346328329928,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 2,
+     "edgesPerCall": [
+      1,
+      1
+     ],
+     "lastStatus": "built",
+     "volume": 11961.346328329928,
+     "faces": 8,
+     "relOcct": 0.000002118578652027773,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "B2-adj",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nfillet(b.edge('bottom','front'), 1.5);\nfillet(b.edge('bottom','left'), 1.5);",
+   "occt": 11966.523773137995,
+   "S": null,
+   "expectFaces": 8,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 147,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B base",
+     "ms": 276,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 276,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B holes",
+     "ms": 277,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 277,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 271,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B booleans",
+     "ms": 273,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 273,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 147,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "B unified",
+     "ms": 146,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": [
+        "round1",
+        "round2"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A base",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 278,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11966.511277201475,
+       "faces": 8,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      2
+     ],
+     "lastStatus": "built",
+     "volume": 11966.511277201475,
+     "faces": 8,
+     "relOcct": 0.0000010442411478203603,
+     "relS": null,
+     "cls": "MATCH"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "B2-mixed",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nfillet(b.edge('bottom','front'), 1.5);\nfillet(b.edge('bottom','left'), 1);",
+   "occt": null,
+   "S": null,
+   "expectFaces": null,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 115,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B base",
+     "ms": 112,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 115,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B holes",
+     "ms": 111,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 112,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 113,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B booleans",
+     "ms": 112,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 111,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): box1.edge[box1.face[-z] ^ box1.face[-x]] resolves to F1:-x|F1:-z on box1, but that edge is no longer present whole on b_box1 (an operation after box1 changed or removed it); nothing is picked",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 113,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "B unified",
+     "ms": 112,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "The round round2 touches an edge that round1 already changed with a different size, so round2 is shown without it -- give touching edges the same size and kind so they are blended together, or leave one out.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A base",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 257,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11980.673164164966,
+       "faces": 7,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "FC-FACE-COUNT",
+       "refusal": "The round round2 did not give the part the new face it should, so round2 is shown without it -- use a smaller size.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      1
+     ],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round(): it needs round() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 (fillet): its target round1 was refused (round1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "round1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "round2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "round2 builds on round1, which is shown without its round, so round2 is shown without it too -- fix round1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "B4-bevel",
+   "script": "const b = box(40, 30, 10, { at: [0, 0, 5] });\nbevel(b.edge('bottom','front'), 1.5);\nbevel(b.edge('bottom','back'), 1.5);\nbevel(b.edge('bottom','left'), 1.5);\nbevel(b.edge('bottom','right'), 1.5);",
+   "occt": null,
+   "S": null,
+   "expectFaces": 10,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 69,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B base",
+     "ms": 142,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 138,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B holes",
+     "ms": 138,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 134,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 136,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B booleans",
+     "ms": 138,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 137,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 45,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "B unified",
+     "ms": 46,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": [
+        "bevel1",
+        "bevel2",
+        "bevel3",
+        "bevel4"
+       ]
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "A base",
+     "ms": 2,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 (fillet): its target bevel1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 (fillet): its target bevel2 was refused, so there is nothing to build on (its target bevel1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 (fillet): its target bevel3 was refused, so there is nothing to build on (its target bevel2 was refused, so there is nothing to build on (its target bevel1 was refused, so there is nothing to build on (the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A holes",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 161,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 11847,
+       "faces": 10,
+       "group": null
+      }
+     ],
+     "blendCalls": 1,
+     "edgesPerCall": [
+      4
+     ],
+     "lastStatus": "built",
+     "volume": 11847,
+     "faces": 10,
+     "cls": "BUILT-NO-REF"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel(): this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel(): it needs bevel() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel(): it needs bevel() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel(): it needs bevel() to be built first, and that was refused: this could not be built reliably, so it was left out -- change the shape or its numbers a little and try again.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A booleans",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": "K7",
+       "refusal": "This step was skipped because an earlier step it depends on was not done; fix that earlier step first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 (fillet): its target bevel3 was refused (bevel3 (fillet): its target bevel2 was refused (bevel2 (fillet): its target bevel1 was refused (bevel1 (fillet): the edge could not be resolved to a single edge (no resolution))))",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 builds on bevel1, which is shown without its bevel, so bevel2 is shown without it too -- fix bevel1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 builds on bevel2, which is shown without its bevel, so bevel3 is shown without it too -- fix bevel2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 builds on bevel3, which is shown without its bevel, so bevel4 is shown without it too -- fix bevel3 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    },
+    {
+     "label": "A unified",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "box1",
+       "kind": "box",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 12000,
+       "faces": 6,
+       "group": null
+      },
+      {
+       "id": "bevel1",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel1 (fillet): the edge could not be resolved to a single edge (no resolution)",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel2",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel2 builds on bevel1, which is shown without its bevel, so bevel2 is shown without it too -- fix bevel1 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel3",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel3 builds on bevel2, which is shown without its bevel, so bevel3 is shown without it too -- fix bevel2 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      },
+      {
+       "id": "bevel4",
+       "kind": "fillet",
+       "status": "refused",
+       "guard": null,
+       "refusal": "bevel4 builds on bevel3, which is shown without its bevel, so bevel4 is shown without it too -- fix bevel3 first.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "REFUSED"
+    }
+   ]
+  },
+  {
+   "id": "far-sphere",
+   "script": "sphere(2, { at: [1000000, -1000000, 1000000] });",
+   "occt": null,
+   "S": null,
+   "expectFaces": null,
+   "runs": [
+    {
+     "label": "host",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B base",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B extrude-pocket",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B holes",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B shell-draft",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B patterns-mirror",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B booleans",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B revolve-groove",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B fillet-chamfer",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "B unified",
+     "ms": 1,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A base",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A extrude-pocket",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A holes",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A shell-draft",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A patterns-mirror",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A booleans",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A revolve-groove",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A fillet-chamfer",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "A unified",
+     "ms": 0,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "refused",
+       "guard": "PRIMITIVES",
+       "refusal": "sphere(): the at position 1000000 is too far from the origin for a shape whose smallest size is 2 -- its volume and centre would be worked out wrongly, so keep every at coordinate within 800 (400 times that size), or move the shape nearer.",
+       "volume": null,
+       "faces": null,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "refused",
+     "volume": null,
+     "faces": null,
+     "cls": "refused"
+    },
+    {
+     "label": "host -primitives",
+     "ms": 920,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B base -primitives",
+     "ms": 895,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B extrude-pocket -primitives",
+     "ms": 874,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B holes -primitives",
+     "ms": 925,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B shell-draft -primitives",
+     "ms": 902,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B patterns-mirror -primitives",
+     "ms": 926,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B booleans -primitives",
+     "ms": 910,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B revolve-groove -primitives",
+     "ms": 901,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B fillet-chamfer -primitives",
+     "ms": 908,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "B unified -primitives",
+     "ms": 874,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A base -primitives",
+     "ms": 910,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A extrude-pocket -primitives",
+     "ms": 889,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A holes -primitives",
+     "ms": 870,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A shell-draft -primitives",
+     "ms": 889,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A patterns-mirror -primitives",
+     "ms": 882,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A booleans -primitives",
+     "ms": 888,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A revolve-groove -primitives",
+     "ms": 901,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A fillet-chamfer -primitives",
+     "ms": 908,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    },
+    {
+     "label": "A unified -primitives",
+     "ms": 895,
+     "threw": null,
+     "feats": [
+      {
+       "id": "ball1",
+       "kind": "sphere",
+       "status": "built",
+       "guard": null,
+       "refusal": null,
+       "volume": 4.188493047126325,
+       "faces": 1,
+       "group": null
+      }
+     ],
+     "blendCalls": 0,
+     "edgesPerCall": [],
+     "lastStatus": "built",
+     "volume": 4.188493047126325,
+     "faces": 1,
+     "cls": "built"
+    }
+   ]
+  }
+ ]
+}

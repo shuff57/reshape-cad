@@ -1,0 +1,17 @@
+{
+ "transitions": {
+  "REFUSED->REFUSED": 30,
+  "REFUSED->TIMEOUT600": 3,
+  "WRONG->WRONG": 1,
+  "WRONG->TIMEOUT600": 1
+ },
+ "s021c": {
+  "median": 15.389,
+  "max": 51.059
+ },
+ "s030": {
+  "median": 122.065,
+  "max": 443.767
+ },
+ "ratioMedian": 7.45708351151567
+}
