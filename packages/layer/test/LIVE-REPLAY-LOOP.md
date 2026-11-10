@@ -10,16 +10,18 @@ kept. Nothing is blessed by re-running it.
 
 ## Order
 
+`<pin>` is `SOLIDCRAFT_PIN` (default 0.30.1, the pin since 2026-11-09); the rig is `~/.cache/solidcraft-<pin>-rig`. The committed `*-0.21.0.json` files are the record of the 0.21.0 runs.
+
 | Phase | Replay | Evidence file | Why here |
 |---|---|---|---|
-| `pm` | `live-replay-patterns-mirror.mjs` | `live-replay-patterns-mirror-0.21.0.json` | in-process, no topology; cheapest |
-| `bool` | `live-replay-booleans.mjs` | `live-replay-booleans-0.21.0.json` | one child per case, 90 s each |
-| `rg` | `live-replay-revolve-groove.mjs` | `live-replay-revolve-groove-0.21.0.json` | one child per case, 120 s each |
-| `fc` | `live-replay-fillet-chamfer.mjs` | `live-replay-fillet-chamfer-0.21.0.json` | needs the topology rig; scores closed forms |
-| `unified` | `live-replay-unified.mjs` | `live-replay-unified-0.21.0.json` | longest, and it compares against every single set |
+| `pm` | `live-replay-patterns-mirror.mjs` | `live-replay-patterns-mirror-<pin>.json` | in-process, no topology; cheapest |
+| `bool` | `live-replay-booleans.mjs` | `live-replay-booleans-<pin>.json` | one child per case, 90 s each |
+| `rg` | `live-replay-revolve-groove.mjs` | `live-replay-revolve-groove-<pin>.json` | one child per case, 120 s each |
+| `fc` | `live-replay-fillet-chamfer.mjs` | `live-replay-fillet-chamfer-<pin>.json` | needs the topology rig; scores closed forms |
+| `unified` | `live-replay-unified.mjs` | `live-replay-unified-<pin>.json` | longest, and it compares against every single set |
 
 Only the summary JSON is copied into `test/evidence/`; the per-case files stay in the rig's cache
-(`$HOME/.cache/solidcraft-0.21.0-rig/live-replay-loop/out/<phase>/cases`), so the repository keeps
+(`$HOME/.cache/solidcraft-<pin>-rig/live-replay-loop/out/<phase>/cases`), so the repository keeps
 one committed result per phase, as the earlier evidence files do.
 
 ## Stop rules
@@ -77,7 +79,7 @@ systemd-run --user --unit=reshape-unified-resume --collect --working-directory="
 ```
 
 It stops when an attempt returns 0/1 (a complete pass), writes
-`live-replay-unified-0.21.0.json` into the evidence dir, and otherwise resumes from the merged rows
+`live-replay-unified-<pin>.json` into the evidence dir, and otherwise resumes from the merged rows
 for up to `UNIFIED_ATTEMPTS` (default 8) windows of `TIMEOUT_UNIFIED` (default 24 h) each. A
 built-where-a-set-refused is kept in the summary and the exit is still 0/1: it is a finding, not a
 transient failure. `merge-unified.mjs` also has `skip` and `final` modes for manual use.
@@ -88,7 +90,7 @@ so it spends a few minutes before its first new doc.
 ## Status page
 
 `status-page.mjs` reads `state.tsv`, `current`, the per-case files and the logs, and writes
-`$LOOP_DIR/status.html` (default `~/.cache/solidcraft-0.21.0-rig/live-replay-loop/status.html`).
+`$LOOP_DIR/status.html` (default `~/.cache/solidcraft-<pin>-rig/live-replay-loop/status.html`).
 The page reloads itself every 10 s and shows each phase's bar, the cases being worked now, the last
 few results and an ETA. Keep it fresh with a small detached watcher:
 
@@ -122,7 +124,7 @@ systemctl --user stop   reshape-live-replays-<ts>
 sh packages/layer/test/run-live-replays.sh --status
 ```
 
-Environment: `SOLIDCRAFT_REFEREE_PKG` (default `$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg`),
+Environment: `SOLIDCRAFT_PIN` (default 0.30.1), `SOLIDCRAFT_RIG` (default `$HOME/.cache/solidcraft-<pin>-rig`), `SOLIDCRAFT_REFEREE_PKG` (default `$RIG/sc-referee-pkg`),
 `SOLIDCRAFT_TOPOLOGY_PKG` (default `.../sc-referee-pkg-topology`), `TIMEOUT_PM`, `TIMEOUT_BOOL`,
 `TIMEOUT_RG`, `TIMEOUT_FC`, `TIMEOUT_UNIFIED`, `LOOP_ATTEMPTS` (case-level retries, default 6),
 `LOOP_MEM` / `LOOP_MEM_UNIFIED` (systemd `MemoryMax`), `LOOP_ULIMIT` / `LOOP_ULIMIT_UNIFIED` (KB of
