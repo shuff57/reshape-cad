@@ -1,5 +1,5 @@
 // The pinned SolidCraft engine as a headless, worker-loadable module: the referee wasm (docs/spikes/solidcraft-referee/wrapper, built from the
-// UNMODIFIED 0.21.0 engine crates with wasm-bindgen --target nodejs) instantiated by hand, so it runs in a browser Worker as well as in node.
+// UNMODIFIED engine crates of the pinned release, 0.30.1 with wasm-bindgen --target nodejs) instantiated by hand, so it runs in a browser Worker as well as in node.
 // This is a port of the ~60 lines of generated nodejs glue (string in, string out); the engine itself is untouched.
 // It only ever runs a scratch copy of a command list to find out how long it takes; the student's design lives in the SolidCraft page.
 export function instantiateKernel(wasmModule) {
@@ -21,6 +21,7 @@ export function instantiateKernel(wasmModule) {
       __wbg_getTime_f5a55efff2585d5d: (a) => a.getTime(),
       __wbg_new_0_72d020f0c63443d4: () => new Date(),
       __wbg_now_e7c6795a7f81e10f: (a) => a.now(),
+      __wbg_now_aa4ccb83129e9e55: () => Date.now(), // new in the 0.30.1 engine's glue (Date.now); without it instantiation fails and every probe is a probe error
       __wbg_performance_3fcf6e32a7e1ed0a: (a) => a.performance,
       __wbg_static_accessor_GLOBAL_266715b9d96ba635: () => { const r = typeof global === 'undefined' ? null : global; return isNone(r) ? 0 : externref(r); },
       __wbg_static_accessor_GLOBAL_THIS_10fb7dc1ae063179: () => { const r = typeof globalThis === 'undefined' ? null : globalThis; return isNone(r) ? 0 : externref(r); },
