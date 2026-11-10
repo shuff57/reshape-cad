@@ -76,6 +76,9 @@ export interface FView {
   thickness?: number;
   axis?: string;
   diameter?: number;
+  /** hole: the recess at the mouth (model-types HoleFeature), read by G-HOLE for the tube radius */
+  counterbore?: { diameter: number; depth: number } | null;
+  countersink?: { diameter: number; angleDeg: number } | null;
   edge?: { of?: SDName[] };
   length2?: number;
 }
@@ -660,6 +663,9 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   }
   // G-HOLE: a through hole is only safe when its offset tube (radius r + wall) lies wholly inside the cavity, clear of the cavity walls and of every other tube.
   // Measured: hole d6 at [14,0] in a 40x40x20 box, wall 2, open top: tube reaches x = 19 > 18, truck 9509.3 vs closed form 9446.65 (dVol 6.6e-3), silent.
+  // The tube's radius is the widest part of the hole, the counterbore or countersink mouth included (HALT-7, remeasure-0.30.1/HALT-7.md): with the bore radius
+  // alone a recess whose mouth sits 1 to 2 walls from a side wall passed and built 2.3 to 5.5 % off (v-01396-centre, v-01024-one, v-00872-wall2), on both pins.
+  // The recess is only at the mouth but the check runs the tube's whole length: that over-refuses a recess on the closed side, which is safe.
   if (cv.holes) {
     const holes: FView[] = []; for (let cur: string | undefined = G.headOf(f.target!), seen = new Set<string>(); cur && !seen.has(cur); ) { seen.add(cur); const h: FView | undefined = G.byId[cur]; if (!h) break; if (h.kind === 'hole') holes.push(h); cur = h.kind === 'combine' ? h.targets?.[0] : h.target; }
     const rt = rootOf(f.target, G.byId);
@@ -670,7 +676,7 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
     const tubes: Array<{ c: number[]; ax: number; R: number }> = [];
     for (const h of holes) {
       const box = G.holeBox[h.id]; if (!box) return bad('the part was measured before the hole');
-      const ax = AXI[h.axis ?? 'z']; const r = h.diameter! / 2; const R = r + f.thickness!;
+      const ax = AXI[h.axis ?? 'z']; const r = Math.max(h.diameter!, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2; const R = r + f.thickness!;
       const bc = [0, 1, 2].map((i) => (box[i] + box[i + 3]) / 2);
       const c = [0, 1, 2].map((i) => bc[i] + h.center![i]);
       for (const i of [0, 1, 2].filter((k) => k !== ax)) {

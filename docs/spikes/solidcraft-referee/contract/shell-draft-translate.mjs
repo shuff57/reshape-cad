@@ -591,7 +591,7 @@ function planShell(f, st, ctx, G) {
     const tubes = [];
     for (const h of holes) {
       const box = G.holeBox[h.id]; if (!box) return bad('the part was measured before the hole');
-      const ax = AXI[h.axis ?? 'z']; const r = h.diameter / 2; const R = r + f.thickness;
+      const ax = AXI[h.axis ?? 'z']; const r = Math.max(h.diameter, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2; const R = r + f.thickness; // the recess mouth included (HALT-7)
       const bc = [0, 1, 2].map((i) => (box[i] + box[i + 3]) / 2);
       const c = [0, 1, 2].map((i) => bc[i] + h.center[i]);
       for (const i of [0, 1, 2].filter((k) => k !== ax)) {
