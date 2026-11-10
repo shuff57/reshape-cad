@@ -168,7 +168,18 @@ async function runPort(tr, item, cfg, off = [], { resolver = cfg.resolver, async
   };
   let result; let error = null;
   try { const { _state, ...rest } = await tr.translateDoc(structuredClone(item.doc), ctx); result = rest; assert.ok(_state); } catch (e) { error = errOf(e); }
-  return { result, error, log: fake.log };
+  return { result, error, log: hollowBudgetException(fake.log) };
+}
+// Named exception (0.30.1 pin, 2026-11-09): the port sends a hollow's engine runs with { budgetS } (45 s + 1.5 x the last accepted run's CPU; test/hollow-budget.test.mjs),
+// the original sends none. Only that option is dropped from the port's log before the comparison; the commands, their order and every result must still match.
+// The fake reports no cpuMs, so every such budget is exactly 45.
+function hollowBudgetException(log) {
+  return log.map((l) => {
+    if (l[0] !== 'runSC' || l.length !== 3) return l;
+    assert.equal(l[2], '{"budgetS":45}', 'the only option the shell-draft set sends is a hollow\'s budget');
+    tally.hollowBudgets = (tally.hollowBudgets ?? 0) + 1;
+    return l.slice(0, 2);
+  });
 }
 
 const tally = {

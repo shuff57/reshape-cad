@@ -88,7 +88,7 @@ export interface TranslateState {
   /** holes profile only: the guard bookkeeping of the holes group (hole chains, body count, CPU seconds spent). See holes.ts. */
   holes?: HolesState;
   /** shell-draft profile only: the closed hollows of the shell-draft group. See shell-draft.ts. */
-  shellDraft?: { voided: Record<string, true> };
+  shellDraft?: { voided: Record<string, true>; lastRunS: number };
   /** patterns-mirror set only: the group's bookkeeping (analytic boxes, cut history, torus lineage, the refusals' two texts). See patterns-mirror.ts. */
   pm?: PMState;
   /** booleans set only: the group's bookkeeping (every feature by id, what changes an id in place, the live body list, the last run's CPU). See booleans.ts. */

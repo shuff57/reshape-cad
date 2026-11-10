@@ -68,6 +68,8 @@ const fmt = (n: number) => (Number.isInteger(n) ? String(n) : String(+n.toFixed(
 export const BUDGET_S = 45;
 /** The whole translation of one document may use this many (every replay and every guard probe). */
 export const DOC_BUDGET_S = 180;
+/** The G-BUDGET sentence for a step that is not a hole (the holes loop's, and since the 0.30.1 pin the hollow's in the shell-draft step). Text unchanged; it only has a name now. */
+export const budgetSentenceOther = (id: string, kind: string): string => `${id} (${kind}): building this took longer than ${BUDGET_S} seconds of computing, so it was stopped and ${id} is shown without it.`;
 
 /** A refusal with the guard that made it; the group's planners add raw / probe. */
 export interface GuardRefusal { refusal: string; guard?: string; raw?: string; probe?: unknown }
@@ -296,7 +298,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
       return;
     }
     if (res.timedOut) {
-      const sentence = f.kind === 'hole' ? SENTENCE.budget(f as unknown as HoleView) : `${f.id} (${f.kind}): building this took longer than ${BUDGET_S} seconds of computing, so it was stopped and ${f.id} is shown without it.`;
+      const sentence = f.kind === 'hole' ? SENTENCE.budget(f as unknown as HoleView) : budgetSentenceOther(f.id, f.kind);
       st.refused[f.id] = sentence;
       note({ status: 'refused', refusal: sentence, guard: 'G-BUDGET', raw: `${res.failed?.error}`, cpuMs: res.cpuMs, commands: variant });
       return;

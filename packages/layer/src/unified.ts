@@ -240,6 +240,7 @@ export const UNIFIED_PROFILE: Profile = {
     PM_PROFILE.onAccepted!(st, res, m, plan, acc);
     BOOL_PROFILE.onAccepted!(st, res, m, plan, acc);
     RG_PROFILE.onAccepted!(st, res, m, plan);
+    SHELL_DRAFT_PROFILE.onAccepted!(st, res, m, plan);
   },
   result: (st) => (st.unified!.domain.holes ? { spentS: st.holes!.spentS } : {}),
   step: unifiedStep,

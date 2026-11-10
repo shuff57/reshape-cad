@@ -27,6 +27,7 @@ import { hollowRefusal, openAxisEngineSentence } from './hollow-check.js';
 import { motionRefusal, motionRepair } from './move-turn.js';
 import { beforeOf, blendOf, blendRefusal, chainsOn, groupRun } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
+import { BUDGET_S, budgetSentenceOther } from './holes.js';
 import type { Aggregate, FeatureResult, LoopEnv, Plan, PlanCtx, Profile, TranslateState } from './translate.js';
 
 const AXI: Record<string, number> = { x: 0, y: 1, z: 2 };
@@ -1158,7 +1159,15 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     let variant = variant0;
     let repaired: { pads: number; reason: string } | undefined;
     let res: RunResult;
-    try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
+    // time: a hollow's engine runs carry { budgetS } (45 s + 1.5 x the CPU the last accepted run used, the rule of the holes, booleans and groove groups; advice to the host, as
+    // there). A failing hollow can run for minutes on SolidCraft 0.30.1 (docs/spikes/solidcraft-referee/remeasure-0.30.1/REMEASURE-0.30.1.md). Every other kind runs as before.
+    try { res = f.kind === 'shell' ? await ctx.runSC([...accepted, ...variant], { budgetS: BUDGET_S + 1.5 * sd.lastRunS }) : await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
+    if (res.timedOut && f.kind === 'shell') {
+      const sentence = budgetSentenceOther(f.id, f.kind);
+      st.refused[f.id] = sentence;
+      note({ status: 'refused', refusal: sentence, guard: 'G-BUDGET', raw: `${res.failed?.error}`, cpuMs: res.cpuMs, commands: variant });
+      return;
+    }
     if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     let m = aggregateOf(res, plan.produces!);
@@ -1219,7 +1228,9 @@ export const SHELL_DRAFT_PROFILE: Profile = {
   // claiming the 'shell' and 'draft' kinds is what makes this profile their owner in a composition; the real planning is planShell / planDraft, called by the step
   planners: { shell: notSync, draft: notSync },
   verifies: false,
-  initState(st) { st.shellDraft = { voided: {} }; },
+  initState(st) { st.shellDraft = { voided: {}, lastRunS: 0 }; },
+  // the budget of the next hollow run is 45 s + 1.5 x the CPU the last accepted run used, whichever step built it
+  onAccepted(st, res) { if (res.cpuMs) st.shellDraft!.lastRunS = res.cpuMs / 1000; },
   // wording of the generic loop: the step does not use these, they are the base's so the profile is complete
   depSentence: BASE_PROFILE.depSentence,
   noOutline: BASE_PROFILE.noOutline,
