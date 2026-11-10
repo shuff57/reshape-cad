@@ -1,0 +1,321 @@
+[
+ {
+  "id": "s1-00352",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(10.1, 10, 12);\nhole(b, { across: 3, at: [-0.05, 0], counterbore: { across: 5, deep: 4.5 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 10.1x10x12 open=top [cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-00404",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(21.1, 17.5, 8);\nhole(b, { across: 4, at: [-8.1, 6.15] });\nhole(b, { across: 3, at: [2.65, -0.85], countersink: { across: 15.7, angle: 90 } });\nhollow(b, { wall: 0.5, open: 'top' });",
+  "desc": "plate 21.1x17.5x8 open=top [vthru,csink]",
+  "t": 0.5
+ },
+ {
+  "id": "s1-00456",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+xp); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(24.9, 19.9, 12);\nhole(b, { across: 4, at: [-7.55, -5] });\n{ const s = sketch('top', 6); s.rect(4.3, 13.8, { at: [-0.45, 0] }); pocket(s, b, 9.5); }\n{ const s = sketch('top', 6); s.rect(3, 6.4, { at: [7.7, -0.65] }); pocket(s, b, 9); }\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 24.9x19.9x12 open=top+xp [vthru,slot,slot]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-00848",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(10.9, 8, 12);\nhole(b, { across: 2, deep: 7.95, at: [-0.95, -1] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 10.9x8x12 open=top [blind]",
+  "t": 2
+ },
+ {
+  "id": "s1-00872",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(17.3, 17.5, 12);\nhole(b, { across: 3, at: [0.1, -0.25], countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 17.3x17.5x12 open=top [csink]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-00932",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(10.1, 11.6, 8);\nhole(b, { across: 4, deep: 5, at: [1.5, 1] });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 10.1x11.6x8 open=top [blind]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-00968",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(12, 14, 10);\nhole(b, { across: 2, at: [-1, 0], counterbore: { across: 5, deep: 4.9 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 12x14x10 open=top+bot [cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-00996",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(15, 11, 8);\nhole(b, { across: 3, deep: 4.5, at: [-5.05, 0] });\nhole(b, { across: 3, deep: 1.5, at: [1.95, 0] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 15x11x8 open=top [blind,blind]",
+  "t": 2
+ },
+ {
+  "id": "s1-01012",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(49.1, 23.9, 10);\nturn(b, [180, 0, 0]);\nhole(b, { across: 4, at: [-13.1, -0.3], deep: 12, countersink: { across: 15, angle: 90 } });\nturn(b, [180, 0, 0]);\nhole(b, { across: 4, at: [6.1, 0], deep: 12, countersink: { across: 15.9, angle: 90 } });\nhole(b, { across: 5, at: [18.05, -0.25], deep: 12 });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 49.1x23.9x10 open=top [csink,csink,vthru]",
+  "t": 2
+ },
+ {
+  "id": "s1-01024",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(21.7, 13.5, 6);\nhole(b, { across: 2, at: [-4.35, -1], countersink: { across: 8.5, angle: 90 } });\nhole(b, { across: 3, at: [4.55, 1], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 21.7x13.5x6 open=top [csink,csink]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-01064",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(38.8, 17.6, 10);\nhole(b, { across: 5, at: [-11.9, 5.45] });\n{ const s = sketch('top', 5); s.rect(4.1, 7.6, { at: [-2.25, 0] }); pocket(s, b, 7.45); }\nhole(b, { across: 3, at: [10.9, -0.05], counterbore: { across: 7, deep: 5 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 38.8x17.6x10 open=top+bot [vthru,pocket,cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01180",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(25.6, 20.5, 10);\nhole(b, { across: 2, at: [-6.85, -2.25], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [4.9, 0], countersink: { across: 11.5, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 25.6x20.5x10 open=top+bot [csink,csink]",
+  "t": 2
+ },
+ {
+  "id": "s1-01200",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(13.6, 11.5, 12);\nhole(b, { across: 3, at: [1.2, 0], counterbore: { across: 6, deep: 8.3 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 13.6x11.5x12 open=top+bot [cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01272",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+xp); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(11.1, 8.8, 8);\nhole(b, { across: 3, at: [-0.05, 1.35] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 11.1x8.8x8 open=top+xp [vthru]",
+  "t": 2
+ },
+ {
+  "id": "s1-01284",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(17.5, 8, 8);\nhole(b, { across: 4, deep: 2.05, at: [-4.75, 0] });\nturn(b, [180, 0, 0]);\nhole(b, { across: 5, deep: 5.75, at: [3.25, 0.8] });\nturn(b, [180, 0, 0]);\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 17.5x8x8 open=top [blind,blind]",
+  "t": 2
+ },
+ {
+  "id": "s1-01356",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(14.7, 8, 12);\nhole(b, { across: 2, deep: 9.5, at: [-3.1, -0.25] });\nhole(b, { across: 6, deep: 10.25, at: [2.8, 0] });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 14.7x8x12 open=top+bot [blind,blind]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-01364",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12, 10, 8);\nhole(b, { across: 4, at: [0, -1] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 12x10x8 open=top [vthru]",
+  "t": 2
+ },
+ {
+  "id": "s1-01396",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12.6, 9, 6);\nhole(b, { across: 2, at: [-0.8, 0], counterbore: { across: 8, deep: 2.4 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "desc": "plate 12.6x9x6 open=top [cbore]",
+  "t": 1
+ },
+ {
+  "id": "s1-01436",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12.4, 8, 5);\nhole(b, { across: 6, at: [-2.1, -0.25] });\nhole(b, { across: 3, deep: 4.75, at: [3.65, 0.65] });\nhollow(b, { wall: 0.5, open: 'top' });",
+  "desc": "plate 12.4x8x5 open=top [vthru,blind]",
+  "t": 0.5
+ },
+ {
+  "id": "s1-01440",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(13.2, 9.3, 10);\nhole(b, { across: 2, at: [-1.45, -0.15], counterbore: { across: 8, deep: 0.75 } });\nhole(b, { across: 2, deep: 9.9, at: [4.55, 1.1] });\nhollow(b, { wall: 0.5, open: 'top' });",
+  "desc": "plate 13.2x9.3x10 open=top [cbore,blind]",
+  "t": 0.5
+ },
+ {
+  "id": "s1-01448",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(25.1, 13, 12);\nhole(b, { across: 2, at: [-3.8, 0], counterbore: { across: 8, deep: 2.95 } });\nturn(b, [180, 0, 0]);\nhole(b, { across: 3, at: [5.2, 0.05], deep: 14, counterbore: { across: 6, deep: 3 } });\nhole(b, { across: 1.5, along: 'y', at: [10.35, 2.2], deep: 15 });\nturn(b, [180, 0, 0]);\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "desc": "plate 25.1x13x12 open=bot [cbore,cbore,hhole]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-01488",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(13.3, 11, 10);\nhole(b, { across: 3, at: [-2.4, 1.05] });\nhole(b, { across: 5, at: [2.85, 0] });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 13.3x11x10 open=top [vthru,vthru]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-01568",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12.5, 16, 10);\nhole(b, { across: 3, at: [1.25, 2.5], counterbore: { across: 6, deep: 1.95 } });\nhollow(b, { wall: 2.5, open: 'bottom' });",
+  "desc": "plate 12.5x16x10 open=bot [cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01596",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [
+   "mirror image in z (every recess on the bottom face)"
+  ],
+  "script": "const b = box(31.9, 15.6, 12);\nhole(b, { across: 6, deep: 9.5, at: [-10.5, -0.2] });\nhole(b, { across: 2, at: [-2, -0.2], counterbore: { across: 6, deep: 8.2 } });\nhole(b, { across: 2, at: [8.5, 0], counterbore: { across: 5, deep: 7.6 } });\nhollow(b, { wall: 2.5, open: 'bottom' });",
+  "desc": "plate 31.9x15.6x12 open=top+bot [blind,cbore,cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01664",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+yp); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(10.4, 8, 8);\nhole(b, { across: 2, deep: 5.75, at: [-0.1, -1.25] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 10.4x8x8 open=top+yp [blind]",
+  "t": 2
+ },
+ {
+  "id": "s1-01760",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(16.5, 13.6, 10);\nturn(b, [180, 0, 0]);\nhole(b, { across: 3, deep: 5.25, at: [-4.2, -1.25] });\nturn(b, [180, 0, 0]);\nhole(b, { across: 6, deep: 0.5, at: [2.8, -1.2] });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 16.5x13.6x10 open=top+bot [blind,blind]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01776",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(26.1, 11, 12);\nhole(b, { across: 4, at: [-9.55, 1.5] });\nturn(b, [180, 0, 0]);\nhole(b, { across: 3, deep: 9.15, at: [-2, 1] });\nturn(b, [180, 0, 0]);\nhole(b, { across: 5, deep: 8, at: [6.25, 0] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 26.1x11x12 open=top [vthru,blind,blind]",
+  "t": 2
+ },
+ {
+  "id": "s1-01804",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12, 10, 8);\nhole(b, { across: 2, deep: 7.25, at: [-3, -1.7] });\nturn(b, [180, 0, 0]);\nhole(b, { across: 5, deep: 6, at: [1.25, -0.5] });\nturn(b, [180, 0, 0]);\nhollow(b, { wall: 1, open: 'top' });",
+  "desc": "plate 12x10x8 open=top [blind,blind]",
+  "t": 1
+ },
+ {
+  "id": "s1-01968",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(10.4, 12.5, 10);\nhole(b, { across: 6, deep: 7.5, at: [-0.8, 0.25] });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 10.4x12.5x10 open=top [blind]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-02004",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(11.6, 8, 12);\n{ const c = cylinder(4, 2, { at: [-2.3, -1, 7] }); join(b, c); }\nhole(b, { across: 3, at: [3.3, 0.8] });\nhollow(b, { wall: 0.5, open: 'top' });",
+  "desc": "plate 11.6x8x12 open=top [rboss,vthru]",
+  "t": 0.5
+ },
+ {
+  "id": "s1-02016",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(14.5, 16.8, 10);\nhole(b, { across: 4, at: [1.25, 0], counterbore: { across: 7, deep: 2.5 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 14.5x16.8x10 open=top [cbore]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-02052",
+  "exact": true,
+  "why": null,
+  "notes": [
+   "mirror image in z (every recess on the bottom face)"
+  ],
+  "script": "const b = box(24.6, 17, 8);\nhole(b, { across: 3, along: 'y', at: [-6.75, -0.45] });\nhole(b, { across: 4, at: [5.35, 0], counterbore: { across: 10, deep: 1.9 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 24.6x17x8 open=bot [hhole,cbore]",
+  "t": 2
+ },
+ {
+  "id": "s1-02056",
+  "exact": false,
+  "why": "hollow()'s open: names a face of the first shape (the base box, top at z = 3); the fuzz case opens the top of the left wall (z = 9), which no open: word names",
+  "notes": [],
+  "script": "const b = box(24, 16, 3);\nconst w1 = box(6, 16, 6, { at: [-9, 0, 4.5] });\nconst w2 = box(6, 16, 6, { at: [9, 0, 4.5] });\njoin(b, w1);\njoin(b, w2);\nhole(b, { across: 4, at: [-9, 0] });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "U 24x16 wall6 open=wallTop",
+  "t": 1.5
+ },
+ {
+  "id": "s1-02060",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(17.9, 9.9, 12);\nhole(b, { across: 6, deep: 10.4, at: [-4.2, -0.1] });\nhole(b, { across: 4, at: [4.3, -0.1], counterbore: { across: 6, deep: 3.05 } });\nhollow(b, { wall: 1.5, open: 'right' });",
+  "desc": "plate 17.9x9.9x12 open=xp [blind,cbore]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-02080",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(16.5, 12, 12);\nhole(b, { across: 4, at: [-4.5, 0] });\nhole(b, { across: 3, at: [3, 0] });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 16.5x12x12 open=top [vthru,vthru]",
+  "t": 2
+ }
+]

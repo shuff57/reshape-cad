@@ -1,0 +1,47 @@
+[
+ {
+  "id": "v-00872-round",
+  "of": "s1-00872",
+  "script": "const b = box(18, 18, 12);\nhole(b, { across: 3, countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2.5, open: 'top' });"
+ },
+ {
+  "id": "v-00872-wall2",
+  "of": "s1-00872",
+  "script": "const b = box(18, 18, 12);\nhole(b, { across: 3, countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-01024-round",
+  "of": "s1-01024",
+  "script": "const b = box(22, 14, 6);\nhole(b, { across: 2, at: [-4, -1], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [4.5, 1], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-01024-one",
+  "of": "s1-01024",
+  "script": "const b = box(22, 14, 6);\nhole(b, { across: 2, at: [-4, -1], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-01180-round",
+  "of": "s1-01180",
+  "script": "const b = box(26, 20, 10);\nhole(b, { across: 2, at: [-7, -2], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [5, 0], countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-01396-round",
+  "of": "s1-01396",
+  "script": "const b = box(13, 9, 6);\nhole(b, { across: 2, at: [-1, 0], counterbore: { across: 8, deep: 2.5 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-01396-centre",
+  "of": "s1-01396",
+  "script": "const b = box(12, 10, 6);\nhole(b, { across: 2, counterbore: { across: 8, deep: 2 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-csink-plate",
+  "of": "-",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, countersink: { across: 10, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-cbore-plate",
+  "of": "-",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, counterbore: { across: 8, deep: 3 } });\nhollow(b, { wall: 2, open: 'top' });"
+ }
+]

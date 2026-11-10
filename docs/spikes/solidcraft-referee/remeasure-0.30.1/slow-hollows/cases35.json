@@ -1,0 +1,11511 @@
+[
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10.1,
+     "width": 10,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 14,
+     "base": [
+      -0.05,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 5.5,
+     "base": [
+      -0.05,
+      0,
+      7.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -3.367,
+      -3.333,
+      12
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.05,
+     5.05,
+     -5,
+     5,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -5.05,
+      5.05,
+      -5,
+      5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.05,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.05,
+      0
+     ],
+     "r": 2.5,
+     "range": [
+      7.5,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 10.1,
+   "D": 10,
+   "H": 12,
+   "t": 2.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 14,
+       "base": [
+        -0.05,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 5.5,
+       "base": [
+        -0.05,
+        0,
+        7.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.05,
+       0
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.05,
+       0
+      ],
+      "r": 2.5,
+      "range": [
+       7.5,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.05,
+       0,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.05,
+       0,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 10.1,
+   "D": 10,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1.5,
+     "R": 2.5,
+     "d": 4.5,
+     "face": "top",
+     "ring": 7.5,
+     "xc": -0.05,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 2.5,
+    "gr": 2.6,
+    "between": [],
+    "gy1": 2.5,
+    "gy2": 2.5
+   }
+  },
+  "desc": "plate 10.1x10x12 open=top [cbore]",
+  "id": "s1-00352",
+  "seed": 1,
+  "index": 352
+ },
+ {
+  "family": "plate",
+  "t": 0.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 21.1,
+     "width": 17.5,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 10,
+     "base": [
+      -8.1,
+      6.15,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      2.65,
+      -0.85,
+      8
+     ],
+     "diameter": 3,
+     "type": "countersink",
+     "cs_diameter": 15.7
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -7.36,
+      -5.59,
+      8
+     ]
+    ],
+    "thickness": 0.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 0.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.55,
+     10.55,
+     -8.75,
+     8.75,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -10.55,
+      10.55,
+      -8.75,
+      8.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -8.1,
+      6.15
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cone",
+     "c": [
+      2.65,
+      -0.85
+     ],
+     "rb": 1.5,
+     "zb": 1.65,
+     "rt": 7.85,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 21.1,
+   "D": 17.5,
+   "H": 8,
+   "t": 0.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 10,
+       "base": [
+        -8.1,
+        6.15,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -8.1,
+       6.15
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -8.1,
+       6.15,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -8.1,
+       6.15,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        2.65,
+        -0.85,
+        8
+       ],
+       "diameter": 3,
+       "type": "countersink",
+       "cs_diameter": 15.7
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       2.65,
+       -0.85
+      ],
+      "rb": 1.5,
+      "zb": 1.65,
+      "rt": 7.85,
+      "zt": 8,
+      "r": 1.5,
+      "range": [
+       -1,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       2.65,
+       -0.85,
+       8.15
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       2.65,
+       -0.85,
+       8.15
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 21.1,
+   "D": 17.5,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2,
+     "xc": -8.1,
+     "yc": 6.15
+    },
+    {
+     "kind": "csink",
+     "r": 1.5,
+     "R": 7.85,
+     "dep": 6.35,
+     "face": "top",
+     "straight": 1.65,
+     "xc": 2.65,
+     "yc": -0.85
+    }
+   ],
+   "gaps": {
+    "gl": 0.45,
+    "gr": 0.05,
+    "between": [
+     0.9
+    ],
+    "gy1": 0.05,
+    "gy2": 1.75
+   }
+  },
+  "desc": "plate 21.1x17.5x8 open=top [vthru,csink]",
+  "id": "s1-00404",
+  "seed": 1,
+  "index": 404
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 24.9,
+     "width": 19.9,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 14,
+     "base": [
+      -7.55,
+      -5,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 4.3,
+     "width": 13.8,
+     "height": 10.5,
+     "center": [
+      -0.45000000000000007,
+      0,
+      7.75
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 3,
+     "width": 6.4,
+     "height": 10,
+     "center": [
+      7.699999999999999,
+      -0.6499999999999999,
+      8
+     ],
+     "body_name": "f3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -7.324,
+      2.427,
+      12
+     ],
+     [
+      12.45,
+      -3.883,
+      6
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.45,
+     12.45,
+     -9.95,
+     9.95,
+     0,
+     12
+    ]
+   ],
+   "cuts": [
+    [
+     -2.6,
+     1.7,
+     -6.9,
+     6.9,
+     2.5,
+     12
+    ],
+    [
+     6.2,
+     9.2,
+     -3.85,
+     2.5500000000000003,
+     3,
+     12
+    ]
+   ],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -12.45,
+      12.45,
+      -9.95,
+      9.95
+     ],
+     "minus": [
+      [
+       -2.6,
+       1.7,
+       -6.9,
+       6.9
+      ],
+      [
+       6.2,
+       9.2,
+       -3.85,
+       2.5500000000000003
+      ]
+     ]
+    },
+    {
+     "axis": "x",
+     "dir": 1,
+     "coord": 12.45,
+     "rect": [
+      -9.95,
+      9.95,
+      0,
+      12
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -7.55,
+      -5
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 24.9,
+   "D": 19.9,
+   "H": 12,
+   "t": 1.5,
+   "open": "top+xp"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 14,
+       "base": [
+        -7.55,
+        -5,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -7.55,
+       -5
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -7.55,
+       -5,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -7.55,
+       -5,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "slot",
+    "cmds": [
+     {
+      "command": "solid.box",
+      "params": {
+       "length": 4.3,
+       "width": 13.8,
+       "height": 10.5,
+       "center": [
+        -0.45000000000000007,
+        0,
+        7.75
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "cuts": [
+     [
+      -2.6,
+      1.7,
+      -6.9,
+      6.9,
+      2.5,
+      12
+     ]
+    ],
+    "minusTop": [
+     [
+      -2.6,
+      1.7,
+      -6.9,
+      6.9
+     ]
+    ],
+    "avoid": []
+   },
+   {
+    "kind": "slot",
+    "cmds": [
+     {
+      "command": "solid.box",
+      "params": {
+       "length": 3,
+       "width": 6.4,
+       "height": 10,
+       "center": [
+        7.699999999999999,
+        -0.6499999999999999,
+        8
+       ],
+       "body_name": "f3"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "cuts": [
+     [
+      6.2,
+      9.2,
+      -3.85,
+      2.5500000000000003,
+      3,
+      12
+     ]
+    ],
+    "minusTop": [
+     [
+      6.2,
+      9.2,
+      -3.85,
+      2.5500000000000003
+     ]
+    ],
+    "avoid": []
+   }
+  ],
+  "meta": {
+   "W": 24.9,
+   "D": 19.9,
+   "H": 12,
+   "open": "top+xp",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2,
+     "xc": -7.55,
+     "yc": -5
+    },
+    {
+     "kind": "slot",
+     "pw": 4.3,
+     "pd": 13.8,
+     "d": 9.5,
+     "face": "top",
+     "floor": 2.5,
+     "xc": -0.45,
+     "yc": 0
+    },
+    {
+     "kind": "slot",
+     "pw": 3,
+     "pd": 6.4,
+     "d": 9,
+     "face": "top",
+     "floor": 3,
+     "xc": 7.7,
+     "yc": -0.65
+    }
+   ],
+   "gaps": {
+    "gl": 2.9,
+    "gr": 3.25,
+    "between": [
+     2.95,
+     4.5
+    ],
+    "gy1": 3.05,
+    "gy2": 3.05
+   }
+  },
+  "desc": "plate 24.9x19.9x12 open=top+xp [vthru,slot,slot]",
+  "id": "s1-00456",
+  "seed": 1,
+  "index": 456
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10.9,
+     "width": 8,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 8.95,
+     "base": [
+      -0.95,
+      -1,
+      4.05
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.843,
+      0,
+      12
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.45,
+     5.45,
+     -4,
+     4,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -5.45,
+      5.45,
+      -4,
+      4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.95,
+      -1
+     ],
+     "r": 1,
+     "range": [
+      4.05,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 10.9,
+   "D": 8,
+   "H": 12,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 8.95,
+       "base": [
+        -0.95,
+        -1,
+        4.05
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.95,
+       -1
+      ],
+      "r": 1,
+      "range": [
+       4.05,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.95,
+       -1,
+       1.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.95,
+       -1,
+       1.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 10.9,
+   "D": 8,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1,
+     "d": 7.95,
+     "face": "top",
+     "floor": 4.05,
+     "xc": -0.95,
+     "yc": -1
+    }
+   ],
+   "gaps": {
+    "gl": 3.5,
+    "gr": 5.4,
+    "between": [],
+    "gy1": 2,
+    "gy2": 2
+   }
+  },
+  "desc": "plate 10.9x8x12 open=top [blind]",
+  "id": "s1-00848",
+  "seed": 1,
+  "index": 848
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 17.3,
+     "width": 17.5,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      0.1,
+      -0.25,
+      12
+     ],
+     "diameter": 3,
+     "type": "countersink",
+     "cs_diameter": 12
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -6.007,
+      6.076,
+      12
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.65,
+     8.65,
+     -8.75,
+     8.75,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -8.65,
+      8.65,
+      -8.75,
+      8.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0.1,
+      -0.25
+     ],
+     "rb": 1.5,
+     "zb": 7.5,
+     "rt": 6,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 17.3,
+   "D": 17.5,
+   "H": 12,
+   "t": 2.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        0.1,
+        -0.25,
+        12
+       ],
+       "diameter": 3,
+       "type": "countersink",
+       "cs_diameter": 12
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       0.1,
+       -0.25
+      ],
+      "rb": 1.5,
+      "zb": 7.5,
+      "rt": 6,
+      "zt": 12,
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       0.1,
+       -0.25,
+       6.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       0.1,
+       -0.25,
+       6.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 17.3,
+   "D": 17.5,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "csink",
+     "r": 1.5,
+     "R": 6,
+     "dep": 4.5,
+     "face": "top",
+     "straight": 7.5,
+     "xc": 0.1,
+     "yc": -0.25
+    }
+   ],
+   "gaps": {
+    "gl": 2.75,
+    "gr": 2.55,
+    "between": [],
+    "gy1": 2.5,
+    "gy2": 3
+   }
+  },
+  "desc": "plate 17.3x17.5x12 open=top [csink]",
+  "id": "s1-00872",
+  "seed": 1,
+  "index": 872
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10.1,
+     "width": 11.6,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 6,
+     "base": [
+      1.5,
+      1,
+      3
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -1.924,
+      -2.658,
+      8
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.05,
+     5.05,
+     -5.8,
+     5.8,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -5.05,
+      5.05,
+      -5.8,
+      5.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.5,
+      1
+     ],
+     "r": 2,
+     "range": [
+      3,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 10.1,
+   "D": 11.6,
+   "H": 8,
+   "t": 1.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 6,
+       "base": [
+        1.5,
+        1,
+        3
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.5,
+       1
+      ],
+      "r": 2,
+      "range": [
+       3,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.5,
+       1,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.5,
+       1,
+       2.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 10.1,
+   "D": 11.6,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 2,
+     "d": 5,
+     "face": "top",
+     "floor": 3,
+     "xc": 1.5,
+     "yc": 1
+    }
+   ],
+   "gaps": {
+    "gl": 4.55,
+    "gr": 1.55,
+    "between": [],
+    "gy1": 4.8,
+    "gy2": 2.8
+   }
+  },
+  "desc": "plate 10.1x11.6x8 open=top [blind]",
+  "id": "s1-00932",
+  "seed": 1,
+  "index": 932
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12,
+     "width": 14,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 12,
+     "base": [
+      -1,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 5.9,
+     "base": [
+      -1,
+      0,
+      5.1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.88,
+      -3.862,
+      10
+     ],
+     [
+      2.88,
+      -3.862,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6,
+     6,
+     -7,
+     7,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -6,
+      6,
+      -7,
+      7
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -6,
+      6,
+      -7,
+      7
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -1,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -1,
+      0
+     ],
+     "r": 2.5,
+     "range": [
+      5.1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12,
+   "D": 14,
+   "H": 10,
+   "t": 2.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 12,
+       "base": [
+        -1,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 5.9,
+       "base": [
+        -1,
+        0,
+        5.1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -1,
+       0
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       11
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -1,
+       0
+      ],
+      "r": 2.5,
+      "range": [
+       5.1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -1,
+       0,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -1,
+       0,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12,
+   "D": 14,
+   "H": 10,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 2.5,
+     "d": 4.9,
+     "face": "top",
+     "ring": 5.1,
+     "xc": -1,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 2.5,
+    "gr": 4.5,
+    "between": [],
+    "gy1": 4.5,
+    "gy2": 4.5
+   }
+  },
+  "desc": "plate 12x14x10 open=top+bot [cbore]",
+  "id": "s1-00968",
+  "seed": 1,
+  "index": 968
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 15,
+     "width": 11,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 5.5,
+     "base": [
+      -5.05,
+      0,
+      3.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 2.5,
+     "base": [
+      1.95,
+      0,
+      6.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -1.452,
+      -2.87,
+      8
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.5,
+     7.5,
+     -5.5,
+     5.5,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -7.5,
+      7.5,
+      -5.5,
+      5.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -5.05,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      3.5,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.95,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      6.5,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 15,
+   "D": 11,
+   "H": 8,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 5.5,
+       "base": [
+        -5.05,
+        0,
+        3.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -5.05,
+       0
+      ],
+      "r": 1.5,
+      "range": [
+       3.5,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -5.05,
+       0,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -5.05,
+       0,
+       1.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 2.5,
+       "base": [
+        1.95,
+        0,
+        6.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.95,
+       0
+      ],
+      "r": 1.5,
+      "range": [
+       6.5,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.95,
+       0,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.95,
+       0,
+       1.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 15,
+   "D": 11,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1.5,
+     "d": 4.5,
+     "face": "top",
+     "floor": 3.5,
+     "xc": -5.05,
+     "yc": 0
+    },
+    {
+     "kind": "blind",
+     "r": 1.5,
+     "d": 1.5,
+     "face": "top",
+     "floor": 6.5,
+     "xc": 1.95,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 0.95,
+    "gr": 4.05,
+    "between": [
+     4
+    ],
+    "gy1": 4,
+    "gy2": 4
+   }
+  },
+  "desc": "plate 15x11x8 open=top [blind,blind]",
+  "id": "s1-00996",
+  "seed": 1,
+  "index": 996
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 49.1,
+     "width": 23.9,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -13.1,
+      0.3,
+      0
+     ],
+     "diameter": 4,
+     "type": "countersink",
+     "cs_diameter": 15
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      6.1,
+      0,
+      10
+     ],
+     "diameter": 4,
+     "type": "countersink",
+     "cs_diameter": 15.9
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 12,
+     "base": [
+      18.05,
+      -0.25,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      16.863,
+      7.316,
+      10
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -24.55,
+     24.55,
+     -11.95,
+     11.95,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -24.55,
+      24.55,
+      -11.95,
+      11.95
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      -13.1,
+      0.3
+     ],
+     "rb": 7.5,
+     "zb": 0,
+     "rt": 2,
+     "zt": 5.5,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cone",
+     "c": [
+      6.1,
+      0
+     ],
+     "rb": 2,
+     "zb": 4.05,
+     "rt": 7.95,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      18.05,
+      -0.25
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 49.1,
+   "D": 23.9,
+   "H": 10,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        -13.1,
+        0.3,
+        0
+       ],
+       "diameter": 4,
+       "type": "countersink",
+       "cs_diameter": 15
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       -13.1,
+       0.3
+      ],
+      "rb": 7.5,
+      "zb": 0,
+      "rt": 2,
+      "zt": 5.5,
+      "r": 2,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -13.1,
+       0.3,
+       7.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -13.1,
+       0.3,
+       7.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        6.1,
+        0,
+        10
+       ],
+       "diameter": 4,
+       "type": "countersink",
+       "cs_diameter": 15.9
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       6.1,
+       0
+      ],
+      "rb": 2,
+      "zb": 4.05,
+      "rt": 7.95,
+      "zt": 10,
+      "r": 2,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       6.1,
+       0,
+       8.25
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       6.1,
+       0,
+       8.25
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 12,
+       "base": [
+        18.05,
+        -0.25,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       18.05,
+       -0.25
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       18.05,
+       -0.25,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       18.05,
+       -0.25,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 49.1,
+   "D": 23.9,
+   "H": 10,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "csink",
+     "r": 2,
+     "R": 7.5,
+     "dep": 5.5,
+     "face": "bot",
+     "straight": 4.5,
+     "xc": -13.1,
+     "yc": 0.3
+    },
+    {
+     "kind": "csink",
+     "r": 2,
+     "R": 7.95,
+     "dep": 5.95,
+     "face": "top",
+     "straight": 4.05,
+     "xc": 6.1,
+     "yc": 0
+    },
+    {
+     "kind": "vthru",
+     "r": 2.5,
+     "xc": 18.05,
+     "yc": -0.25
+    }
+   ],
+   "gaps": {
+    "gl": 3.95,
+    "gr": 4,
+    "between": [
+     3.75,
+     1.5
+    ],
+    "gy1": 4,
+    "gy2": 4
+   }
+  },
+  "desc": "plate 49.1x23.9x10 open=top [csink,csink,vthru]",
+  "id": "s1-01012",
+  "seed": 1,
+  "index": 1012
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 21.7,
+     "width": 13.5,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      3
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -4.35,
+      -1,
+      6
+     ],
+     "diameter": 2,
+     "type": "countersink",
+     "cs_diameter": 8.5
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      4.55,
+      1,
+      6
+     ],
+     "diameter": 3,
+     "type": "countersink",
+     "cs_diameter": 6
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      7.644,
+      -4.098,
+      6
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.85,
+     10.85,
+     -6.75,
+     6.75,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -10.85,
+      10.85,
+      -6.75,
+      6.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      -4.35,
+      -1
+     ],
+     "rb": 1,
+     "zb": 2.75,
+     "rt": 4.25,
+     "zt": 6,
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cone",
+     "c": [
+      4.55,
+      1
+     ],
+     "rb": 1.5,
+     "zb": 4.5,
+     "rt": 3,
+     "zt": 6,
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 21.7,
+   "D": 13.5,
+   "H": 6,
+   "t": 1.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        -4.35,
+        -1,
+        6
+       ],
+       "diameter": 2,
+       "type": "countersink",
+       "cs_diameter": 8.5
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       -4.35,
+       -1
+      ],
+      "rb": 1,
+      "zb": 2.75,
+      "rt": 4.25,
+      "zt": 6,
+      "r": 1,
+      "range": [
+       -1,
+       7
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -4.35,
+       -1,
+       4.55
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -4.35,
+       -1,
+       4.55
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        4.55,
+        1,
+        6
+       ],
+       "diameter": 3,
+       "type": "countersink",
+       "cs_diameter": 6
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       4.55,
+       1
+      ],
+      "rb": 1.5,
+      "zb": 4.5,
+      "rt": 3,
+      "zt": 6,
+      "r": 1.5,
+      "range": [
+       -1,
+       7
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       4.55,
+       1,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       4.55,
+       1,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 21.7,
+   "D": 13.5,
+   "H": 6,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "csink",
+     "r": 1,
+     "R": 4.25,
+     "dep": 3.25,
+     "face": "top",
+     "straight": 2.75,
+     "xc": -4.35,
+     "yc": -1
+    },
+    {
+     "kind": "csink",
+     "r": 1.5,
+     "R": 3,
+     "dep": 1.5,
+     "face": "top",
+     "straight": 4.5,
+     "xc": 4.55,
+     "yc": 1
+    }
+   ],
+   "gaps": {
+    "gl": 2.25,
+    "gr": 3.3,
+    "between": [
+     1.65
+    ],
+    "gy1": 1.5,
+    "gy2": 3.5
+   }
+  },
+  "desc": "plate 21.7x13.5x6 open=top [csink,csink]",
+  "id": "s1-01024",
+  "seed": 1,
+  "index": 1024
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 38.8,
+     "width": 17.6,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 12,
+     "base": [
+      -11.9,
+      5.45,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 4.1,
+     "width": 7.6,
+     "height": 8.45,
+     "center": [
+      -2.25,
+      0,
+      6.775
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 12,
+     "base": [
+      10.9,
+      -0.05,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3.5,
+     "height": 6,
+     "base": [
+      10.9,
+      -0.05,
+      5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -13.752,
+      -3.178,
+      10
+     ],
+     [
+      -1.473,
+      0.244,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -19.4,
+     19.4,
+     -8.8,
+     8.8,
+     0,
+     10
+    ]
+   ],
+   "cuts": [
+    [
+     -4.3,
+     -0.20000000000000018,
+     -3.8,
+     3.8,
+     2.55,
+     10
+    ]
+   ],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -19.4,
+      19.4,
+      -8.8,
+      8.8
+     ],
+     "minus": [
+      [
+       -4.3,
+       -0.20000000000000018,
+       -3.8,
+       3.8
+      ]
+     ]
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -19.4,
+      19.4,
+      -8.8,
+      8.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -11.9,
+      5.45
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      10.9,
+      -0.05
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      10.9,
+      -0.05
+     ],
+     "r": 3.5,
+     "range": [
+      5,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 38.8,
+   "D": 17.6,
+   "H": 10,
+   "t": 2.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 12,
+       "base": [
+        -11.9,
+        5.45,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -11.9,
+       5.45
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -11.9,
+       5.45,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -11.9,
+       5.45,
+       2.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "pocket",
+    "cmds": [
+     {
+      "command": "solid.box",
+      "params": {
+       "length": 4.1,
+       "width": 7.6,
+       "height": 8.45,
+       "center": [
+        -2.25,
+        0,
+        6.775
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "cuts": [
+     [
+      -4.3,
+      -0.20000000000000018,
+      -3.8,
+      3.8,
+      2.55,
+      10
+     ]
+    ],
+    "minusTop": [
+     [
+      -4.3,
+      -0.20000000000000018,
+      -3.8,
+      3.8
+     ]
+    ],
+    "avoid": []
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 12,
+       "base": [
+        10.9,
+        -0.05,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3.5,
+       "height": 6,
+       "base": [
+        10.9,
+        -0.05,
+        5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       10.9,
+       -0.05
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       11
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       10.9,
+       -0.05
+      ],
+      "r": 3.5,
+      "range": [
+       5,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       10.9,
+       -0.05,
+       3.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       10.9,
+       -0.05,
+       3.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 38.8,
+   "D": 17.6,
+   "H": 10,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2.5,
+     "xc": -11.9,
+     "yc": 5.45
+    },
+    {
+     "kind": "pocket",
+     "pw": 4.1,
+     "pd": 7.6,
+     "d": 7.45,
+     "face": "top",
+     "floor": 2.55,
+     "xc": -2.25,
+     "yc": 0
+    },
+    {
+     "kind": "cbore",
+     "r": 1.5,
+     "R": 3.5,
+     "d": 5,
+     "face": "top",
+     "ring": 5,
+     "xc": 10.9,
+     "yc": -0.05
+    }
+   ],
+   "gaps": {
+    "gl": 5,
+    "gr": 5,
+    "between": [
+     5.1,
+     7.6
+    ],
+    "gy1": 5,
+    "gy2": 5
+   }
+  },
+  "desc": "plate 38.8x17.6x10 open=top+bot [vthru,pocket,cbore]",
+  "id": "s1-01064",
+  "seed": 1,
+  "index": 1064
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 25.6,
+     "width": 20.5,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      -6.85,
+      -2.25,
+      10
+     ],
+     "diameter": 2,
+     "type": "countersink",
+     "cs_diameter": 8
+    }
+   },
+   {
+    "command": "solid.hole",
+    "params": {
+     "position": [
+      4.9,
+      0,
+      10
+     ],
+     "diameter": 3,
+     "type": "countersink",
+     "cs_diameter": 11.5
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -3.692,
+      5.613,
+      10
+     ],
+     [
+      -3.692,
+      5.613,
+      0
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.8,
+     12.8,
+     -10.25,
+     10.25,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -12.8,
+      12.8,
+      -10.25,
+      10.25
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -12.8,
+      12.8,
+      -10.25,
+      10.25
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      -6.85,
+      -2.25
+     ],
+     "rb": 1,
+     "zb": 7,
+     "rt": 4,
+     "zt": 10,
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cone",
+     "c": [
+      4.9,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 5.75,
+     "rt": 5.75,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 25.6,
+   "D": 20.5,
+   "H": 10,
+   "t": 2,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        -6.85,
+        -2.25,
+        10
+       ],
+       "diameter": 2,
+       "type": "countersink",
+       "cs_diameter": 8
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       -6.85,
+       -2.25
+      ],
+      "rb": 1,
+      "zb": 7,
+      "rt": 4,
+      "zt": 10,
+      "r": 1,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -6.85,
+       -2.25,
+       4.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -6.85,
+       -2.25,
+       4.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "csink",
+    "cmds": [
+     {
+      "command": "solid.hole",
+      "params": {
+       "position": [
+        4.9,
+        0,
+        10
+       ],
+       "diameter": 3,
+       "type": "countersink",
+       "cs_diameter": 11.5
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cone",
+      "c": [
+       4.9,
+       0
+      ],
+      "rb": 1.5,
+      "zb": 5.75,
+      "rt": 5.75,
+      "zt": 10,
+      "r": 1.5,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       4.9,
+       0,
+       6.05
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       4.9,
+       0,
+       6.05
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 25.6,
+   "D": 20.5,
+   "H": 10,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "csink",
+     "r": 1,
+     "R": 4,
+     "dep": 3,
+     "face": "top",
+     "straight": 7,
+     "xc": -6.85,
+     "yc": -2.25
+    },
+    {
+     "kind": "csink",
+     "r": 1.5,
+     "R": 5.75,
+     "dep": 4.25,
+     "face": "top",
+     "straight": 5.75,
+     "xc": 4.9,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 1.95,
+    "gr": 2.15,
+    "between": [
+     2
+    ],
+    "gy1": 4.5,
+    "gy2": 4.5
+   }
+  },
+  "desc": "plate 25.6x20.5x10 open=top+bot [csink,csink]",
+  "id": "s1-01180",
+  "seed": 1,
+  "index": 1180
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 13.6,
+     "width": 11.5,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 14,
+     "base": [
+      1.2,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 9.3,
+     "base": [
+      1.2,
+      0,
+      3.7
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -4.129,
+      -2.635,
+      12
+     ],
+     [
+      -4.129,
+      -2.635,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.8,
+     6.8,
+     -5.75,
+     5.75,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -6.8,
+      6.8,
+      -5.75,
+      5.75
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -6.8,
+      6.8,
+      -5.75,
+      5.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.2,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.2,
+      0
+     ],
+     "r": 3,
+     "range": [
+      3.7,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 13.6,
+   "D": 11.5,
+   "H": 12,
+   "t": 2.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 14,
+       "base": [
+        1.2,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 9.3,
+       "base": [
+        1.2,
+        0,
+        3.7
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.2,
+       0
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.2,
+       0
+      ],
+      "r": 3,
+      "range": [
+       3.7,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.2,
+       0,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.2,
+       0,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 13.6,
+   "D": 11.5,
+   "H": 12,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1.5,
+     "R": 3,
+     "d": 8.3,
+     "face": "top",
+     "ring": 3.7,
+     "xc": 1.2,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 5,
+    "gr": 2.6,
+    "between": [],
+    "gy1": 2.75,
+    "gy2": 2.75
+   }
+  },
+  "desc": "plate 13.6x11.5x12 open=top+bot [cbore]",
+  "id": "s1-01200",
+  "seed": 1,
+  "index": 1200
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 11.1,
+     "width": 8.8,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 10,
+     "base": [
+      -0.05,
+      1.35,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.896,
+      -1.853,
+      8
+     ],
+     [
+      5.55,
+      0,
+      4
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.55,
+     5.55,
+     -4.4,
+     4.4,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -5.55,
+      5.55,
+      -4.4,
+      4.4
+     ],
+     "minus": []
+    },
+    {
+     "axis": "x",
+     "dir": 1,
+     "coord": 5.55,
+     "rect": [
+      -4.4,
+      4.4,
+      0,
+      8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.05,
+      1.35
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 11.1,
+   "D": 8.8,
+   "H": 8,
+   "t": 2,
+   "open": "top+xp"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 10,
+       "base": [
+        -0.05,
+        1.35,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.05,
+       1.35
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.05,
+       1.35,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.05,
+       1.35,
+       1.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 11.1,
+   "D": 8.8,
+   "H": 8,
+   "open": "top+xp",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 1.5,
+     "xc": -0.05,
+     "yc": 1.35
+    }
+   ],
+   "gaps": {
+    "gl": 4,
+    "gr": 4.1,
+    "between": [],
+    "gy1": 4.25,
+    "gy2": 1.55
+   }
+  },
+  "desc": "plate 11.1x8.8x8 open=top+xp [vthru]",
+  "id": "s1-01272",
+  "seed": 1,
+  "index": 1272
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 17.5,
+     "width": 8,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 3.05,
+     "base": [
+      -4.75,
+      0,
+      5.95
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 6.75,
+     "base": [
+      3.25,
+      -0.8,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -0.729,
+      1.882,
+      8
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.75,
+     8.75,
+     -4,
+     4,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -8.75,
+      8.75,
+      -4,
+      4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -4.75,
+      0
+     ],
+     "r": 2,
+     "range": [
+      5.95,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.25,
+      -0.8
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      5.75
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 17.5,
+   "D": 8,
+   "H": 8,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 3.05,
+       "base": [
+        -4.75,
+        0,
+        5.95
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -4.75,
+       0
+      ],
+      "r": 2,
+      "range": [
+       5.95,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -4.75,
+       0,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -4.75,
+       0,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 6.75,
+       "base": [
+        3.25,
+        -0.8,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       3.25,
+       -0.8
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       5.75
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       3.25,
+       -0.8,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       3.25,
+       -0.8,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 17.5,
+   "D": 8,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 2,
+     "d": 2.05,
+     "face": "top",
+     "floor": 5.95,
+     "xc": -4.75,
+     "yc": 0
+    },
+    {
+     "kind": "blind",
+     "r": 2.5,
+     "d": 5.75,
+     "face": "bot",
+     "floor": 2.25,
+     "xc": 3.25,
+     "yc": -0.8
+    }
+   ],
+   "gaps": {
+    "gl": 2,
+    "gr": 3,
+    "between": [
+     3.5
+    ],
+    "gy1": 0.7,
+    "gy2": 0.7
+   }
+  },
+  "desc": "plate 17.5x8x8 open=top [blind,blind]",
+  "id": "s1-01284",
+  "seed": 1,
+  "index": 1284
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 14.7,
+     "width": 8,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 10.5,
+     "base": [
+      -3.1,
+      -0.25,
+      2.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 11.25,
+     "base": [
+      2.8,
+      0,
+      1.75
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -5.635,
+      -1.882,
+      12
+     ],
+     [
+      -5.635,
+      -1.882,
+      0
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.35,
+     7.35,
+     -4,
+     4,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -7.35,
+      7.35,
+      -4,
+      4
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.35,
+      7.35,
+      -4,
+      4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -3.1,
+      -0.25
+     ],
+     "r": 1,
+     "range": [
+      2.5,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.8,
+      0
+     ],
+     "r": 3,
+     "range": [
+      1.75,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 14.7,
+   "D": 8,
+   "H": 12,
+   "t": 1.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 10.5,
+       "base": [
+        -3.1,
+        -0.25,
+        2.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -3.1,
+       -0.25
+      ],
+      "r": 1,
+      "range": [
+       2.5,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -3.1,
+       -0.25,
+       1.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -3.1,
+       -0.25,
+       1.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 11.25,
+       "base": [
+        2.8,
+        0,
+        1.75
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       2.8,
+       0
+      ],
+      "r": 3,
+      "range": [
+       1.75,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       2.8,
+       0,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       2.8,
+       0,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 14.7,
+   "D": 8,
+   "H": 12,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1,
+     "d": 9.5,
+     "face": "top",
+     "floor": 2.5,
+     "xc": -3.1,
+     "yc": -0.25
+    },
+    {
+     "kind": "blind",
+     "r": 3,
+     "d": 10.25,
+     "face": "top",
+     "floor": 1.75,
+     "xc": 2.8,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 3.25,
+    "gr": 1.55,
+    "between": [
+     1.9
+    ],
+    "gy1": 1,
+    "gy2": 1
+   }
+  },
+  "desc": "plate 14.7x8x12 open=top+bot [blind,blind]",
+  "id": "s1-01356",
+  "seed": 1,
+  "index": 1356
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12,
+     "width": 10,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 10,
+     "base": [
+      0,
+      -1,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -3.36,
+      2.381,
+      8
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6,
+     6,
+     -5,
+     5,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -6,
+      6,
+      -5,
+      5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -1
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12,
+   "D": 10,
+   "H": 8,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 10,
+       "base": [
+        0,
+        -1,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       0,
+       -1
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       0,
+       -1,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       0,
+       -1,
+       2.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12,
+   "D": 10,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2,
+     "xc": 0,
+     "yc": -1
+    }
+   ],
+   "gaps": {
+    "gl": 4,
+    "gr": 4,
+    "between": [],
+    "gy1": 2,
+    "gy2": 4
+   }
+  },
+  "desc": "plate 12x10x8 open=top [vthru]",
+  "id": "s1-01364",
+  "seed": 1,
+  "index": 1364
+ },
+ {
+  "family": "plate",
+  "t": 1,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12.6,
+     "width": 9,
+     "height": 6,
+     "center": [
+      0,
+      0,
+      3
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 8,
+     "base": [
+      -0.8,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 3.4,
+     "base": [
+      -0.8,
+      0,
+      3.6
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      4.604,
+      -2.842,
+      6
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.3,
+     6.3,
+     -4.5,
+     4.5,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -6.3,
+      6.3,
+      -4.5,
+      4.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.8,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.8,
+      0
+     ],
+     "r": 4,
+     "range": [
+      3.6,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12.6,
+   "D": 9,
+   "H": 6,
+   "t": 1,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 8,
+       "base": [
+        -0.8,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 4,
+       "height": 3.4,
+       "base": [
+        -0.8,
+        0,
+        3.6
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.8,
+       0
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       7
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.8,
+       0
+      ],
+      "r": 4,
+      "range": [
+       3.6,
+       7
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.8,
+       0,
+       4.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.8,
+       0,
+       4.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12.6,
+   "D": 9,
+   "H": 6,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 4,
+     "d": 2.4,
+     "face": "top",
+     "ring": 3.6,
+     "xc": -0.8,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 1.5,
+    "gr": 3.1,
+    "between": [],
+    "gy1": 0.5,
+    "gy2": 0.5
+   }
+  },
+  "desc": "plate 12.6x9x6 open=top [cbore]",
+  "id": "s1-01396",
+  "seed": 1,
+  "index": 1396
+ },
+ {
+  "family": "plate",
+  "t": 0.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12.4,
+     "width": 8,
+     "height": 5,
+     "center": [
+      0,
+      0,
+      2.5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 7,
+     "base": [
+      -2.1,
+      -0.25,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 5.75,
+     "base": [
+      3.65,
+      0.65,
+      0.25
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.146,
+      -2.353,
+      5
+     ]
+    ],
+    "thickness": 0.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 0.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.2,
+     6.2,
+     -4,
+     4,
+     0,
+     5
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5,
+     "rect": [
+      -6.2,
+      6.2,
+      -4,
+      4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -2.1,
+      -0.25
+     ],
+     "r": 3,
+     "range": [
+      -1,
+      6
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.65,
+      0.65
+     ],
+     "r": 1.5,
+     "range": [
+      0.25,
+      6
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12.4,
+   "D": 8,
+   "H": 5,
+   "t": 0.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 7,
+       "base": [
+        -2.1,
+        -0.25,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -2.1,
+       -0.25
+      ],
+      "r": 3,
+      "range": [
+       -1,
+       6
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -2.1,
+       -0.25,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -2.1,
+       -0.25,
+       3.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 5.75,
+       "base": [
+        3.65,
+        0.65,
+        0.25
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       3.65,
+       0.65
+      ],
+      "r": 1.5,
+      "range": [
+       0.25,
+       6
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       3.65,
+       0.65,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       3.65,
+       0.65,
+       1.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12.4,
+   "D": 8,
+   "H": 5,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 3,
+     "xc": -2.1,
+     "yc": -0.25
+    },
+    {
+     "kind": "blind",
+     "r": 1.5,
+     "d": 4.75,
+     "face": "top",
+     "floor": 0.25,
+     "xc": 3.65,
+     "yc": 0.65
+    }
+   ],
+   "gaps": {
+    "gl": 1.1,
+    "gr": 1.05,
+    "between": [
+     1.25
+    ],
+    "gy1": 0.75,
+    "gy2": 1.1
+   }
+  },
+  "desc": "plate 12.4x8x5 open=top [vthru,blind]",
+  "id": "s1-01436",
+  "seed": 1,
+  "index": 1436
+ },
+ {
+  "family": "plate",
+  "t": 0.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 13.2,
+     "width": 9.3,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 12,
+     "base": [
+      -1.45,
+      -0.15,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 1.75,
+     "base": [
+      -1.45,
+      -0.15,
+      9.25
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 10.9,
+     "base": [
+      4.55,
+      1.1,
+      0.1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      4.4,
+      -2.557,
+      10
+     ]
+    ],
+    "thickness": 0.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 0.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.6,
+     6.6,
+     -4.65,
+     4.65,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -6.6,
+      6.6,
+      -4.65,
+      4.65
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -1.45,
+      -0.15
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -1.45,
+      -0.15
+     ],
+     "r": 4,
+     "range": [
+      9.25,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.55,
+      1.1
+     ],
+     "r": 1,
+     "range": [
+      0.1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 13.2,
+   "D": 9.3,
+   "H": 10,
+   "t": 0.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 12,
+       "base": [
+        -1.45,
+        -0.15,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 4,
+       "height": 1.75,
+       "base": [
+        -1.45,
+        -0.15,
+        9.25
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -1.45,
+       -0.15
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       11
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -1.45,
+       -0.15
+      ],
+      "r": 4,
+      "range": [
+       9.25,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -1.45,
+       -0.15,
+       4.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -1.45,
+       -0.15,
+       4.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 10.9,
+       "base": [
+        4.55,
+        1.1,
+        0.1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       4.55,
+       1.1
+      ],
+      "r": 1,
+      "range": [
+       0.1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       4.55,
+       1.1,
+       1.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       4.55,
+       1.1,
+       1.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 13.2,
+   "D": 9.3,
+   "H": 10,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 4,
+     "d": 0.75,
+     "face": "top",
+     "ring": 9.25,
+     "xc": -1.45,
+     "yc": -0.15
+    },
+    {
+     "kind": "blind",
+     "r": 1,
+     "d": 9.9,
+     "face": "top",
+     "floor": 0.1,
+     "xc": 4.55,
+     "yc": 1.1
+    }
+   ],
+   "gaps": {
+    "gl": 1.15,
+    "gr": 1.05,
+    "between": [
+     1
+    ],
+    "gy1": 0.5,
+    "gy2": 0.8
+   }
+  },
+  "desc": "plate 13.2x9.3x10 open=top [cbore,blind]",
+  "id": "s1-01440",
+  "seed": 1,
+  "index": 1440
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 25.1,
+     "width": 13,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 14,
+     "base": [
+      -3.8,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 4,
+     "height": 3.9499999999999993,
+     "base": [
+      -3.8,
+      0,
+      9.05
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 14,
+     "base": [
+      5.2,
+      -0.05,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 4,
+     "base": [
+      5.2,
+      -0.05,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2b"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 0.75,
+     "height": 15,
+     "base": [
+      10.35,
+      -7.5,
+      3.8
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "body_name": "f3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -9.843,
+      3.852,
+      0
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.55,
+     12.55,
+     -6.5,
+     6.5,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -12.55,
+      12.55,
+      -6.5,
+      6.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -3.8,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -3.8,
+      0
+     ],
+     "r": 4,
+     "range": [
+      9.05,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.2,
+      -0.05
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.2,
+      -0.05
+     ],
+     "r": 3,
+     "range": [
+      -1,
+      3
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "y",
+     "c": [
+      10.35,
+      3.8
+     ],
+     "r": 0.75,
+     "range": [
+      -7.5,
+      7.5
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 25.1,
+   "D": 13,
+   "H": 12,
+   "t": 1.5,
+   "open": "bot"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 14,
+       "base": [
+        -3.8,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 4,
+       "height": 3.9499999999999993,
+       "base": [
+        -3.8,
+        0,
+        9.05
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -3.8,
+       0
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -3.8,
+       0
+      ],
+      "r": 4,
+      "range": [
+       9.05,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -3.8,
+       0,
+       4.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -3.8,
+       0,
+       4.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 14,
+       "base": [
+        5.2,
+        -0.05,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 4,
+       "base": [
+        5.2,
+        -0.05,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       5.2,
+       -0.05
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       5.2,
+       -0.05
+      ],
+      "r": 3,
+      "range": [
+       -1,
+       3
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       5.2,
+       -0.05,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       5.2,
+       -0.05,
+       3.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "hhole",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 0.75,
+       "height": 15,
+       "base": [
+        10.35,
+        -7.5,
+        3.8
+       ],
+       "axis": [
+        0,
+        1,
+        0
+       ],
+       "body_name": "f3"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "y",
+      "c": [
+       10.35,
+       3.8
+      ],
+      "r": 0.75,
+      "range": [
+       -7.5,
+       7.5
+      ]
+     }
+    ],
+    "avoid": []
+   }
+  ],
+  "meta": {
+   "W": 25.1,
+   "D": 13,
+   "H": 12,
+   "open": "bot",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 4,
+     "d": 2.95,
+     "face": "top",
+     "ring": 9.05,
+     "xc": -3.8,
+     "yc": 0
+    },
+    {
+     "kind": "cbore",
+     "r": 1.5,
+     "R": 3,
+     "d": 3,
+     "face": "bot",
+     "ring": 9,
+     "xc": 5.2,
+     "yc": -0.05
+    },
+    {
+     "kind": "hhole",
+     "r": 0.75,
+     "g": 3.05,
+     "fromTop": false,
+     "zc": 3.8,
+     "xc": 10.35,
+     "yc": -3.55
+    }
+   ],
+   "gaps": {
+    "gl": 4.75,
+    "gr": 1.45,
+    "between": [
+     2,
+     1.4
+    ],
+    "gy1": 2.5,
+    "gy2": 2.5
+   }
+  },
+  "desc": "plate 25.1x13x12 open=bot [cbore,cbore,hhole]",
+  "id": "s1-01448",
+  "seed": 1,
+  "index": 1448
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 13.3,
+     "width": 11,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 12,
+     "base": [
+      -2.4,
+      1.05,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 12,
+     "base": [
+      2.85,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -4.037,
+      -2.87,
+      10
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.65,
+     6.65,
+     -5.5,
+     5.5,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -6.65,
+      6.65,
+      -5.5,
+      5.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -2.4,
+      1.05
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.85,
+      0
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 13.3,
+   "D": 11,
+   "H": 10,
+   "t": 1.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 12,
+       "base": [
+        -2.4,
+        1.05,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -2.4,
+       1.05
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -2.4,
+       1.05,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -2.4,
+       1.05,
+       1.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 12,
+       "base": [
+        2.85,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       2.85,
+       0
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       2.85,
+       0,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       2.85,
+       0,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 13.3,
+   "D": 11,
+   "H": 10,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 1.5,
+     "xc": -2.4,
+     "yc": 1.05
+    },
+    {
+     "kind": "vthru",
+     "r": 2.5,
+     "xc": 2.85,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 2.75,
+    "gr": 1.3,
+    "between": [
+     1.25
+    ],
+    "gy1": 3,
+    "gy2": 3
+   }
+  },
+  "desc": "plate 13.3x11x10 open=top [vthru,vthru]",
+  "id": "s1-01488",
+  "seed": 1,
+  "index": 1488
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12.5,
+     "width": 16,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 12,
+     "base": [
+      1.25,
+      2.5,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 2.9499999999999993,
+     "base": [
+      1.25,
+      2.5,
+      8.05
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -2.163,
+      -3.879,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.25,
+     6.25,
+     -8,
+     8,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -6.25,
+      6.25,
+      -8,
+      8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.25,
+      2.5
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.25,
+      2.5
+     ],
+     "r": 3,
+     "range": [
+      8.05,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12.5,
+   "D": 16,
+   "H": 10,
+   "t": 2.5,
+   "open": "bot"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 12,
+       "base": [
+        1.25,
+        2.5,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 2.9499999999999993,
+       "base": [
+        1.25,
+        2.5,
+        8.05
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.25,
+       2.5
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       11
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.25,
+       2.5
+      ],
+      "r": 3,
+      "range": [
+       8.05,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.25,
+       2.5,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.25,
+       2.5,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12.5,
+   "D": 16,
+   "H": 10,
+   "open": "bot",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 1.5,
+     "R": 3,
+     "d": 1.95,
+     "face": "top",
+     "ring": 8.05,
+     "xc": 1.25,
+     "yc": 2.5
+    }
+   ],
+   "gaps": {
+    "gl": 4.5,
+    "gr": 2,
+    "between": [],
+    "gy1": 7.5,
+    "gy2": 2.5
+   }
+  },
+  "desc": "plate 12.5x16x10 open=bot [cbore]",
+  "id": "s1-01568",
+  "seed": 1,
+  "index": 1568
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 31.9,
+     "width": 15.6,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 10.5,
+     "base": [
+      -10.5,
+      -0.2,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 14,
+     "base": [
+      -2,
+      -0.2,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 9.2,
+     "base": [
+      -2,
+      -0.2,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2b"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 14,
+     "base": [
+      8.5,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 8.6,
+     "base": [
+      8.5,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      3.435,
+      4.144,
+      12
+     ],
+     [
+      3.435,
+      4.144,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.95,
+     15.95,
+     -7.8,
+     7.8,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15.95,
+      15.95,
+      -7.8,
+      7.8
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.95,
+      15.95,
+      -7.8,
+      7.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -10.5,
+      -0.2
+     ],
+     "r": 3,
+     "range": [
+      -1,
+      9.5
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -2,
+      -0.2
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -2,
+      -0.2
+     ],
+     "r": 3,
+     "range": [
+      -1,
+      8.2
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      8.5,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      8.5,
+      0
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      7.6
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 31.9,
+   "D": 15.6,
+   "H": 12,
+   "t": 2.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 10.5,
+       "base": [
+        -10.5,
+        -0.2,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -10.5,
+       -0.2
+      ],
+      "r": 3,
+      "range": [
+       -1,
+       9.5
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -10.5,
+       -0.2,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -10.5,
+       -0.2,
+       3.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 14,
+       "base": [
+        -2,
+        -0.2,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 9.2,
+       "base": [
+        -2,
+        -0.2,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -2,
+       -0.2
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -2,
+       -0.2
+      ],
+      "r": 3,
+      "range": [
+       -1,
+       8.2
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -2,
+       -0.2,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -2,
+       -0.2,
+       3.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 14,
+       "base": [
+        8.5,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 8.6,
+       "base": [
+        8.5,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       8.5,
+       0
+      ],
+      "r": 1,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       8.5,
+       0
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       7.6
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       8.5,
+       0,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       8.5,
+       0,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 31.9,
+   "D": 15.6,
+   "H": 12,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 3,
+     "d": 9.5,
+     "face": "bot",
+     "floor": 2.5,
+     "xc": -10.5,
+     "yc": -0.2
+    },
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 3,
+     "d": 8.2,
+     "face": "bot",
+     "ring": 3.8,
+     "xc": -2,
+     "yc": -0.2
+    },
+    {
+     "kind": "cbore",
+     "r": 1,
+     "R": 2.5,
+     "d": 7.6,
+     "face": "bot",
+     "ring": 4.4,
+     "xc": 8.5,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 2.45,
+    "gr": 4.95,
+    "between": [
+     2.5,
+     5
+    ],
+    "gy1": 4.6,
+    "gy2": 5
+   }
+  },
+  "desc": "plate 31.9x15.6x12 open=top+bot [blind,cbore,cbore]",
+  "id": "s1-01596",
+  "seed": 1,
+  "index": 1596
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10.4,
+     "width": 8,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 6.75,
+     "base": [
+      -0.1,
+      -1.25,
+      2.25
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.6,
+      1.412,
+      8
+     ],
+     [
+      -1.182,
+      4,
+      4
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.2,
+     5.2,
+     -4,
+     4,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -5.2,
+      5.2,
+      -4,
+      4
+     ],
+     "minus": []
+    },
+    {
+     "axis": "y",
+     "dir": 1,
+     "coord": 4,
+     "rect": [
+      -5.2,
+      5.2,
+      0,
+      8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.1,
+      -1.25
+     ],
+     "r": 1,
+     "range": [
+      2.25,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 10.4,
+   "D": 8,
+   "H": 8,
+   "t": 2,
+   "open": "top+yp"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 6.75,
+       "base": [
+        -0.1,
+        -1.25,
+        2.25
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.1,
+       -1.25
+      ],
+      "r": 1,
+      "range": [
+       2.25,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.1,
+       -1.25,
+       1.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.1,
+       -1.25,
+       1.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 10.4,
+   "D": 8,
+   "H": 8,
+   "open": "top+yp",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1,
+     "d": 5.75,
+     "face": "top",
+     "floor": 2.25,
+     "xc": -0.1,
+     "yc": -1.25
+    }
+   ],
+   "gaps": {
+    "gl": 4.1,
+    "gr": 4.3,
+    "between": [],
+    "gy1": 1.75,
+    "gy2": 4.05
+   }
+  },
+  "desc": "plate 10.4x8x8 open=top+yp [blind]",
+  "id": "s1-01664",
+  "seed": 1,
+  "index": 1664
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 16.5,
+     "width": 13.6,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 6.25,
+     "base": [
+      -4.2,
+      1.25,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 1.5,
+     "base": [
+      2.8,
+      -1.2,
+      9.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -5.096,
+      -3.643,
+      10
+     ],
+     [
+      -5.096,
+      -3.643,
+      0
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.25,
+     8.25,
+     -6.8,
+     6.8,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -8.25,
+      8.25,
+      -6.8,
+      6.8
+     ],
+     "minus": []
+    },
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -8.25,
+      8.25,
+      -6.8,
+      6.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -4.2,
+      1.25
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      5.25
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.8,
+      -1.2
+     ],
+     "r": 3,
+     "range": [
+      9.5,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 16.5,
+   "D": 13.6,
+   "H": 10,
+   "t": 2.5,
+   "open": "top+bot"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 6.25,
+       "base": [
+        -4.2,
+        1.25,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -4.2,
+       1.25
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       5.25
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -4.2,
+       1.25,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -4.2,
+       1.25,
+       1.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 1.5,
+       "base": [
+        2.8,
+        -1.2,
+        9.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       2.8,
+       -1.2
+      ],
+      "r": 3,
+      "range": [
+       9.5,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       2.8,
+       -1.2,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       2.8,
+       -1.2,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 16.5,
+   "D": 13.6,
+   "H": 10,
+   "open": "top+bot",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1.5,
+     "d": 5.25,
+     "face": "bot",
+     "floor": 4.75,
+     "xc": -4.2,
+     "yc": 1.25
+    },
+    {
+     "kind": "blind",
+     "r": 3,
+     "d": 0.5,
+     "face": "top",
+     "floor": 9.5,
+     "xc": 2.8,
+     "yc": -1.2
+    }
+   ],
+   "gaps": {
+    "gl": 2.55,
+    "gr": 2.45,
+    "between": [
+     2.5
+    ],
+    "gy1": 2.6,
+    "gy2": 5
+   }
+  },
+  "desc": "plate 16.5x13.6x10 open=top+bot [blind,blind]",
+  "id": "s1-01760",
+  "seed": 1,
+  "index": 1760
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 26.1,
+     "width": 11,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 14,
+     "base": [
+      -9.55,
+      1.5,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 10.15,
+     "base": [
+      -2,
+      -1,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 9,
+     "base": [
+      6.25,
+      0,
+      4
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f3"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f3"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      0.985,
+      2.391,
+      12
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.05,
+     13.05,
+     -5.5,
+     5.5,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -13.05,
+      13.05,
+      -5.5,
+      5.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -9.55,
+      1.5
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -2,
+      -1
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      9.15
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.25,
+      0
+     ],
+     "r": 2.5,
+     "range": [
+      4,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 26.1,
+   "D": 11,
+   "H": 12,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 14,
+       "base": [
+        -9.55,
+        1.5,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -9.55,
+       1.5
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -9.55,
+       1.5,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -9.55,
+       1.5,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 10.15,
+       "base": [
+        -2,
+        -1,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -2,
+       -1
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       9.15
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -2,
+       -1,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -2,
+       -1,
+       1.8
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 9,
+       "base": [
+        6.25,
+        0,
+        4
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f3"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f3"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       6.25,
+       0
+      ],
+      "r": 2.5,
+      "range": [
+       4,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       6.25,
+       0,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       6.25,
+       0,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 26.1,
+   "D": 11,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2,
+     "xc": -9.55,
+     "yc": 1.5
+    },
+    {
+     "kind": "blind",
+     "r": 1.5,
+     "d": 9.15,
+     "face": "bot",
+     "floor": 2.85,
+     "xc": -2,
+     "yc": -1
+    },
+    {
+     "kind": "blind",
+     "r": 2.5,
+     "d": 8,
+     "face": "top",
+     "floor": 4,
+     "xc": 6.25,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 1.5,
+    "gr": 4.3,
+    "between": [
+     4.05,
+     4.25
+    ],
+    "gy1": 3,
+    "gy2": 3
+   }
+  },
+  "desc": "plate 26.1x11x12 open=top [vthru,blind,blind]",
+  "id": "s1-01776",
+  "seed": 1,
+  "index": 1776
+ },
+ {
+  "family": "plate",
+  "t": 1,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 12,
+     "width": 10,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1,
+     "height": 8.25,
+     "base": [
+      -3,
+      -1.7,
+      0.75
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2.5,
+     "height": 7,
+     "base": [
+      1.25,
+      0.5,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -3.36,
+      2.381,
+      8
+     ]
+    ],
+    "thickness": 1,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6,
+     6,
+     -5,
+     5,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -6,
+      6,
+      -5,
+      5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -3,
+      -1.7
+     ],
+     "r": 1,
+     "range": [
+      0.75,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.25,
+      0.5
+     ],
+     "r": 2.5,
+     "range": [
+      -1,
+      6
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 12,
+   "D": 10,
+   "H": 8,
+   "t": 1,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1,
+       "height": 8.25,
+       "base": [
+        -3,
+        -1.7,
+        0.75
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -3,
+       -1.7
+      ],
+      "r": 1,
+      "range": [
+       0.75,
+       9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -3,
+       -1.7,
+       1.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -3,
+       -1.7,
+       1.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2.5,
+       "height": 7,
+       "base": [
+        1.25,
+        0.5,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.25,
+       0.5
+      ],
+      "r": 2.5,
+      "range": [
+       -1,
+       6
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.25,
+       0.5,
+       2.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.25,
+       0.5,
+       2.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 12,
+   "D": 10,
+   "H": 8,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 1,
+     "d": 7.25,
+     "face": "top",
+     "floor": 0.75,
+     "xc": -3,
+     "yc": -1.7
+    },
+    {
+     "kind": "blind",
+     "r": 2.5,
+     "d": 6,
+     "face": "bot",
+     "floor": 2,
+     "xc": 1.25,
+     "yc": 0.5
+    }
+   ],
+   "gaps": {
+    "gl": 2,
+    "gr": 2.25,
+    "between": [
+     0.75
+    ],
+    "gy1": 3,
+    "gy2": 2
+   }
+  },
+  "desc": "plate 12x10x8 open=top [blind,blind]",
+  "id": "s1-01804",
+  "seed": 1,
+  "index": 1804
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 10.4,
+     "width": 12.5,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 8.5,
+     "base": [
+      -0.8,
+      0.25,
+      2.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      2.6,
+      -4.087,
+      10
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.2,
+     5.2,
+     -6.25,
+     6.25,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -5.2,
+      5.2,
+      -6.25,
+      6.25
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -0.8,
+      0.25
+     ],
+     "r": 3,
+     "range": [
+      2.5,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 10.4,
+   "D": 12.5,
+   "H": 10,
+   "t": 1.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 8.5,
+       "base": [
+        -0.8,
+        0.25,
+        2.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -0.8,
+       0.25
+      ],
+      "r": 3,
+      "range": [
+       2.5,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -0.8,
+       0.25,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -0.8,
+       0.25,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 10.4,
+   "D": 12.5,
+   "H": 10,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 3,
+     "d": 7.5,
+     "face": "top",
+     "floor": 2.5,
+     "xc": -0.8,
+     "yc": 0.25
+    }
+   ],
+   "gaps": {
+    "gl": 1.4,
+    "gr": 3,
+    "between": [],
+    "gy1": 3.5,
+    "gy2": 3
+   }
+  },
+  "desc": "plate 10.4x12.5x10 open=top [blind]",
+  "id": "s1-01968",
+  "seed": 1,
+  "index": 1968
+ },
+ {
+  "family": "plate",
+  "t": 0.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 11.6,
+     "width": 8,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 2,
+     "base": [
+      -2.3,
+      -1,
+      12
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 14,
+     "base": [
+      3.3,
+      0.8,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      1.692,
+      -2.353,
+      12
+     ]
+    ],
+    "thickness": 0.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 0.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.8,
+     5.8,
+     -4,
+     4,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -5.8,
+      5.8,
+      -4,
+      4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.3,
+      0.8
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": [
+    {
+     "c": [
+      -2.3,
+      -1
+     ],
+     "r": 2,
+     "z0": 12,
+     "z1": 14
+    }
+   ]
+  },
+  "base": {
+   "W": 11.6,
+   "D": 8,
+   "H": 12,
+   "t": 0.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "rboss",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 2,
+       "base": [
+        -2.3,
+        -1,
+        12
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "join"
+      }
+     }
+    ],
+    "rbosses": [
+     {
+      "c": [
+       -2.3,
+       -1
+      ],
+      "r": 2,
+      "z0": 12,
+      "z1": 14
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -2.3,
+       -1,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 14,
+       "base": [
+        3.3,
+        0.8,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       3.3,
+       0.8
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       3.3,
+       0.8,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       3.3,
+       0.8,
+       1.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 11.6,
+   "D": 8,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "rboss",
+     "r": 2,
+     "bh": 2,
+     "xc": -2.3,
+     "yc": -1
+    },
+    {
+     "kind": "vthru",
+     "r": 1.5,
+     "xc": 3.3,
+     "yc": 0.8
+    }
+   ],
+   "gaps": {
+    "gl": 1.5,
+    "gr": 1,
+    "between": [
+     2.1
+    ],
+    "gy1": 1,
+    "gy2": 0.9
+   }
+  },
+  "desc": "plate 11.6x8x12 open=top [rboss,vthru]",
+  "id": "s1-02004",
+  "seed": 1,
+  "index": 2004
+ },
+ {
+  "family": "plate",
+  "t": 2.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 14.5,
+     "width": 16.8,
+     "height": 10,
+     "center": [
+      0,
+      0,
+      5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 12,
+     "base": [
+      1.25,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3.5,
+     "height": 3.5,
+     "base": [
+      1.25,
+      0,
+      7.5
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -4.108,
+      -4.8,
+      10
+     ]
+    ],
+    "thickness": 2.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.25,
+     7.25,
+     -8.4,
+     8.4,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -7.25,
+      7.25,
+      -8.4,
+      8.4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.25,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      1.25,
+      0
+     ],
+     "r": 3.5,
+     "range": [
+      7.5,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 14.5,
+   "D": 16.8,
+   "H": 10,
+   "t": 2.5,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 12,
+       "base": [
+        1.25,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3.5,
+       "height": 3.5,
+       "base": [
+        1.25,
+        0,
+        7.5
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.25,
+       0
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       11
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       1.25,
+       0
+      ],
+      "r": 3.5,
+      "range": [
+       7.5,
+       11
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       1.25,
+       0,
+       3.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       1.25,
+       0,
+       3.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 14.5,
+   "D": 16.8,
+   "H": 10,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "cbore",
+     "r": 2,
+     "R": 3.5,
+     "d": 2.5,
+     "face": "top",
+     "ring": 7.5,
+     "xc": 1.25,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 5,
+    "gr": 2.5,
+    "between": [],
+    "gy1": 4.9,
+    "gy2": 4.9
+   }
+  },
+  "desc": "plate 14.5x16.8x10 open=top [cbore]",
+  "id": "s1-02016",
+  "seed": 1,
+  "index": 2016
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 24.6,
+     "width": 17,
+     "height": 8,
+     "center": [
+      0,
+      0,
+      4
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 19,
+     "base": [
+      -6.75,
+      -9.5,
+      4.45
+     ],
+     "axis": [
+      0,
+      1,
+      0
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 10,
+     "base": [
+      5.35,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 5,
+     "height": 2.9,
+     "base": [
+      5.35,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -6.15,
+      -1.943,
+      0
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.3,
+     12.3,
+     -8.5,
+     8.5,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -12.3,
+      12.3,
+      -8.5,
+      8.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "y",
+     "c": [
+      -6.75,
+      4.45
+     ],
+     "r": 1.5,
+     "range": [
+      -9.5,
+      9.5
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.35,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.35,
+      0
+     ],
+     "r": 5,
+     "range": [
+      -1,
+      1.9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 24.6,
+   "D": 17,
+   "H": 8,
+   "t": 2,
+   "open": "bot"
+  },
+  "parts": [
+   {
+    "kind": "hhole",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 19,
+       "base": [
+        -6.75,
+        -9.5,
+        4.45
+       ],
+       "axis": [
+        0,
+        1,
+        0
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "y",
+      "c": [
+       -6.75,
+       4.45
+      ],
+      "r": 1.5,
+      "range": [
+       -9.5,
+       9.5
+      ]
+     }
+    ],
+    "avoid": []
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 10,
+       "base": [
+        5.35,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 5,
+       "height": 2.9,
+       "base": [
+        5.35,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       5.35,
+       0
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       9
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       5.35,
+       0
+      ],
+      "r": 5,
+      "range": [
+       -1,
+       1.9
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       5.35,
+       0,
+       5.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       5.35,
+       0,
+       5.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 24.6,
+   "D": 17,
+   "H": 8,
+   "open": "bot",
+   "feats": [
+    {
+     "kind": "hhole",
+     "r": 1.5,
+     "g": 2.05,
+     "fromTop": true,
+     "zc": 4.45,
+     "xc": -6.75,
+     "yc": -1
+    },
+    {
+     "kind": "cbore",
+     "r": 2,
+     "R": 5,
+     "d": 1.9,
+     "face": "bot",
+     "ring": 6.1,
+     "xc": 5.35,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 4.05,
+    "gr": 1.95,
+    "between": [
+     5.6
+    ],
+    "gy1": 3.5,
+    "gy2": 3.5
+   }
+  },
+  "desc": "plate 24.6x17x8 open=bot [hhole,cbore]",
+  "id": "s1-02052",
+  "seed": 1,
+  "index": 2052
+ },
+ {
+  "family": "stepped",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 24,
+     "width": 16,
+     "height": 3,
+     "center": [
+      0,
+      0,
+      1.5
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 6,
+     "width": 16,
+     "height": 6,
+     "center": [
+      -9,
+      0,
+      6
+     ],
+     "body_name": "a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "a"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 6,
+     "width": 16,
+     "height": 6,
+     "center": [
+      9,
+      0,
+      6
+     ],
+     "body_name": "b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "b"
+     ],
+     "operation": "join"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 11,
+     "base": [
+      -9,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "h0"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "h0"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -9,
+      -5.333,
+      9
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12,
+     12,
+     -8,
+     8,
+     0,
+     3
+    ],
+    [
+     -12,
+     -6,
+     -8,
+     8,
+     3,
+     9
+    ],
+    [
+     6,
+     12,
+     -8,
+     8,
+     3,
+     9
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 9,
+     "rect": [
+      -12,
+      -6,
+      -8,
+      8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -9,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      10
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "meta": {
+   "shape": "U",
+   "W": 24,
+   "Hb": 3,
+   "Hw": 6,
+   "ww": 6,
+   "open": "wallTop",
+   "hole": {
+    "where": "wall",
+    "r": 2
+   }
+  },
+  "desc": "U 24x16 wall6 open=wallTop",
+  "id": "s1-02056",
+  "seed": 1,
+  "index": 2056
+ },
+ {
+  "family": "plate",
+  "t": 1.5,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 17.9,
+     "width": 9.9,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 11.4,
+     "base": [
+      -4.2,
+      -0.1,
+      1.6
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 14,
+     "base": [
+      4.3,
+      -0.1,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2a"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2a"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 4.050000000000001,
+     "base": [
+      4.3,
+      -0.1,
+      8.95
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2b"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2b"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      8.95,
+      0,
+      5.04
+     ]
+    ],
+    "thickness": 1.5,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.95,
+     8.95,
+     -4.95,
+     4.95,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "x",
+     "dir": 1,
+     "coord": 8.95,
+     "rect": [
+      -4.95,
+      4.95,
+      0,
+      12
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -4.2,
+      -0.1
+     ],
+     "r": 3,
+     "range": [
+      1.6,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.3,
+      -0.1
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.3,
+      -0.1
+     ],
+     "r": 3,
+     "range": [
+      8.95,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 17.9,
+   "D": 9.9,
+   "H": 12,
+   "t": 1.5,
+   "open": "xp"
+  },
+  "parts": [
+   {
+    "kind": "blind",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 11.4,
+       "base": [
+        -4.2,
+        -0.1,
+        1.6
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -4.2,
+       -0.1
+      ],
+      "r": 3,
+      "range": [
+       1.6,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -4.2,
+       -0.1,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -4.2,
+       -0.1,
+       3.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "cbore",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 14,
+       "base": [
+        4.3,
+        -0.1,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2a"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2a"
+       ],
+       "operation": "cut"
+      }
+     },
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 3,
+       "height": 4.050000000000001,
+       "base": [
+        4.3,
+        -0.1,
+        8.95
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2b"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2b"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       4.3,
+       -0.1
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       13
+      ]
+     },
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       4.3,
+       -0.1
+      ],
+      "r": 3,
+      "range": [
+       8.95,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       4.3,
+       -0.1,
+       3.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       4.3,
+       -0.1,
+       3.3
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 17.9,
+   "D": 9.9,
+   "H": 12,
+   "open": "xp",
+   "feats": [
+    {
+     "kind": "blind",
+     "r": 3,
+     "d": 10.4,
+     "face": "top",
+     "floor": 1.6,
+     "xc": -4.2,
+     "yc": -0.1
+    },
+    {
+     "kind": "cbore",
+     "r": 2,
+     "R": 3,
+     "d": 3.05,
+     "face": "top",
+     "ring": 8.95,
+     "xc": 4.3,
+     "yc": -0.1
+    }
+   ],
+   "gaps": {
+    "gl": 1.75,
+    "gr": 1.65,
+    "between": [
+     2.5
+    ],
+    "gy1": 1.85,
+    "gy2": 2.05
+   }
+  },
+  "desc": "plate 17.9x9.9x12 open=xp [blind,cbore]",
+  "id": "s1-02060",
+  "seed": 1,
+  "index": 2060
+ },
+ {
+  "family": "plate",
+  "t": 2,
+  "cmds": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 16.5,
+     "width": 12,
+     "height": 12,
+     "center": [
+      0,
+      0,
+      6
+     ],
+     "body_name": "b1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 2,
+     "height": 14,
+     "base": [
+      -4.5,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f1"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f1"
+     ],
+     "operation": "cut"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 1.5,
+     "height": 14,
+     "base": [
+      3,
+      0,
+      -1
+     ],
+     "axis": [
+      0,
+      0,
+      1
+     ],
+     "body_name": "f2"
+    }
+   },
+   {
+    "command": "solid.combine",
+    "params": {
+     "target": "b1",
+     "tools": [
+      "f2"
+     ],
+     "operation": "cut"
+    }
+   }
+  ],
+  "shell": {
+   "command": "solid.shell",
+   "params": {
+    "faces": [
+     [
+      -0.728,
+      3.36,
+      12
+     ]
+    ],
+    "thickness": 2,
+    "body": "b1"
+   }
+  },
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.25,
+     8.25,
+     -6,
+     6,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -8.25,
+      8.25,
+      -6,
+      6
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      -4.5,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "base": {
+   "W": 16.5,
+   "D": 12,
+   "H": 12,
+   "t": 2,
+   "open": "top"
+  },
+  "parts": [
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 2,
+       "height": 14,
+       "base": [
+        -4.5,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f1"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f1"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       -4.5,
+       0
+      ],
+      "r": 2,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       -4.5,
+       0,
+       2.3
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       -4.5,
+       0,
+       2.3
+      ]
+     }
+    ]
+   },
+   {
+    "kind": "vthru",
+    "cmds": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 1.5,
+       "height": 14,
+       "base": [
+        3,
+        0,
+        -1
+       ],
+       "axis": [
+        0,
+        0,
+        1
+       ],
+       "body_name": "f2"
+      }
+     },
+     {
+      "command": "solid.combine",
+      "params": {
+       "target": "b1",
+       "tools": [
+        "f2"
+       ],
+       "operation": "cut"
+      }
+     }
+    ],
+    "holes": [
+     {
+      "type": "cyl",
+      "axis": "z",
+      "c": [
+       3,
+       0
+      ],
+      "r": 1.5,
+      "range": [
+       -1,
+       13
+      ]
+     }
+    ],
+    "avoid": [
+     {
+      "face": "top",
+      "circ": [
+       3,
+       0,
+       1.8
+      ]
+     },
+     {
+      "face": "bot",
+      "circ": [
+       3,
+       0,
+       1.8
+      ]
+     }
+    ]
+   }
+  ],
+  "meta": {
+   "W": 16.5,
+   "D": 12,
+   "H": 12,
+   "open": "top",
+   "feats": [
+    {
+     "kind": "vthru",
+     "r": 2,
+     "xc": -4.5,
+     "yc": 0
+    },
+    {
+     "kind": "vthru",
+     "r": 1.5,
+     "xc": 3,
+     "yc": 0
+    }
+   ],
+   "gaps": {
+    "gl": 1.75,
+    "gr": 3.75,
+    "between": [
+     4
+    ],
+    "gy1": 4,
+    "gy2": 4
+   }
+  },
+  "desc": "plate 16.5x12x12 open=top [vthru,vthru]",
+  "id": "s1-02080",
+  "seed": 1,
+  "index": 2080
+ }
+]

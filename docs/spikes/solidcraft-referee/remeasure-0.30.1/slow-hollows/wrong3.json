@@ -1,0 +1,17 @@
+[
+ {
+  "id": "v-01396-centre",
+  "of": "s1-01396",
+  "script": "const b = box(12, 10, 6);\nhole(b, { across: 2, counterbore: { across: 8, deep: 2 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-01024-one",
+  "of": "s1-01024",
+  "script": "const b = box(22, 14, 6);\nhole(b, { across: 2, at: [-4, -1], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-00872-wall2",
+  "of": "s1-00872",
+  "script": "const b = box(18, 18, 12);\nhole(b, { across: 3, countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ }
+]
