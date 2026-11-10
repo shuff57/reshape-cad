@@ -1,5 +1,6 @@
 // Live check against the real SolidCraft web build, in real Chrome (headless). Not part of `npm test`: needs the build.
-//   1. build it:  cd <solidcraft v0.21.0>/apps/solidcraft-web && trunk build --release   (about 20 min, ~8 GB)
+//   1. build it:  cd <solidcraft v0.30.1, git archive of the tag, unmodified>/apps/solidcraft-web && trunk build --release   (writes <src>/dist/web; ~20 min, ~8 GB;
+//      the pinned build lives at ~/.cache/solidcraft-0.30.1/src/dist/web, the site folder at ~/.cache/solidcraft-0.30.1-rig/student-preview)
 //   2. make a folder with host.html, src/ and a symlink `solidcraft` -> that dist/web
 //   3. node test/live.mjs <folder> <screenshot.png>      (needs /usr/bin/google-chrome and the repo's playwright-core)
 // Measured 2026-10-25 on v0.21.0: window.solidcraft comes up; file.export and a raw request are refused by the allowlist; solid.box builds (area 2200, bbox 30x20x10); inspect measures it; the lock overlay shows.

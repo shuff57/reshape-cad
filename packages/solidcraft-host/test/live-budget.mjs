@@ -1,4 +1,4 @@
-// Live check of the time budget (Phase 3a, kernel in a worker) against the real SolidCraft 0.21.0 web build, in ONE headless Chrome.
+// Live check of the time budget (Phase 3a, kernel in a worker) against the real SolidCraft web build (the pin, 0.30.1; first measured on 0.21.0), in ONE headless Chrome.
 //   systemd-run --user --scope -p MemoryMax=3G -p MemorySwapMax=0 node test/live-budget.mjs <site folder> <out.json> [--skip-examples] [--natural]
 // <site folder> is the student-preview layout (host.html, pane/, src/, solidcraft/ = the web build) plus kernel/ = the folder with solidcraft_referee_bg.wasm.
 //  1. SLOW: 4 countersunk blind holes (the spike's holes-cs-blind: ~44 s of engine time) with ?budgetCapS=2, probe ON -> must be refused G-BUDGET,

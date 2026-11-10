@@ -1,6 +1,6 @@
 import { clampBudgetS, timedOutReply } from './probe-client.mjs';
 // The spike's translator/pane expect a patched bridge: execute(commands, {fresh}) -> {ok, failed, measure, sketches, ...}.
-// This gives them that shape on top of UPSTREAM's own window.solidcraft (v0.21.0), with no patch.
+// This gives them that shape on top of UPSTREAM's own window.solidcraft (written against v0.21.0, pinned v0.30.1 since 2026-11-09), with no patch.
 // Pure over the `sc` object it is given (window.solidcraft, or a fake in tests).
 //
 // What upstream does NOT give, and what this therefore does not claim:

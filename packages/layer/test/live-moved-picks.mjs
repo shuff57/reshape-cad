@@ -20,11 +20,12 @@ import { loadUpstream } from './topology-upstream.mjs';
 import { box, cyl, prism, move, rotate, shell, draft, prim, combine } from './docs.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
+const PIN = process.env.SOLIDCRAFT_PIN || '0.30.1'; // the pinned SolidCraft release; default paths and output names follow it
 const REPO = path.join(HERE, '..', '..', '..');
 const PKG = process.env.SOLIDCRAFT_REFEREE_PKG;
 if (!PKG) { console.error('FATAL: SOLIDCRAFT_REFEREE_PKG is unset'); process.exit(2); }
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
-const OUT = path.resolve(arg('out') || path.join(HERE, 'evidence', 'live-moved-picks-0.21.0.json'));
+const OUT = path.resolve(arg('out') || path.join(HERE, 'evidence', `live-moved-picks-${PIN}.json`));
 const only = arg('only'); const SEED = Number(arg('seed') || 20261025);
 mkdirSync(path.dirname(OUT), { recursive: true });
 const imp = (p) => import(pathToFileURL(p).href);
@@ -300,7 +301,7 @@ for (const c of CASES) {
   if (row.outcome === 'WRONG') console.log(`WRONG ${c.id}: ${row.why}`);
   if (tally.total % 20 === 0) console.log(`${tally.total}/${CASES.length} ${Math.round((Date.now() - t0) / 1000)} s right ${tally.right} refused ${tally.refusedExpected}+${tally.refusedUnexpected} wrong ${tally.wrong}`);
 }
-const summary = { target: 'SolidCraft v0.21.0 wasm rig; layer followMoves ON', cases: tally.total, builtAndRight: tally.right, refusedExpected: tally.refusedExpected, refusedUnexpected: tally.refusedUnexpected, builtAndWRONG: tally.wrong, builtUnverified: tally.builtUnverified, undiscriminating: tally.undiscriminating, threw: tally.threw?.length ?? 0, byKind: tally.byKind, brep: tally.brep, offFlag: tally.offFlag, negControl: tally.negControl, maxDeviationOfRight: tally.maxDev, bars: { planar: PLANAR, curved: CURVED } };
+const summary = { target: `SolidCraft v${PIN} wasm rig; layer followMoves ON`, cases: tally.total, builtAndRight: tally.right, refusedExpected: tally.refusedExpected, refusedUnexpected: tally.refusedUnexpected, builtAndWRONG: tally.wrong, builtUnverified: tally.builtUnverified, undiscriminating: tally.undiscriminating, threw: tally.threw?.length ?? 0, byKind: tally.byKind, brep: tally.brep, offFlag: tally.offFlag, negControl: tally.negControl, maxDeviationOfRight: tally.maxDev, bars: { planar: PLANAR, curved: CURVED } };
 writeFileSync(OUT, JSON.stringify({ summary, sentences: tally.sentences, rows }, null, 1));
 console.log(JSON.stringify(summary, null, 1));
 console.log(`wrote ${OUT}`);

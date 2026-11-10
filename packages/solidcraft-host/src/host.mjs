@@ -30,7 +30,7 @@ window.addEventListener('message', async (event) => {
 });
 
 // Modelling lock (classroom control, NOT a safety feature: shortcuts and the command palette still reach upstream tools).
-// Upstream 0.21.0 has no ui.set field to hide the ribbon (see docs/DRAFT-upstream-ribbon-request.md), so an overlay covers it.
+// Upstream has no ui.set field to hide the ribbon (0.21.0 had none; none found in the pinned 0.30.1's ui.set either, 2026-11-09) (see docs/DRAFT-upstream-ribbon-request.md), so an overlay covers it.
 function setLock(on) {
   lock.hidden = !on;
   note.textContent = on ? 'Modelling is locked. Ask your teacher.' : '';

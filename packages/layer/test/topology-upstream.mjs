@@ -3,7 +3,7 @@
 // (docs/spikes/solidcraft-referee/phase2/wrapper2, unmodified source, built as contract/RIG.md builds the referee: see NOTES.md "Moved picks").
 // The rig's stock wrapper (wrapper/) throws every command's output away and returns only the final measure, so it CANNOT report topology.
 //
-//   SOLIDCRAFT_TOPOLOGY_PKG=<dir with solidcraft_referee_p2.js>   (default $HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology)
+//   SOLIDCRAFT_TOPOLOGY_PKG=<dir with solidcraft_referee_p2.js>   (default $HOME/.cache/solidcraft-$SOLIDCRAFT_PIN-rig/sc-referee-pkg-topology, SOLIDCRAFT_PIN default 0.30.1)
 //
 // What upstream gives per face: index, name (persistent, "F1:+z"), area, centroid, plane_normal (null when curved), point ("a point on the face
 // that picks it"), cylinder? ; per edge: index, name ("A|B", "~n" when repeated), start, mid, end, length.
@@ -15,7 +15,7 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
 
-export function loadUpstream(pkg = process.env.SOLIDCRAFT_TOPOLOGY_PKG ?? path.join(process.env.HOME, '.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology')) {
+export function loadUpstream(pkg = process.env.SOLIDCRAFT_TOPOLOGY_PKG ?? path.join(process.env.HOME, `.cache/solidcraft-${process.env.SOLIDCRAFT_PIN || '0.30.1'}-rig/sc-referee-pkg-topology`)) {
   const sc = createRequire(import.meta.url)(path.join(pkg, 'solidcraft_referee_p2.js'));
   const raw = (cmds) => JSON.parse(sc.run(JSON.stringify({ commands: cmds })));
   let calls = 0;

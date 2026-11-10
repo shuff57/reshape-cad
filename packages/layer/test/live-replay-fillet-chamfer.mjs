@@ -2,7 +2,7 @@
 // test/topology-upstream.mjs). WRITTEN, NOT RUN (the rig is the lead's to schedule).
 //
 //   ulimit -v 2097152        # 2 GB memory cap; run under `systemd-run --user -p MemoryMax=1500M` like the group's own runs
-//   SOLIDCRAFT_TOPOLOGY_PKG=<wrapper2 pkg dir, default $HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology> \
+//   SOLIDCRAFT_TOPOLOGY_PKG=<wrapper2 pkg dir, default $HOME/.cache/solidcraft-0.30.1-rig/sc-referee-pkg-topology> \
 //     node packages/layer/test/live-replay-fillet-chamfer.mjs --all --out=<dir> [--only=id,id] [--timeout=120] [--generated=0] [--measure=1|0]
 //   SOLIDCRAFT_TOPOLOGY_PKG=<pkg dir> node packages/layer/test/live-replay-fillet-chamfer.mjs --case=<id>        (one case, prints one JSON line; what --all spawns)
 //

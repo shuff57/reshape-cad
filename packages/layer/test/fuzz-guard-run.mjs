@@ -1,9 +1,9 @@
 // Guard-layer fuzz (remaining-work loop phase 1, 2026-11-04). Not part of `npm test` (skipped by the *.test.mjs glob).
 //   SOLIDCRAFT_REFEREE_PKG=<pkg dir> node packages/layer/test/fuzz-guard-run.mjs
-// Drives createTranslator({ planners: 'shell-draft' }) on the 0.21.0 rig over script+oracle pairs;
+// Drives createTranslator({ planners: 'shell-draft' }) on the pinned rig (SOLIDCRAFT_PIN, default 0.30.1) over script+oracle pairs;
 // exit 0 iff 0 WRONG. See docs/spikes/solidcraft-referee/fuzz/REMAINING-LOOP-PHASE1.md.
 // Phase 1: guard-layer fuzz (slice). For each case: oracle P (fuzz/oracle.mjs, h=0.05) vs
-// layer = createTranslator({ planners: 'shell-draft' }) on sc-referee-pkg (0.21.0 rig).
+// layer = createTranslator({ planners: 'shell-draft' }) on sc-referee-pkg (the pinned rig).
 // Classify: REFUSED (shell refused) / MATCH (|V-P|/P <= 1e-3) / WRONG (built, else).
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -12,7 +12,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..', '..', '..'); // the tree this file lives in (was the main checkout's absolute path; same value there)
-const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || '/home/shuff57/.cache/solidcraft-0.21.0-rig/sc-referee-pkg';
+const PIN = process.env.SOLIDCRAFT_PIN || '0.30.1'; // the pinned SolidCraft release; the default rig follows it
+const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || `${process.env.HOME}/.cache/solidcraft-${PIN}-rig/sc-referee-pkg`;
 const OUT = process.env.OUT || '/tmp/opencode/remaining-loop/phase1-fuzz.json';
 const sc = createRequire(import.meta.url)(path.join(PKG, 'solidcraft_referee.js'));
 const brepDir = process.env.BREP_PKG ?? path.join(REPO, 'archive', 'brep-rs', 'pkg');

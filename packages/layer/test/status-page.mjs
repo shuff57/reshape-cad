@@ -9,8 +9,9 @@ import { readFileSync, readdirSync, statSync, writeFileSync, existsSync, unlinkS
 import { execSync } from 'node:child_process';
 import path from 'node:path';
 import os from 'node:os';
+const PIN = process.env.SOLIDCRAFT_PIN || '0.30.1'; // the pinned SolidCraft release; default paths and output names follow it
 
-const LOOP = process.argv[2] || path.join(os.homedir(), '.cache/solidcraft-0.21.0-rig/live-replay-loop');
+const LOOP = process.argv[2] || path.join(os.homedir(), `.cache/solidcraft-${PIN}-rig/live-replay-loop`);
 const OUT = process.argv[3] || path.join(LOOP, 'status.html');
 const STATE = path.join(LOOP, 'state.tsv');
 const LOGS = path.join(LOOP, 'logs');
@@ -109,10 +110,10 @@ for (const p of PHASES) {
       extra = `${rate.toFixed(2)} cases/s`;
     }
     // A phase re-run at a longer cap can change the verdict after the loop wrote state.tsv.
-    const e = readJson(path.join(process.cwd(), 'packages/layer/test/evidence', `live-replay-${p.group}-0.21.0.json`));
+    const e = readJson(path.join(process.cwd(), 'packages/layer/test/evidence', `live-replay-${p.group}-${PIN}.json`));
     if (e && !e.partial && !(e.differ || 0) && !(e.hangOrCrash || 0) && !(e.builtWrong || 0)) derivedPass = true;
   } else {
-    const ev = path.join(process.cwd(), 'packages/layer/test/evidence', `live-replay-${p.group}-0.21.0.json`);
+    const ev = path.join(process.cwd(), 'packages/layer/test/evidence', `live-replay-${p.group}-${PIN}.json`);
     const merged = path.join(LOOP, 'out', p.id, 'merged.json');
     const sum = readJson(ev) ?? readJson(merged) ?? readJson(path.join(LOOP, 'out', p.id, `live-replay-${p.group}.json`));
     if (sum) {
@@ -204,7 +205,7 @@ const html = `<!doctype html>
   ul.ev { list-style:none; padding:0; margin:0 } ul.ev li { display:flex; justify-content:space-between; gap:10px; padding:5px 0; border-bottom:1px solid var(--line); font-size:12px }
   code { color:#c7d0e0 } .foot { color:var(--dim); font-size:11px; margin-top:16px }
 </style></head><body>
-<h1>live replays · 0.21.0 rig</h1>
+<h1>live replays · ${PIN} rig</h1>
 <div class="sub">${nowLine}</div>
 <div class="grid">${cards.join('')}</div>
 <h2>evidence in the working tree</h2>

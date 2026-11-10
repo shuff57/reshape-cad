@@ -109,7 +109,7 @@ test('bridge.execute with a budget: finished in time -> applied in SolidCraft, c
 });
 
 // The real kernel glue, against the real wasm, if this box has the rig (skipped otherwise).
-const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || path.join(os.homedir(), '.cache/solidcraft-0.21.0-rig/sc-referee-pkg');
+const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || path.join(os.homedir(), '.cache/solidcraft-0.30.1-rig/sc-referee-pkg');
 const WASM = path.join(PKG, 'solidcraft_referee_bg.wasm');
 test('instantiateKernel runs the real engine: a box, a refusal, non-ASCII text', { skip: !fs.existsSync(WASM) }, async () => {
   const k = instantiateKernel(await WebAssembly.compile(fs.readFileSync(WASM)));

@@ -1,10 +1,10 @@
 // REAL-KERNEL replay for the 'unified' planner set. Not part of `npm test`: needs the SolidCraft wasm rig. NOT RUN by the agent that wrote it (the owner runs it).
 //
 //   ulimit -v 2097152   # 2 GB memory cap (the rig holds the kernel in this process and in the budgeted child processes)
-//   SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg \
+//   SOLIDCRAFT_REFEREE_PKG=$HOME/.cache/solidcraft-0.30.1-rig/sc-referee-pkg \
 //     node packages/layer/test/live-replay-unified.mjs --out=/path/live-replay-unified.json [--only=id,id] [--corpus=ep,holes,sd,pm,bool,rg,fc,combined,rgcombined,fccombined] [--combined=600] [--rg-combined=400] [--fc-combined=400] [--ep-join=cheap|full|off]
 //   The fillet-chamfer corpora ('fc': the group's case files; 'fccombined': combined documents with blends) need the topology wasm too (a blend names an edge, and the stock rig cannot report topology):
-//     SOLIDCRAFT_TOPOLOGY_PKG=<wrapper2 pkg dir, default $HOME/.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology>   (test/topology-upstream.mjs; the topology reply gets the measure of the same run, as the group's host gave it)
+//     SOLIDCRAFT_TOPOLOGY_PKG=<wrapper2 pkg dir, default $HOME/.cache/solidcraft-0.30.1-rig/sc-referee-pkg-topology>   (test/topology-upstream.mjs; the topology reply gets the measure of the same run, as the group's host gave it)
 //   They run in-process (no budgeted child process, which has no topology): run them first with --corpus=fc under `timeout`, then --corpus=fccombined.
 //   (BREP_PKG=<dir> overrides archive/brep-rs/pkg, the shell-draft group's pick source; without its wasm the replay runs without ctx.resolveAt, as the layer's own pick
 //    path does when the host gives none, and the node rig answers sc.run with measures only, no topology, so a hollow or a draft that NAMES a face is refused by both sides alike.)

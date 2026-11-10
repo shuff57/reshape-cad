@@ -14,13 +14,15 @@ set -uo pipefail
 
 HERE=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 ROOT=$(cd -- "$HERE/../../.." && pwd)
-RIG=${SOLIDCRAFT_RIG:-$HOME/.cache/solidcraft-0.21.0-rig}
+# The pinned SolidCraft release (0.30.1 since 2026-11-09); the rig and the evidence name follow it.
+PIN=${SOLIDCRAFT_PIN:-0.30.1}
+RIG=${SOLIDCRAFT_RIG:-$HOME/.cache/solidcraft-$PIN-rig}
 PKG=${SOLIDCRAFT_REFEREE_PKG:-$RIG/sc-referee-pkg}
 TOPO=${SOLIDCRAFT_TOPOLOGY_PKG:-$RIG/sc-referee-pkg-topology}
 LOOP=${LAYER_LOOP_DIR:-$RIG/live-replay-loop}
 OUT=$LOOP/out/unified
 EVIDENCE=${LAYER_EVIDENCE:-$ROOT/packages/layer/test/evidence}
-EV=$EVIDENCE/live-replay-unified-0.21.0.json
+EV=$EVIDENCE/live-replay-unified-$PIN.json
 MERGED=$OUT/merged.json
 TS=$(date +%Y%m%d-%H%M%S)
 LOG=$LOOP/logs/unified-resume-$TS.log

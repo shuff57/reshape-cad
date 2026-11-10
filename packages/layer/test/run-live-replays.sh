@@ -29,7 +29,9 @@ set -uo pipefail
 
 HERE=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 ROOT=$(cd -- "$HERE/../../.." && pwd)
-RIG=${SOLIDCRAFT_RIG:-$HOME/.cache/solidcraft-0.21.0-rig}
+# The pinned SolidCraft release (0.30.1 since 2026-11-09). The rig and the evidence names follow it; set SOLIDCRAFT_PIN to replay on another rig.
+PIN=${SOLIDCRAFT_PIN:-0.30.1}
+RIG=${SOLIDCRAFT_RIG:-$HOME/.cache/solidcraft-$PIN-rig}
 PKG=${SOLIDCRAFT_REFEREE_PKG:-$RIG/sc-referee-pkg}
 TOPO=${SOLIDCRAFT_TOPOLOGY_PKG:-$RIG/sc-referee-pkg-topology}
 EVIDENCE=${LAYER_EVIDENCE:-$ROOT/packages/layer/test/evidence}
@@ -303,7 +305,7 @@ rebuild_summary() {
 run_phase() {
   local name=$1
   local ev; ev=$(phase_evidence "$name")
-  local evfile="$EVIDENCE/live-replay-$ev-0.21.0.json"
+  local evfile="$EVIDENCE/live-replay-$ev-$PIN.json"
   local out="$LOOPDIR/out/$name"
   local log="$LOGDIR/$name-$TS.log"
   [ "$SMOKE" = 1 ] && out="$LOOPDIR/out/smoke-$name"

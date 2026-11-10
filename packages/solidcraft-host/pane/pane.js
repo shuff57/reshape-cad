@@ -179,7 +179,7 @@ const scFrame = () => document.getElementById('sc');
 const scApi = () => { const w = scFrame() && scFrame().contentWindow; if (!w || !w.solidcraft) throw new Error('SolidCraft is not ready'); return w.solidcraft; };
 const lazySc = { inspect: (...a) => scApi().inspect(...a), execute: (...a) => scApi().execute(...a), request: (...a) => scApi().request(...a) };
 // ---- the time budget: probes in a terminable Worker (docs/PLAN-scripting-layer.md, Phase 3 "Kernel in a worker") --------------------------
-// The kernel is the referee wasm of the pinned 0.21.0 engine, served at ../kernel/ (see README). Without it (or with ?probe=off) a budgeted run is NOT
+// The kernel is the referee wasm of the pinned 0.30.1 engine (kernel/build.sh), served at ../kernel/ (see README). Without it (or with ?probe=off) a budgeted run is NOT
 // limited and the pane says so in the status line; the layer's G-BUDGET then stays advice only.
 const KERNEL_URL = new URL('../kernel/solidcraft_referee_bg.wasm', BASE);
 const probeLog = []; // one row per probe: { cmds, status, wallMs, cpuMs, loadMs }

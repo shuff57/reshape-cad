@@ -1,5 +1,5 @@
 // Shell family C re-measure (next-work loop, phase 1, 2026-11-06). Not part of `npm test` (skipped by the *.test.mjs glob).
-//   flock ~/.cache/solidcraft-0.21.0-rig/next-loop/rig.lock \
+//   flock ~/.cache/solidcraft-0.30.1-rig/rig.lock \
 //     env SOLIDCRAFT_REFEREE_PKG=<pkg dir> BREP_PKG=<brep-rs pkg dir> OUT=<file.json> node packages/layer/test/family-c-run.mjs
 //   NEGATIVE_CONTROL=1 scales both OCCT numbers by 1.01 (the run must then report WRONG and exit 1).
 // See docs/spikes/solidcraft-referee/fuzz/NEXT-LOOP-PHASE1.md.
@@ -24,7 +24,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.join(HERE, '..', '..', '..');
-const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || path.join(process.env.HOME, '.cache/solidcraft-0.21.0-rig/sc-referee-pkg');
+const PIN = process.env.SOLIDCRAFT_PIN || '0.30.1'; // the pinned SolidCraft release; the default rig follows it
+const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || path.join(process.env.HOME, `.cache/solidcraft-${PIN}-rig/sc-referee-pkg`);
 const OUT = path.resolve(process.env.OUT || 'family-c-run.json');
 mkdirSync(path.dirname(OUT), { recursive: true });
 const NEG = process.env.NEGATIVE_CONTROL === '1';
@@ -185,7 +186,7 @@ for (const c of cases) {
 }
 // ---- the shipped path: the 'unified' set with the engine's own topology (no ctx.resolveAt), on the wrapper2 build of the rig -------------------
 // (test/topology-upstream.mjs; NOTES.md "Moved picks"). Skipped when that package is absent. Scored against the same OCCT reference.
-const TOPO = process.env.SOLIDCRAFT_TOPOLOGY_PKG ?? path.join(process.env.HOME, '.cache/solidcraft-0.21.0-rig/sc-referee-pkg-topology');
+const TOPO = process.env.SOLIDCRAFT_TOPOLOGY_PKG ?? path.join(process.env.HOME, `.cache/solidcraft-${PIN}-rig/sc-referee-pkg-topology`);
 const shipped = { pkg: TOPO, set: 'unified', rows: [] };
 if (existsSync(path.join(TOPO, 'solidcraft_referee_p2.js'))) {
   const { loadUpstream } = await import(pathToFileURL(path.join(HERE, 'topology-upstream.mjs')).href);
