@@ -3,7 +3,7 @@
 Same-origin host page for the pinned SolidCraft web build. The embedding app (shCode) posts JSON; `src/bridge.mjs` checks it against an allowlist of the command ids our translators emit; `src/host.mjs` calls upstream `window.solidcraft` in the SolidCraft iframe. Nothing is patched upstream. Design and decisions: `docs/PLAN-scripting-layer.md` (Phase 3, open decision 1).
 
 - `npm test` runs the allowlist unit tests (no browser).
-- `test/live.mjs` is the real-browser check against the 0.21.0 build.
+- `test/live.mjs` is the real-browser check against the pinned build (0.30.1 since 2026-11-09; first written against 0.21.0).
 - Modelling lock: `{type:'lock', on:true|false}` from the embedding window shows an overlay over the ribbon. A classroom control, not a safety feature (shortcuts and the command palette still reach upstream tools). `--ribbon-h` in `host.html` is still 0: the ribbon height has not been measured.
 - Script pane (`pane/`): the spike's pane (editor, example gallery, sandboxed interpreter, features built/refused, sketch solver report), re-wired onto upstream's API by `src/upstream-bridge.mjs` (file.new for a fresh run, engine.batch, document.inspect, sketch.inspect). `sh pane/build.sh` makes `pane/bundle/` (git-ignored; needs `npm run build` first). Checked live: `test/live-pane.mjs`.
 - NOT built or not checked (was: the scripting pane):
@@ -11,6 +11,35 @@ Same-origin host page for the pinned SolidCraft web build. The embedding app (sh
   - named picks and fillet/chamfer now work through the topology adapter below (2026-10-27); a loft between two sketches (`blend`) is still refused in the pane (`NOT_YET` in `pane/src/host-entry.mjs`: its guards are not folded in);
   - the sketch-solver and shell fixes of the spike were patches against 0.9.0 and are not in 0.21.0;
   - the ribbon height for the lock overlay (`--ribbon-h`) is unmeasured; of the spike's 56 example scripts only one has been run on 0.21.0.
+
+## Pin: SolidCraft 0.30.1 (2026-11-09)
+
+The pin moved from 0.21.0 corrected to **v0.30.1** (`8e2b0cd6`, truck kernel), unmodified, by owner decision against the Stage B recommendation (`docs/spikes/solidcraft-referee/remeasure-0.30.1/REMEASURE-0.30.1.md`, "Owner decision"). "Corrected" at 0.21.0 meant our wrapper's build settings only (upstream's release profile and root `[patch]` block); 0.30.1 is built the same way.
+
+What changes for students (all measured by Stage B through the host route; nothing else changed there):
+- A box with rounded bottom edges can no longer be hollowed. It is refused: "shell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side." (0.30.1 builds it wrong; the hollow check catches it.)
+- One keep() is refused (a large cylinder dipping 5 mm into a box, `r6h-top-keep-r120-d5`).
+- A hollow now runs under the same 45 s time budget as holes, combines and grooves. A hollow that runs out of time is refused with the existing sentence "shell1 (shell): building this took longer than 45 seconds of computing, so it was stopped and shell1 is shown without it." Before, a failing hollow could keep the page busy for minutes on 0.30.1.
+- Rounded outlines 1e5 to 1e6 mm from the origin now build.
+- The page is heavier: the SolidCraft page wasm is 101.0 MB (0.21.0: 52.0 MB) and the time-budget kernel 73.7 MB (0.21.0: 35.4 MB). It is the engine that grew (code section 50.2 MB against 25.4 MB), not debug data: wasm-bindgen drops DWARF, and `debug = false` was measured 0.02% smaller with slightly different code, so the wrapper keeps upstream's profile verbatim.
+- No sentence was written or changed.
+
+Build:
+- Web build: `git archive v0.30.1` into `~/.cache/solidcraft-0.30.1/src`, then `trunk build --release` in `apps/solidcraft-web` (writes `dist/web`; peaked at 11 GB, twice killed at an 8 GB cap). The site folder is `~/.cache/solidcraft-0.30.1-rig/student-preview` (symlinks: host.html, pane, src, kernel -> `kernel/dist`, solidcraft -> that `dist/web`).
+- Time-budget kernel: `sh kernel/build.sh` (default source `~/.cache/solidcraft-0.30.1-rig/sc-src`). It now copies upstream's `Cargo.lock` in first. Without it cargo had resolved 26 crates newer than upstream pins (the 0.21.0 template had no lock copy either). With it, the wasm is byte-identical to the package Stage B measured (sha256 `9dc93a11…2b03936e`, 73,741,446 B), so Stage B's numbers are this kernel's.
+- Fixed on our side: `src/probe-kernel.mjs` (the hand-ported glue) lacked an import the 0.30.1 wasm needs (`Date.now`). Without it every probe failed and the pane refused every budgeted run (a box with a hole, a join). `probe.test.mjs`'s real-wasm test now runs against the 0.30.1 package.
+
+Checked on 0.30.1 (real browser, one headless Chrome):
+- `test/live.mjs`: API up, `file.export` and a raw request refused by the allowlist, `solid.box` builds (area 2200, bbox 30 x 20 x 10), inspect measures it, the lock overlay shows. As on 0.21.0.
+- `test/live-pane.mjs`: box with a hole builds 11717.30363 mm3 (0.21.0: 11717.30363; closed form 11717.26); a second run asks before replacing the design.
+- `test/live-examples.mjs` (`test/examples-0.30.1.json`): **46 of 56 pass, the same 46 as 0.21.0 with the adapter**; the same 10 do not, with the same sentences (9 refusals, and refuse-shell-closed, which builds right at 11264 and whose expectation is out of date). 51 volumes are bit-identical to 0.21.0, and the largest difference is 2.9e-13.
+- Second oracle, `host-route-com.mjs` with an `examples` corpus (`docs/spikes/solidcraft-referee/remeasure-0.30.1/repin/`): the 30 examples its interpreter takes, through the host route, scored on volume, box and centre of mass against OCCT and brep-rs: 26 RIGHT, 4 REFUSED, 0 WRONG, every COM checked, the same verdicts on 0.21.0 corrected. Not run there: the 12 misuse scripts, the 8 friendly-sketch scripts and the 6 stubs (its interpreter rejects them; the pane run above scores the friendly ones against their stored references and refuses the stubs).
+- `test/live-fillet.mjs` (`test/fillet-0.30.1.json`): all 13 identical to 0.21.0 (7 built and right on their closed forms, 6 refused as expected).
+- `test/live-budget.mjs` (`test/budget-0.30.1.json`): the slow four-countersink script with a 2 s cap is refused G-BUDGET and the box stays (longest page stall 921 ms; 0.21.0: 582 ms); probe off it builds 31363.385 as on 0.21.0. The 150-hole run times out at 5.18 s, longest stall 180 ms. 56 examples, probe on and off: volumes and statuses identical in 56 of 56. 20 scripts send a budget (0.21.0: 18; the two new ones are hollows), 32 probes, every probe volume equal to the page's.
+- `test/live-hollow-budget.mjs` (`test/hollow-budget-0.30.1.json`): a plain open hollow with every budget cut to 0.05 s is refused with the budget sentence and the box stands. Uncapped it is probed under 45 s and builds 2424 mm3 (closed form 2424). A family-C hollow is probed (0.9 s) and then refused by the hollow check.
+- Root `npm run build && sh pane/build.sh && npm test`: 997 tests, 991 pass, 0 fail, 6 skipped.
+
+Not shown: a real hollow that runs past 45 s in the browser (the 35 slow fuzz shells are command lists, and whether a student script reaches them past G-HOLE, G-BLIND and G-CONVEX was not tested). The cap test above runs the same code path.
 
 ## Example scripts on SolidCraft 0.21.0 (2026-10-25, `test/examples-0.21.0.json`)
 
@@ -68,9 +97,11 @@ The first wiring run gave 36: the group's translator replaces every pull refusal
 
 ## Time budget: kernel in a worker (2026-10-27, `test/budget-0.21.0.json`, `test/live-budget.mjs`, design: PLAN Phase 3a)
 
+Since the 0.30.1 pin (2026-11-09) hollows send a budget too, and the kernel is the 0.30.1 one; numbers on 0.30.1 are in "Pin" above. The section below is the 0.21.0 record.
+
 `createUpstreamBridge(sc, { prober })`: `execute(cmds, { fresh, budgetS })` first replays `cmds` on a scratch session in a fresh Worker (`src/probe-client.mjs`, `src/probe-worker.mjs`, `src/probe-kernel.mjs`) and terminates it when `budgetS` runs out. In time: the commands are applied in SolidCraft as before and the reply carries `cpuMs` (the Worker's engine time). Out of time: `{ ok:false, timedOut:true, cpuMs, failed:{command:'(budget)', error:'TIME BUDGET: exceeded N ms'} }`, SolidCraft untouched. Worker trap or kernel not served: `{ ok:false, probeError:true, failed:{command:'(probe)'} }`, SolidCraft untouched. No `budgetS` (every unbudgeted run): no probe. The pane wires it (`pane.js`; `?probe=off` switches it off, `?budgetCapS=N` shortens every budget, for tests).
 
-Setup: `sh kernel/build.sh` (needs the rig's `sc-src`, cargo, wasm-bindgen; a few minutes, several GB: run under `systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0`) makes `kernel/dist/`; serve that folder as `kernel/` next to `pane/` (the preview folder has a symlink). `npm test` has 12 unit tests for the pure parts (fake Worker and clock) and one against the real wasm if the rig is there.
+Setup: `sh kernel/build.sh` (needs the rig's `sc-src`, cargo, wasm-bindgen; a few minutes, 8 GB or more at 0.30.1: run under `systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0`) makes `kernel/dist/`; serve that folder as `kernel/` next to `pane/` (the preview folder has a symlink). `npm test` has 12 unit tests for the pure parts (fake Worker and clock) and one against the real wasm if the rig is there.
 
 Real browser (one headless Chrome, 3 GB cap), against the 0.21.0 web build:
 - **Slow, refused:** four countersunk blind holes (about 3 s of engine time) with every budget cut to 2 s: the third probe timed out at 2000 ms, `hole1` is refused with the layer's G-BUDGET sentence beside the built box, the box stays intact, and the host page's event loop never stalled longer than 582 ms (50 ms heartbeat). The same script with the probe off builds (7 s) and freezes the page for 2623 ms at a time. The sentence still says "45 seconds": the layer's fixed wording, whatever the actual budget.

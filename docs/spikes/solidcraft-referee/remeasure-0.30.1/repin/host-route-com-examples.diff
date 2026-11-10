@@ -1,0 +1,6 @@
+46c46
+< const ALL = ['ep', 'bool', 'holes', 'sd', 'pm', 'rg', 'fc', 'sg', 'mt', 'prim', 'sc', 'halt', 'combined', 'rgcombined', 'fccombined', 'pnp'];
+---
+> const ALL = ['examples', 'ep', 'bool', 'holes', 'sd', 'pm', 'rg', 'fc', 'sg', 'mt', 'prim', 'sc', 'halt', 'combined', 'rgcombined', 'fccombined', 'pnp'];
+225a226
+> else if (CORPUS === 'examples') { for (const e of JSON.parse(readFileSync(path.join(WT, 'packages/solidcraft-host/pane/examples.json'), 'utf8'))) if (typeof e.script === 'string') addS(e.id, e.script); } // re-pin 2026-11-09: the pane's 56 examples

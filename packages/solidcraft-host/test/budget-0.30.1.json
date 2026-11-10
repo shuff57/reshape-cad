@@ -1,0 +1,1123 @@
+{
+ "slow": {
+  "probeOn": {
+   "wallMs": 3923,
+   "maxHeartbeatGapMs": 921,
+   "beats": 55,
+   "volume": 32000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 32000,
+     "faces": 6,
+     "bbox": {
+      "max": [
+       20,
+       20,
+       10
+      ],
+      "min": [
+       -20,
+       -20,
+       -10
+      ]
+     },
+     "com": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "refused",
+     "guard": null,
+     "refusal": "hole1 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and hole1 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded."
+    }
+   ],
+   "probes": [
+    {
+     "cmds": 1,
+     "budgetS": 2,
+     "status": "done",
+     "wallMs": 208,
+     "cpuMs": 36,
+     "loadMs": 4,
+     "vol": 32000
+    },
+    {
+     "cmds": 5,
+     "budgetS": 2,
+     "status": "done",
+     "wallMs": 230,
+     "cpuMs": 220,
+     "loadMs": 4,
+     "vol": 31999.842991251586
+    },
+    {
+     "cmds": 5,
+     "budgetS": 2,
+     "status": "timedOut",
+     "wallMs": 2000,
+     "cpuMs": 2000,
+     "loadMs": null,
+     "vol": null
+    }
+   ]
+  },
+  "afterwards": {
+   "volume": 1000,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 1000,
+     "faces": 6,
+     "bbox": {
+      "max": [
+       5,
+       5,
+       5
+      ],
+      "min": [
+       -5,
+       -5,
+       -5
+      ]
+     },
+     "com": [
+      0,
+      0,
+      0
+     ]
+    }
+   ]
+  },
+  "probeOff": {
+   "wallMs": 7623,
+   "maxHeartbeatGapMs": 3167,
+   "beats": 12,
+   "volume": 31363.385240058717,
+   "bodies": [
+    {
+     "name": "b_box1",
+     "volume": 31363.385240058717,
+     "faces": 18,
+     "bbox": {
+      "max": [
+       20,
+       20,
+       10.000000000000004
+      ],
+      "min": [
+       -20,
+       -20,
+       -10
+      ]
+     },
+     "com": [
+      -3.5443314817104075e-9,
+      -4.347603567202133e-9,
+      -0.12018825742682196
+     ]
+    }
+   ],
+   "features": [
+    {
+     "id": "box1",
+     "kind": "box",
+     "status": "built",
+     "guard": null,
+     "refusal": null
+    },
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "status": "built",
+     "guard": null,
+     "refusal": null
+    }
+   ],
+   "probes": []
+  }
+ },
+ "fast": [
+  {
+   "id": "fr-rect-dims",
+   "volOn": 5999.999999999956,
+   "volOff": 5999.999999999956,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 1291,
+   "wallOffMs": 1315,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-plate-hole-dims",
+   "volOn": 9214.732294132635,
+   "volOff": 9214.732294132635,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 395,
+   "wallOffMs": 501,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-slot-tangent",
+   "volOn": 11141.176810322648,
+   "volOff": 11141.176810322648,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 419,
+   "wallOffMs": 412,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-triangle-angle",
+   "volOn": 5196.152422706632,
+   "volOff": 5196.152422706632,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 368,
+   "wallOffMs": 357,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-hexagon",
+   "volOn": 10392.30484541647,
+   "volOff": 10392.30484541647,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 365,
+   "wallOffMs": 359,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-untouched-default",
+   "volOn": 10000,
+   "volOff": 10000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 226,
+   "wallOffMs": 232,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-bracket-rounded",
+   "volOn": 18500.37304862796,
+   "volOff": 18500.37304862796,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 393,
+   "wallOffMs": 411,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-symmetric-profile",
+   "volOn": 6999.999999998639,
+   "volOff": 6999.999999998639,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 369,
+   "wallOffMs": 368,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "fr-symmetric-axis",
+   "volOn": 6999.9999999986685,
+   "volOff": 6999.9999999986685,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 370,
+   "wallOffMs": 368,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-unknown-handle",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-dimension-non-line",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-tangent-two-lines",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-other-sketch",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-removed-entity",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-undefined-entity",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-arity",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-negative-radius",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-remove-all",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-reassign-sketch",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-line-over-line",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "misuse-nan",
+   "volOn": null,
+   "volOff": null,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": null,
+   "wallOffMs": null,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "3d-box-hole",
+   "volOn": 11717.30362588783,
+   "volOff": 11717.30362588783,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 581,
+   "wallOffMs": 288,
+   "nProbes": 2,
+   "probeWallMs": 292,
+   "probeCpuMs": 117,
+   "probeStatuses": [
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0
+   ],
+   "lastProbeVol": 11717.30362588783
+  },
+  {
+   "id": "3d-extrude-sketch",
+   "volOn": 9900,
+   "volOff": 9900,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 193,
+   "wallOffMs": 191,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "3d-revolve",
+   "volOn": 75397.45084917496,
+   "volOff": 75397.45084917496,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 248,
+   "wallOffMs": 265,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "3d-union",
+   "volOn": 16282.696374112165,
+   "volOff": 16282.696374112165,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 572,
+   "wallOffMs": 456,
+   "nProbes": 1,
+   "probeWallMs": 98,
+   "probeCpuMs": 86,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 16282.696374112165
+  },
+  {
+   "id": "3d-subtract",
+   "volOn": 24000,
+   "volOff": 24000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 242,
+   "wallOffMs": 240,
+   "nProbes": 1,
+   "probeWallMs": 14,
+   "probeCpuMs": 4,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 24000
+  },
+  {
+   "id": "3d-linear-pattern",
+   "volOn": 12000,
+   "volOff": 12000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 265,
+   "wallOffMs": 248,
+   "nProbes": 3,
+   "probeWallMs": 44,
+   "probeCpuMs": 15,
+   "probeStatuses": [
+    "done",
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0,
+    0
+   ],
+   "lastProbeVol": 12000
+  },
+  {
+   "id": "3d-polar-pattern",
+   "volOn": 12000,
+   "volOff": 12000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 265,
+   "wallOffMs": 249,
+   "nProbes": 3,
+   "probeWallMs": 44,
+   "probeCpuMs": 17,
+   "probeStatuses": [
+    "done",
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0,
+    0
+   ],
+   "lastProbeVol": 12000
+  },
+  {
+   "id": "2d-rect-dims",
+   "volOn": 5999.999999999956,
+   "volOff": 5999.999999999956,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 332,
+   "wallOffMs": 332,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "2d-plate-hole-dims",
+   "volOn": 9214.732294132635,
+   "volOff": 9214.732294132635,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 234,
+   "wallOffMs": 233,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "2d-slot-tangent",
+   "volOn": 11141.176810322648,
+   "volOff": 11141.176810322648,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 366,
+   "wallOffMs": 371,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "2d-triangle-angle",
+   "volOn": 5196.152422706632,
+   "volOff": 5196.152422706632,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 362,
+   "wallOffMs": 354,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "2d-hexagon",
+   "volOn": 10392.30484541647,
+   "volOff": 10392.30484541647,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 365,
+   "wallOffMs": 366,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "2d-handle-api",
+   "volOn": 12000,
+   "volOff": 12000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 232,
+   "wallOffMs": 232,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "diag-under",
+   "volOn": 8000,
+   "volOff": 8000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 365,
+   "wallOffMs": 366,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "diag-conflict",
+   "volOn": 0,
+   "volOff": 0,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 198,
+   "wallOffMs": 199,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "diag-redundant",
+   "volOn": 0,
+   "volOff": 0,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 165,
+   "wallOffMs": 165,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "named-fillet-edge",
+   "volOn": 31922.69267166208,
+   "volOff": 31922.69267166208,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 473,
+   "wallOffMs": 470,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "named-bevel-edge",
+   "volOn": 31820,
+   "volOff": 31820,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 441,
+   "wallOffMs": 447,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "named-shell-open-top",
+   "volOn": 8671.999999999995,
+   "volOff": 8671.999999999995,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 382,
+   "wallOffMs": 356,
+   "nProbes": 1,
+   "probeWallMs": 19,
+   "probeCpuMs": 9,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 8671.999999999995
+  },
+  {
+   "id": "named-draft-face",
+   "volOn": 30875.673322380884,
+   "volOff": 30875.673322380884,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 515,
+   "wallOffMs": 515,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "named-cylinder-rim",
+   "volOn": 3327.8639846070855,
+   "volOff": 3327.8639846070855,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 1269,
+   "wallOffMs": 1301,
+   "nProbes": 0,
+   "probeWallMs": 0,
+   "probeCpuMs": 0,
+   "probeStatuses": [],
+   "probeVsPage": [],
+   "lastProbeVol": null
+  },
+  {
+   "id": "named-edge-after-cut",
+   "volOn": 31714.35551986098,
+   "volOff": 31714.35551986098,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 1002,
+   "wallOffMs": 930,
+   "nProbes": 1,
+   "probeWallMs": 81,
+   "probeCpuMs": 68,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 31748.714334122516
+  },
+  {
+   "id": "named-hole-then-round",
+   "volOn": 11691.521833759392,
+   "volOff": 11691.521833759392,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 1127,
+   "wallOffMs": 822,
+   "nProbes": 3,
+   "probeWallMs": 322,
+   "probeCpuMs": 286,
+   "probeStatuses": [
+    "done",
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0,
+    0
+   ],
+   "lastProbeVol": 11691.521833759392
+  },
+  {
+   "id": "named-hole-then-shell",
+   "volOn": 2656.464101685775,
+   "volOff": 2656.464101685775,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 706,
+   "wallOffMs": 570,
+   "nProbes": 3,
+   "probeWallMs": 201,
+   "probeCpuMs": 170,
+   "probeStatuses": [
+    "done",
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0,
+    0
+   ],
+   "lastProbeVol": 2656.464101685775
+  },
+  {
+   "id": "named-pocket-wall-round",
+   "volOn": 27995.701614313555,
+   "volOff": 27995.701614313555,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 846,
+   "wallOffMs": 830,
+   "nProbes": 1,
+   "probeWallMs": 32,
+   "probeCpuMs": 24,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 28000
+  },
+  {
+   "id": "named-counterbore-round",
+   "volOn": 14997.852574108654,
+   "volOff": 14997.852574108654,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 914,
+   "wallOffMs": 865,
+   "nProbes": 4,
+   "probeWallMs": 89,
+   "probeCpuMs": 47,
+   "probeStatuses": [
+    "done",
+    "done",
+    "done",
+    "done"
+   ],
+   "probeVsPage": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "lastProbeVol": 14997.852574108654
+  },
+  {
+   "id": "refuse-shell-closed",
+   "volOn": 11264,
+   "volOff": 11264,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 231,
+   "wallOffMs": 231,
+   "nProbes": 1,
+   "probeWallMs": 15,
+   "probeCpuMs": 4,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 11264
+  },
+  {
+   "id": "refuse-name-two-faces",
+   "volOn": 46000,
+   "volOff": 46000,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 248,
+   "wallOffMs": 248,
+   "nProbes": 1,
+   "probeWallMs": 14,
+   "probeCpuMs": 5,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 46000
+  },
+  {
+   "id": "refuse-name-swept-arc",
+   "volOn": 28598.971467297783,
+   "volOff": 28598.971467297783,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 583,
+   "wallOffMs": 499,
+   "nProbes": 1,
+   "probeWallMs": 64,
+   "probeCpuMs": 47,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 28598.971467297783
+  },
+  {
+   "id": "stub-centre",
+   "volOn": 12800,
+   "volOff": 12800,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 330,
+   "wallOffMs": 335,
+   "nProbes": 1,
+   "probeWallMs": 14,
+   "probeCpuMs": 6,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 12800
+  },
+  {
+   "id": "stub-offset-x",
+   "volOn": 12800,
+   "volOff": 12800,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 319,
+   "wallOffMs": 293,
+   "nProbes": 1,
+   "probeWallMs": 21,
+   "probeCpuMs": 9,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 12800
+  },
+  {
+   "id": "stub-corner",
+   "volOn": 12800,
+   "volOff": 12800,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 309,
+   "wallOffMs": 299,
+   "nProbes": 1,
+   "probeWallMs": 23,
+   "probeCpuMs": 10,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 12800
+  },
+  {
+   "id": "stub-edge-flush",
+   "volOn": 12800,
+   "volOff": 12800,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 315,
+   "wallOffMs": 304,
+   "nProbes": 1,
+   "probeWallMs": 17,
+   "probeCpuMs": 7,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 12800
+  },
+  {
+   "id": "stub-tall",
+   "volOn": 13920,
+   "volOff": 13920,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 316,
+   "wallOffMs": 289,
+   "nProbes": 1,
+   "probeWallMs": 17,
+   "probeCpuMs": 6,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 13920
+  },
+  {
+   "id": "stub-low",
+   "volOn": 12288,
+   "volOff": 12288,
+   "sameVolume": true,
+   "sameStatuses": true,
+   "wallOnMs": 297,
+   "wallOffMs": 299,
+   "nProbes": 1,
+   "probeWallMs": 15,
+   "probeCpuMs": 6,
+   "probeStatuses": [
+    "done"
+   ],
+   "probeVsPage": [
+    0
+   ],
+   "lastProbeVol": 12288
+  }
+ ],
+ "hang": {
+  "wallMs": 5178,
+  "maxHeartbeatGapMs": 180,
+  "ok": false,
+  "timedOut": true,
+  "cpuMs": 5000,
+  "failed": {
+   "command": "(budget)",
+   "error": "TIME BUDGET: exceeded 5000 ms"
+  },
+  "chromeCpuSecondsIdleIn3sBefore": 3.2,
+  "chromeCpuSecondsDuringRun": 11.2,
+  "busyWorkerThreadsRightAfterTimeout": 4,
+  "probeWorkerStoppedWithinMs": [
+   250,
+   250,
+   250,
+   2000
+  ],
+  "chromeCpuSecondsIn3sAfterwards": 5.3,
+  "afterwards": {
+   "volume": 1000
+  }
+ }
+}

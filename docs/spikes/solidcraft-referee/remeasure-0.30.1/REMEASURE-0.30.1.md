@@ -13,6 +13,21 @@ against OCCT and brep-rs, and the groups' closed forms).
 | 4, fuzz | STEP4-FUZZ.md, step4/ | 39e3d1cf |
 | 5, this report | | this commit |
 
+## Owner decision, 2026-11-09: move to 0.30.1 anyway
+
+The owner decided against the recommendation below: "Move to 0.30.1 anyway". The costs listed in this report are accepted as they are: the rounded-bottom hollow is
+refused (the hollow check), the keep `r6h-top-keep-r120-d5` is refused, some failing hollows are 4 to 11 times slower (4 cases past 600 s), and the wasm is bigger
+(73.7 MB against 35.4 MB). What decided it: 0 wrong solids through the host route on 0.30.1, with every guard on. The re-pin itself is recorded in
+`packages/solidcraft-host/README.md` ("Pin"), and three findings are added here:
+
+- **The wasm size is not the debug line tables.** wasm-bindgen drops DWARF, so neither build carries any. Built from upstream's lock file, `debug = false` gives
+  73,727,400 bytes against 73,741,446 with upstream's `debug = "line-tables-only"` (0.02% smaller). The growth is the engine itself: the code section is 50.2 MB against 25.4 MB
+  at 0.21.0, data 7.1 MB against 1.4 MB, function names 16.4 MB against 8.6 MB. The wrapper keeps upstream's profile verbatim.
+- **Hollows now run under the time budget** (the gap in "Speed" below): 45 s + 1.5 x the last run, refused with the existing sentence for a step that is not a hole.
+- **The browser needed one fix this stage could not see.** Stage B ran the host route in Node. In the real page, the time-budget probe's hand-ported glue
+  lacked one import the 0.30.1 wasm needs (`Date.now`), so every probe failed and every budgeted run was refused. It is fixed in `src/probe-kernel.mjs`. With the fix, the
+  56 examples, the 13 fillet scripts and the budget checks give the same results as on 0.21.0, and 0 wrong.
+
 ## Recommendation: stay on 0.21.0 corrected
 
 Both kernels give a student **no wrong solid through the host route**. They are equally safe today, and the layer is what makes them so. On the same tree, 0.30.1 changes

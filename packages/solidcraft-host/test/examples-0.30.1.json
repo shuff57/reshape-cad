@@ -1,0 +1,436 @@
+[
+ {
+  "id": "fr-rect-dims",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 5999.999999999956
+ },
+ {
+  "id": "fr-plate-hole-dims",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)",
+  "refusals": [],
+  "volume": 9214.732294132635
+ },
+ {
+  "id": "fr-slot-tangent",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 11141.176810322648
+ },
+ {
+  "id": "fr-triangle-angle",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 5196.152422706632
+ },
+ {
+  "id": "fr-hexagon",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 9.65e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 10392.30484541647
+ },
+ {
+  "id": "fr-untouched-default",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 10000.000000 vs OCCT 10000.000000 (rel delta 1.82e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 10000
+ },
+ {
+  "id": "fr-bracket-rounded",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 18500.373049 vs brep-rs 18500.389342 (rel delta 8.81e-7, bar 0.0003); bbox delta 1.78e-16",
+  "refusals": [],
+  "volume": 18500.37304862796
+ },
+ {
+  "id": "fr-symmetric-profile",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 7000.000000 vs brep-rs 7000.000000 (rel delta 8.04e-12, bar 1e-9); bbox delta 3.44e-12",
+  "refusals": [],
+  "volume": 6999.999999998639
+ },
+ {
+  "id": "fr-symmetric-axis",
+  "group": "friendly",
+  "pass": true,
+  "verdict": "PASS: volume 7000.000000 vs closed form 7000.000000 (rel delta 1.90e-13, bar 1e-9); bbox delta 3.34e-12",
+  "refusals": [],
+  "volume": 6999.9999999986685
+ },
+ {
+  "id": "misuse-unknown-handle",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-dimension-non-line",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-tangent-two-lines",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-other-sketch",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-removed-entity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-undefined-entity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-arity",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-negative-radius",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-remove-all",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-reassign-sketch",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-line-over-line",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "misuse-nan",
+  "group": "misuse",
+  "pass": true
+ },
+ {
+  "id": "3d-box-hole",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 11717.303626 vs OCCT 11717.256661 (rel delta 4.01e-6, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 11717.30362588783
+ },
+ {
+  "id": "3d-extrude-sketch",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 9900.000000 vs OCCT 9900.000000 (rel delta 1.84e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 9900
+ },
+ {
+  "id": "3d-revolve",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 75397.450849 vs OCCT 75398.223686 (rel delta 1.03e-5, bar 0.0003); bbox delta 1.29e-16",
+  "refusals": [],
+  "volume": 75397.45084917496
+ },
+ {
+  "id": "3d-union",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 16282.696374 vs OCCT 16282.743339 (rel delta 2.88e-6, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 16282.696374112165
+ },
+ {
+  "id": "3d-subtract",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 24000.000000 vs OCCT 24000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 24000
+ },
+ {
+  "id": "3d-linear-pattern",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "3d-polar-pattern",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 3.03e-16, bar 1e-9); bbox delta 1.18e-16",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "2d-rect-dims",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 6000.000000 vs brep-rs 6000.000000 (rel delta 1.48e-11, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 5999.999999999956
+ },
+ {
+  "id": "2d-plate-hole-dims",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 9214.732294 vs brep-rs 9214.601837 (rel delta 1.42e-5, bar 0.0003)",
+  "refusals": [],
+  "volume": 9214.732294132635
+ },
+ {
+  "id": "2d-slot-tangent",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 11141.176810 vs brep-rs 11141.592654 (rel delta 3.73e-5, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 11141.176810322648
+ },
+ {
+  "id": "2d-triangle-angle",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 5196.152423 vs brep-rs 5196.152423 (rel delta 2.03e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 5196.152422706632
+ },
+ {
+  "id": "2d-hexagon",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 10392.304845 vs brep-rs 10392.304845 (rel delta 9.65e-13, bar 1e-9)",
+  "refusals": [],
+  "volume": 10392.30484541647
+ },
+ {
+  "id": "2d-handle-api",
+  "group": "2d",
+  "pass": true,
+  "verdict": "PASS: volume 12000.000000 vs OCCT 12000.000000 (rel delta 0.00e+0, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 12000
+ },
+ {
+  "id": "diag-under",
+  "group": "diag",
+  "pass": true,
+  "verdict": "PASS: volume 8000.000000 vs OCCT 8000.000000 (rel delta 2.27e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 8000
+ },
+ {
+  "id": "diag-conflict",
+  "group": "diag",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+  "refusals": [
+   "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules"
+  ],
+  "volume": 0
+ },
+ {
+  "id": "diag-redundant",
+  "group": "diag",
+  "pass": true,
+  "verdict": "EXPECTED REFUSAL matched: pull1 refused with the expected sentence; built 0 feature(s), volume 0.000 = reference 0.000",
+  "refusals": [
+   "pull1: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is added; remove it, or make it a reference dimension"
+  ],
+  "volume": 0
+ },
+ {
+  "id": "named-fillet-edge",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 31922.692672 vs OCCT 31922.743339 (rel delta 1.59e-6, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 31922.69267166208
+ },
+ {
+  "id": "named-bevel-edge",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 31820.000000 vs OCCT 31820.000000 (rel delta 2.29e-16, bar 1e-9); bbox delta 8.88e-16",
+  "refusals": [],
+  "volume": 31820
+ },
+ {
+  "id": "named-shell-open-top",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 8672.000000 vs OCCT 8672.000000 (rel delta 2.10e-16, bar 1e-9); bbox delta 0.00e+0",
+  "refusals": [],
+  "volume": 8671.999999999995
+ },
+ {
+  "id": "named-draft-face",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 30875.673322 vs OCCT 30875.673322 (rel delta 7.07e-16, bar 0.0003); bbox delta 5.33e-16",
+  "refusals": [],
+  "volume": 30875.673322380884
+ },
+ {
+  "id": "named-cylinder-rim",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 3327.863985 vs OCCT 3328.239388 (rel delta 1.13e-4, bar 0.0003); bbox delta 2.69e-5",
+  "refusals": [],
+  "volume": 3327.8639846070855
+ },
+ {
+  "id": "named-edge-after-cut",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 31714.355520 vs OCCT 31714.336294 (rel delta 6.06e-7, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 31714.35551986098
+ },
+ {
+  "id": "named-hole-then-round",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 11691.521834 vs OCCT 11691.504441 (rel delta 1.49e-6, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 11691.521833759392
+ },
+ {
+  "id": "named-hole-then-shell",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 2656.464102 vs OCCT 2656.477856 (rel delta 5.18e-6, bar 0.0003); bbox delta 7.11e-16",
+  "refusals": [],
+  "volume": 2656.464101685775
+ },
+ {
+  "id": "named-pocket-wall-round",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 27995.701614 vs OCCT 27995.707963 (rel delta 2.27e-7, bar 0.0003); bbox delta 1.48e-16",
+  "refusals": [],
+  "volume": 27995.701614313555
+ },
+ {
+  "id": "named-counterbore-round",
+  "group": "3d",
+  "pass": false,
+  "verdict": "FAIL: hole1 was refused with a different sentence (wanted it to contain \"counterbore\")",
+  "refusals": [
+   "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first."
+  ],
+  "volume": 14997.852574108654
+ },
+ {
+  "id": "refuse-shell-closed",
+  "group": "refusal",
+  "pass": false,
+  "verdict": "FAIL: expected shell1 to be refused but it was built; built volume 11264.000 differs from the reference of what should build, 32000.000 (rel 6.48e-1)",
+  "refusals": [],
+  "volume": 11264
+ },
+ {
+  "id": "refuse-name-two-faces",
+  "group": "refusal",
+  "pass": false,
+  "verdict": "FAIL: shell1 was refused with a different sentence (wanted it to contain \"matches 2 faces\")",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a cut) where the new wall would come out thicker than 2, so shell1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 46000
+ },
+ {
+  "id": "refuse-name-swept-arc",
+  "group": "refusal",
+  "pass": false,
+  "verdict": "FAIL: round1 was refused with a different sentence (wanted it to contain \"swept name over it is not resolved\")",
+  "refusals": [
+   "The edge of a circular or rule-driven pocket cannot be picked yet, so round1 is shown without it -- use a pocket drawn with straight sides, or leave the rim sharp."
+  ],
+  "volume": 28598.971467297783
+ },
+ {
+  "id": "stub-centre",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-offset-x",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-corner",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-edge-flush",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: 1 feature(s) refused: Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out.",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 12800
+ },
+ {
+  "id": "stub-tall",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 13920
+ },
+ {
+  "id": "stub-low",
+  "group": "stub",
+  "pass": false,
+  "verdict": "FAIL: s1 was refused with a different sentence (wanted it to contain \"something stands on the open face\")",
+  "refusals": [
+   "Hollowing op1 is not supported yet because the part has inside corners (a join) where the new wall would come out thicker than 1, so s1 is shown without it -- hollow the plain shape first, or leave the hollow out."
+  ],
+  "volume": 12288
+ }
+]

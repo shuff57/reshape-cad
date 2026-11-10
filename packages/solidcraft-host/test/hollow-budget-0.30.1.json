@@ -1,0 +1,60 @@
+[
+ {
+  "label": "plain hollow, cap 0.05 s",
+  "wallMs": 1722,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (shell): building this took longer than 45 seconds of computing, so it was stopped and shell1 is shown without it.",
+  "probes": [
+   {
+    "cmds": 2,
+    "budgetS": 0.05,
+    "status": "timedOut",
+    "wallMs": 238,
+    "cpuMs": 50,
+    "loadMs": null,
+    "vol": null
+   }
+  ],
+  "bodies": []
+ },
+ {
+  "label": "plain hollow, no cap",
+  "wallMs": 1803,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "probes": [
+   {
+    "cmds": 2,
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 319,
+    "cpuMs": 92,
+    "loadMs": 5,
+    "vol": 2424
+   }
+  ],
+  "bodies": []
+ },
+ {
+  "label": "family-C hollow, no cap",
+  "wallMs": 3960,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nround1\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[-z] ^ box1.face[-y]] → solidcraft edge(s) F1:-y|F1:-z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:-y|F1:-z); pick (0, -15, 0)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nround2\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[-z] ^ box1.face[+y]] → solidcraft edge(s) F1:+y|F1:-z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:+y|F1:-z); pick (0, 15, 0)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nround3\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[-z] ^ box1.face[-x]] → solidcraft edge(s) F1:-x|F1:-z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:-x|F1:-z); pick (-20, 0, 0)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nround4\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[-z] ^ box1.face[+x]] → solidcraft edge(s) F1:+x|F1:-z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:+x|F1:-z); pick (20, 0, 0)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nshell1\tshell\trefused\tshell1 (hollow): round4 could not be hollowed with this wall and open side, so shell1 is shown without it -- try another wall or another open side.",
+  "probes": [
+   {
+    "cmds": 3,
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 1097,
+    "cpuMs": 909,
+    "loadMs": 3,
+    "vol": 4282.787170846388
+   }
+  ],
+  "bodies": []
+ },
+ {
+  "label": "plain hollow, probe off",
+  "wallMs": 1433,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "probes": [],
+  "bodies": []
+ }
+]

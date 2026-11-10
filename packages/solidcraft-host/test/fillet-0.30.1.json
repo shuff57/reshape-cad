@@ -1,0 +1,405 @@
+[
+ {
+  "id": "fillet-plain-edge",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 3)",
+  "verdict": "BUILT, RIGHT (volume 31922.692672 vs closed form 31922.743339, rel 1.59e-6)",
+  "sentence": null,
+  "volume": 31922.69267166208,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 31922.69267166208,
+    "faces": 7,
+    "bbox": {
+     "max": [
+      20.00000000000001,
+      20,
+      10
+     ],
+     "min": [
+      -20.000000000000014,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     -1.1745362216535207e-9,
+     0.04681047244404503,
+     -0.022593428609251072
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-big-valid",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 10)",
+  "verdict": "BUILT, RIGHT (volume 31141.029768 vs closed form 31141.592654, rel 1.81e-5)",
+  "sentence": null,
+  "volume": 31141.02976844992,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 31141.02976844992,
+    "faces": 7,
+    "bbox": {
+     "max": [
+      20.000000000000014,
+      20,
+      10
+     ],
+     "min": [
+      -20.000000000000014,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     7.972235784126307e-16,
+     0.49002130625829554,
+     -0.21418899180415427
+    ]
+   }
+  ]
+ },
+ {
+  "id": "chamfer-plain-edge",
+  "script": "const b = cuboid(40, 40, 20)\nchamfer(b.edge('top', 'right'), 3)",
+  "verdict": "BUILT, RIGHT (volume 31820.000000 vs closed form 31820.000000, rel 0.00e+0)",
+  "sentence": null,
+  "volume": 31820,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 31820,
+    "faces": 7,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20.000000000000018,
+      -10
+     ]
+    },
+    "com": [
+     -0.10747957259585231,
+     -6.442745399034883e-15,
+     -0.050911376492772525
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-two-far-edges",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 3)\nround(b.edge('bottom', 'back'), 3)",
+  "verdict": "BUILT, RIGHT (volume 31845.385336 vs closed form 31845.486678, rel 3.18e-6)",
+  "sentence": null,
+  "volume": 31845.38533582304,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 31845.38533582304,
+    "faces": 8,
+    "bbox": {
+     "max": [
+      20.00000000000001,
+      20,
+      10
+     ],
+     "min": [
+      -20.000000000000018,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     1.1777383771241173e-9,
+     -4.062966586859494e-9,
+     7.068771753564247e-10
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-box-placed-at",
+  "script": "const b = cuboid(40, 40, 20, { at: [15, 5, 7] })\nround(b.edge('top', 'front'), 3)",
+  "verdict": "BUILT, RIGHT (volume 31922.692672 vs closed form 31922.743339, rel 1.59e-6)",
+  "sentence": null,
+  "volume": 31922.69267166208,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 31922.69267166208,
+    "faces": 7,
+    "bbox": {
+     "max": [
+      35.000000000000014,
+      25,
+      17
+     ],
+     "min": [
+      -5.000000000000008,
+      -15,
+      -3
+     ]
+    },
+    "com": [
+     14.999999998825462,
+     5.046810472444045,
+     6.97740657139075
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-box-moved",
+  "script": "const b = cuboid(40, 40, 20)\nmove(b, [15, 5, 7])\nround(b.edge('top', 'front'), 3)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge before that step, or name an edge it left alone.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      35,
+      25,
+      17
+     ],
+     "min": [
+      -5,
+      -15,
+      -3
+     ]
+    },
+    "com": [
+     15,
+     5,
+     7
+    ]
+   }
+  ]
+ },
+ {
+  "id": "chamfer-box-moved",
+  "script": "const b = cuboid(40, 40, 20)\nmove(b, [15, 5, 7])\nchamfer(b.edge('top', 'right'), 3)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The edge for bevel1 was already changed by an earlier move, so bevel1 is shown without it -- bevel the edge before that step, or name an edge it left alone.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      35,
+      25,
+      17
+     ],
+     "min": [
+      -5,
+      -15,
+      -3
+     ]
+    },
+    "com": [
+     15,
+     5,
+     7
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-radius-too-large",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 30)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The round round1 is as big as or bigger than the face it cuts into (20 wide), so round1 is shown without it -- use a size under 20.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-radius-equals-height",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 20)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The round round1 is as big as or bigger than the face it cuts into (20 wide), so round1 is shown without it -- use a size under 20.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-radius-zero",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), 0)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The round size of round1 is zero, negative or smaller than 0.01, so round1 is shown without it -- give it a size of at least 0.01.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "id": "fillet-radius-negative",
+  "script": "const b = cuboid(40, 40, 20)\nround(b.edge('top', 'front'), -2)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The round size of round1 is zero, negative or smaller than 0.01, so round1 is shown without it -- give it a size of at least 0.01.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "id": "chamfer-too-large",
+  "script": "const b = cuboid(40, 40, 20)\nchamfer(b.edge('top', 'right'), 25)",
+  "verdict": "REFUSED (as expected)",
+  "sentence": "The bevel bevel1 is as big as or bigger than the face it cuts into (20 wide), so bevel1 is shown without it -- use a size under 20.",
+  "volume": 32000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6,
+    "bbox": {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    },
+    "com": [
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "id": "cylinder-rim-fillet",
+  "script": "const c = cylinder(12, 30)\nround(c.edge('top', 'side'), 3)",
+  "verdict": "BUILT, RIGHT (volume 3327.863985 vs closed form 3328.239388, rel 1.13e-4)",
+  "sentence": null,
+  "volume": 3327.8639846070855,
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 3327.8639846070855,
+    "faces": 4,
+    "bbox": {
+     "max": [
+      5.999907337279428,
+      5.999838802443856,
+      15
+     ],
+     "min": [
+      -5.999907337279429,
+      -5.999838802443857,
+      -15.000000000000014
+     ]
+    },
+    "com": [
+     1.449613789284816e-14,
+     1.2514735822825682e-14,
+     -0.2778102342879914
+    ]
+   }
+  ]
+ }
+]

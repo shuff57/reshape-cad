@@ -1,0 +1,110 @@
+{
+ "items": 56,
+ "ready": 30,
+ "skipped": [
+  {
+   "id": "fr-rect-dims",
+   "why": "script error"
+  },
+  {
+   "id": "fr-plate-hole-dims",
+   "why": "script error"
+  },
+  {
+   "id": "fr-slot-tangent",
+   "why": "script error"
+  },
+  {
+   "id": "fr-triangle-angle",
+   "why": "script error"
+  },
+  {
+   "id": "fr-hexagon",
+   "why": "script error"
+  },
+  {
+   "id": "fr-bracket-rounded",
+   "why": "script error"
+  },
+  {
+   "id": "fr-symmetric-profile",
+   "why": "script error"
+  },
+  {
+   "id": "fr-symmetric-axis",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-unknown-handle",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-dimension-non-line",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-tangent-two-lines",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-other-sketch",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-removed-entity",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-undefined-entity",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-arity",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-negative-radius",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-remove-all",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-reassign-sketch",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-line-over-line",
+   "why": "script error"
+  },
+  {
+   "id": "misuse-nan",
+   "why": "script error"
+  },
+  {
+   "id": "stub-centre",
+   "why": "script error"
+  },
+  {
+   "id": "stub-offset-x",
+   "why": "script error"
+  },
+  {
+   "id": "stub-corner",
+   "why": "script error"
+  },
+  {
+   "id": "stub-edge-flush",
+   "why": "script error"
+  },
+  {
+   "id": "stub-tall",
+   "why": "script error"
+  },
+  {
+   "id": "stub-low",
+   "why": "script error"
+  }
+ ]
+}
