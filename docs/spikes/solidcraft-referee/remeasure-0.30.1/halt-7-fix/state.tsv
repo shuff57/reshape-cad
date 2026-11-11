@@ -1,0 +1,17 @@
+time	step	unit	state	note
+2026-11-10T07:28:54-08:00	0	-	start	worktree t3/7dbe95df at 2288781d; G-HOLE recess radius + shared hollow budget edited; build ok
+2026-11-10T07:30:27-08:00	1a	-	done	3 HALT-7 repros refused G-HOLE (wall allowance 5/5.5/8); controls built: csink 4946.5674 (closed form 4946.5817, 2.9e-6; oracle h.05 1.08e-5), cbore 4989.5019 (closed 4989.5221, 4.0e-6); all 11 slow cases + variants refused before kernel
+2026-11-10T07:31:04-08:00	1b-hr	reshape-h7-hr030	running	host-route-com sd holes combined fccombined rgcombined mt on 0.30.1, fix tree
+2026-11-10T07:34:25-08:00	1b-fg+1c	reshape-h7-score	running	guard fuzz shells (30) + seeded family sf7 (124) host route + oracles; scripts35 reach stub
+2026-11-10T07:35:16-08:00	1b-replay	reshape-h7-replay	running	live replays sd+holes whole, unified 425 hole+hollow docs (skip 7797)
+2026-11-10T07:38:37-08:00	3-slow	reshape-h7-slow-021c,reshape-h7-slow-030	running	raw first-pick timings (900 s watchdog) both kernels; 13 docs budgeted on 0.21.0 pre-fix + fix, 0.30.1 fix
+2026-11-10T07:39:56-08:00	1b-fg	reshape-h7-score	done	guard fuzz shells host route+COM: 7 built all RIGHT (dVol<=3.4e-6, dCom<=5.3e-7), 23 refused; same as Stage B (7 MATCH / 23 REFUSED), 0 newly refused
+2026-11-10T08:12:30-08:00	3-raw	reshape-h7-slow-*	done	raw first-pick, no budget, both kernels identical results; 0.30.1 ms: 00872 198441 fail, 01024 81280 built wrong -3.9%, 01180 148812 fail, 01396 303646 fail; variants 27-301 s; every build of a slow case is wrong (-0.6..-4.4%, +5.5%); controls 0.3-2.1 s right
+2026-11-10T08:13:43-08:00	1c	reshape-h7-sf11	running	seeded family seed 11, planes snapped to the 0.05 oracle grid (sf7: host = closed form <=1.1e-5 but the h0.05 voxel oracle is off-grid there, up to 1.7e-3)
+2026-11-10T08:23:59-08:00	3-slow-021c	reshape-h7-slow-021c	done	EXIT=0; 0.21.0 budgeted 13 docs pre-fix: 8 G-BUDGET at 45.3-48.5 s, 5 built (v-00872-wall2 39 s, v-01024-one 29 s wrong); fix tree: 11 G-HOLE in 0.7-3.9 s, 2 controls built
+2026-11-10T08:35:04-08:00	1c	-	FOUND	sf7: 3 csink open-top corner cases built WRONG after the fix (sf7-070 -1.1%, 074 -1.65%, 076 -1.8%; closed form and voxel agree), not family 3 (L/t 3.3-10) -> HALT-8
+2026-11-10T08:35:04-08:00	1c-h8	reshape-h7-h8-021c	running	the HALT-8 cases on 0.21.0 corrected
+2026-11-10T08:35:10-08:00	4	reshape-h7-npmtest	running	root build + pane build + npm test on the fix tree (guard fix + one hollow budget)
+2026-11-10T08:53:07-08:00	4-live	reshape-h7-live	running	live.mjs, live-budget.mjs, live-hollow-budget.mjs on h7/site
+2026-11-10T08:53:54-08:00	3-browser	reshape-h7-browser	running	host page, normal budget: 3 HALT-8 repros, 2 controls, v-01396-centre, s1-01024
+2026-11-10T09:15:00-08:00	1c-h8	reshape-h7-h8round	running	round-number HALT-8 repros + controls, both kernels

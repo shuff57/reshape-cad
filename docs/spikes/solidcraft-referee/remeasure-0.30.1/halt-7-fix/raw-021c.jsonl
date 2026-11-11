@@ -1,0 +1,13 @@
+{"id":"s1-00872","ms":199022,"wallMs":199147,"ok":false,"error":"boolean Cut: implausible result volume 3785.9028","vol":null}
+{"id":"s1-01024","ms":81630,"wallMs":81762,"ok":true,"error":null,"vol":1108.9569542108588}
+{"id":"s1-01180","ms":149925,"wallMs":150049,"ok":false,"error":"boolean Cut: the operation failed: no result","vol":null}
+{"id":"s1-01396","ms":303982,"wallMs":304120,"ok":false,"error":"boolean Cut: the operation failed: no result","vol":null}
+{"id":"v-00872-round","ms":89878,"wallMs":90003,"ok":true,"error":null,"vol":2892.5111227490634}
+{"id":"v-00872-wall2","ms":38520,"wallMs":38651,"ok":true,"error":null,"vol":2413.578206947178}
+{"id":"v-01024-round","ms":74693,"wallMs":74828,"ok":true,"error":null,"vol":1130.9431222195415}
+{"id":"v-01024-one","ms":27272,"wallMs":27401,"ok":true,"error":null,"vol":1036.9836810109525}
+{"id":"v-01180-round","ms":72108,"wallMs":72238,"ok":true,"error":null,"vol":3072.8249397886652}
+{"id":"v-01396-round","ms":301810,"wallMs":301950,"ok":false,"error":"boolean Cut: the operation failed: no result","vol":null}
+{"id":"v-01396-centre","ms":681,"wallMs":811,"ok":true,"error":null,"vol":467.6502220743355}
+{"id":"v-csink-plate","ms":2142,"wallMs":2267,"ok":true,"error":null,"vol":4946.5674085780865}
+{"id":"v-cbore-plate","ms":322,"wallMs":447,"ok":true,"error":null,"vol":4989.501877995477}

@@ -1,0 +1,30 @@
+[
+ {
+  "id": "sf7-070-csink-top-k2-corner",
+  "script": "const b = box(20.38, 20.44, 6);\nhole(b, { across: 3, at: [5.27, 5.3], countersink: { across: 5.84, angle: 82 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "sf7-074-csink-top-k2.5-corner",
+  "script": "const b = box(27.52, 23.77, 8);\nhole(b, { across: 4, at: [5.32, 3.44], countersink: { across: 9.38, angle: 82 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "sf7-076-csink-top-k2.75-corner",
+  "script": "const b = box(21.22, 21.67, 12);\nhole(b, { across: 2, at: [3.64, 3.87], countersink: { across: 8.44, angle: 120 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "s1-01024",
+  "script": "const b = box(21.7, 13.5, 6);\nhole(b, { across: 2, at: [-4.35, -1], countersink: { across: 8.5, angle: 90 } });\nhole(b, { across: 3, at: [4.55, 1], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-01396-centre",
+  "script": "const b = box(12, 10, 6);\nhole(b, { across: 2, counterbore: { across: 8, deep: 2 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-csink-plate",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, countersink: { across: 10, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-cbore-plate",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, counterbore: { across: 8, deep: 3 } });\nhollow(b, { wall: 2, open: 'top' });"
+ }
+]

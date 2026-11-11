@@ -1,0 +1,83 @@
+[
+ {
+  "id": "s1-00872",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(17.3, 17.5, 12);\nhole(b, { across: 3, at: [0.1, -0.25], countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2.5, open: 'top' });",
+  "desc": "plate 17.3x17.5x12 open=top [csink]",
+  "t": 2.5
+ },
+ {
+  "id": "s1-01024",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(21.7, 13.5, 6);\nhole(b, { across: 2, at: [-4.35, -1], countersink: { across: 8.5, angle: 90 } });\nhole(b, { across: 3, at: [4.55, 1], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "desc": "plate 21.7x13.5x6 open=top [csink,csink]",
+  "t": 1.5
+ },
+ {
+  "id": "s1-01180",
+  "exact": false,
+  "why": "the fuzz case opens 2 faces (top+bot); hollow() leaves exactly one face open",
+  "notes": [],
+  "script": "const b = box(25.6, 20.5, 10);\nhole(b, { across: 2, at: [-6.85, -2.25], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [4.9, 0], countersink: { across: 11.5, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "desc": "plate 25.6x20.5x10 open=top+bot [csink,csink]",
+  "t": 2
+ },
+ {
+  "id": "s1-01396",
+  "exact": true,
+  "why": null,
+  "notes": [],
+  "script": "const b = box(12.6, 9, 6);\nhole(b, { across: 2, at: [-0.8, 0], counterbore: { across: 8, deep: 2.4 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "desc": "plate 12.6x9x6 open=top [cbore]",
+  "t": 1
+ },
+ {
+  "id": "v-00872-round",
+  "of": "s1-00872",
+  "script": "const b = box(18, 18, 12);\nhole(b, { across: 3, countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2.5, open: 'top' });"
+ },
+ {
+  "id": "v-00872-wall2",
+  "of": "s1-00872",
+  "script": "const b = box(18, 18, 12);\nhole(b, { across: 3, countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-01024-round",
+  "of": "s1-01024",
+  "script": "const b = box(22, 14, 6);\nhole(b, { across: 2, at: [-4, -1], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [4.5, 1], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-01024-one",
+  "of": "s1-01024",
+  "script": "const b = box(22, 14, 6);\nhole(b, { across: 2, at: [-4, -1], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });"
+ },
+ {
+  "id": "v-01180-round",
+  "of": "s1-01180",
+  "script": "const b = box(26, 20, 10);\nhole(b, { across: 2, at: [-7, -2], countersink: { across: 8, angle: 90 } });\nhole(b, { across: 3, at: [5, 0], countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-01396-round",
+  "of": "s1-01396",
+  "script": "const b = box(13, 9, 6);\nhole(b, { across: 2, at: [-1, 0], counterbore: { across: 8, deep: 2.5 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-01396-centre",
+  "of": "s1-01396",
+  "script": "const b = box(12, 10, 6);\nhole(b, { across: 2, counterbore: { across: 8, deep: 2 } });\nhollow(b, { wall: 1, open: 'top' });"
+ },
+ {
+  "id": "v-csink-plate",
+  "of": "-",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, countersink: { across: 10, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });"
+ },
+ {
+  "id": "v-cbore-plate",
+  "of": "-",
+  "script": "const b = box(40, 30, 10);\nhole(b, { across: 4, counterbore: { across: 8, deep: 3 } });\nhollow(b, { wall: 2, open: 'top' });"
+ }
+]

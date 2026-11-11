@@ -1,0 +1,426 @@
+[
+ {
+  "id": "r-corner-csink90-w2",
+  "W": 30,
+  "D": 30,
+  "H": 12,
+  "t": 2,
+  "kind": "csink",
+  "r": 1.5,
+  "Rm": 4,
+  "angle": 90,
+  "cx": 6,
+  "cy": 6,
+  "open": "top",
+  "script": "const b = box(30, 30, 12);\nhole(b, { across: 3, at: [6, 6], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15,
+     15,
+     -15,
+     15,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15,
+      15,
+      -15,
+      15
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6,
+      6
+     ],
+     "rb": 1.5,
+     "zb": 9.5,
+     "rt": 4,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10669.362105488224,
+   "C": 6214.7271440482145,
+   "P": 4454.63496144001
+  }
+ },
+ {
+  "id": "r-corner-csink90-w1",
+  "W": 20,
+  "D": 20,
+  "H": 6,
+  "t": 1,
+  "kind": "csink",
+  "r": 1.5,
+  "Rm": 3,
+  "angle": 90,
+  "cx": 5,
+  "cy": 5,
+  "open": "top",
+  "script": "const b = box(20, 20, 6);\nhole(b, { across: 3, at: [5, 5], countersink: { across: 6, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10,
+     10,
+     -10,
+     10,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -10,
+      10,
+      -10,
+      10
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5,
+      5
+     ],
+     "rb": 1.5,
+     "zb": 4.5,
+     "rt": 3,
+     "zt": 6,
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2343.4513322353837,
+   "C": 1486.0430763815943,
+   "P": 857.4082558537893
+  }
+ },
+ {
+  "id": "r-side-csink90-w2",
+  "W": 30,
+  "D": 30,
+  "H": 12,
+  "t": 2,
+  "kind": "csink",
+  "r": 1.5,
+  "Rm": 4,
+  "angle": 90,
+  "cx": 6,
+  "cy": 0,
+  "open": "top",
+  "script": "const b = box(30, 30, 12);\nhole(b, { across: 3, at: [6, 0], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15,
+     15,
+     -15,
+     15,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15,
+      15,
+      -15,
+      15
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 9.5,
+     "rt": 4,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10669.362105488224,
+   "C": 6214.7271440482145,
+   "P": 4454.63496144001
+  }
+ },
+ {
+  "id": "r-corner-cbore-w2",
+  "W": 30,
+  "D": 30,
+  "H": 12,
+  "t": 2,
+  "kind": "cbore",
+  "r": 1.5,
+  "Rm": 4,
+  "depth": 2,
+  "cx": 6,
+  "cy": 6,
+  "open": "top",
+  "script": "const b = box(30, 30, 12);\nhole(b, { across: 3, at: [6, 6], counterbore: { across: 8, deep: 2 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15,
+     15,
+     -15,
+     15,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15,
+      15,
+      -15,
+      15
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6,
+      6
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6,
+      6
+     ],
+     "r": 4,
+     "range": [
+      10,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10628.783200379356,
+   "C": 6076.703597844218,
+   "P": 4552.079602535137
+  }
+ },
+ {
+  "id": "r-corner-csink90-w2-bottom",
+  "W": 30,
+  "D": 30,
+  "H": 12,
+  "t": 2,
+  "kind": "csink",
+  "r": 1.5,
+  "Rm": 4,
+  "angle": 90,
+  "cx": 6,
+  "cy": 6,
+  "open": "bottom",
+  "script": "const b = box(30, 30, 12);\nhole(b, { across: 3, at: [6, 6], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15,
+     15,
+     -15,
+     15,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15,
+      15,
+      -15,
+      15
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6,
+      6
+     ],
+     "rb": 1.5,
+     "zb": 9.5,
+     "rt": 4,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10669.362105488224,
+   "C": 6353.295859875525,
+   "P": 4316.066245612699
+  }
+ },
+ {
+  "id": "r-corner-csink90-w2-far",
+  "W": 30,
+  "D": 30,
+  "H": 12,
+  "t": 2,
+  "kind": "csink",
+  "r": 1.5,
+  "Rm": 4,
+  "angle": 90,
+  "cx": 4,
+  "cy": 4,
+  "open": "top",
+  "script": "const b = box(30, 30, 12);\nhole(b, { across: 3, at: [4, 4], countersink: { across: 8, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15,
+     15,
+     -15,
+     15,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15,
+      15,
+      -15,
+      15
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      4,
+      4
+     ],
+     "rb": 1.5,
+     "zb": 9.5,
+     "rt": 4,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10669.362105488224,
+   "C": 6214.7271440482145,
+   "P": 4454.63496144001
+  }
+ }
+]

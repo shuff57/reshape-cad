@@ -1,0 +1,9470 @@
+[
+ {
+  "id": "sf7-001-cbore-top-k0-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0,
+  "place": "y",
+  "t": 1,
+  "r": 1,
+  "Rm": 4.44,
+  "depth": 2.3,
+  "angle": null,
+  "H": 10,
+  "W": 26.48,
+  "D": 15.28,
+  "cx": 0,
+  "cy": -3.2,
+  "script": "const b = box(26.48, 15.28, 10);\nhole(b, { across: 2, at: [0, -3.2], counterbore: { across: 8.88, deep: 2.3 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.24,
+     13.24,
+     -7.64,
+     7.64,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -13.24,
+      13.24,
+      -7.64,
+      7.64
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.2
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.2
+     ],
+     "r": 4.44,
+     "range": [
+      7.7,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3879.5099044150006,
+   "C": 2586.122804130231,
+   "P": 1293.3871002847695
+  }
+ },
+ {
+  "id": "sf7-002-cbore-top-k0-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0,
+  "place": "y",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.64,
+  "depth": 2.5,
+  "angle": null,
+  "H": 6,
+  "W": 24.64,
+  "D": 14.96,
+  "cx": 0,
+  "cy": -3.84,
+  "script": "const b = box(24.64, 14.96, 6);\nhole(b, { across: 4, at: [0, -3.84], counterbore: { across: 7.28, deep: 2.5 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.32,
+     12.32,
+     -7.48,
+     7.48,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -12.32,
+      12.32,
+      -7.48,
+      7.48
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.84
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.84
+     ],
+     "r": 3.64,
+     "range": [
+      3.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2063.641987792235,
+   "C": 896.6676106594132,
+   "P": 1166.9743771328217
+  }
+ },
+ {
+  "id": "sf7-003-cbore-top-k0.25-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.25,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.24,
+  "depth": 1.62,
+  "angle": null,
+  "H": 12,
+  "W": 12.42,
+  "D": 12.53,
+  "cx": 2.72,
+  "cy": 2.77,
+  "script": "const b = box(12.42, 12.53, 12);\nhole(b, { across: 3, at: [2.72, 2.77], counterbore: { across: 6.48, deep: 1.62 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -6.21,
+     6.21,
+     -6.265,
+     6.265,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -6.21,
+      6.21,
+      -6.265,
+      6.265
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.72,
+      2.77
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.72,
+      2.77
+     ],
+     "r": 3.24,
+     "range": [
+      10.379999999999999,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 1740.6730270500848,
+   "C": 937.1734777571513,
+   "P": 803.4995492929335
+  }
+ },
+ {
+  "id": "sf7-004-cbore-top-k0.25-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.25,
+  "place": "y",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4.4,
+  "depth": 3.28,
+  "angle": null,
+  "H": 6,
+  "W": 28.26,
+  "D": 20.1,
+  "cx": 0,
+  "cy": -5.4,
+  "script": "const b = box(28.26, 20.1, 6);\nhole(b, { across: 3, at: [0, -5.4], counterbore: { across: 8.8, deep: 3.28 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.13,
+     14.13,
+     -10.05,
+     10.05,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -14.13,
+      14.13,
+      -10.05,
+      10.05
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.4
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.4
+     ],
+     "r": 4.4,
+     "range": [
+      2.72,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3189.435806182956,
+   "C": 2011.5473777755906,
+   "P": 1177.8884284073656
+  }
+ },
+ {
+  "id": "sf7-005-cbore-top-k0.5-x",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.5,
+  "place": "x",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.8,
+  "depth": 1.1,
+  "angle": null,
+  "H": 12,
+  "W": 19.85,
+  "D": 31.88,
+  "cx": 4.13,
+  "cy": 0,
+  "script": "const b = box(19.85, 31.88, 12);\nhole(b, { across: 3, at: [4.13, 0], counterbore: { across: 9.6, deep: 1.1 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.925,
+     9.925,
+     -15.94,
+     15.94,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -9.925,
+      9.925,
+      -15.94,
+      15.94
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.13,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.13,
+      0
+     ],
+     "r": 4.8,
+     "range": [
+      10.9,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7437.14791595813,
+   "C": 3777.0201591399427,
+   "P": 3660.1277568181877
+  }
+ },
+ {
+  "id": "sf7-006-cbore-top-k0.5-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.5,
+  "place": "y",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.92,
+  "depth": 2.07,
+  "angle": null,
+  "H": 8,
+  "W": 31.2,
+  "D": 19.87,
+  "cx": 0,
+  "cy": -5.51,
+  "script": "const b = box(31.2, 19.87, 8);\nhole(b, { across: 2, at: [0, -5.51], counterbore: { across: 7.84, deep: 2.07 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.6,
+     15.6,
+     -9.935,
+     9.935,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -15.6,
+      15.6,
+      -9.935,
+      9.935
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.51
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.51
+     ],
+     "r": 3.92,
+     "range": [
+      5.93,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4840.99316900532,
+   "C": 3392.149526649544,
+   "P": 1448.843642355776
+  }
+ },
+ {
+  "id": "sf7-007-cbore-top-k0.75-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.75,
+  "place": "corner",
+  "t": 2,
+  "r": 1,
+  "Rm": 2.89,
+  "depth": 1.33,
+  "angle": null,
+  "H": 6,
+  "W": 14.68,
+  "D": 19.1,
+  "cx": 2.95,
+  "cy": 5.16,
+  "script": "const b = box(14.68, 19.1, 6);\nhole(b, { across: 2, at: [2.95, 5.16], counterbore: { across: 5.78, deep: 1.33 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.34,
+     7.34,
+     -9.55,
+     9.55,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -7.34,
+      7.34,
+      -9.55,
+      9.55
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.95,
+      5.16
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.95,
+      5.16
+     ],
+     "r": 2.89,
+     "range": [
+      4.67,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 1632.759030625013,
+   "C": 471.97262130568345,
+   "P": 1160.7864093193298
+  }
+ },
+ {
+  "id": "sf7-008-cbore-top-k0.75-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 0.75,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 3.71,
+  "depth": 2.37,
+  "angle": null,
+  "H": 12,
+  "W": 22.88,
+  "D": 14.85,
+  "cx": 6.6,
+  "cy": 2.59,
+  "script": "const b = box(22.88, 14.85, 12);\nhole(b, { across: 2, at: [6.6, 2.59], counterbore: { across: 7.42, deep: 2.37 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.44,
+     11.44,
+     -7.425,
+     7.425,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -11.44,
+      11.44,
+      -7.425,
+      7.425
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.6,
+      2.59
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.6,
+      2.59
+     ],
+     "r": 3.71,
+     "range": [
+      9.629999999999999,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3944.4808295453677,
+   "C": 2093.0678071668926,
+   "P": 1851.413022378475
+  }
+ },
+ {
+  "id": "sf7-009-cbore-top-k1-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1,
+  "place": "y",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 4.73,
+  "depth": 3.09,
+  "angle": null,
+  "H": 12,
+  "W": 36.02,
+  "D": 26.14,
+  "cx": 0,
+  "cy": -6.84,
+  "script": "const b = box(36.02, 26.14, 12);\nhole(b, { across: 3, at: [0, -6.84], counterbore: { across: 9.46, deep: 3.09 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -18.01,
+     18.01,
+     -13.07,
+     13.07,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -18.01,
+      18.01,
+      -13.07,
+      13.07
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.84
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.84
+     ],
+     "r": 4.73,
+     "range": [
+      8.91,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 11018.58711799351,
+   "C": 7334.310798982792,
+   "P": 3684.276319010717
+  }
+ },
+ {
+  "id": "sf7-010-cbore-top-k1-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.01,
+  "depth": 1.82,
+  "angle": null,
+  "H": 10,
+  "W": 20.57,
+  "D": 22.79,
+  "cx": 5.78,
+  "cy": 6.89,
+  "script": "const b = box(20.57, 22.79, 10);\nhole(b, { across: 4, at: [5.78, 6.89], counterbore: { across: 6.02, deep: 1.82 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.285,
+     10.285,
+     -11.395,
+     11.395,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -10.285,
+      10.285,
+      -11.395,
+      11.395
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.78,
+      6.89
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.78,
+      6.89
+     ],
+     "r": 3.01,
+     "range": [
+      8.18,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4533.307167021107,
+   "C": 2602.8290260572685,
+   "P": 1930.478140963838
+  }
+ },
+ {
+  "id": "sf7-011-cbore-top-k1.25-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.25,
+  "place": "y",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 4.07,
+  "depth": 2.85,
+  "angle": null,
+  "H": 10,
+  "W": 26.88,
+  "D": 18.27,
+  "cx": 0,
+  "cy": -3.18,
+  "script": "const b = box(26.88, 18.27, 10);\nhole(b, { across: 4, at: [0, -3.18], counterbore: { across: 8.14, deep: 2.85 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.44,
+     13.44,
+     -9.135,
+     9.135,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -13.44,
+      13.44,
+      -9.135,
+      9.135
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.18
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.18
+     ],
+     "r": 4.07,
+     "range": [
+      7.15,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4672.811970887101,
+   "C": 2537.9047478704397,
+   "P": 2134.907223016661
+  }
+ },
+ {
+  "id": "sf7-012-cbore-top-k1.25-x",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.25,
+  "place": "x",
+  "t": 1,
+  "r": 1,
+  "Rm": 4.36,
+  "depth": 2.58,
+  "angle": null,
+  "H": 12,
+  "W": 21.17,
+  "D": 28.14,
+  "cx": 4.98,
+  "cy": 0,
+  "script": "const b = box(21.17, 28.14, 12);\nhole(b, { across: 2, at: [4.98, 0], counterbore: { across: 8.72, deep: 2.58 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.585,
+     10.585,
+     -14.07,
+     14.07,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -10.585,
+      10.585,
+      -14.07,
+      14.07
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.98,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.98,
+      0
+     ],
+     "r": 4.36,
+     "range": [
+      9.42,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6965.013114357369,
+   "C": 5105.813645373715,
+   "P": 1859.1994689836538
+  }
+ },
+ {
+  "id": "sf7-013-cbore-top-k1.5-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.5,
+  "place": "corner",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.69,
+  "depth": 2.62,
+  "angle": null,
+  "H": 12,
+  "W": 25.68,
+  "D": 18.77,
+  "cx": 6.15,
+  "cy": 2.7,
+  "script": "const b = box(25.68, 18.77, 12);\nhole(b, { across: 4, at: [6.15, 2.7], counterbore: { across: 7.38, deep: 2.62 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.84,
+     12.84,
+     -9.385,
+     9.385,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -12.84,
+      12.84,
+      -9.385,
+      9.385
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.15,
+      2.7
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.15,
+      2.7
+     ],
+     "r": 3.69,
+     "range": [
+      9.379999999999999,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5554.216895543285,
+   "C": 2502.392059901857,
+   "P": 3051.8248356414283
+  }
+ },
+ {
+  "id": "sf7-014-cbore-top-k1.5-x",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.5,
+  "place": "x",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 3.92,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 26.46,
+  "D": 35.6,
+  "cx": 6.31,
+  "cy": 0,
+  "script": "const b = box(26.46, 35.6, 6);\nhole(b, { across: 3, at: [6.31, 0], counterbore: { across: 7.84, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.23,
+     13.23,
+     -17.8,
+     17.8,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -13.23,
+      13.23,
+      -17.8,
+      17.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.31,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.31,
+      0
+     ],
+     "r": 3.92,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5547.63492035422,
+   "C": 2449.9909102809297,
+   "P": 3097.6440100732907
+  }
+ },
+ {
+  "id": "sf7-015-cbore-top-k1.75-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.75,
+  "place": "corner",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.98,
+  "depth": 2.84,
+  "angle": null,
+  "H": 10,
+  "W": 23.26,
+  "D": 26.8,
+  "cx": 3.15,
+  "cy": 4.92,
+  "script": "const b = box(23.26, 26.8, 10);\nhole(b, { across: 3, at: [3.15, 4.92], counterbore: { across: 9.96, deep: 2.84 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.63,
+     11.63,
+     -13.4,
+     13.4,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -11.63,
+      11.63,
+      -13.4,
+      13.4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.15,
+      4.92
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.15,
+      4.92
+     ],
+     "r": 4.98,
+     "range": [
+      7.16,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5961.796719723778,
+   "C": 2667.4693602464504,
+   "P": 3294.3273594773273
+  }
+ },
+ {
+  "id": "sf7-016-cbore-top-k1.75-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 1.75,
+  "place": "y",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.47,
+  "depth": 2.19,
+  "angle": null,
+  "H": 10,
+  "W": 27.1,
+  "D": 20.45,
+  "cx": 0,
+  "cy": -3.25,
+  "script": "const b = box(27.1, 20.45, 10);\nhole(b, { across: 4, at: [0, -3.25], counterbore: { across: 6.94, deep: 2.19 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.55,
+     13.55,
+     -10.225,
+     10.225,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -13.55,
+      13.55,
+      -10.225,
+      10.225
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.25
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.25
+     ],
+     "r": 3.47,
+     "range": [
+      7.8100000000000005,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5360.964194969942,
+   "C": 2460.938764821804,
+   "P": 2900.0254301481377
+  }
+ },
+ {
+  "id": "sf7-017-cbore-top-k2-x",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2,
+  "place": "x",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 2.93,
+  "depth": 1.43,
+  "angle": null,
+  "H": 6,
+  "W": 24.62,
+  "D": 22.14,
+  "cx": 6.38,
+  "cy": 0,
+  "script": "const b = box(24.62, 22.14, 6);\nhole(b, { across: 3, at: [6.38, 0], counterbore: { across: 5.86, deep: 1.43 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.31,
+     12.31,
+     -11.07,
+     11.07,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -12.31,
+      12.31,
+      -11.07,
+      11.07
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.38,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.38,
+      0
+     ],
+     "r": 2.93,
+     "range": [
+      4.57,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3199.649903495785,
+   "C": 1637.095311719188,
+   "P": 1562.5545917765971
+  }
+ },
+ {
+  "id": "sf7-018-cbore-top-k2-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2,
+  "place": "corner",
+  "t": 2,
+  "r": 1,
+  "Rm": 2.44,
+  "depth": 2.25,
+  "angle": null,
+  "H": 8,
+  "W": 20.48,
+  "D": 24.8,
+  "cx": 3.8,
+  "cy": 5.96,
+  "script": "const b = box(20.48, 24.8, 8);\nhole(b, { across: 2, at: [3.8, 5.96], counterbore: { across: 4.88, deep: 2.25 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.24,
+     10.24,
+     -12.4,
+     12.4,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -10.24,
+      10.24,
+      -12.4,
+      12.4
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.8,
+      5.96
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.8,
+      5.96
+     ],
+     "r": 2.44,
+     "range": [
+      5.75,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4003.0843236914316,
+   "C": 1744.0124867287752,
+   "P": 2259.0718369626566
+  }
+ },
+ {
+  "id": "sf7-019-cbore-top-k2.25-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.25,
+  "place": "y",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.32,
+  "depth": 2.03,
+  "angle": null,
+  "H": 12,
+  "W": 30.16,
+  "D": 26.91,
+  "cx": 0,
+  "cy": -4.63,
+  "script": "const b = box(30.16, 26.91, 12);\nhole(b, { across: 4, at: [0, -4.63], counterbore: { across: 8.64, deep: 2.03 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.08,
+     15.08,
+     -13.455,
+     13.455,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -15.08,
+      15.08,
+      -13.455,
+      13.455
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -4.63
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -4.63
+     ],
+     "r": 4.32,
+     "range": [
+      9.97,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 9494.96227773598,
+   "C": 5187.475585589918,
+   "P": 4307.486692146062
+  }
+ },
+ {
+  "id": "sf7-020-cbore-top-k2.25-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.25,
+  "place": "corner",
+  "t": 2,
+  "r": 1,
+  "Rm": 2.63,
+  "depth": 3.07,
+  "angle": null,
+  "H": 12,
+  "W": 21.83,
+  "D": 27.46,
+  "cx": 3.78,
+  "cy": 6.6,
+  "script": "const b = box(21.83, 27.46, 12);\nhole(b, { across: 2, at: [3.78, 6.6], counterbore: { across: 5.26, deep: 3.07 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.915,
+     10.915,
+     -13.73,
+     13.73,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -10.915,
+      10.915,
+      -13.73,
+      13.73
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.78,
+      6.6
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.78,
+      6.6
+     ],
+     "r": 2.63,
+     "range": [
+      8.93,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7098.655825170804,
+   "C": 3702.081275652617,
+   "P": 3396.574549518187
+  }
+ },
+ {
+  "id": "sf7-021-cbore-top-k2.5-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.5,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.69,
+  "depth": 2.01,
+  "angle": null,
+  "H": 12,
+  "W": 20.74,
+  "D": 19.77,
+  "cx": 4.18,
+  "cy": 3.7,
+  "script": "const b = box(20.74, 19.77, 12);\nhole(b, { across: 3, at: [4.18, 3.7], counterbore: { across: 7.38, deep: 2.01 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.37,
+     10.37,
+     -9.885,
+     9.885,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -10.37,
+      10.37,
+      -9.885,
+      9.885
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.18,
+      3.7
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.18,
+      3.7
+     ],
+     "r": 3.69,
+     "range": [
+      9.99,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4763.7622092705415,
+   "C": 3298.2251304968004,
+   "P": 1465.537078773741
+  }
+ },
+ {
+  "id": "sf7-022-cbore-top-k2.5-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.5,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 4.21,
+  "depth": 3.47,
+  "angle": null,
+  "H": 10,
+  "W": 24.29,
+  "D": 26.9,
+  "cx": 4.18,
+  "cy": 5.49,
+  "script": "const b = box(24.29, 26.9, 10);\nhole(b, { across: 2, at: [4.18, 5.49], counterbore: { across: 8.42, deep: 3.47 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.145,
+     12.145,
+     -13.45,
+     13.45,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -12.145,
+      12.145,
+      -13.45,
+      13.45
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.18,
+      5.49
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.18,
+      5.49
+     ],
+     "r": 4.21,
+     "range": [
+      6.529999999999999,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6320.279198812385,
+   "C": 3746.680970926749,
+   "P": 2573.5982278856363
+  }
+ },
+ {
+  "id": "sf7-023-cbore-top-k2.75-y",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.75,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.14,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 33.6,
+  "D": 31.84,
+  "cx": 0,
+  "cy": -6.28,
+  "script": "const b = box(33.6, 31.84, 6);\nhole(b, { across: 3, at: [0, -6.28], counterbore: { across: 8.28, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.8,
+     16.8,
+     -15.92,
+     15.92,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -16.8,
+      16.8,
+      -15.92,
+      15.92
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.28
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.28
+     ],
+     "r": 4.14,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6306.366912214203,
+   "C": 2862.484992585308,
+   "P": 3443.8819196288946
+  }
+ },
+ {
+  "id": "sf7-024-cbore-top-k2.75-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 2.75,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 2.23,
+  "depth": 2.83,
+  "angle": null,
+  "H": 10,
+  "W": 19.32,
+  "D": 17.39,
+  "cx": 3.3,
+  "cy": 2.34,
+  "script": "const b = box(19.32, 17.39, 10);\nhole(b, { across: 2, at: [3.3, 2.34], counterbore: { across: 4.46, deep: 2.83 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.66,
+     9.66,
+     -8.695,
+     8.695,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -9.66,
+      9.66,
+      -8.695,
+      8.695
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.3,
+      2.34
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.3,
+      2.34
+     ],
+     "r": 2.23,
+     "range": [
+      7.17,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3293.0101827908475,
+   "C": 1725.0445244833545,
+   "P": 1567.965658307493
+  }
+ },
+ {
+  "id": "sf7-025-cbore-top-k3-x",
+  "kind": "cbore",
+  "open": "top",
+  "k": 3,
+  "place": "x",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.96,
+  "depth": 3.41,
+  "angle": null,
+  "H": 12,
+  "W": 28.75,
+  "D": 39.66,
+  "cx": 3.42,
+  "cy": 0,
+  "script": "const b = box(28.75, 39.66, 12);\nhole(b, { across: 4, at: [3.42, 0], counterbore: { across: 9.92, deep: 3.41 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.375,
+     14.375,
+     -19.83,
+     19.83,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -14.375,
+      14.375,
+      -19.83,
+      19.83
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.42,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.42,
+      0
+     ],
+     "r": 4.96,
+     "range": [
+      8.59,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 13311.202094554103,
+   "C": 7771.817214457562,
+   "P": 5539.384880096541
+  }
+ },
+ {
+  "id": "sf7-026-cbore-top-k3-corner",
+  "kind": "cbore",
+  "open": "top",
+  "k": 3,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 4.28,
+  "depth": 2.56,
+  "angle": null,
+  "H": 12,
+  "W": 27.5,
+  "D": 24.28,
+  "cx": 4.97,
+  "cy": 3.36,
+  "script": "const b = box(27.5, 24.28, 12);\nhole(b, { across: 3, at: [4.97, 3.36], counterbore: { across: 8.56, deep: 2.56 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.75,
+     13.75,
+     -12.14,
+     12.14,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -13.75,
+      13.75,
+      -12.14,
+      12.14
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.97,
+      3.36
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.97,
+      3.36
+     ],
+     "r": 4.28,
+     "range": [
+      9.44,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7798.347257822024,
+   "C": 4866.073618724682,
+   "P": 2932.2736390973423
+  }
+ },
+ {
+  "id": "sf7-027-cbore-bottom-k0-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 2.85,
+  "depth": 2.16,
+  "angle": null,
+  "H": 10,
+  "W": 30.32,
+  "D": 18.58,
+  "cx": 0,
+  "cy": -6.44,
+  "script": "const b = box(30.32, 18.58, 10);\nhole(b, { across: 3, at: [0, -6.44], counterbore: { across: 5.7, deep: 2.16 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.16,
+     15.16,
+     -9.29,
+     9.29,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.16,
+      15.16,
+      -9.29,
+      9.29
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.44
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.44
+     ],
+     "r": 2.85,
+     "range": [
+      7.84,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5522.920319120504,
+   "C": 2825.6591201949177,
+   "P": 2697.2611989255865
+  }
+ },
+ {
+  "id": "sf7-028-cbore-bottom-k0-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0,
+  "place": "y",
+  "t": 2,
+  "r": 1,
+  "Rm": 2.25,
+  "depth": 2.31,
+  "angle": null,
+  "H": 8,
+  "W": 33.42,
+  "D": 17.07,
+  "cx": 0,
+  "cy": -6.28,
+  "script": "const b = box(33.42, 17.07, 8);\nhole(b, { across: 2, at: [0, -6.28], counterbore: { across: 4.5, deep: 2.31 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.71,
+     16.71,
+     -8.535,
+     8.535,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -16.71,
+      16.71,
+      -8.535,
+      8.535
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.28
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.28
+     ],
+     "r": 2.25,
+     "range": [
+      5.6899999999999995,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4509.22057521275,
+   "C": 2178.766945529216,
+   "P": 2330.453629683534
+  }
+ },
+ {
+  "id": "sf7-029-cbore-bottom-k0.25-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.25,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.7,
+  "depth": 3.31,
+  "angle": null,
+  "H": 8,
+  "W": 15.5,
+  "D": 21.26,
+  "cx": 3.67,
+  "cy": 6.55,
+  "script": "const b = box(15.5, 21.26, 8);\nhole(b, { across: 4, at: [3.67, 6.55], counterbore: { across: 7.4, deep: 3.31 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.75,
+     7.75,
+     -10.63,
+     10.63,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.75,
+      7.75,
+      -10.63,
+      10.63
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.67,
+      6.55
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.67,
+      6.55
+     ],
+     "r": 3.7,
+     "range": [
+      4.6899999999999995,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2434.945906473153,
+   "C": 1202.567731121098,
+   "P": 1232.3781753520552
+  }
+ },
+ {
+  "id": "sf7-030-cbore-bottom-k0.25-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.25,
+  "place": "x",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.01,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 20.14,
+  "D": 25.02,
+  "cx": 6.56,
+  "cy": 0,
+  "script": "const b = box(20.14, 25.02, 6);\nhole(b, { across: 4, at: [6.56, 0], counterbore: { across: 6.02, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.07,
+     10.07,
+     -12.51,
+     12.51,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.07,
+      10.07,
+      -12.51,
+      12.51
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.56,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.56,
+      0
+     ],
+     "r": 3.01,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2924.1734168342,
+   "C": 1183.265231767223,
+   "P": 1740.908185066977
+  }
+ },
+ {
+  "id": "sf7-031-cbore-bottom-k0.5-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.5,
+  "place": "x",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.16,
+  "depth": 2.8,
+  "angle": null,
+  "H": 12,
+  "W": 21.12,
+  "D": 23.68,
+  "cx": 6.9,
+  "cy": 0,
+  "script": "const b = box(21.12, 23.68, 12);\nhole(b, { across: 3, at: [6.9, 0], counterbore: { across: 6.32, deep: 2.8 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.56,
+     10.56,
+     -11.84,
+     11.84,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.56,
+      10.56,
+      -11.84,
+      11.84
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.9,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.9,
+      0
+     ],
+     "r": 3.16,
+     "range": [
+      9.2,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5848.59030678597,
+   "C": 4265.178997843527,
+   "P": 1583.4113089424427
+  }
+ },
+ {
+  "id": "sf7-032-cbore-bottom-k0.5-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.5,
+  "place": "x",
+  "t": 1,
+  "r": 1,
+  "Rm": 2.95,
+  "depth": 2.73,
+  "angle": null,
+  "H": 12,
+  "W": 11.96,
+  "D": 23.88,
+  "cx": 2.53,
+  "cy": 0,
+  "script": "const b = box(11.96, 23.88, 12);\nhole(b, { across: 2, at: [2.53, 0], counterbore: { across: 5.9, deep: 2.73 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.98,
+     5.98,
+     -11.94,
+     11.94,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -5.98,
+      5.98,
+      -11.94,
+      11.94
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.53,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.53,
+      0
+     ],
+     "r": 2.95,
+     "range": [
+      9.27,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3323.497627615951,
+   "C": 2177.1188369998467,
+   "P": 1146.3787906161042
+  }
+ },
+ {
+  "id": "sf7-033-cbore-bottom-k0.75-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.75,
+  "place": "x",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 3.86,
+  "depth": 2.5,
+  "angle": null,
+  "H": 6,
+  "W": 22.3,
+  "D": 31.02,
+  "cx": 6.16,
+  "cy": 0,
+  "script": "const b = box(22.3, 31.02, 6);\nhole(b, { across: 3, at: [6.16, 0], counterbore: { across: 7.72, deep: 2.5 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.15,
+     11.15,
+     -15.51,
+     15.51,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.15,
+      11.15,
+      -15.51,
+      15.51
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.16,
+      0
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.16,
+      0
+     ],
+     "r": 3.86,
+     "range": [
+      3.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4008.714773099414,
+   "C": 2177.745807466656,
+   "P": 1830.9689656327578
+  }
+ },
+ {
+  "id": "sf7-034-cbore-bottom-k0.75-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 0.75,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.79,
+  "depth": 1.7,
+  "angle": null,
+  "H": 12,
+  "W": 16.3,
+  "D": 14.03,
+  "cx": 3.61,
+  "cy": 2.47,
+  "script": "const b = box(16.3, 14.03, 12);\nhole(b, { across: 2, at: [3.61, 2.47], counterbore: { across: 7.58, deep: 1.7 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.15,
+     8.15,
+     -7.015,
+     7.015,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -8.15,
+      8.15,
+      -7.015,
+      7.015
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.61,
+      2.47
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      3.61,
+      2.47
+     ],
+     "r": 3.79,
+     "range": [
+      10.3,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2635.195138907796,
+   "C": 1671.6822156750977,
+   "P": 963.5129232326981
+  }
+ },
+ {
+  "id": "sf7-035-cbore-bottom-k1-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1,
+  "place": "x",
+  "t": 1,
+  "r": 2,
+  "Rm": 4.73,
+  "depth": 2.29,
+  "angle": null,
+  "H": 8,
+  "W": 19.72,
+  "D": 27.66,
+  "cx": 4.13,
+  "cy": 0,
+  "script": "const b = box(19.72, 27.66, 8);\nhole(b, { across: 4, at: [4.13, 0], counterbore: { across: 9.46, deep: 2.29 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.86,
+     9.86,
+     -13.83,
+     13.83,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.86,
+      9.86,
+      -13.83,
+      13.83
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.13,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.13,
+      0
+     ],
+     "r": 4.73,
+     "range": [
+      5.71,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4130.931451131956,
+   "C": 2823.5476723718916,
+   "P": 1307.3837787600646
+  }
+ },
+ {
+  "id": "sf7-036-cbore-bottom-k1-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1,
+  "place": "x",
+  "t": 2,
+  "r": 1,
+  "Rm": 3.85,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 16.01,
+  "D": 36.26,
+  "cx": 2.16,
+  "cy": 0,
+  "script": "const b = box(16.01, 36.26, 6);\nhole(b, { across: 2, at: [2.16, 0], counterbore: { across: 7.7, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.005,
+     8.005,
+     -18.13,
+     18.13,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -8.005,
+      8.005,
+      -18.13,
+      18.13
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.16,
+      0
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.16,
+      0
+     ],
+     "r": 3.85,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3399.149047397094,
+   "C": 1336.2055761082881,
+   "P": 2062.943471288806
+  }
+ },
+ {
+  "id": "sf7-037-cbore-bottom-k1.25-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.25,
+  "place": "corner",
+  "t": 1,
+  "r": 2,
+  "Rm": 5.3,
+  "depth": 2.44,
+  "angle": null,
+  "H": 8,
+  "W": 22.28,
+  "D": 17.84,
+  "cx": 4.59,
+  "cy": 2.37,
+  "script": "const b = box(22.28, 17.84, 8);\nhole(b, { across: 4, at: [4.59, 2.37], counterbore: { across: 10.6, deep: 2.44 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.14,
+     11.14,
+     -8.92,
+     8.92,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.14,
+      11.14,
+      -8.92,
+      8.92
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.59,
+      2.37
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.59,
+      2.37
+     ],
+     "r": 5.3,
+     "range": [
+      5.5600000000000005,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2894.60907554418,
+   "C": 1830.203031136127,
+   "P": 1064.406044408053
+  }
+ },
+ {
+  "id": "sf7-038-cbore-bottom-k1.25-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.25,
+  "place": "y",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 5.11,
+  "depth": 2.43,
+  "angle": null,
+  "H": 6,
+  "W": 25.88,
+  "D": 27.18,
+  "cx": 0,
+  "cy": -6.6,
+  "script": "const b = box(25.88, 27.18, 6);\nhole(b, { across: 4, at: [0, -6.6], counterbore: { across: 10.22, deep: 2.43 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.94,
+     12.94,
+     -13.59,
+     13.59,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -12.94,
+      12.94,
+      -13.59,
+      13.59
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.6
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -6.6
+     ],
+     "r": 5.11,
+     "range": [
+      3.57,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3976.306853789319,
+   "C": 2089.9641529433147,
+   "P": 1886.3427008460044
+  }
+ },
+ {
+  "id": "sf7-039-cbore-bottom-k1.5-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.5,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 2.71,
+  "depth": 2.98,
+  "angle": null,
+  "H": 8,
+  "W": 20.16,
+  "D": 19.5,
+  "cx": 5.87,
+  "cy": 5.54,
+  "script": "const b = box(20.16, 19.5, 8);\nhole(b, { across: 2, at: [5.87, 5.54], counterbore: { across: 5.42, deep: 2.98 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.08,
+     10.08,
+     -9.75,
+     9.75,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.08,
+      10.08,
+      -9.75,
+      9.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.87,
+      5.54
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.87,
+      5.54
+     ],
+     "r": 2.71,
+     "range": [
+      5.02,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3060.4341364694374,
+   "C": 2052.7209820765825,
+   "P": 1007.7131543928549
+  }
+ },
+ {
+  "id": "sf7-040-cbore-bottom-k1.5-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.5,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.26,
+  "depth": 1.77,
+  "angle": null,
+  "H": 10,
+  "W": 34.44,
+  "D": 21.79,
+  "cx": 0,
+  "cy": -3.63,
+  "script": "const b = box(34.44, 21.79, 10);\nhole(b, { across: 3, at: [0, -3.63], counterbore: { across: 8.52, deep: 1.77 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.22,
+     17.22,
+     -10.895,
+     10.895,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -17.22,
+      17.22,
+      -10.895,
+      10.895
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.63
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.63
+     ],
+     "r": 4.26,
+     "range": [
+      8.23,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7345.389668729844,
+   "C": 3882.6424759769525,
+   "P": 3462.7471927528914
+  }
+ },
+ {
+  "id": "sf7-041-cbore-bottom-k1.75-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.75,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4,
+  "depth": 2.07,
+  "angle": null,
+  "H": 10,
+  "W": 22.88,
+  "D": 20.7,
+  "cx": 5.69,
+  "cy": 4.6,
+  "script": "const b = box(22.88, 20.7, 10);\nhole(b, { across: 3, at: [5.69, 4.6], counterbore: { across: 8, deep: 2.07 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.44,
+     11.44,
+     -10.35,
+     10.35,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.44,
+      11.44,
+      -10.35,
+      10.35
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.69,
+      4.6
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.69,
+      4.6
+     ],
+     "r": 4,
+     "range": [
+      7.93,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4576.05658439143,
+   "C": 3217.621881390167,
+   "P": 1358.4347030012632
+  }
+ },
+ {
+  "id": "sf7-042-cbore-bottom-k1.75-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 1.75,
+  "place": "y",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 4.54,
+  "depth": 2.38,
+  "angle": null,
+  "H": 6,
+  "W": 32,
+  "D": 24.61,
+  "cx": 0,
+  "cy": -5.14,
+  "script": "const b = box(32, 24.61, 6);\nhole(b, { across: 3, at: [0, -5.14], counterbore: { across: 9.08, deep: 2.38 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16,
+     16,
+     -12.305,
+     12.305,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -16,
+      16,
+      -12.305,
+      12.305
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.14
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.14
+     ],
+     "r": 4.54,
+     "range": [
+      3.62,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4545.418990126331,
+   "C": 2489.899886934776,
+   "P": 2055.5191031915547
+  }
+ },
+ {
+  "id": "sf7-043-cbore-bottom-k2-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4.86,
+  "depth": 2.28,
+  "angle": null,
+  "H": 10,
+  "W": 27.48,
+  "D": 18.35,
+  "cx": 6.88,
+  "cy": 2.32,
+  "script": "const b = box(27.48, 18.35, 10);\nhole(b, { across: 3, at: [6.88, 2.32], counterbore: { across: 9.72, deep: 2.28 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.74,
+     13.74,
+     -9.175,
+     9.175,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -13.74,
+      13.74,
+      -9.175,
+      9.175
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.88,
+      2.32
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.88,
+      2.32
+     ],
+     "r": 4.86,
+     "range": [
+      7.720000000000001,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4818.8273266102815,
+   "C": 3371.4700276098247,
+   "P": 1447.3572990004568
+  }
+ },
+ {
+  "id": "sf7-044-cbore-bottom-k2-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2,
+  "place": "corner",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 3.06,
+  "depth": 1.56,
+  "angle": null,
+  "H": 8,
+  "W": 23.47,
+  "D": 27.57,
+  "cx": 4.67,
+  "cy": 6.73,
+  "script": "const b = box(23.47, 27.57, 8);\nhole(b, { across: 3, at: [4.67, 6.73], counterbore: { across: 6.12, deep: 1.56 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.735,
+     11.735,
+     -13.785,
+     13.785,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.735,
+      11.735,
+      -13.785,
+      13.785
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.67,
+      6.73
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      4.67,
+      6.73
+     ],
+     "r": 3.06,
+     "range": [
+      6.4399999999999995,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5085.131599974485,
+   "C": 2457.0982272485135,
+   "P": 2628.0333727259713
+  }
+ },
+ {
+  "id": "sf7-045-cbore-bottom-k2.25-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.25,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 2.93,
+  "depth": 2.75,
+  "angle": null,
+  "H": 6,
+  "W": 14.43,
+  "D": 19.18,
+  "cx": 2.03,
+  "cy": 4.41,
+  "script": "const b = box(14.43, 19.18, 6);\nhole(b, { across: 3, at: [2.03, 4.41], counterbore: { across: 5.86, deep: 2.75 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.215,
+     7.215,
+     -9.59,
+     9.59,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.215,
+      7.215,
+      -9.59,
+      9.59
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.03,
+      4.41
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.03,
+      4.41
+     ],
+     "r": 2.93,
+     "range": [
+      3.25,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 1563.4632920981667,
+   "C": 890.123996276466,
+   "P": 673.3392958217007
+  }
+ },
+ {
+  "id": "sf7-046-cbore-bottom-k2.25-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.25,
+  "place": "y",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 3.34,
+  "depth": 1.73,
+  "angle": null,
+  "H": 12,
+  "W": 30.02,
+  "D": 20.44,
+  "cx": 0,
+  "cy": -3.5,
+  "script": "const b = box(30.02, 20.44, 12);\nhole(b, { across: 2, at: [0, -3.5], counterbore: { across: 6.68, deep: 1.73 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.01,
+     15.01,
+     -10.22,
+     10.22,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.01,
+      15.01,
+      -10.22,
+      10.22
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.5
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -3.5
+     ],
+     "r": 3.34,
+     "range": [
+      10.27,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7270.411256206584,
+   "C": 4648.3867640170365,
+   "P": 2622.0244921895473
+  }
+ },
+ {
+  "id": "sf7-047-cbore-bottom-k2.5-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.5,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 2.8,
+  "depth": 2.13,
+  "angle": null,
+  "H": 10,
+  "W": 22.01,
+  "D": 20.35,
+  "cx": 5.71,
+  "cy": 4.88,
+  "script": "const b = box(22.01, 20.35, 10);\nhole(b, { across: 3, at: [5.71, 4.88], counterbore: { across: 5.6, deep: 2.13 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.005,
+     11.005,
+     -10.175,
+     10.175,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.005,
+      11.005,
+      -10.175,
+      10.175
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.71,
+      4.88
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      5.71,
+      4.88
+     ],
+     "r": 2.8,
+     "range": [
+      7.87,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4370.943164045732,
+   "C": 3073.132771871494,
+   "P": 1297.8103921742386
+  }
+ },
+ {
+  "id": "sf7-048-cbore-bottom-k2.5-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.5,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.38,
+  "depth": 2.54,
+  "angle": null,
+  "H": 10,
+  "W": 34.86,
+  "D": 30.4,
+  "cx": 0,
+  "cy": -5.82,
+  "script": "const b = box(34.86, 30.4, 10);\nhole(b, { across: 3, at: [0, -5.82], counterbore: { across: 8.76, deep: 2.54 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.43,
+     17.43,
+     -15.2,
+     15.2,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -17.43,
+      17.43,
+      -15.2,
+      15.2
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.82
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.82
+     ],
+     "r": 4.38,
+     "range": [
+      7.46,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10391.623659246534,
+   "C": 5982.699899582351,
+   "P": 4408.923759664183
+  }
+ },
+ {
+  "id": "sf7-049-cbore-bottom-k2.75-x",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.75,
+  "place": "x",
+  "t": 2,
+  "r": 2,
+  "Rm": 5.15,
+  "depth": 2.57,
+  "angle": null,
+  "H": 10,
+  "W": 35.24,
+  "D": 31.36,
+  "cx": 6.97,
+  "cy": 0,
+  "script": "const b = box(35.24, 31.36, 10);\nhole(b, { across: 4, at: [6.97, 0], counterbore: { across: 10.3, deep: 2.57 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.62,
+     17.62,
+     -15.68,
+     15.68,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -17.62,
+      17.62,
+      -15.68,
+      15.68
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.97,
+      0
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      6.97,
+      0
+     ],
+     "r": 5.15,
+     "range": [
+      7.43,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10743.756036067385,
+   "C": 6152.112029242947,
+   "P": 4591.644006824438
+  }
+ },
+ {
+  "id": "sf7-050-cbore-bottom-k2.75-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 2.75,
+  "place": "corner",
+  "t": 1,
+  "r": 2,
+  "Rm": 3.09,
+  "depth": 2.3,
+  "angle": null,
+  "H": 10,
+  "W": 17.51,
+  "D": 18.95,
+  "cx": 2.92,
+  "cy": 3.64,
+  "script": "const b = box(17.51, 18.95, 10);\nhole(b, { across: 4, at: [2.92, 3.64], counterbore: { across: 6.18, deep: 2.3 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.755,
+     8.755,
+     -9.475,
+     9.475,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -8.755,
+      8.755,
+      -9.475,
+      9.475
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.92,
+      3.64
+     ],
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.92,
+      3.64
+     ],
+     "r": 3.09,
+     "range": [
+      7.7,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3152.3925923932306,
+   "C": 2055.740848030954,
+   "P": 1096.6517443622765
+  }
+ },
+ {
+  "id": "sf7-051-cbore-bottom-k3-corner",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 3,
+  "place": "corner",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 3.32,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 24.15,
+  "D": 25.17,
+  "cx": 2.75,
+  "cy": 3.27,
+  "script": "const b = box(24.15, 25.17, 6);\nhole(b, { across: 3, at: [2.75, 3.27], counterbore: { across: 6.64, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.075,
+     12.075,
+     -12.585,
+     12.585,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -12.075,
+      12.075,
+      -12.585,
+      12.585
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.75,
+      3.27
+     ],
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      2.75,
+      3.27
+     ],
+     "r": 3.32,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3563.382538085011,
+   "C": 1476.7188071053715,
+   "P": 2086.6637309796397
+  }
+ },
+ {
+  "id": "sf7-052-cbore-bottom-k3-y",
+  "kind": "cbore",
+  "open": "bottom",
+  "k": 3,
+  "place": "y",
+  "t": 2,
+  "r": 1,
+  "Rm": 3.79,
+  "depth": 1.5,
+  "angle": null,
+  "H": 6,
+  "W": 37.24,
+  "D": 29.67,
+  "cx": 0,
+  "cy": -5.05,
+  "script": "const b = box(37.24, 29.67, 6);\nhole(b, { across: 2, at: [0, -5.05], counterbore: { across: 7.58, deep: 1.5 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -18.62,
+     18.62,
+     -14.835,
+     14.835,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -18.62,
+      18.62,
+      -14.835,
+      14.835
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.05
+     ],
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    },
+    {
+     "type": "cyl",
+     "axis": "z",
+     "c": [
+      0,
+      -5.05
+     ],
+     "r": 3.79,
+     "range": [
+      4.5,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6547.638406505703,
+   "C": 3184.4187658769206,
+   "P": 3363.219640628782
+  }
+ },
+ {
+  "id": "sf7-053-csink-top-k0-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 0,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.69,
+  "depth": null,
+  "angle": 100,
+  "H": 8,
+  "W": 18.77,
+  "D": 15.18,
+  "cx": 5.7,
+  "cy": 3.9,
+  "script": "const b = box(18.77, 15.18, 8);\nhole(b, { across: 4, at: [5.7, 3.9], countersink: { across: 7.38, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.385,
+     9.385,
+     -7.59,
+     7.59,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -9.385,
+      9.385,
+      -7.59,
+      7.59
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.7,
+      3.9
+     ],
+     "rb": 2,
+     "zb": 6.5819216233103965,
+     "rt": 3.69,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2159.5985199719553,
+   "C": 1031.7512776420313,
+   "P": 1127.847242329924
+  }
+ },
+ {
+  "id": "sf7-054-csink-top-k0-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 0,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 2.16,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 11.56,
+  "D": 9.3,
+  "cx": 3.62,
+  "cy": 2.49,
+  "script": "const b = box(11.56, 9.3, 8);\nhole(b, { across: 2, at: [3.62, 2.49], countersink: { across: 4.32, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -5.78,
+     5.78,
+     -4.65,
+     4.65,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -5.78,
+      5.78,
+      -4.65,
+      4.65
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.62,
+      2.49
+     ],
+     "rb": 1,
+     "zb": 6.84,
+     "rt": 2.16,
+     "zt": 8,
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 829.0693652277387,
+   "C": 284.7741194872114,
+   "P": 544.2952457405272
+  }
+ },
+ {
+  "id": "sf7-055-csink-top-k0.25-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.25,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 5.22,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 17.17,
+  "D": 17.27,
+  "cx": 2.99,
+  "cy": 3.03,
+  "script": "const b = box(17.17, 17.27, 10);\nhole(b, { across: 4, at: [2.99, 3.03], countersink: { across: 10.44, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.585,
+     8.585,
+     -8.635,
+     8.635,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -8.585,
+      8.585,
+      -8.635,
+      8.635
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.99,
+      3.03
+     ],
+     "rb": 2,
+     "zb": 7.298099187609159,
+     "rt": 5.22,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2755.5942249187547,
+   "C": 1247.6989453201006,
+   "P": 1507.895279598654
+  }
+ },
+ {
+  "id": "sf7-056-csink-top-k0.25-x",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.25,
+  "place": "x",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 2.88,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 16.86,
+  "D": 20.84,
+  "cx": 5.17,
+  "cy": 0,
+  "script": "const b = box(16.86, 20.84, 8);\nhole(b, { across: 3, at: [5.17, 0], countersink: { across: 5.76, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.43,
+     8.43,
+     -10.42,
+     10.42,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -8.43,
+      8.43,
+      -10.42,
+      10.42
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.17,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 6.62,
+     "rt": 2.88,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2742.6241480983704,
+   "C": 1420.4015554493708,
+   "P": 1322.2225926489996
+  }
+ },
+ {
+  "id": "sf7-057-csink-top-k0.5-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.5,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 2.11,
+  "depth": null,
+  "angle": 100,
+  "H": 8,
+  "W": 16.91,
+  "D": 19.58,
+  "cx": 5.6,
+  "cy": 6.93,
+  "script": "const b = box(16.91, 19.58, 8);\nhole(b, { across: 2, at: [5.6, 6.93], countersink: { across: 4.22, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -8.455,
+     8.455,
+     -9.79,
+     9.79,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -8.455,
+      8.455,
+      -9.79,
+      9.79
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.6,
+      6.93
+     ],
+     "rb": 1,
+     "zb": 7.06859940939322,
+     "rt": 2.11,
+     "zt": 8,
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2619.199967009845,
+   "C": 1401.0561363985069,
+   "P": 1218.143830611338
+  }
+ },
+ {
+  "id": "sf7-058-csink-top-k0.5-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.5,
+  "place": "corner",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.66,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 22.38,
+  "D": 18.53,
+  "cx": 5.53,
+  "cy": 3.61,
+  "script": "const b = box(22.38, 18.53, 12);\nhole(b, { across: 3, at: [5.53, 3.61], countersink: { across: 9.32, angle: 100 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.19,
+     11.19,
+     -9.265,
+     9.265,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -11.19,
+      11.19,
+      -9.265,
+      9.265
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.53,
+      3.61
+     ],
+     "rb": 1.5,
+     "zb": 9.348445165479795,
+     "rt": 4.66,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4824.382066967723,
+   "C": 2148.0659577740394,
+   "P": 2676.316109193684
+  }
+ },
+ {
+  "id": "sf7-059-csink-top-k0.75-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.75,
+  "place": "y",
+  "t": 1,
+  "r": 2,
+  "Rm": 3.85,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 26.64,
+  "D": 15.6,
+  "cx": 0,
+  "cy": -3.2,
+  "script": "const b = box(26.64, 15.6, 12);\nhole(b, { across: 4, at: [0, -3.2], countersink: { across: 7.7, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.32,
+     13.32,
+     -7.8,
+     7.8,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -13.32,
+      13.32,
+      -7.8,
+      7.8
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -3.2
+     ],
+     "rb": 2,
+     "zb": 10.15,
+     "rt": 3.85,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4808.076888718772,
+   "C": 3320.323131899392,
+   "P": 1487.7537568193802
+  }
+ },
+ {
+  "id": "sf7-060-csink-top-k0.75-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 0.75,
+  "place": "y",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 4.76,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 30.28,
+  "D": 16.22,
+  "cx": 0,
+  "cy": -2.22,
+  "script": "const b = box(30.28, 16.22, 8);\nhole(b, { across: 3, at: [0, -2.22], countersink: { across: 9.52, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.14,
+     15.14,
+     -8.11,
+     8.11,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -15.14,
+      15.14,
+      -8.11,
+      8.11
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.22
+     ],
+     "rb": 1.5,
+     "zb": 4.74,
+     "rt": 4.76,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3786.221565881431,
+   "C": 1974.7034319555294,
+   "P": 1811.5181339259018
+  }
+ },
+ {
+  "id": "sf7-061-csink-top-k1-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 1,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 2.96,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 19.73,
+  "D": 16.95,
+  "cx": 5.91,
+  "cy": 4.51,
+  "script": "const b = box(19.73, 16.95, 10);\nhole(b, { across: 3, at: [5.91, 4.51], countersink: { across: 5.92, angle: 100 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.865,
+     9.865,
+     -8.475,
+     8.475,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -9.865,
+      9.865,
+      -8.475,
+      8.475
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.91,
+      4.51
+     ],
+     "rb": 1.5,
+     "zb": 8.774914538481172,
+     "rt": 2.96,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3262.3858261346477,
+   "C": 2182.255687653421,
+   "P": 1080.1301384812268
+  }
+ },
+ {
+  "id": "sf7-062-csink-top-k1-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 1,
+  "place": "y",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.32,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 37.56,
+  "D": 24.59,
+  "cx": 0,
+  "cy": -5.97,
+  "script": "const b = box(37.56, 24.59, 12);\nhole(b, { across: 4, at: [0, -5.97], countersink: { across: 8.64, angle: 120 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -18.78,
+     18.78,
+     -12.295,
+     12.295,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -18.78,
+      18.78,
+      -12.295,
+      12.295
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -5.97
+     ],
+     "rb": 2,
+     "zb": 10.660547375480068,
+     "rt": 4.32,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10905.333426105086,
+   "C": 6258.079326303784,
+   "P": 4647.254099801302
+  }
+ },
+ {
+  "id": "sf7-063-csink-top-k1.25-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.25,
+  "place": "corner",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 3.2,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 21.77,
+  "D": 21.65,
+  "cx": 5.8,
+  "cy": 5.75,
+  "script": "const b = box(21.77, 21.65, 8);\nhole(b, { across: 3, at: [5.8, 5.75], countersink: { across: 6.4, angle: 120 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.885,
+     10.885,
+     -10.825,
+     10.825,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -10.885,
+      10.885,
+      -10.825,
+      10.825
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.8,
+      5.75
+     ],
+     "rb": 1.5,
+     "zb": 7.018504542377636,
+     "rt": 3.2,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3703.182113232601,
+   "C": 2037.182290900224,
+   "P": 1665.9998223323769
+  }
+ },
+ {
+  "id": "sf7-064-csink-top-k1.25-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.25,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 4.55,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 18.65,
+  "D": 20.92,
+  "cx": 2.89,
+  "cy": 4.03,
+  "script": "const b = box(18.65, 20.92, 12);\nhole(b, { across: 4, at: [2.89, 4.03], countersink: { across: 9.1, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.325,
+     9.325,
+     -10.46,
+     10.46,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -9.325,
+      9.325,
+      -10.46,
+      10.46
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.89,
+      4.03
+     ],
+     "rb": 2,
+     "zb": 9.45,
+     "rt": 4.55,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4472.879164872283,
+   "C": 2411.1124233745663,
+   "P": 2061.7667414977163
+  }
+ },
+ {
+  "id": "sf7-065-csink-top-k1.5-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.5,
+  "place": "corner",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.28,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 25.14,
+  "D": 20.91,
+  "cx": 5.29,
+  "cy": 3.18,
+  "script": "const b = box(25.14, 20.91, 8);\nhole(b, { across: 4, at: [5.29, 3.18], countersink: { across: 8.56, angle: 120 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.57,
+     12.57,
+     -10.455,
+     10.455,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -12.57,
+      12.57,
+      -10.455,
+      10.455
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.29,
+      3.18
+     ],
+     "rb": 2,
+     "zb": 6.683641386247652,
+     "rt": 4.28,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4078.86459634763,
+   "C": 1698.2570432962123,
+   "P": 2380.607553051418
+  }
+ },
+ {
+  "id": "sf7-066-csink-top-k1.5-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.5,
+  "place": "y",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 3.86,
+  "depth": null,
+  "angle": 100,
+  "H": 8,
+  "W": 32.78,
+  "D": 17.21,
+  "cx": 0,
+  "cy": -2.5,
+  "script": "const b = box(32.78, 17.21, 8);\nhole(b, { across: 3, at: [0, -2.5], countersink: { across: 7.72, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.39,
+     16.39,
+     -8.605,
+     8.605,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -16.39,
+      16.39,
+      -8.605,
+      8.605
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.5
+     ],
+     "rb": 1.5,
+     "zb": 6.019724870421619,
+     "rt": 3.86,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4423.028723008237,
+   "C": 2462.2450124524566,
+   "P": 1960.78371055578
+  }
+ },
+ {
+  "id": "sf7-067-csink-top-k1.75-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.75,
+  "place": "y",
+  "t": 1,
+  "r": 2,
+  "Rm": 3.18,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 22.52,
+  "D": 21.96,
+  "cx": 0,
+  "cy": -6.05,
+  "script": "const b = box(22.52, 21.96, 12);\nhole(b, { across: 4, at: [0, -6.05], countersink: { across: 6.36, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.26,
+     11.26,
+     -10.98,
+     10.98,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -11.26,
+      11.26,
+      -10.98,
+      10.98
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -6.05
+     ],
+     "rb": 2,
+     "zb": 10.82,
+     "rt": 3.18,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5773.204666319035,
+   "C": 4166.717169387357,
+   "P": 1606.487496931678
+  }
+ },
+ {
+  "id": "sf7-068-csink-top-k1.75-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 1.75,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.17,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 20.09,
+  "D": 18.98,
+  "cx": 5.13,
+  "cy": 4.57,
+  "script": "const b = box(20.09, 18.98, 10);\nhole(b, { across: 2, at: [5.13, 4.57], countersink: { across: 6.34, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.045,
+     10.045,
+     -9.49,
+     9.49,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -10.045,
+      10.045,
+      -9.49,
+      9.49
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.13,
+      4.57
+     ],
+     "rb": 1,
+     "zb": 7.83,
+     "rt": 3.17,
+     "zt": 10,
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3756.1720354666527,
+   "C": 2592.512785419286,
+   "P": 1163.6592500473666
+  }
+ },
+ {
+  "id": "sf7-069-csink-top-k2-x",
+  "kind": "csink",
+  "open": "top",
+  "k": 2,
+  "place": "x",
+  "t": 1,
+  "r": 2,
+  "Rm": 5.32,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 20.89,
+  "D": 29.7,
+  "cx": 3.13,
+  "cy": 0,
+  "script": "const b = box(20.89, 29.7, 10);\nhole(b, { across: 4, at: [3.13, 0], countersink: { across: 10.64, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.445,
+     10.445,
+     -14.85,
+     14.85,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -10.445,
+      10.445,
+      -14.85,
+      14.85
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.13,
+      0
+     ],
+     "rb": 2,
+     "zb": 6.68,
+     "rt": 5.32,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5971.088979569366,
+   "C": 4269.075985260115,
+   "P": 1702.0129943092506
+  }
+ },
+ {
+  "id": "sf7-070-csink-top-k2-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 2,
+  "place": "corner",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 2.92,
+  "depth": null,
+  "angle": 82,
+  "H": 6,
+  "W": 20.38,
+  "D": 20.44,
+  "cx": 5.27,
+  "cy": 5.3,
+  "script": "const b = box(20.38, 20.44, 6);\nhole(b, { across: 3, at: [5.27, 5.3], countersink: { across: 5.84, angle: 82 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.19,
+     10.19,
+     -10.22,
+     10.22,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -10.19,
+      10.19,
+      -10.22,
+      10.22
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.27,
+      5.3
+     ],
+     "rb": 1.5,
+     "zb": 4.3664768617461664,
+     "rt": 2.92,
+     "zt": 6,
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2442.6115311856847,
+   "C": 1562.7590470536693,
+   "P": 879.8524841320154
+  }
+ },
+ {
+  "id": "sf7-071-csink-top-k2.25-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.25,
+  "place": "y",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 2.72,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 31.18,
+  "D": 16.94,
+  "cx": 0,
+  "cy": -2.37,
+  "script": "const b = box(31.18, 16.94, 8);\nhole(b, { across: 3, at: [0, -2.37], countersink: { across: 5.44, angle: 82 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.59,
+     15.59,
+     -8.47,
+     8.47,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -15.59,
+      15.59,
+      -8.47,
+      8.47
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.37
+     ],
+     "rb": 1.5,
+     "zb": 6.596550543190368,
+     "rt": 2.72,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4158.7088556734125,
+   "C": 2332.0052458514238,
+   "P": 1826.7036098219887
+  }
+ },
+ {
+  "id": "sf7-072-csink-top-k2.25-x",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.25,
+  "place": "x",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.22,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 24.48,
+  "D": 27.68,
+  "cx": 6.77,
+  "cy": 0,
+  "script": "const b = box(24.48, 27.68, 10);\nhole(b, { across: 2, at: [6.77, 0], countersink: { across: 6.44, angle: 120 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.24,
+     12.24,
+     -13.84,
+     13.84,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 10,
+     "rect": [
+      -12.24,
+      12.24,
+      -13.84,
+      13.84
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6.77,
+      0
+     ],
+     "rb": 1,
+     "zb": 8.71828240239903,
+     "rt": 3.22,
+     "zt": 10,
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6729.093989375258,
+   "C": 5025.149438844196,
+   "P": 1703.9445505310623
+  }
+ },
+ {
+  "id": "sf7-073-csink-top-k2.5-x",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.5,
+  "place": "x",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 5.09,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 23.13,
+  "D": 34.88,
+  "cx": 2.72,
+  "cy": 0,
+  "script": "const b = box(23.13, 34.88, 8);\nhole(b, { across: 4, at: [2.72, 0], countersink: { across: 10.18, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.565,
+     11.565,
+     -17.44,
+     17.44,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -11.565,
+      11.565,
+      -17.44,
+      17.44
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.72,
+      0
+     ],
+     "rb": 2,
+     "zb": 4.91,
+     "rt": 5.09,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6262.775625413433,
+   "C": 3716.2053000683018,
+   "P": 2546.570325345131
+  }
+ },
+ {
+  "id": "sf7-074-csink-top-k2.5-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.5,
+  "place": "corner",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 4.69,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 27.52,
+  "D": 23.77,
+  "cx": 5.32,
+  "cy": 3.44,
+  "script": "const b = box(27.52, 23.77, 8);\nhole(b, { across: 4, at: [5.32, 3.44], countersink: { across: 9.38, angle: 82 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.76,
+     13.76,
+     -11.885,
+     11.885,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -13.76,
+      13.76,
+      -11.885,
+      11.885
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.32,
+      3.44
+     ],
+     "rb": 2,
+     "zb": 4.905508984575484,
+     "rt": 4.69,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5056.920968195584,
+   "C": 2893.8131160932912,
+   "P": 2163.1078521022923
+  }
+ },
+ {
+  "id": "sf7-075-csink-top-k2.75-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.75,
+  "place": "y",
+  "t": 1,
+  "r": 2,
+  "Rm": 5.07,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 32.14,
+  "D": 20.61,
+  "cx": 0,
+  "cy": -2.48,
+  "script": "const b = box(32.14, 20.61, 8);\nhole(b, { across: 4, at: [0, -2.48], countersink: { across: 10.14, angle: 82 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.07,
+     16.07,
+     -10.305,
+     10.305,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8,
+     "rect": [
+      -16.07,
+      16.07,
+      -10.305,
+      10.305
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.48
+     ],
+     "rb": 2,
+     "zb": 4.468368989831499,
+     "rt": 5.07,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5095.7330141190305,
+   "C": 3556.311692332635,
+   "P": 1539.4213217863953
+  }
+ },
+ {
+  "id": "sf7-076-csink-top-k2.75-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 2.75,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 4.22,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 21.22,
+  "D": 21.67,
+  "cx": 3.64,
+  "cy": 3.87,
+  "script": "const b = box(21.22, 21.67, 12);\nhole(b, { across: 2, at: [3.64, 3.87], countersink: { across: 8.44, angle: 120 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.61,
+     10.61,
+     -10.835,
+     10.835,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -10.61,
+      10.61,
+      -10.835,
+      10.835
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.64,
+      3.87
+     ],
+     "rb": 1,
+     "zb": 10.140932133209404,
+     "rt": 4.22,
+     "zt": 12,
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5441.358172363274,
+   "C": 3910.4319347230103,
+   "P": 1530.926237640264
+  }
+ },
+ {
+  "id": "sf7-077-csink-top-k3-y",
+  "kind": "csink",
+  "open": "top",
+  "k": 3,
+  "place": "y",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 2.99,
+  "depth": null,
+  "angle": 90,
+  "H": 6,
+  "W": 21.1,
+  "D": 22.32,
+  "cx": 0,
+  "cy": -5.17,
+  "script": "const b = box(21.1, 22.32, 6);\nhole(b, { across: 3, at: [0, -5.17], countersink: { across: 5.98, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.55,
+     10.55,
+     -11.16,
+     11.16,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6,
+     "rect": [
+      -10.55,
+      10.55,
+      -11.16,
+      11.16
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -5.17
+     ],
+     "rb": 1.5,
+     "zb": 4.51,
+     "rt": 2.99,
+     "zt": 6,
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2769.374448308903,
+   "C": 1806.6758414211213,
+   "P": 962.6986068877818
+  }
+ },
+ {
+  "id": "sf7-078-csink-top-k3-corner",
+  "kind": "csink",
+  "open": "top",
+  "k": 3,
+  "place": "corner",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.19,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 26.87,
+  "D": 30.24,
+  "cx": 4.25,
+  "cy": 5.93,
+  "script": "const b = box(26.87, 30.24, 12);\nhole(b, { across: 4, at: [4.25, 5.93], countersink: { across: 6.38, angle: 120 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.435,
+     13.435,
+     -15.12,
+     15.12,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 12,
+     "rect": [
+      -13.435,
+      13.435,
+      -15.12,
+      15.12
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      4.25,
+      5.93
+     ],
+     "rb": 2,
+     "zb": 11.312953179664346,
+     "rt": 3.19,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 9593.633263294028,
+   "C": 5404.977190031657,
+   "P": 4188.656073262371
+  }
+ },
+ {
+  "id": "sf7-079-csink-bottom-k0-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0,
+  "place": "x",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.85,
+  "depth": null,
+  "angle": 82,
+  "H": 6,
+  "W": 19.51,
+  "D": 25.98,
+  "cx": 5.91,
+  "cy": 0,
+  "script": "const b = box(19.51, 25.98, 6);\nhole(b, { across: 4, at: [5.91, 0], countersink: { across: 7.7, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.755,
+     9.755,
+     -12.99,
+     12.99,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.755,
+      9.755,
+      -12.99,
+      12.99
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.91,
+      0
+     ],
+     "rb": 2,
+     "zb": 3.871818446641132,
+     "rt": 3.85,
+     "zt": 6,
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2933.4553478052458,
+   "C": 1200.5042634136762,
+   "P": 1732.9510843915696
+  }
+ },
+ {
+  "id": "sf7-080-csink-bottom-k0-corner",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.08,
+  "depth": null,
+  "angle": 120,
+  "H": 6,
+  "W": 19.98,
+  "D": 13.36,
+  "cx": 6.91,
+  "cy": 3.6,
+  "script": "const b = box(19.98, 13.36, 6);\nhole(b, { across: 2, at: [6.91, 3.6], countersink: { across: 6.16, angle: 120 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.99,
+     9.99,
+     -6.68,
+     6.68,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.99,
+      9.99,
+      -6.68,
+      6.68
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6.91,
+      3.6
+     ],
+     "rb": 1,
+     "zb": 4.799111440085578,
+     "rt": 3.08,
+     "zt": 6,
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 1569.459282220905,
+   "C": 952.942753392658,
+   "P": 616.5165288282469
+  }
+ },
+ {
+  "id": "sf7-081-csink-bottom-k0.25-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.25,
+  "place": "x",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.75,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 21.53,
+  "D": 29.92,
+  "cx": 6.77,
+  "cy": 0,
+  "script": "const b = box(21.53, 29.92, 12);\nhole(b, { across: 3, at: [6.77, 0], countersink: { across: 7.5, angle: 120 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.765,
+     10.765,
+     -14.96,
+     14.96,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.765,
+      10.765,
+      -14.96,
+      14.96
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6.77,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 10.700961894323342,
+     "rt": 3.75,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7624.647889969847,
+   "C": 5770.368928531424,
+   "P": 1854.2789614384228
+  }
+ },
+ {
+  "id": "sf7-082-csink-bottom-k0.25-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.25,
+  "place": "x",
+  "t": 2,
+  "r": 1,
+  "Rm": 3.16,
+  "depth": null,
+  "angle": 82,
+  "H": 6,
+  "W": 19.66,
+  "D": 26.22,
+  "cx": 6.17,
+  "cy": 0,
+  "script": "const b = box(19.66, 26.22, 6);\nhole(b, { across: 2, at: [6.17, 0], countersink: { across: 6.32, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.83,
+     9.83,
+     -13.11,
+     13.11,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.83,
+      9.83,
+      -13.11,
+      13.11
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6.17,
+      0
+     ],
+     "rb": 1,
+     "zb": 3.5152042404026185,
+     "rt": 3.16,
+     "zt": 6,
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3045.0599900087973,
+   "C": 1288.3509886659263,
+   "P": 1756.709001342871
+  }
+ },
+ {
+  "id": "sf7-083-csink-bottom-k0.5-corner",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.5,
+  "place": "corner",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.39,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 15.24,
+  "D": 11.82,
+  "cx": 3.73,
+  "cy": 2.02,
+  "script": "const b = box(15.24, 11.82, 12);\nhole(b, { across: 2, at: [3.73, 2.02], countersink: { across: 6.78, angle: 82 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.62,
+     7.62,
+     -5.91,
+     5.91,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.62,
+      7.62,
+      -5.91,
+      5.91
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.73,
+      2.02
+     ],
+     "rb": 1,
+     "zb": 9.250619506741787,
+     "rt": 3.39,
+     "zt": 12,
+     "r": 1,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2086.8530605377923,
+   "C": 1262.59923882461,
+   "P": 824.2538217131823
+  }
+ },
+ {
+  "id": "sf7-084-csink-bottom-k0.5-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.5,
+  "place": "y",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4.89,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 30.3,
+  "D": 22.45,
+  "cx": 0,
+  "cy": -5.83,
+  "script": "const b = box(30.3, 22.45, 12);\nhole(b, { across: 3, at: [0, -5.83], countersink: { across: 9.78, angle: 82 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.15,
+     15.15,
+     -11.225,
+     11.225,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.15,
+      15.15,
+      -11.225,
+      11.225
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -5.83
+     ],
+     "rb": 1.5,
+     "zb": 8.100251099520777,
+     "rt": 4.89,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7968.766990800224,
+   "C": 6050.85959119336,
+   "P": 1917.9073996068646
+  }
+ },
+ {
+  "id": "sf7-085-csink-bottom-k0.75-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.75,
+  "place": "y",
+  "t": 1.5,
+  "r": 1,
+  "Rm": 3.68,
+  "depth": null,
+  "angle": 90,
+  "H": 6,
+  "W": 29.1,
+  "D": 13.68,
+  "cx": 0,
+  "cy": -2.03,
+  "script": "const b = box(29.1, 13.68, 6);\nhole(b, { across: 2, at: [0, -2.03], countersink: { across: 7.36, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.55,
+     14.55,
+     -6.84,
+     6.84,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -14.55,
+      14.55,
+      -6.84,
+      6.84
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.03
+     ],
+     "rb": 1,
+     "zb": 3.3199999999999994,
+     "rt": 3.68,
+     "zt": 6,
+     "r": 1,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2326.9569392695234,
+   "C": 1135.8430393902768,
+   "P": 1191.1138998792467
+  }
+ },
+ {
+  "id": "sf7-086-csink-bottom-k0.75-corner",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 0.75,
+  "place": "corner",
+  "t": 1,
+  "r": 2,
+  "Rm": 4.44,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 22.88,
+  "D": 18.98,
+  "cx": 6.25,
+  "cy": 4.3,
+  "script": "const b = box(22.88, 18.98, 12);\nhole(b, { across: 4, at: [6.25, 4.3], countersink: { across: 8.88, angle: 120 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.44,
+     11.44,
+     -9.49,
+     9.49,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.44,
+      11.44,
+      -9.49,
+      9.49
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      6.25,
+      4.3
+     ],
+     "rb": 2,
+     "zb": 10.591265343177312,
+     "rt": 4.44,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5029.9721903100235,
+   "C": 3570.4180701194905,
+   "P": 1459.554120190533
+  }
+ },
+ {
+  "id": "sf7-087-csink-bottom-k1-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1,
+  "place": "x",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 2.72,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 15.76,
+  "D": 25.96,
+  "cx": 3.16,
+  "cy": 0,
+  "script": "const b = box(15.76, 25.96, 12);\nhole(b, { across: 3, at: [3.16, 0], countersink: { across: 5.44, angle: 90 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.88,
+     7.88,
+     -12.98,
+     12.98,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.88,
+      7.88,
+      -12.98,
+      12.98
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.16,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 10.78,
+     "rt": 2.72,
+     "zt": 12,
+     "r": 1.5,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4815.8167270157255,
+   "C": 2221.1026968666433,
+   "P": 2594.714030149082
+  }
+ },
+ {
+  "id": "sf7-088-csink-bottom-k1-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1,
+  "place": "x",
+  "t": 2,
+  "r": 1,
+  "Rm": 3.35,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 15.12,
+  "D": 25.68,
+  "cx": 2.21,
+  "cy": 0,
+  "script": "const b = box(15.12, 25.68, 8);\nhole(b, { across: 2, at: [2.21, 0], countersink: { across: 6.7, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.56,
+     7.56,
+     -12.84,
+     12.84,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.56,
+      7.56,
+      -12.84,
+      12.84
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.21,
+      0
+     ],
+     "rb": 1,
+     "zb": 5.296634243030627,
+     "rt": 3.35,
+     "zt": 8,
+     "r": 1,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3045.5278393076433,
+   "C": 1258.5152237455377,
+   "P": 1787.0126155621056
+  }
+ },
+ {
+  "id": "sf7-089-csink-bottom-k1.25-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.25,
+  "place": "x",
+  "t": 2,
+  "r": 1,
+  "Rm": 2.69,
+  "depth": null,
+  "angle": 82,
+  "H": 10,
+  "W": 18.29,
+  "D": 29,
+  "cx": 3.95,
+  "cy": 0,
+  "script": "const b = box(18.29, 29, 10);\nhole(b, { across: 2, at: [3.95, 0], countersink: { across: 5.38, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.145,
+     9.145,
+     -14.5,
+     14.5,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.145,
+      9.145,
+      -14.5,
+      14.5
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.95,
+      0
+     ],
+     "rb": 1,
+     "zb": 8.055877391796493,
+     "rt": 2.69,
+     "zt": 10,
+     "r": 1,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5256.547481551921,
+   "C": 2627.789650970972,
+   "P": 2628.757830580949
+  }
+ },
+ {
+  "id": "sf7-090-csink-bottom-k1.25-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.25,
+  "place": "y",
+  "t": 1,
+  "r": 2,
+  "Rm": 3.75,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 29.92,
+  "D": 22.74,
+  "cx": 0,
+  "cy": -6.37,
+  "script": "const b = box(29.92, 22.74, 12);\nhole(b, { across: 4, at: [0, -6.37], countersink: { across: 7.5, angle: 82 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.96,
+     14.96,
+     -11.37,
+     11.37,
+     0,
+     12
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -14.96,
+      14.96,
+      -11.37,
+      11.37
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -6.37
+     ],
+     "rb": 2,
+     "zb": 9.986855287363232,
+     "rt": 3.75,
+     "zt": 12,
+     "r": 2,
+     "range": [
+      -1,
+      13
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7985.1812297351125,
+   "C": 6040.811475605876,
+   "P": 1944.3697541292368
+  }
+ },
+ {
+  "id": "sf7-091-csink-bottom-k1.5-corner",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.5,
+  "place": "corner",
+  "t": 1,
+  "r": 2,
+  "Rm": 4.45,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 19.64,
+  "D": 15.91,
+  "cx": 3.87,
+  "cy": 2.01,
+  "script": "const b = box(19.64, 15.91, 10);\nhole(b, { across: 4, at: [3.87, 2.01], countersink: { across: 8.9, angle: 120 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -9.82,
+     9.82,
+     -7.955,
+     7.955,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -9.82,
+      9.82,
+      -7.955,
+      7.955
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.87,
+      2.01
+     ],
+     "rb": 2,
+     "zb": 8.585491840485416,
+     "rt": 4.45,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2968.394312430327,
+   "C": 1934.757644732436,
+   "P": 1033.636667697891
+  }
+ },
+ {
+  "id": "sf7-092-csink-bottom-k1.5-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.5,
+  "place": "y",
+  "t": 2,
+  "r": 2,
+  "Rm": 5.05,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 31.22,
+  "D": 23.68,
+  "cx": 0,
+  "cy": -3.79,
+  "script": "const b = box(31.22, 23.68, 8);\nhole(b, { across: 4, at: [0, -3.79], countersink: { across: 10.1, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.61,
+     15.61,
+     -11.84,
+     11.84,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.61,
+      15.61,
+      -11.84,
+      11.84
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -3.79
+     ],
+     "rb": 2,
+     "zb": 4.49137635797592,
+     "rt": 5.05,
+     "zt": 8,
+     "r": 2,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5712.368119956363,
+   "C": 2847.837631052457,
+   "P": 2864.5304889039066
+  }
+ },
+ {
+  "id": "sf7-093-csink-bottom-k1.75-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.75,
+  "place": "y",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 5.31,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 32.38,
+  "D": 20.77,
+  "cx": 0,
+  "cy": -2.45,
+  "script": "const b = box(32.38, 20.77, 10);\nhole(b, { across: 4, at: [0, -2.45], countersink: { across: 10.62, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.19,
+     16.19,
+     -10.385,
+     10.385,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -16.19,
+      16.19,
+      -10.385,
+      10.385
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -2.45
+     ],
+     "rb": 2,
+     "zb": 7.222580220803204,
+     "rt": 5.31,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6510.033445394894,
+   "C": 4047.8818773629123,
+   "P": 2462.151568031982
+  }
+ },
+ {
+  "id": "sf7-094-csink-bottom-k1.75-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 1.75,
+  "place": "x",
+  "t": 1,
+  "r": 2,
+  "Rm": 3.87,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 15.56,
+  "D": 28.5,
+  "cx": 2.16,
+  "cy": 0,
+  "script": "const b = box(15.56, 28.5, 10);\nhole(b, { across: 4, at: [2.16, 0], countersink: { across: 7.74, angle: 100 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -7.78,
+     7.78,
+     -14.25,
+     14.25,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -7.78,
+      7.78,
+      -14.25,
+      14.25
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.16,
+      0
+     ],
+     "rb": 2,
+     "zb": 8.430883689698486,
+     "rt": 3.87,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4284.753855264956,
+   "C": 2965.8980878461352,
+   "P": 1318.8557674188205
+  }
+ },
+ {
+  "id": "sf7-095-csink-bottom-k2-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 3.44,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 32.94,
+  "D": 23.37,
+  "cx": 0,
+  "cy": -4.25,
+  "script": "const b = box(32.94, 23.37, 10);\nhole(b, { across: 3, at: [0, -4.25], countersink: { across: 6.88, angle: 100 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.47,
+     16.47,
+     -11.685,
+     11.685,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -16.47,
+      16.47,
+      -11.685,
+      11.685
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -4.25
+     ],
+     "rb": 1.5,
+     "zb": 8.372146715516077,
+     "rt": 3.44,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7606.0945256064215,
+   "C": 4172.288168785801,
+   "P": 3433.8063568206207
+  }
+ },
+ {
+  "id": "sf7-096-csink-bottom-k2-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2,
+  "place": "y",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.61,
+  "depth": null,
+  "angle": 90,
+  "H": 6,
+  "W": 27.7,
+  "D": 18.58,
+  "cx": 0,
+  "cy": -3.68,
+  "script": "const b = box(27.7, 18.58, 6);\nhole(b, { across: 3, at: [0, -3.68], countersink: { across: 7.22, angle: 90 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.85,
+     13.85,
+     -9.29,
+     9.29,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -13.85,
+      13.85,
+      -9.29,
+      9.29
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -3.68
+     ],
+     "rb": 1.5,
+     "zb": 3.8899999999999997,
+     "rt": 3.61,
+     "zt": 6,
+     "r": 1.5,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3014.767170657657,
+   "C": 2010.4004224675573,
+   "P": 1004.3667481900998
+  }
+ },
+ {
+  "id": "sf7-097-csink-bottom-k2.25-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.25,
+  "place": "x",
+  "t": 1,
+  "r": 2,
+  "Rm": 5.35,
+  "depth": null,
+  "angle": 82,
+  "H": 6,
+  "W": 20.89,
+  "D": 31.7,
+  "cx": 2.85,
+  "cy": 0,
+  "script": "const b = box(20.89, 31.7, 6);\nhole(b, { across: 4, at: [2.85, 0], countersink: { across: 10.7, angle: 82 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.445,
+     10.445,
+     -15.85,
+     15.85,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.445,
+      10.445,
+      -15.85,
+      15.85
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.85,
+      0
+     ],
+     "rb": 2,
+     "zb": 2.1462658358096176,
+     "rt": 5.35,
+     "zt": 6,
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3771.4740381771026,
+   "C": 2551.8369459929227,
+   "P": 1219.63709218418
+  }
+ },
+ {
+  "id": "sf7-098-csink-bottom-k2.25-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.25,
+  "place": "x",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.98,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 29.37,
+  "D": 33.9,
+  "cx": 5.21,
+  "cy": 0,
+  "script": "const b = box(29.37, 33.9, 8);\nhole(b, { across: 3, at: [5.21, 0], countersink: { across: 9.96, angle: 82 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.685,
+     14.685,
+     -16.95,
+     16.95,
+     0,
+     8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -14.685,
+      14.685,
+      -16.95,
+      16.95
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.21,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 3.9967179428708857,
+     "rt": 4.98,
+     "zt": 8,
+     "r": 1.5,
+     "range": [
+      -1,
+      9
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7792.175506917625,
+   "C": 4231.654995272437,
+   "P": 3560.520511645188
+  }
+ },
+ {
+  "id": "sf7-099-csink-bottom-k2.5-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.5,
+  "place": "x",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.33,
+  "depth": null,
+  "angle": 90,
+  "H": 6,
+  "W": 22.05,
+  "D": 22.54,
+  "cx": 3.95,
+  "cy": 0,
+  "script": "const b = box(22.05, 22.54, 6);\nhole(b, { across: 4, at: [3.95, 0], countersink: { across: 6.66, angle: 90 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.025,
+     11.025,
+     -11.27,
+     11.27,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -11.025,
+      11.025,
+      -11.27,
+      11.27
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.95,
+      0
+     ],
+     "rb": 2,
+     "zb": 4.67,
+     "rt": 3.33,
+     "zt": 6,
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2893.06577411872,
+   "C": 1499.5502475567591,
+   "P": 1393.515526561961
+  }
+ },
+ {
+  "id": "sf7-100-csink-bottom-k2.5-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.5,
+  "place": "x",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4.86,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 21.58,
+  "D": 29.58,
+  "cx": 3.43,
+  "cy": 0,
+  "script": "const b = box(21.58, 29.58, 10);\nhole(b, { across: 3, at: [3.43, 0], countersink: { across: 9.72, angle: 120 } });\nhollow(b, { wall: 1, open: 'bottom' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.79,
+     10.79,
+     -14.79,
+     14.79,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.79,
+      10.79,
+      -14.79,
+      14.79
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      3.43,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 8.060103095522857,
+     "rt": 4.86,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6259.0282437217875,
+   "C": 4641.144400970172,
+   "P": 1617.8838427516157
+  }
+ },
+ {
+  "id": "sf7-101-csink-bottom-k2.75-corner",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.75,
+  "place": "corner",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.13,
+  "depth": null,
+  "angle": 120,
+  "H": 6,
+  "W": 29.22,
+  "D": 25.54,
+  "cx": 5.98,
+  "cy": 4.14,
+  "script": "const b = box(29.22, 25.54, 6);\nhole(b, { across: 4, at: [5.98, 4.14], countersink: { across: 6.26, angle: 120 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -14.61,
+     14.61,
+     -12.77,
+     12.77,
+     0,
+     6
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -14.61,
+      14.61,
+      -12.77,
+      12.77
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      5.98,
+      4.14
+     ],
+     "rb": 2,
+     "zb": 5.347594195815723,
+     "rt": 3.13,
+     "zt": 6,
+     "r": 2,
+     "range": [
+      -1,
+      7
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4396.770120277045,
+   "C": 1971.8932701702593,
+   "P": 2424.8768501067857
+  }
+ },
+ {
+  "id": "sf7-102-csink-bottom-k2.75-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 2.75,
+  "place": "y",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 3.58,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 26.54,
+  "D": 31.63,
+  "cx": 0,
+  "cy": -6.73,
+  "script": "const b = box(26.54, 31.63, 10);\nhole(b, { across: 3, at: [0, -6.73], countersink: { across: 7.16, angle: 100 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.27,
+     13.27,
+     -15.815,
+     15.815,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -13.27,
+      13.27,
+      -15.815,
+      15.815
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -6.73
+     ],
+     "rb": 1.5,
+     "zb": 8.254672767151257,
+     "rt": 3.58,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 8298.901499108348,
+   "C": 4667.8794088196955,
+   "P": 3631.022090288652
+  }
+ },
+ {
+  "id": "sf7-103-csink-bottom-k3-y",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 3,
+  "place": "y",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.7,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 30.98,
+  "D": 27.7,
+  "cx": 0,
+  "cy": -4.15,
+  "script": "const b = box(30.98, 27.7, 10);\nhole(b, { across: 4, at: [0, -4.15], countersink: { across: 7.4, angle: 120 } });\nhollow(b, { wall: 2, open: 'bottom' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.49,
+     15.49,
+     -13.85,
+     13.85,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -15.49,
+      15.49,
+      -13.85,
+      13.85
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      -4.15
+     ],
+     "rb": 2,
+     "zb": 9.018504542377636,
+     "rt": 3.7,
+     "zt": 10,
+     "r": 2,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 8442.342134772305,
+   "C": 4712.872466010801,
+   "P": 3729.469668761504
+  }
+ },
+ {
+  "id": "sf7-104-csink-bottom-k3-x",
+  "kind": "csink",
+  "open": "bottom",
+  "k": 3,
+  "place": "x",
+  "t": 1.5,
+  "r": 1.5,
+  "Rm": 3.38,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 20.5,
+  "D": 28.54,
+  "cx": 2.37,
+  "cy": 0,
+  "script": "const b = box(20.5, 28.54, 10);\nhole(b, { across: 3, at: [2.37, 0], countersink: { across: 6.76, angle: 120 } });\nhollow(b, { wall: 1.5, open: 'bottom' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -10.25,
+     10.25,
+     -14.27,
+     14.27,
+     0,
+     10
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": -1,
+     "coord": 0,
+     "rect": [
+      -10.25,
+      10.25,
+      -14.27,
+      14.27
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      2.37,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 8.914581493923503,
+     "rt": 3.38,
+     "zt": 10,
+     "r": 1.5,
+     "range": [
+      -1,
+      11
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5766.380759301756,
+   "C": 3555.127222816999,
+   "P": 2211.253536484757
+  }
+ },
+ {
+  "id": "sf7-f3-105-L0.9t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 0.9,
+  "place": "centre",
+  "t": 1,
+  "r": 2,
+  "Rm": 4.63,
+  "depth": null,
+  "angle": 100,
+  "H": 3.11,
+  "W": 32.8,
+  "D": 27.95,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(32.8, 27.95, 3.11);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.26, angle: 100 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.4,
+     16.4,
+     -13.975,
+     13.975,
+     0,
+     3.11
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.11,
+     "rect": [
+      -16.4,
+      16.4,
+      -13.975,
+      13.975
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 0.9031679700037536,
+     "rt": 4.63,
+     "zt": 3.11,
+     "r": 2,
+     "range": [
+      -1,
+      4.109999999999999
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2759.589898937431,
+   "C": 1521.937320757435,
+   "P": 1237.652578179996
+  }
+ },
+ {
+  "id": "sf7-f3-106-L1t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1,
+  "place": "centre",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 4.23,
+  "depth": null,
+  "angle": 90,
+  "H": 3.73,
+  "W": 27.26,
+  "D": 28.69,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(27.26, 28.69, 3.73);\nhole(b, { across: 3, at: [0, 0], countersink: { across: 8.46, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.63,
+     13.63,
+     -14.345,
+     14.345,
+     0,
+     3.73
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.73,
+     "rect": [
+      -13.63,
+      13.63,
+      -14.345,
+      14.345
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 0.9999999999999991,
+     "rt": 4.23,
+     "zt": 3.73,
+     "r": 1.5,
+     "range": [
+      -1,
+      4.73
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2834.399963764814,
+   "C": 1678.1594778334738,
+   "P": 1156.2404859313401
+  }
+ },
+ {
+  "id": "sf7-f3-107-L1t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1,
+  "place": "centre",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.63,
+  "depth": null,
+  "angle": 90,
+  "H": 3.63,
+  "W": 26.74,
+  "D": 26.73,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(26.74, 26.73, 3.63);\nhole(b, { across: 2, at: [0, 0], countersink: { across: 7.26, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.37,
+     13.37,
+     -13.365,
+     13.365,
+     0,
+     3.63
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.63,
+     "rect": [
+      -13.37,
+      13.37,
+      -13.365,
+      13.365
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1,
+     "zb": 0.9999999999999996,
+     "rt": 3.63,
+     "zt": 3.63,
+     "r": 1,
+     "range": [
+      -1,
+      4.63
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2542.3954236907307,
+   "C": 1489.4192977367775,
+   "P": 1052.9761259539532
+  }
+ },
+ {
+  "id": "sf7-f3-108-L1.1t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.1,
+  "place": "centre",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.71,
+  "depth": null,
+  "angle": 100,
+  "H": 3.37,
+  "W": 24.02,
+  "D": 25.61,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(24.02, 25.61, 3.37);\nhole(b, { across: 2, at: [0, 0], countersink: { across: 7.42, angle: 100 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.01,
+     12.01,
+     -12.805,
+     12.805,
+     0,
+     3.37
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.37,
+     "rect": [
+      -12.01,
+      12.01,
+      -12.805,
+      12.805
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1,
+     "zb": 1.0960399995095713,
+     "rt": 3.71,
+     "zt": 3.37,
+     "r": 1,
+     "range": [
+      -1,
+      4.37
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2025.627499215308,
+   "C": 1116.6321870263791,
+   "P": 908.9953121889289
+  }
+ },
+ {
+  "id": "sf7-f3-109-L1.25t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.25,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.57,
+  "depth": null,
+  "angle": 82,
+  "H": 5.46,
+  "W": 30.97,
+  "D": 34.57,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(30.97, 34.57, 5.46);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.14, angle: 82 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.485,
+     15.485,
+     -17.285,
+     17.285,
+     0,
+     5.46
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.46,
+     "rect": [
+      -15.485,
+      15.485,
+      -17.285,
+      17.285
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 2.5035531934420043,
+     "rt": 4.57,
+     "zt": 5.46,
+     "r": 2,
+     "range": [
+      -1,
+      6.46
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5708.854515614032,
+   "C": 2489.313000058916,
+   "P": 3219.541515555116
+  }
+ },
+ {
+  "id": "sf7-f3-110-L1.25t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.25,
+  "place": "centre",
+  "t": 2,
+  "r": 1,
+  "Rm": 4.41,
+  "depth": null,
+  "angle": 82,
+  "H": 6.42,
+  "W": 31.47,
+  "D": 34.32,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(31.47, 34.32, 6.42);\nhole(b, { across: 2, at: [0, 0], countersink: { across: 8.82, angle: 82 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.735,
+     15.735,
+     -17.16,
+     17.16,
+     0,
+     6.42
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6.42,
+     "rect": [
+      -15.735,
+      15.735,
+      -17.16,
+      17.16
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1,
+     "zb": 2.497243731376356,
+     "rt": 4.41,
+     "zt": 6.42,
+     "r": 1,
+     "range": [
+      -1,
+      7.42
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6823.963637595813,
+   "C": 3297.5910207683946,
+   "P": 3526.372616827419
+  }
+ },
+ {
+  "id": "sf7-f3-111-L1.5t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.5,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 5.5,
+  "depth": null,
+  "angle": 100,
+  "H": 5.94,
+  "W": 32.03,
+  "D": 34.86,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(32.03, 34.86, 5.94);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 11, angle: 100 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.015,
+     16.015,
+     -17.43,
+     17.43,
+     0,
+     5.94
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.94,
+     "rect": [
+      -16.015,
+      16.015,
+      -17.43,
+      17.43
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 3.0031512908795204,
+     "rt": 5.5,
+     "zt": 5.94,
+     "r": 2,
+     "range": [
+      -1,
+      6.94
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 6455.497539734548,
+   "C": 2899.675075822424,
+   "P": 3555.822463912124
+  }
+ },
+ {
+  "id": "sf7-f3-112-L1.5t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.5,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 3.92,
+  "depth": null,
+  "angle": 90,
+  "H": 4.92,
+  "W": 35.94,
+  "D": 30.62,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(35.94, 30.62, 4.92);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 7.84, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.97,
+     17.97,
+     -15.31,
+     15.31,
+     0,
+     4.92
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 4.92,
+     "rect": [
+      -17.97,
+      17.97,
+      -15.31,
+      15.31
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 3,
+     "rt": 3.92,
+     "zt": 4.92,
+     "r": 2,
+     "range": [
+      -1,
+      5.92
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5321.974551279723,
+   "C": 2219.26817858998,
+   "P": 3102.7063726897427
+  }
+ },
+ {
+  "id": "sf7-f3-113-L1.75t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.75,
+  "place": "centre",
+  "t": 1,
+  "r": 1.5,
+  "Rm": 3.26,
+  "depth": null,
+  "angle": 100,
+  "H": 3.23,
+  "W": 23.63,
+  "D": 26.42,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(23.63, 26.42, 3.23);\nhole(b, { across: 3, at: [0, 0], countersink: { across: 6.52, angle: 100 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -11.815,
+     11.815,
+     -13.21,
+     13.21,
+     0,
+     3.23
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.23,
+     "rect": [
+      -11.815,
+      11.815,
+      -13.21,
+      13.21
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 1.7531846491279874,
+     "rt": 3.26,
+     "zt": 3.23,
+     "r": 1.5,
+     "range": [
+      -1,
+      4.23
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 1976.633423074432,
+   "C": 1087.8575126757696,
+   "P": 888.7759103986623
+  }
+ },
+ {
+  "id": "sf7-f3-114-L1.75t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.75,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.97,
+  "depth": null,
+  "angle": 90,
+  "H": 6.47,
+  "W": 34.07,
+  "D": 38.18,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(34.07, 38.18, 6.47);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.94, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.035,
+     17.035,
+     -19.09,
+     19.09,
+     0,
+     6.47
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6.47,
+     "rect": [
+      -17.035,
+      17.035,
+      -19.09,
+      19.09
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 3.4999999999999996,
+     "rt": 4.97,
+     "zt": 6.47,
+     "r": 2,
+     "range": [
+      -1,
+      7.47
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 8251.965796957325,
+   "C": 4130.847508483413,
+   "P": 4121.118288473913
+  }
+ },
+ {
+  "id": "sf7-f3-115-L1.9t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.9,
+  "place": "centre",
+  "t": 2,
+  "r": 1,
+  "Rm": 3.19,
+  "depth": null,
+  "angle": 82,
+  "H": 6.32,
+  "W": 26.95,
+  "D": 32.19,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(26.95, 32.19, 6.32);\nhole(b, { across: 2, at: [0, 0], countersink: { across: 6.38, angle: 82 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.475,
+     13.475,
+     -16.095,
+     16.095,
+     0,
+     6.32
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6.32,
+     "rect": [
+      -13.475,
+      13.475,
+      -16.095,
+      16.095
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1,
+     "zb": 3.800693188185989,
+     "rt": 3.19,
+     "zt": 6.32,
+     "r": 1,
+     "range": [
+      -1,
+      7.32
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5432.88851387943,
+   "C": 2557.680535878915,
+   "P": 2875.207978000515
+  }
+ },
+ {
+  "id": "sf7-f3-116-L1.9t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 1.9,
+  "place": "centre",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.15,
+  "depth": null,
+  "angle": 90,
+  "H": 6.45,
+  "W": 35.88,
+  "D": 30.93,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(35.88, 30.93, 6.45);\nhole(b, { across: 3, at: [0, 0], countersink: { across: 8.3, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.94,
+     17.94,
+     -15.465,
+     15.465,
+     0,
+     6.45
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 6.45,
+     "rect": [
+      -17.94,
+      17.94,
+      -15.465,
+      15.465
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 3.7999999999999994,
+     "rt": 4.15,
+     "zt": 6.45,
+     "r": 1.5,
+     "range": [
+      -1,
+      7.45
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 7059.833111271341,
+   "C": 3472.0813711178466,
+   "P": 3587.7517401534947
+  }
+ },
+ {
+  "id": "sf7-f3-117-L2t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2,
+  "place": "centre",
+  "t": 1,
+  "r": 1,
+  "Rm": 3.14,
+  "depth": null,
+  "angle": 100,
+  "H": 3.8,
+  "W": 25.53,
+  "D": 25.5,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(25.53, 25.5, 3.8);\nhole(b, { across: 2, at: [0, 0], countersink: { across: 6.28, angle: 100 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -12.765,
+     12.765,
+     -12.75,
+     12.75,
+     0,
+     3.8
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 3.8,
+     "rect": [
+      -12.765,
+      12.765,
+      -12.75,
+      12.75
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1,
+     "zb": 2.0043267892806202,
+     "rt": 3.14,
+     "zt": 3.8,
+     "r": 1,
+     "range": [
+      -1,
+      4.8
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 2441.235029607033,
+   "C": 1457.561869208956,
+   "P": 983.673160398077
+  }
+ },
+ {
+  "id": "sf7-f3-118-L2t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2,
+  "place": "centre",
+  "t": 1,
+  "r": 2,
+  "Rm": 5.12,
+  "depth": null,
+  "angle": 82,
+  "H": 5.59,
+  "W": 26.26,
+  "D": 27.59,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(26.26, 27.59, 5.59);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 10.24, angle: 82 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -13.13,
+     13.13,
+     -13.795,
+     13.795,
+     0,
+     5.59
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.59,
+     "rect": [
+      -13.13,
+      13.13,
+      -13.795,
+      13.795
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 2.0008505694704493,
+     "rt": 5.12,
+     "zt": 5.59,
+     "r": 2,
+     "range": [
+      -1,
+      6.59
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 3872.8366519830006,
+   "C": 2541.826989536754,
+   "P": 1331.0096624462467
+  }
+ },
+ {
+  "id": "sf7-f3-119-L2.1t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2.1,
+  "place": "centre",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 3.74,
+  "depth": null,
+  "angle": 82,
+  "H": 5.15,
+  "W": 34.14,
+  "D": 29.65,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(34.14, 29.65, 5.15);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 7.48, angle: 82 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.07,
+     17.07,
+     -14.825,
+     14.825,
+     0,
+     5.15
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.15,
+     "rect": [
+      -17.07,
+      17.07,
+      -14.825,
+      14.825
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 3.148358971435443,
+     "rt": 3.74,
+     "zt": 5.15,
+     "r": 2,
+     "range": [
+      -1,
+      6.15
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 5120.146222039076,
+   "C": 2812.520366853153,
+   "P": 2307.625855185923
+  }
+ },
+ {
+  "id": "sf7-f3-120-L2.1t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2.1,
+  "place": "centre",
+  "t": 1.5,
+  "r": 2,
+  "Rm": 4.71,
+  "depth": null,
+  "angle": 100,
+  "H": 5.42,
+  "W": 34.07,
+  "D": 27.46,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(34.07, 27.46, 5.42);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.42, angle: 100 } });\nhollow(b, { wall: 1.5, open: 'top' });",
+  "model": {
+   "t": 1.5,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.035,
+     17.035,
+     -13.73,
+     13.73,
+     0,
+     5.42
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.42,
+     "rect": [
+      -17.035,
+      17.035,
+      -13.73,
+      13.73
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 3.146039999509571,
+     "rt": 4.71,
+     "zt": 5.42,
+     "r": 2,
+     "range": [
+      -1,
+      6.42
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4946.429297881094,
+   "C": 2673.276582554144,
+   "P": 2273.1527153269494
+  }
+ },
+ {
+  "id": "sf7-f3-121-L2.5t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2.5,
+  "place": "centre",
+  "t": 1,
+  "r": 2,
+  "Rm": 4.81,
+  "depth": null,
+  "angle": 90,
+  "H": 5.31,
+  "W": 33.42,
+  "D": 25.05,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(33.42, 25.05, 5.31);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.62, angle: 90 } });\nhollow(b, { wall: 1, open: 'top' });",
+  "model": {
+   "t": 1,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.71,
+     16.71,
+     -12.525,
+     12.525,
+     0,
+     5.31
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 5.31,
+     "rect": [
+      -16.71,
+      16.71,
+      -12.525,
+      12.525
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 2.4999999999999996,
+     "rt": 4.81,
+     "zt": 5.31,
+     "r": 2,
+     "range": [
+      -1,
+      6.31
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 4305.8026603326825,
+   "C": 2866.4980248471384,
+   "P": 1439.3046354855442
+  }
+ },
+ {
+  "id": "sf7-f3-122-L2.5t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 2.5,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 5.41,
+  "depth": null,
+  "angle": 90,
+  "H": 8.41,
+  "W": 31.73,
+  "D": 35.17,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(31.73, 35.17, 8.41);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 10.82, angle: 90 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -15.865,
+     15.865,
+     -17.585,
+     17.585,
+     0,
+     8.41
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 8.41,
+     "rect": [
+      -15.865,
+      15.865,
+      -17.585,
+      17.585
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 5,
+     "rt": 5.41,
+     "zt": 8.41,
+     "r": 2,
+     "range": [
+      -1,
+      9.41
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 9164.82190721114,
+   "C": 4912.76447492166,
+   "P": 4252.057432289481
+  }
+ },
+ {
+  "id": "sf7-f3-123-L3t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 3,
+  "place": "centre",
+  "t": 2,
+  "r": 1.5,
+  "Rm": 4.11,
+  "depth": null,
+  "angle": 82,
+  "H": 9,
+  "W": 33.47,
+  "D": 34.7,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(33.47, 34.7, 9);\nhole(b, { across: 3, at: [0, 0], countersink: { across: 8.22, angle: 82 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -16.735,
+     16.735,
+     -17.35,
+     17.35,
+     0,
+     9
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 9,
+     "rect": [
+      -16.735,
+      16.735,
+      -17.35,
+      17.35
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 1.5,
+     "zb": 5.997538457153164,
+     "rt": 4.11,
+     "zt": 9,
+     "r": 1.5,
+     "range": [
+      -1,
+      10
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10330.717064694605,
+   "C": 5887.543463130647,
+   "P": 4443.173601563958
+  }
+ },
+ {
+  "id": "sf7-f3-124-L3t",
+  "kind": "csink",
+  "open": "top",
+  "k": null,
+  "f3": 3,
+  "place": "centre",
+  "t": 2,
+  "r": 2,
+  "Rm": 4.98,
+  "depth": null,
+  "angle": 82,
+  "H": 9.43,
+  "W": 34.06,
+  "D": 33.01,
+  "cx": 0,
+  "cy": 0,
+  "script": "const b = box(34.06, 33.01, 9.43);\nhole(b, { across: 4, at: [0, 0], countersink: { across: 9.96, angle: 82 } });\nhollow(b, { wall: 2, open: 'top' });",
+  "model": {
+   "t": 2,
+   "mode": "rect",
+   "boxes": [
+    [
+     -17.03,
+     17.03,
+     -16.505,
+     16.505,
+     0,
+     9.43
+    ]
+   ],
+   "cuts": [],
+   "opens": [
+    {
+     "axis": "z",
+     "dir": 1,
+     "coord": 9.43,
+     "rect": [
+      -17.03,
+      17.03,
+      -16.505,
+      16.505
+     ],
+     "minus": []
+    }
+   ],
+   "holes": [
+    {
+     "type": "cone",
+     "c": [
+      0,
+      0
+     ],
+     "rb": 2,
+     "zb": 6.00190214648139,
+     "rt": 4.98,
+     "zt": 9.43,
+     "r": 2,
+     "range": [
+      -1,
+      10.43
+     ]
+    }
+   ],
+   "rbosses": []
+  },
+  "frame": "centred",
+  "closed": {
+   "S": 10387.775338819303,
+   "C": 5857.6788584994865,
+   "P": 4530.096480319817
+  }
+ }
+]

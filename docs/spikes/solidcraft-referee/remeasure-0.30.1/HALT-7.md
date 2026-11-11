@@ -1,5 +1,10 @@
 # HALT-7: a hollow after a counterbore or countersink builds a wrong solid through the host route
 
+**RESOLVED 2026-11-10** for the three repros and the slow fuzz hollows: `G-HOLE` now uses the widest of the bore, counterbore and countersink
+(`adcb8c37`). The 3 repros and all 11 slow cases and variants are refused; the 2 controls build within 4e-6 of the closed form; 0 rows changed in
+4784 host-route rows (713 hollow-with-hole), the fuzz shells and the live replays. Numbers: `SLOW-HOLLOWS.md`. The seeded sweep then found a
+different wrong build that this fix does not cover: `HALT-8.md` (open).
+
 2026-11-10, worktree branch `t3/429b33d9`, from main `fb662459`, pin SolidCraft v0.30.1 (`8e2b0cd6`). Found while working on the slow-hollow question (the 35 slow
 failing fuzz shells). The work stopped here, as the brief says. `SLOW-HOLLOWS.md` was not written; what the slow-hollow work had found by then is listed at the end.
 
