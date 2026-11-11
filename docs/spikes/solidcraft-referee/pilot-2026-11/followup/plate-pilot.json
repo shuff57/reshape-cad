@@ -1,0 +1,116 @@
+[
+ {
+  "id": "t4a-plate",
+  "title": "Dimensioned plate: constrained sketch with a hole, extrude, one more drilled hole, bevelled edge",
+  "script": "// a 50 x 30 plate drawn by hand and then dimensioned, 6 thick\nconst sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nconst big = sk.circle([34, 14], { r: 4.6 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nsk.diameter(big, 10)\nsk.dx(plate.bottom.a, big.c, 35)\nsk.dy(plate.bottom.a, big.c, 15)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0] })\nchamfer(part.edge('top', 'right'), 1)",
+  "expect": 8438.362878275375,
+  "wallMs": 3895,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1\nbevel1\tfillet\tbuilt\tbuilt: b_pull1\nname pull1.edge[pull1.face[+z] ^ pull1.face[+x]] \u2192 solidcraft edge(s) F2:side:g2|F2:top; candidates on the name's own shape: 1\non the target body b_pull1: candidates 1 (F2:side:g2|F2:top); pick (50, 15, 6)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees",
+  "status": "built",
+  "diag": null,
+  "volume": 8438.420660012012,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8438.420660012012,
+    "faces": 9
+   }
+  ]
+ },
+ {
+  "id": "t2a-tray-naive",
+  "title": "Tray with a countersunk screw hole: drill first, then hollow",
+  "script": "// a small parts tray with one screw hole in the middle\nconst b = box(80, 50, 30)\nhole(b, { across: 4, countersink: { across: 8, angle: 90 } })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": null,
+  "wallMs": 3086,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or use a plain hole without the countersink.",
+  "status": "built with 1 refusal(s)",
+  "diag": null,
+  "volume": 119589.5607892095,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 119589.5607892095,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t4e-plate-blind",
+  "title": "Dimensioned plate with a blind hole 3 deep",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0], deep: 3 })",
+  "expect": 8962.300888156922,
+  "wallMs": 2205,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1",
+  "status": "built",
+  "diag": null,
+  "volume": 8962.307150212444,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8962.307150212444,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t4f-plate-cbore",
+  "title": "Dimensioned plate with a counterbored through hole",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [10, 5], counterbore: { across: 8, deep: 2 } })",
+  "expect": 8849.203552627689,
+  "wallMs": 2326,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1",
+  "status": "built",
+  "diag": null,
+  "volume": 8849.223245728617,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8849.223245728617,
+    "faces": 9
+   }
+  ]
+ },
+ {
+  "id": "t4g-plate-two",
+  "title": "Dimensioned plate with two through holes",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0] })\nhole(part, { across: 6, at: [12, 4] })",
+  "expect": 8754.955773019996,
+  "wallMs": 2475,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1\nhole2\thole\tbuilt\tbuilt: b_pull1",
+  "status": "built",
+  "diag": null,
+  "volume": 8754.988865878957,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8754.988865878957,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t4h-plate-front",
+  "title": "Dimensioned sketch on the front plane, pulled 8, drilled along the pull",
+  "script": "const sk = sketch('front')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nconst part = extrude(sk, 8)\nhole(part, { across: 4, along: 'y', at: [5, 3] })",
+  "expect": 11899.469035085127,
+  "wallMs": 2019,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1",
+  "status": "built",
+  "diag": null,
+  "volume": 11899.485733774452,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11899.485733774452,
+    "faces": 7
+   }
+  ]
+ }
+]

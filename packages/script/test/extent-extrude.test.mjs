@@ -109,3 +109,24 @@ test('not provable stays null: intersect of two boxes, polar pattern of a wedge 
   assert.equal(throughExtentAlong(p.doc, p.doc.features.at(-1).id, 'z'), null);
   assert.match(runScript("const b = wedge(6, 8, 12, { at: [25, 0, 0] }); const p = polarPattern(b, { count: 3, axis: 'y' }); hole(p, { across: 2 })").errors[0].message, /cannot find how thick this wedge is/);
 });
+
+// pilot 2026-11 (F7): a sketch with dimensions and rules has no outline until the solver runs, but ALONG the pull an extrude is as long as the pull
+const DIMMED = "const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [50, 0] }, { k: 'line', id: 2, a: [50, 0], b: [50, 30] }, { k: 'line', id: 3, a: [50, 30], b: [0, 30] }, { k: 'line', id: 4, a: [0, 30], b: [0, 0] }]); const part = extrude(sk, 6);";
+test('an extruded sketch with dimensions: the extent along the pull is the pull; across it stays unknown', () => {
+  const { e, exact, doc } = ext(DIMMED, 'z');
+  assert.equal(e.exact, true); near(e.extent, 6); near(exact, 6);
+  const id = doc.features.at(-1).id;
+  assert.equal(extentBoundAlong(doc, id, 'x'), null);
+  assert.equal(throughExtentAlong(doc, id, 'y'), null);
+});
+test('hole() drills through an extruded dimensioned sketch along the pull without deep:, and a blind one starts at the face', () => {
+  const r = runScript(DIMMED + ' hole(part, { across: 4, at: [-15, 0] });');
+  assert.deepEqual(r.errors, []);
+  const h = r.doc.features.at(-1); assert.equal(h.kind, 'hole'); near(h.depth, 8); near(h.center[2], 0);
+  const b = runScript(DIMMED + ' hole(part, { across: 4, deep: 2 });');
+  assert.deepEqual(b.errors, []);
+  near(b.doc.features.at(-1).center[2], 2); // (6 - 2) / 2: the tool's top is flush with the top face
+  // across the pull the plate's size is still not known here: the same plain error as before
+  const x = runScript(DIMMED + " hole(part, { across: 2, along: 'x' });");
+  assert.match(x.errors[0].message, /cannot find how thick this extrude is along x yet/);
+});

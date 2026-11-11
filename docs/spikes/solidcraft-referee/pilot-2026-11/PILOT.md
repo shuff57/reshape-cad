@@ -196,3 +196,65 @@ Ordered by how much a student would feel it.
 6. **F4, F2:** two sentence fixes. Exact text needed.
 7. **F11** and the page's titles: what a student should and should not see in the panel.
 8. A person looking at the 3D view in a real browser for these six tasks.
+
+## Follow-up, 2026-11-11 (owner chose: F7, F1, F5/F8 and the sentence slips; F3 wording approved)
+
+Evidence in `followup/`.
+
+### F3, done: the countersink sentence
+
+It now ends "-- open a different face, or use a plain hole without the countersink." (owner's choice). Both ways out build right in the pilot.
+
+### F7, done: a through hole on an extruded dimensioned sketch
+
+`packages/script/src/model-types.ts` (`extrudeRange`): along its pull an extrude is as long as the pull, whatever is drawn, so that extent no longer
+needs the sketch's outline. Across the pull a dimensioned sketch's size is still unknown before the solver runs, and `hole()` there still asks for
+`deep:` with the same error. Tests in `packages/script/test/extent-extrude.test.mjs`. In the page (`plate-pilot.json`):
+
+| script | result against the closed form |
+|---|---|
+| the pilot's plate, as first typed (through hole, bevel) | built, 6.8e-6 |
+| blind hole 3 deep (it now starts at the top face; before, its place along the pull was unknown) | built, 7.0e-7 |
+| counterbored through hole | built, 2.2e-6 |
+| two through holes | built, 3.8e-6 |
+| sketch on the front plane, pulled 8, drilled along the pull | built, 1.4e-6 |
+
+### F1, measured, not changed: the crossing-holes guard
+
+`G-CROSS` (`packages/layer/src/holes.ts`) refuses a hole whose drill meets an earlier drill in another direction. It compares the drills (finite
+cylinders as long as the part's bounding box), not the holes in the material. Seeded family `cx61`: 72 extruded L, U and T brackets with one hole
+through the base along y and one through an upright along x, Node host route on 0.30.1, guard on and then off for the measurement.
+
+| | scripts | guard on | guard off |
+|---|---|---|---|
+| the drills meet only in empty space (the holes do not meet in the part) | 45 | all refused by G-CROSS | all built, within 4.8e-6 of the closed form, 1.5 s at most |
+| the same with a counterbore on the first hole | 15 | refused by G-TOP | refused by G-TOP |
+| the holes truly cross inside one block of material | 12 | all refused by G-CROSS | all built, within 4.7e-6 of the closed form (the overlap of the two bores added back), 6 to 21 s |
+
+So the 45 are over-refusals: the part is right and fast when the guard is out of the way. The 12 true crossings also built right here, more slowly;
+the guard's own note records 98 s and over 200 s for a crossing in a box on an earlier measurement, so 12 cases on 0.30.1 are not grounds to drop it.
+
+Options:
+1. Narrow the guard for an extruded outline: allow the hole when the place where the two drills meet lies wholly outside the outline. The layer
+   has the outline. A box is its own outline, so nothing changes there. Needs the seeded family as a test and a re-run of the holes replays.
+2. Keep the guard and change only the sentence so it says what is checked (the drills' paths, not the holes).
+3. Re-measure true crossings on 0.30.1 widely (boxes, blind holes, three holes) to see whether the guard is still needed at all. The largest job.
+
+### F5, F8, looked at, not changed: one refusal blocks later steps
+
+When a step is refused the part's "latest step" still moves on to it, and each feature group then refuses anything that builds on a refused step.
+It is not one rule: holes (`holes.ts`), hollow and draft (`shell-draft.ts`, twice), extrude and pocket, revolve and groove, patterns and mirror,
+and the shared translator each have their own check and their own sentence, and about 20 test files pin the behaviour.
+
+Options:
+1. Leave the behaviour and fix the wording only (below).
+2. Let later steps build on the part as it stands, skipping the refused step. The part on screen is then exactly what the remaining steps describe,
+   and each later mistake gets its own sentence in the same run. The risk is in the guards that read the script's history instead of the part
+   (the hollow's hole check walks the list of holes, for one): each must either ignore a refused step or be shown to err on the safe side when
+   it counts one. Every group's differential test and the long live replays would need re-running. Large.
+3. A middle way: keep the block, but check each blocked step's own numbers (size against the part, wall against the part) and report those too.
+   Smaller than 2, and it removes "fix one, run again, meet the next".
+
+### Sentence slips: wording drafted for the owner (F2, F4, F5)
+
+See the session notes; nothing is changed until the exact text is approved.

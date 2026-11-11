@@ -1322,13 +1322,17 @@ function extrudeRange(
   sk: SketchFeature, height: number, axis: Axis3,
   opt: { midplane?: boolean; length2?: number; reversed?: boolean } = {},
 ): Range | null {
-  const bounds = sketchBounds2D(sk);
-  if (!bounds || !(height > 0)) return null;
+  if (!(height > 0)) return null;
   const fr = sketchFrameOf(sk);
   const ui = unitAxisOf(fr.u), vi = unitAxisOf(fr.v), ni = unitAxisOf(fr.n);
   if (!ui || !vi || !ni) return null;
   const i = AXIS_INDEX[axis];
   const o = fr.origin[i];
+  // ALONG the pull the extent is the pull's own length, whatever is drawn: it does not need the outline. A sketch with dimensions and rules has no outline
+  // here until the solver runs (sketchBounds2D is null), and hole() through such a plate used to stop the script asking for deep: (pilot 2026-11, F7).
+  // ACROSS the pull the outline is still needed, so that stays unknown for such a sketch.
+  const bounds = sketchBounds2D(sk);
+  if (!bounds && ni.i !== i) return null;
   if (ni.i === i) {
     const dir = sk.frame ? 1 : (SWEEP_DIR[sk.plane ?? 'xy'] ?? 1);
     const s = ni.sign * dir * (opt.reversed ? -1 : 1);
@@ -1337,7 +1341,7 @@ function extrudeRange(
     const a = o - s * back, b = o + s * fwd;
     return { lo: Math.min(a, b), hi: Math.max(a, b), exact: true };
   }
-  const [lo, hi, w] = ui.i === i ? [bounds[0], bounds[1], ui.sign] : [bounds[2], bounds[3], vi.sign];
+  const [lo, hi, w] = ui.i === i ? [bounds![0], bounds![1], ui.sign] : [bounds![2], bounds![3], vi.sign];
   const a = o + w * lo, b = o + w * hi;
   return { lo: Math.min(a, b), hi: Math.max(a, b), exact: true };
 }
