@@ -55,7 +55,33 @@ stays exact where the tilted face cuts into the hole.
 | refused by the kernel (the second of two drafts on adjacent faces: "already tilted by an earlier draft") | 46 |
 
 All 48 scripts where the tilted face reaches the hole are refused or built right (3 built right, with the face touching by under 0.01 mm).
-A draft after a countersink builds right in the Node route. In the page it is still refused by the pick-point limit, with the old wording.
+A draft after a countersink builds right in the Node route, and in the page since the cone change below.
+
+### The page can pick a face beside a countersink, 2026-11-11
+
+The page refused every face pick on a part with a countersink because the bridge had no description of the cone to check a pick point against.
+`packages/solidcraft-host/src/upstream-bridge.mjs` now works the cone out from upstream's own edges of that face (`coneOfFace`): the face must be
+named as a countersink's side, its vertices must split into two coaxial circles in parallel planes, and every edge between the two must be a
+straight line in a plane through the axis. Then the cone is exact and a pick point's distance to it can be checked like a plane's or a cylinder's.
+Any other undescribed face (a sphere, a torus, a cone that is not a countersink's) still leaves the whole body without pick points. Measured data
+from the page is in `packages/solidcraft-host/test/topology-countersink-0.30.1.json`; upstream reports a short arc's `mid` and `length` from its
+display polyline, so only the vertices are used to find the circles.
+
+Check, in the real page on 0.30.1 (`page-csink-cases.json`, `page-csink-030.json`): all 636 seeded scripts that have a countersink (hollows opened
+on every face, holes along x, y and z, two holes, drafts), each against its closed form and against what the Node route did.
+
+| page outcome | scripts |
+|---|---|
+| built, within 2e-5 of the closed form (worst 1.1e-5) | 259 |
+| built wrong | 0 |
+| refused by G-CSOPEN | 173 |
+| refused by G-HOLE | 132 |
+| refused by another existing guard or by the kernel, the same as in the Node route | 72 |
+| refused for a missing pick point | 0 |
+
+The page built nothing that the Node route refused, and every script the Node route builds today builds in the page. The longest run was 33 s.
+The closed form is the one oracle here; the voxel oracle checked it on the earlier families, not in the page. The hollow sentence "cannot be picked
+reliably on a part with a countersink" stays as the fallback for a cone that cannot be worked out.
 
 Evidence for the finding: `halt-7-fix/` beside this file.
 

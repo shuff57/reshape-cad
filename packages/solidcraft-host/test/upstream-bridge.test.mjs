@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createUpstreamBridge, interiorPoint, adaptBody, verifiedInnerPoint, surfaceDistance } from '../src/upstream-bridge.mjs';
+import { createUpstreamBridge, interiorPoint, adaptBody, verifiedInnerPoint, surfaceDistance, coneOfFace, coneDistance } from '../src/upstream-bridge.mjs';
 
 // a fake upstream with the shapes measured on v0.21.0 (see test/live.mjs): inspect, sketch.inspect, engine.batch with failed
 function fake({ failAt = null } = {}) {
@@ -175,4 +175,44 @@ test('model.faces throwing marks that body as an error', async () => {
   const sc = topoFake(); sc.execute = async (c) => { if (c === 'model.faces') throw new Error('no body'); return {}; };
   const r = await createUpstreamBridge(sc).topologyOf([{ command: 'solid.box', params: {} }]);
   assert.equal(r.ok, true); assert.ok(r.topology.bodies[0].error);
+});
+
+// ---- a countersink's cone, worked out from upstream's own edges (measured on SolidCraft 0.30.1 in the page: test/topology-countersink-0.30.1.json) --------
+import { readFileSync } from 'node:fs';
+const CS = JSON.parse(readFileSync(new URL('./topology-countersink-0.30.1.json', import.meta.url), 'utf8'));
+const csFaces = (k) => CS[k].faces.faces; const csEdges = (k) => CS[k].edges.edges;
+test('the cone of a countersink along z is found from its edges: axis z, mouth radius 4 at the top, bore radius 2 where it ends', () => {
+  const f = csFaces('csink').find((x) => x.name === 'F2:csink:side:0');
+  const k = coneOfFace(f, csEdges('csink'), 40);
+  assert.ok(k); assert.ok(Math.abs(Math.abs(k.axis[2]) - 1) < 1e-9);
+  const rs = [k.r0, k.r1].sort((a, b) => a - b); assert.ok(Math.abs(rs[0] - 2) < 1e-6 && Math.abs(rs[1] - 4) < 1e-6);
+  assert.ok(Math.abs(Math.abs(k.t1) - 2) < 1e-6, 'a 90 degree cone from radius 4 to radius 2 is 2 deep');
+  // a point on the cone (radius 3 one down from the mouth) is on it; the hole's axis one down is 3 * cos(45) away; a point on the top face 6 from the axis is 2 * cos(45) away
+  assert.ok(coneDistance(k, [8 + 3, 3, 4]) < 1e-6);
+  assert.ok(Math.abs(coneDistance(k, [8, 3, 4]) - 3 * Math.SQRT1_2) < 1e-6);
+  assert.ok(Math.abs(coneDistance(k, [8 + 6, 3, 5]) - 2 * Math.SQRT1_2) < 1e-6);
+});
+test('a part with a countersink keeps the pick points of its flat faces (along z, along x, and beside a counterbore)', () => {
+  for (const key of ['csink', 'csink-x', 'two']) {
+    const b = adaptBody('b_box1', CS[key].faces, CS[key].edges);
+    for (const n of ['F1:+z', 'F1:-z', 'F1:+x', 'F1:-x', 'F1:+y', 'F1:-y']) assert.ok(b.faces.find((f) => f.name === n).inner_hit, `${key}: ${n} has a pick point`);
+    for (const f of b.faces.filter((x) => /csink:side/.test(x.name))) assert.equal(f.inner_hit, undefined, `${key}: the cone face ${f.name} itself gets none`);
+  }
+});
+test('a pick point on the cone, or within the clearance of it, is not passed on', () => {
+  // on the top face, on the mouth circle (radius 4 about [8, 3]): 0 from the cone
+  const faces = csFaces('csink').map((f) => (f.name === 'F1:+z' ? { ...f, point: [12, 3, 5] } : f));
+  assert.equal(adaptBody('b', { faces }, CS.csink.edges).faces.find((f) => f.name === 'F1:+z').inner_hit, undefined);
+});
+test('a cone is not assumed: another name, a missing generator, a bent edge or a second axis leaves the body without pick points', () => {
+  const none = (faces, edges) => assert.equal(adaptBody('b', { faces }, { edges }).faces.every((f) => f.inner_hit === undefined), true);
+  const F = csFaces('csink'), E = csEdges('csink');
+  // not named as a countersink's side
+  none(F.map((f) => ({ ...f, name: f.name.replace('csink:side', 'ball') })), E.map((e) => ({ ...e, name: e.name.replaceAll('csink:side', 'ball') })));
+  // no straight edge on the face (the generators are gone)
+  none(F, E.filter((e) => !/csink:side:0\|F2:csink:side:1/.test(e.name)));
+  // a generator that is not straight
+  none(F, E.map((e) => (/csink:side:0\|F2:csink:side:1~1/.test(e.name) ? { ...e, mid: [e.mid[0] + 0.3, e.mid[1], e.mid[2]] } : e)));
+  // a mouth vertex moved off the mouth circle's height (the far group is no longer in one plane)
+  none(F, E.map((e) => ({ ...e, start: e.start.map((v, k) => (k === 2 && Math.abs(e.start[0] - 4.728) < 1e-2 && Math.abs(v - 5) < 1e-9 ? 4.9 : v)), end: e.end.map((v, k) => (k === 2 && Math.abs(e.end[0] - 4.728) < 1e-2 && Math.abs(v - 5) < 1e-9 ? 4.9 : v)) })));
 });

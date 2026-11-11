@@ -7,6 +7,9 @@ import { clampBudgetS, timedOutReply } from './probe-client.mjs';
 //  - centroid_hit (which face a pick AT the centroid lands on) and edge names beyond upstream's own `A|B` form: not reported by upstream, never invented.
 //    topologyOf() below builds the layer's topology reply from model.faces / model.edges; a face pick point (inner_point + inner_hit) is passed on only
 //    when verifiedInnerPoint() can back upstream's claim, otherwise the face carries none and the layer refuses the pick in a sentence.
+//    Upstream describes a face's surface only when it is a plane or a cylinder. A countersink's conical wall is the one other surface this file accepts: its
+//    cone is worked out from upstream's own edges of that face (coneOfFace), so a part with a countersink keeps its pick points. Any other undescribed
+//    face (a sphere, a torus, a cone that is not a countersink's) still leaves the whole body without pick points.
 //  - stash/restore of the student's own design: not built. A fresh run replaces the active design (file.new).
 //  - per-sketch solver residuals: upstream reports dof/status/failing only.
 
@@ -69,13 +72,84 @@ export function surfaceDistance(face, p) {
   return null;
 }
 const faceNamesOfEdge = (name) => String(name ?? '').split('|').map((x) => x.replace(/~\d+$/, ''));
+const cross3 = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+const len3 = (a) => Math.hypot(a[0], a[1], a[2]);
+/** The circle through three points: { c, n (unit normal), r }, or null when they are on one line. */
+function circle3(p, q, s) {
+  const a = sub3(q, p), b = sub3(s, p); const n = cross3(a, b); const n2 = dot3(n, n);
+  if (!(n2 > 1e-18 * Math.max(1, dot3(a, a) * dot3(b, b)))) return null;
+  // centre = p + ((|a|^2 b - |b|^2 a) x n) / (2 |n|^2)
+  const w = [0, 1, 2].map((k) => dot3(a, a) * b[k] - dot3(b, b) * a[k]); const u = cross3(w, n);
+  const c = [0, 1, 2].map((k) => p[k] + u[k] / (2 * n2)); const nl = Math.sqrt(n2);
+  return { c, n: n.map((x) => x / nl), r: len3(sub3(p, c)) };
+}
+/**
+ * The cone of a countersink's wall, from upstream's own edges of that face: { origin, axis (unit), r0 (radius at the origin), t1, r1 (radius t1 along the axis) }, or null.
+ * Upstream describes only planes and cylinders, so this is the one surface worked out here, and only when all of this holds:
+ *  - the face is named as the side of a countersink (`...:csink:side:<n>`, upstream's name for the cone of solid.hole type countersink);
+ *  - the END POINTS of its edges (the face's vertices; an edge's `mid` and `length` are those of the display polyline, measured: a short arc comes back as one
+ *    straight piece, so they are not used to find a circle) fall into two groups: at least three on one circle, and the rest in a parallel plane, all the
+ *    same distance from that circle's axis, a distance apart along it; exactly one such split exists;
+ *  - every edge joins two vertices of one group (an arc of that circle) or one of each, and each of those is straight (mid on the chord, length = chord) and
+ *    lies in a plane through the axis (a generator); there is at least one; the far group has at least two vertices.
+ * A surface of revolution between two coaxial circles whose meridian is a straight segment is a cone, so its unbounded surface is known exactly.
+ */
+export function coneOfFace(face, edges, scale) {
+  if (!/:csink:side:\d+$/.test(String(face?.name ?? ''))) return null;
+  const mine = edges.filter((e) => faceNamesOfEdge(e.name).includes(face.name));
+  if (mine.length < 3 || !mine.every((e) => isV3(e.start) && isV3(e.mid) && isV3(e.end) && typeof e.length === 'number')) return null;
+  const tol = 1e-6 * Math.max(1, scale); const near = 10 * tol;
+  const verts = []; for (const e of mine) for (const p of [e.start, e.end]) if (!verts.some((q) => len3(sub3(q, p)) <= near)) verts.push(p);
+  if (verts.length < 4 || verts.length > 16) return null;
+  const axial = (p, K) => dot3(sub3(p, K.c), K.n);
+  const radial = (p, K) => { const v = sub3(p, K.c); const t = dot3(v, K.n); return len3([0, 1, 2].map((k) => v[k] - t * K.n[k])); };
+  // a candidate split is kept only if every edge fits it: an edge within one group is an arc of that circle; an edge from one group to the other must be a
+  // straight generator in a plane through the axis, and there must be one
+  const fits = (K, onK) => {
+    let generators = 0;
+    for (const e of mine) {
+      const a = onK.some((q) => len3(sub3(q, e.start)) <= near), b = onK.some((q) => len3(sub3(q, e.end)) <= near);
+      if (a === b) continue;
+      const ch = sub3(e.end, e.start); const L = len3(ch);
+      if (len3(cross3(sub3(e.mid, e.start), ch)) / L > tol || Math.abs(L - e.length) > near) return false; // not straight
+      const dir = (p) => { const v = sub3(p, K.c); const t = dot3(v, K.n); const w = [0, 1, 2].map((k) => v[k] - t * K.n[k]); const l = len3(w); return l > near ? w.map((x) => x / l) : null; };
+      const d0 = dir(e.start), d1 = dir(e.end);
+      if (!d0 || !d1 || len3(sub3(d0, d1)) > 1e-6) return false; // not in one plane through the axis
+      generators++;
+    }
+    return generators > 0;
+  };
+  let found = null;
+  for (let i = 0; i < verts.length; i++) for (let j = i + 1; j < verts.length; j++) for (let l = j + 1; l < verts.length; l++) {
+    const K = circle3(verts[i], verts[j], verts[l]); if (!K || !(K.r > near)) continue;
+    const onK = verts.filter((p) => Math.abs(axial(p, K)) <= near && Math.abs(radial(p, K) - K.r) <= near);
+    const rest = verts.filter((p) => !onK.includes(p)); if (rest.length < 2) continue; // the far circle needs two vertices to be checked at all
+    const t1 = axial(rest[0], K), r1 = radial(rest[0], K);
+    if (Math.abs(t1) <= near || !(r1 > near) || !rest.every((p) => Math.abs(axial(p, K) - t1) <= near && Math.abs(radial(p, K) - r1) <= near)) continue;
+    if (!fits(K, onK)) continue;
+    const cone = { origin: K.c, axis: K.n, r0: K.r, t1, r1 };
+    // the same cone found again from another three vertices is the same answer; a different one makes it ambiguous
+    if (found && !(len3(sub3(found.origin, cone.origin)) <= near && Math.abs(found.r0 - cone.r0) <= near && Math.abs(Math.abs(found.t1) - Math.abs(cone.t1)) <= near && Math.abs(found.r1 - cone.r1) <= near)) return null;
+    found = found ?? cone;
+  }
+  return found;
+}
+/** Distance from p to the unbounded cone (both nappes): in the half-plane through the axis and p the cone is the line through (0, r0) and (t1, r1) and its mirror image. */
+export function coneDistance(cone, p) {
+  const v = sub3(p, cone.origin); const t = dot3(v, cone.axis);
+  const rho = len3([0, 1, 2].map((k) => v[k] - t * cone.axis[k]));
+  const L = Math.hypot(cone.t1, cone.r1 - cone.r0);
+  const d = (r) => Math.abs(t * (cone.r1 - cone.r0) - (r - cone.r0) * cone.t1) / L;
+  return Math.min(d(rho), d(-rho));
+}
 /**
  * Upstream says a face's `point` "picks it". That is taken as given for "the point is on the face", and everything that CAN be checked from the data is:
  * the point lies on the face's own plane / cylinder (to tol); it lies inside the box of the face's boundary edges (edges named `<face>|<other>`);
  * and no OTHER face's surface comes within `clear` of it, so the nearest-face rule cannot send it elsewhere. Any other face whose surface is not described, or
  * that is coplanar with the point, makes the answer null (no pick point is passed on). Returns the point or null.
+ * `cones` (optional): Map of a face to its cone (coneOfFace), the description of a countersink's wall as ANOTHER face; a cone face itself gets no pick point.
  */
-export function verifiedInnerPoint(face, faces, edges, scale) {
+export function verifiedInnerPoint(face, faces, edges, scale, cones) {
   const p = face.point;
   if (!isV3(p) || !face.name) return null;
   const tol = 1e-6 * Math.max(1, scale); const clear = 1e-3;
@@ -83,7 +157,8 @@ export function verifiedInnerPoint(face, faces, edges, scale) {
   if (own === null || own > tol) return null;
   for (const g of faces) {
     if (g === face) continue;
-    const d = surfaceDistance(g, p);
+    let d = surfaceDistance(g, p);
+    if (d === null && cones && cones.get(g)) d = coneDistance(cones.get(g), p);
     if (d === null || d <= clear) return null;
   }
   const mine = edges.filter((e) => faceNamesOfEdge(e.name).includes(face.name) && isV3(e.start) && isV3(e.mid) && isV3(e.end));
@@ -101,10 +176,11 @@ export function adaptBody(name, facesReply, edgesReply) {
   const all = rawEdges.flatMap((e) => [e.start, e.end]).filter(isV3);
   const scale = all.length ? Math.max(...[0, 1, 2].map((k) => Math.max(...all.map((v) => v[k])) - Math.min(...all.map((v) => v[k])))) : 1;
   const edges = rawEdges.map((e) => ({ index: e.index, name: e.name ?? '', start: e.start, mid: e.mid, end: e.end, length: e.length }));
+  const cones = new Map(); for (const f of rawFaces) { if (!isV3(f.plane_normal) && !f.cylinder) { const k = coneOfFace(f, rawEdges, scale); if (k) cones.set(f, k); } }
   const faces = rawFaces.map((f) => {
     const out = { index: f.index, name: f.name ?? '', centroid: f.centroid, plane_normal: f.plane_normal ?? null, area: f.area };
     if (f.cylinder) out.cylinder = f.cylinder;
-    const ip = verifiedInnerPoint(f, rawFaces, rawEdges, scale);
+    const ip = verifiedInnerPoint(f, rawFaces, rawEdges, scale, cones);
     if (ip) { out.inner_point = ip; out.inner_hit = { index: f.index, dist: 0 }; }
     return out;
   });
