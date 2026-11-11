@@ -106,6 +106,7 @@ export const SENTENCE = {
   thickGeneric: (f: FView) => `Hollowing ${f.target} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width.`,
   tie: (f: FView, word: string, kind: string, n: number | null | undefined) => `${f.id}: the ${word} face is ambiguous on this ${n ? n + '-sided ' : ''}${kind} because two faces are equally far ${word}, so ${f.id} is shown without it -- pick a face that has only one candidate (for example top or bottom), or ${kind === 'box' ? 'turn the box a little less' : 'use a different number of sides'}.`,
   stale: (f: FView, what: string) => `${f.id}: the ${what} cannot be found reliably after the part was turned or copied, so ${f.id} is shown without it -- apply it before turning the part.`,
+  noPickCsink: (f: FView, word: string) => `${f.id} (hollow): not supported yet because the ${word} face cannot be picked reliably on a part with a countersink, so ${f.id} is shown without it -- hollow before drilling the countersink.`,
   csinkOpen: (f: FView, hole: string) => `${f.id} (hollow): not supported yet because ${hole} has a countersink on the face being opened, so ${f.id} is shown without it -- open a different face, or drill after hollowing.`,
   holeNear: (f: FView, why: string) => `${f.id} (hollow): not supported yet because a hole would be too close to a wall or to another hole (${why}), so ${f.id} is shown without it -- move the holes apart, or drill after hollowing.`,
   rim: (f: FView, rr: number, t: number, style: string | undefined) => `${f.id} (hollow): the open edge of ${f.target} is ${style === 'chamfer' ? 'bevelled by' : 'rounded with a radius of'} ${fmt(rr)}, which is as large as the wall (${fmt(t)}), so the rim would have no thickness and ${f.id} is shown without it -- make the ${style === 'chamfer' ? 'bevel' : 'round'} smaller than the wall.`,
@@ -472,6 +473,8 @@ function aggregateOf(res: RunResult, names: string[] | null): Aggregate | null {
 }
 export { aggregateOf as aggregateOfShellDraft };
 
+/** the name resolution's reply (translate.ts confirmOnTarget) for a face that was found on the part but has no pick point that could be backed */
+const NO_PICK_POINT = /but there is no safe pick point/;
 // ---- pick: where is the face NOW --------------------------------------------------------------------------------------
 interface PickOpts { gridOnHole: boolean; boxResult?: boolean }
 interface PickOk { pts: V3[]; shift: V3; root: FView | null; current: boolean }
@@ -494,6 +497,11 @@ async function pickPoints(f: FView, name: SDName, st: TranslateState, G: SDG, { 
     const dr = (chain ?? []).find((h) => h.kind === 'draft' && ((h.face?.feature === name.feature && h.face?.part === name.part) || (h.whole && DIRV[name.part] && DIRV[name.part][AXI[h.pull ?? 'z']] === 0)));
     if (dr) return withRaw(f.kind === 'shell' ? SENTENCE.noFaceDrafted(f, word, dr) : SENTENCE.noFace(f, word, `was tilted by ${dr.id}`));
     if (root?.kind === 'sphere') return withRaw(SENTENCE.noFace(f, word, 'does not exist (a sphere has no flat faces)'));
+    // the face was found by name but no pick point on it could be backed (the host bridge's verifiedInnerPoint has nothing to check against beside a cone face:
+    // upstream's model.faces describes planes and cylinders only). After a countersink that is every face of the part: say so (HALT-8.md, owner sentence 2026-11-10).
+    if (f.kind === 'shell' && raw !== undefined && NO_PICK_POINT.test(raw)) {
+      for (let cur: string | undefined = G.headOf(f.target!), seen = new Set<string>(); cur && !seen.has(cur); ) { seen.add(cur); const h: FView | undefined = G.byId[cur]; if (!h) break; if (h.kind === 'hole' && h.countersink) return withRaw(SENTENCE.noPickCsink(f, word)); cur = h.kind === 'combine' ? h.targets?.[0] : h.target; }
+    }
     return withRaw(SENTENCE.noFace(f, word));
   }
   if (!chain) return withRaw(SENTENCE.stale(f, `${WORD_OF[name.part] ?? 'chosen'} face`));

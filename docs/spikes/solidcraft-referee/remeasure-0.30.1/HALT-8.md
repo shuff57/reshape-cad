@@ -12,9 +12,16 @@ Checked (`halt-8-fix/`): all 8 wrong builds and the round-number repros are refu
 face are refused by it (38 of them built right before: the accepted cost), 4 more stop earlier at the hole, and the other 156 are unchanged; a
 counterbore, and a countersink with another face opened, still reach the kernel. In the real page the corner repro and the clean plate show the
 new sentence in 3.4 s; a counterbore builds; a countersink with the bottom opened still gets the name-lookup sentence (below). Existing corpora
-through the host route: 0 rows changed in sd, holes, combined and mt (3984 rows); fccombined and rgcombined were still running when this was written.
-The page's name-lookup refusal is still open: upstream's `model.faces` describes planes and cylinders only, so the bridge has nothing to verify a
-pick point against beside a cone.
+through the host route: 0 rows changed in all six (sd, holes, combined, mt, fccombined, rgcombined: 4784 rows, 713 hollow-with-hole).
+The page's name-lookup refusal stays, by owner decision, with a true sentence for a hollow: upstream's `model.faces` describes planes and cylinders
+only, so the bridge has nothing to verify a pick point against beside a cone. When the face was found but no pick point could be backed, and the
+part has a countersink, the hollow now says:
+
+> shell1 (hollow): not supported yet because the bottom face cannot be picked reliably on a part with a countersink, so shell1 is shown without it -- hollow before drilling the countersink.
+
+Seen in the page (`halt-8-fix/browser-lookup-030.json`): open bottom and open front after a countersink show it; open top shows the G-CSOPEN
+sentence; a plain hole and a counterbore still build. A draft after a countersink keeps the old "could not be found" wording (no sentence approved
+for it). The Node route is unchanged: its stand-in reports pick hits, so it never reaches this.
 
 Evidence for the finding: `halt-7-fix/` beside this file.
 

@@ -1,0 +1,202 @@
+[
+ {
+  "id": "csink-plate-bottom",
+  "wallMs": 3740,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because the bottom face cannot be picked reliably on a part with a countersink, so shell1 is shown without it -- hollow before drilling the countersink.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 242,
+    "cpuMs": 39,
+    "loadMs": 5,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 77,
+    "cpuMs": 66,
+    "loadMs": 3,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.0585,
+    "status": "done",
+    "wallMs": 743,
+    "cpuMs": 733,
+    "loadMs": 3,
+    "vol": 11840.846318399332
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "csink-plate-front",
+  "wallMs": 3629,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because the front face cannot be picked reliably on a part with a countersink, so shell1 is shown without it -- hollow before drilling the countersink.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 237,
+    "cpuMs": 45,
+    "loadMs": 6,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 92,
+    "cpuMs": 74,
+    "loadMs": 6,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.0675,
+    "status": "done",
+    "wallMs": 729,
+    "cpuMs": 716,
+    "loadMs": 5,
+    "vol": 11840.846318399332
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "csink-plate-top",
+  "wallMs": 3282,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or drill after hollowing.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 238,
+    "cpuMs": 48,
+    "loadMs": 5,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 105,
+    "cpuMs": 89,
+    "loadMs": 7,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.072,
+    "status": "done",
+    "wallMs": 870,
+    "cpuMs": 856,
+    "loadMs": 4,
+    "vol": 11840.846318399332
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "plain-hole-top",
+  "wallMs": 2401,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 241,
+    "cpuMs": 41,
+    "loadMs": 5,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.0615,
+    "status": "done",
+    "wallMs": 159,
+    "cpuMs": 144,
+    "loadMs": 5,
+    "vol": 11874.357167061256
+   },
+   {
+    "cmds": 3,
+    "last": "solid.shell",
+    "budgetS": 45.216,
+    "status": "done",
+    "wallMs": 307,
+    "cpuMs": 291,
+    "loadMs": 6,
+    "vol": 4788.435651819099
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "cbore-plate-bottom",
+  "wallMs": 2939,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 206,
+    "cpuMs": 37,
+    "loadMs": 4,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 103,
+    "cpuMs": 93,
+    "loadMs": 4,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.0555,
+    "status": "done",
+    "wallMs": 184,
+    "cpuMs": 155,
+    "loadMs": 10,
+    "vol": 11798.966112459044
+   },
+   {
+    "cmds": 3,
+    "last": "solid.shell",
+    "budgetS": 45.2325,
+    "status": "done",
+    "wallMs": 324,
+    "cpuMs": 313,
+    "loadMs": 3,
+    "vol": 4838.713578267196
+   }
+  ],
+  "volume": 0
+ }
+]
