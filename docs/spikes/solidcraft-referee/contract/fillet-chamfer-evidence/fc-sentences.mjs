@@ -70,7 +70,7 @@ export function plainSentence(rawIn, ctx = {}) {
   const st = style(id);
   // dependent step: the step it builds on was refused (nested to any depth)
   const dm = raw.match(/^[a-z]+\d+\s*\([a-z]+\):\s*its target ([a-z]+\d+) was refused/i);
-  if (dm) return { cls: 'dependent', sentence: `${id} builds on ${dm[1]}, which is shown without its ${noun(dm[1])}, so ${id} is shown without it too -- fix ${dm[1]} first.` };
+  if (dm) return { cls: 'dependent', sentence: `${id} builds on ${dm[1]}, which could not be built, so ${id} is shown without it too -- fix ${dm[1]} first.` };
   const body = stripPrefix(raw);
   let m;
   // kernel size limits

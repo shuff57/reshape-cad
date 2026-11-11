@@ -83,7 +83,7 @@ export const RECESS_TOL = 1e-3; // relative to the removed volume
 // ---- plain sentences ---------------------------------------------------------------------------------------------------------------------------
 // ONE sentence each: what was asked, why it cannot be built, that the feature is shown without it, and (after a dash) what to try.
 export const SENTENCE = {
-  dep: (f: HoleView, head: string) => `${f.id} (hole): the part it drills (${head}) could not be built, so ${f.id} is shown without it -- fix ${head} first.`,
+  dep: (f: HoleView, head: string) => `${f.id} (hole): it comes after ${head}, which could not be built, so ${f.id} is shown without it -- fix ${head} first.`,
   stale: (f: HoleView, head: string, by: string) => `${f.id} (hole): ${head} was already changed by ${by} after the hole was set up, so ${f.id} is shown without it -- drill the part before changing it.`,
   noBody: (f: HoleView) => `${f.id} (hole): the part it drills could not be found as a single piece, so ${f.id} is shown without it -- drill one shape at a time.`,
   multi: (f: HoleView, n: number) => `${f.id} (hole): the part it drills is ${n} separate pieces and a hole cannot tell which one to drill, so ${f.id} is shown without it -- drill each piece before copying it, or join the pieces first.`,
@@ -109,7 +109,7 @@ export const SENTENCE = {
   // ---- round 4
   budget: (f: HoleView) => `${f.id} (hole): cutting this hole took longer than ${BUDGET_S} seconds of computing, so it was stopped and ${f.id} is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded.`,
   docBudget: (f: HoleView) => `${f.id} (hole): this model has already used its ${DOC_BUDGET_S} seconds of computing, so ${f.id} is shown without it -- use fewer holes or simpler shapes.`,
-  revolve: (f: HoleView) => `${f.id} (hole): drilling a spun shape is not supported yet, so ${f.id} is shown without it -- leave a gap for the hole in the sketch that is spun instead.`,
+  revolve: (f: HoleView) => `${f.id} (hole): drilling a spun shape is not supported yet, so ${f.id} is shown without it -- for a hole down the middle, leave a gap in the sketch that is spun; for other holes, build the part from cylinders instead.`,
   curved: (f: HoleView, what: string) => `${f.id} (hole): a hole drilled across ${what} would cut through its curved wall at an angle, which is not supported yet, so ${f.id} is shown without it -- drill along the axis of ${what}, or use a flat-sided shape.`,
   csOverlap: (f: HoleView, other: string) => `${f.id} (hole): its countersink cone would overlap ${other}, which is not supported yet, so ${f.id} is shown without it -- space the countersinks at least as far apart as their mouth is wide, or use counterbores.`,
   csEdge: (f: HoleView) => `${f.id} (hole): the countersink mouth reaches past the side of the part, which is not supported yet, so ${f.id} is shown without it -- move the hole away from the side or make the countersink narrower than the part.`,
@@ -445,7 +445,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
       if ((cur.axis ?? 'z') === axis) continue;
       for (const A of toolsOf(H(cur))) for (const B of mine) {
         const k = [0, 1, 2].find((i) => i !== A.a && i !== B.a)!;
-        if (Math.abs(A.c[k] - B.c[k]) < A.r + B.r && Math.abs(B.c[A.a] - A.c[A.a]) <= A.L + B.r && Math.abs(A.c[B.a] - B.c[B.a]) <= B.L + A.r) return refuse(SENTENCE.cross(f, cur), 'G-CROSS');
+        if (Math.abs(A.c[k] - B.c[k]) < A.r + B.r && Math.abs(B.c[A.a] - A.c[A.a]) <= A.L + B.r && Math.abs(A.c[B.a] - B.c[B.a]) <= B.L + A.r && !crossInAir(A, B, f, G, m)) return refuse(SENTENCE.cross(f, cur), 'G-CROSS');
       }
     }
   }
@@ -678,6 +678,48 @@ export function rootOf(id: string, G: { byId: Record<string, RootView> }): RootV
   let cur: RootView | undefined = G.byId[id]; const seen = new Set<string>();
   while (cur && cur.kind === 'hole' && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target!]; }
   return cur ?? null;
+}
+// ---- G-CROSS, narrowed for an extruded outline (pilot 2026-11 F1, docs/spikes/solidcraft-referee/pilot-2026-11/PILOT.md) -------------------------------
+// The crossing test compares the two DRILLS, which are as long as the part's bounding box. On an L, U or T bracket a hole through each leg has drills that meet
+// only in the empty corner: the holes never meet in the part, and with the guard out of the way all 45 seeded cases built within 4.8e-6 in 1.5 s at most
+// (cx61). So: when the part is a plain polygon pulled straight along z and both drills run across the pull, the place where the drills can meet is a
+// rectangle in the outline's plane (each drill's width across the other's line). If that rectangle, grown by CROSS_AIR_MARGIN, has no point in common with
+// the outline, the crossing is in air and is let through. Everything else (a box, where the rectangle is always inside; a circle, a rounded or dimensioned
+// outline, a tilted or tapered pull, a moved part, an outline that does not match the measured part) stays refused as before.
+const CROSS_AIR_MARGIN = 0.01;
+/** does the axis-aligned rectangle [x0, x1] x [y0, y1] share a point with the polygon (its inside or its boundary)? */
+export function rectMeetsPolygon(x0: number, x1: number, y0: number, y1: number, pts: number[][]): boolean {
+  const n = pts.length;
+  for (let i = 0; i < n; i++) { // an edge that passes through the rectangle (Liang-Barsky)
+    const [ax, ay] = pts[i], [bx, by] = pts[(i + 1) % n]; const dx = bx - ax, dy = by - ay; let t0 = 0, t1 = 1, hit = true;
+    for (const [p, q] of [[-dx, ax - x0], [dx, x1 - ax], [-dy, ay - y0], [dy, y1 - ay]] as Array<[number, number]>) {
+      if (p === 0) { if (q < 0) { hit = false; break; } continue; }
+      const t = q / p; if (p < 0) { if (t > t1) { hit = false; break; } if (t > t0) t0 = t; } else { if (t < t0) { hit = false; break; } if (t < t1) t1 = t; }
+    }
+    if (hit) return true;
+  }
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2; let inside = false; // no edge touches it: it is wholly inside or wholly outside; ask its centre
+  for (let i = 0, j = n - 1; i < n; j = i++) { const [xi, yi] = pts[i], [xj, yj] = pts[j]; if ((yi > cy) !== (yj > cy) && cx < ((xj - xi) * (cy - yi)) / (yj - yi) + xi) inside = !inside; }
+  return inside;
+}
+/** true when drills A and B (toolsOf entries: a = axis index, c = centre, r = radius), which cross, can only meet outside the material of the part `f` drills */
+export function crossInAir(A: { a: number; c: V3; r: number }, B: { a: number; c: V3; r: number }, f: HoleView, G: { byId: Record<string, RootView> }, m: { bbox: number[] }): boolean {
+  if (A.a === 2 || B.a === 2) return false; // one drill runs along the pull: not this case
+  const root = rootOf(f.target, G);
+  if (!root || root.kind !== 'extrude' || root.taper || root.direction || root.midplane || root.alongNormal || (root.rotate && root.rotate.some((v) => v !== 0))) return false;
+  const sk = G.byId[root.target!] as (RootView & { geoms?: unknown[]; geom?: unknown[]; rules?: unknown[]; constraints?: unknown[]; points?: number[][] }) | undefined;
+  if (!sk || sk.kind !== 'sketch' || (sk.plane ?? 'xy') !== 'xy' || sk.frame || sk.shape === 'circle') return false;
+  if ((sk.geoms && sk.geoms.length) || (sk.geom && sk.geom.length) || (sk.rules && sk.rules.length) || (sk.constraints && sk.constraints.length)) return false;
+  if (Object.keys(sk.bulges ?? {}).length || Object.keys(sk.rounds ?? {}).length) return false;
+  const pts = sk.points; if (!Array.isArray(pts) || pts.length < 3 || !pts.every((p) => Array.isArray(p) && p.length === 2 && p.every((v) => Number.isFinite(v)))) return false;
+  // the outline must be where the measured part is: same extent in x and y (a part that was built some other way, or moved, fails this)
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]); const tol = 1e-6 * Math.max(1, m.bbox[3] - m.bbox[0], m.bbox[4] - m.bbox[1]);
+  if (Math.abs(Math.min(...xs) - m.bbox[0]) > tol || Math.abs(Math.max(...xs) - m.bbox[3]) > tol || Math.abs(Math.min(...ys) - m.bbox[1]) > tol || Math.abs(Math.max(...ys) - m.bbox[4]) > tol) return false;
+  // where the drills can meet, in x and y: along A's axis it is B's width about B's line, along B's axis A's width about A's line
+  const lo = [0, 0, 0], hi = [0, 0, 0];
+  lo[A.a] = B.c[A.a] - B.r - CROSS_AIR_MARGIN; hi[A.a] = B.c[A.a] + B.r + CROSS_AIR_MARGIN;
+  lo[B.a] = A.c[B.a] - A.r - CROSS_AIR_MARGIN; hi[B.a] = A.c[B.a] + A.r + CROSS_AIR_MARGIN;
+  return !rectMeetsPolygon(lo[0], hi[0], lo[1], hi[1], pts);
 }
 const PLANE_NORMAL: Record<string, V3> = { xy: [0, 0, 1], xz: [0, -1, 0], yz: [1, 0, 0] };
 const rot3 = (v: V3, rot: V3 | undefined): V3 => { // the translator's order: x, then y, then z, about the origin

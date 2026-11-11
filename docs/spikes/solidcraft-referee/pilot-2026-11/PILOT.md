@@ -219,7 +219,7 @@ needs the sketch's outline. Across the pull a dimensioned sketch's size is still
 | two through holes | built, 3.8e-6 |
 | sketch on the front plane, pulled 8, drilled along the pull | built, 1.4e-6 |
 
-### F1, measured, not changed: the crossing-holes guard
+### F1, measured, then narrowed (below): the crossing-holes guard
 
 `G-CROSS` (`packages/layer/src/holes.ts`) refuses a hole whose drill meets an earlier drill in another direction. It compares the drills (finite
 cylinders as long as the part's bounding box), not the holes in the material. Seeded family `cx61`: 72 extruded L, U and T brackets with one hole
@@ -255,6 +255,40 @@ Options:
 3. A middle way: keep the block, but check each blocked step's own numbers (size against the part, wall against the part) and report those too.
    Smaller than 2, and it removes "fix one, run again, meet the next".
 
-### Sentence slips: wording drafted for the owner (F2, F4, F5)
+### F1, done (owner chose option 1): G-CROSS narrowed for an extruded outline
 
-See the session notes; nothing is changed until the exact text is approved.
+`crossInAir()` in `packages/layer/src/holes.ts`, mirrored in the contract copy `holes4-translate.mjs`. When the part is a plain polygon pulled straight
+along z and both drills run across the pull, the place where the drills can meet is a rectangle in the outline's plane. If that rectangle, grown by
+0.01 mm, has no point in common with the outline, the hole is let through. A box, a circle, a rounded or dimensioned outline, a tilted or tapered pull,
+a moved part, or an outline that does not match the measured part keep the refusal. Unit tests: `packages/layer/test/cross-in-air.test.mjs`.
+
+With the guard ON, two seeded families (`cx61-narrow.jsonl`, `cx62-narrow.jsonl`, 144 scripts):
+
+| | scripts | result |
+|---|---|---|
+| the drills meet only in empty space | 90 | all built, within 5.9e-6 of the closed form, 2.4 s at most |
+| the same with a counterbore | 30 | refused by G-TOP, as before |
+| the holes truly cross inside the material | 24 | all refused by G-CROSS, as before |
+
+In the page the pilot's bracket (task 1, as first typed) now builds first time: 26598.765 against 26598.717.
+
+Side effects, checked on 0.30.1: 0 of 4784 host-route rows changed across the six corpora; the holes live replay is 353 of 353 identical; `npm test` 1014 tests,
+1008 pass, 6 skipped, 0 fail.
+
+### Sentence slips, done (owner approved the exact text)
+
+- F2: "round1 builds on hole2, which could not be built, so round1 is shown without it too -- fix hole2 first."
+- F5: "hole2 (hole): it comes after hole1, which could not be built, so hole2 is shown without it -- fix hole1 first."
+- F4: "hole1 (hole): drilling a spun shape is not supported yet, so hole1 is shown without it -- for a hole down the middle, leave a gap in the sketch
+  that is spun; for other holes, build the part from cylinders instead."
+
+### F5, F8 (owner chose "also check blocked steps"): not built, because it would catch almost nothing
+
+Checking a blocked step's own numbers without the kernel was looked at step by step. The checks that are pure arithmetic are few: a hole under the
+smallest size, a countersink angle too flat, a recess too small, a hole wholly off the part, and a hollow's wall against a plain box. The mistakes a
+student makes are decided by building: a hole wider than the part, a round bigger than its face, a wall too thick for a shape that is not a box.
+In the pilot's own example (task 6) the number check finds nothing: the wall of 6 fits that box, and the hole of 35 is only found by cutting it.
+
+What would work: test-build each blocked step on the part as it stands, without showing it, and report its own refusal if it has one. The step stays
+blocked, so what is on screen does not change. It costs kernel time for every blocked step and a change to each feature group's step function and its
+contract copy. Owner's call.
