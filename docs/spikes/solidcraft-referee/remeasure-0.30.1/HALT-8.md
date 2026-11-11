@@ -84,7 +84,22 @@ case (with "bottom" in the sentence). A hollow after a counterbore builds in the
 - the page refuses a clean countersink-then-hollow that should build, with a sentence that does not describe the cause;
 - the Node host route and the page disagree on countersink-then-hollow. The sweeps score the Node route.
 
-Not checked: the same page run on the pre-fix tree (the fix does not touch name lookup), and why the lookup fails.
+### Why the page's lookup fails (investigated 2026-11-10, owner request)
+
+The cause is on our side of the seam, in `packages/solidcraft-host/src/upstream-bridge.mjs`, and it is deliberate caution, not an upstream defect.
+
+- The page has no primitive-frame resolver, so a face word ("top") is resolved from the engine's topology (`resolveNamesFor`). A face whose centroid
+  is in a hole needs a pick point, and the bridge passes one on only when `verifiedInnerPoint()` can back it.
+- `verifiedInnerPoint()` checks that no OTHER face's surface comes near the point. `surfaceDistance()` knows planes and cylinders only. For a cone
+  it returns null, and one null makes the answer null for every face of the body.
+- So after a countersink (one cone face) no face of the part has a pick point. Measured in the page on a 40×30×10 plate: after a countersink all
+  six flat faces come back with no pick point; after a counterbore all of them have one. `open: 'front'` is refused the same way as `open: 'top'`.
+- The sentence then names the face as not found. The true reason is "the page cannot check a pick point on a part that has a cone face".
+- The Node host route uses a stand-in (`test/topology-upstream.mjs` on the rig's topology build) that reports pick hits directly, so it does not
+  have this limit. For parts with a cone face the Node sweeps therefore reach further than the page does. That errs on the safe side: the page refuses more.
+
+Expected to follow from the same code, not measured: any feature that picks a face on a part with a cone, sphere or torus face is refused in the
+page the same way. Not checked: whether upstream's `model.faces` describes a cone well enough for `surfaceDistance()` to handle it.
 
 ## Options (none made)
 
