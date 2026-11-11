@@ -27,7 +27,8 @@ on:
 # different points, and the badge shows whichever finished last.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # PRs cancel their stale run; every push to main runs to completion, so no main commit goes unchecked
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   # The kernel's own native tests, in their own job. They need neither Node nor
