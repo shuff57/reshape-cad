@@ -164,6 +164,9 @@ export interface TranslateCtx {
   skipFilletChain?: boolean;
   /** holes profile only: names of guards to switch OFF (the group's negative controls; ALL_GUARDS lists them). Never set in production. */
   guardsOff?: string[];
+  /** PROTOTYPE, off unless set (pilot 2026-11 F5/F8): a hole that is blocked because the step before it was refused is test-built on the part as it stands,
+   *  never kept, and its OWN refusal is reported if it has one. The hole stays refused either way. Costs engine time for every blocked hole. */
+  probeBlocked?: boolean;
   /**
    * shell-draft set only: the group's pick source. Resolve a name to a face point in the PRIMITIVE's own frame (before any move of the history; the
    * original asked brep-rs `resolve` and took `centroid`). When the host supplies it, the set runs the group's G-PICK exactly (it shifts the point by the

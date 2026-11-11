@@ -292,3 +292,37 @@ In the pilot's own example (task 6) the number check finds nothing: the wall of 
 What would work: test-build each blocked step on the part as it stands, without showing it, and report its own refusal if it has one. The step stays
 blocked, so what is on screen does not change. It costs kernel time for every blocked step and a change to each feature group's step function and its
 contract copy. Owner's call.
+
+### F5, F8: prototype for holes (owner chose "prototype on holes first"), off by default
+
+`probeBlockedHole()` in `packages/layer/src/holes.ts`, used only when `ctx.probeBlocked` is set (nothing sets it: the page and every test run as before).
+A hole that is blocked by a refused step is planned on the last step of that part that was built, with the usual guards, then cut on the engine and
+put through the usual after-the-build check. Nothing is kept and the hole stays refused. If that test build has its own refusal, that sentence is
+shown in place of "it comes after ...". Existing sentences only.
+
+Nine scripts, switch off and on (`blocked.json`, `blocked-off.jsonl`, `blocked-on.jsonl`), Node host route on 0.30.1:
+
+| blocked hole | off | on |
+|---|---|---|
+| 35 across on a 30 wide box, after a refused round (the pilot's task 6) | "it comes after round1 ..." | "it would leave 2 separate pieces where there is 1 now ... make the hole narrower than the part ..." |
+| bolt holes 2 and 3 on a spun bushing (task 3) | "it comes after hole1 ..." | the spun-shape sentence, on each |
+| a hole placed off the part | "it comes after round1 ..." | "it does not touch the part ... (check at:) ..." |
+| a hole that would touch an earlier one along a line | "it comes after round1 ..." | "its hole would touch another hole along a line ..." |
+| a countersink at 175 degrees, two steps after a refused hole | "it comes after hole3 ..." | "a countersink angle wider than 170 degrees ..." |
+| a good hole after a refused round, and one after a refused hole | "it comes after ..." | unchanged: it would build, so only the block is reported |
+
+No feature changed between built and refused in any script.
+
+Corpora with the switch on, against the same corpora with it off:
+
+| corpus | rows | blocked holes | own refusal found | built / refused changes | time |
+|---|---|---|---|---|---|
+| holes | 357 | 1 | 0 | 0 | 250 s to 196 s (noise) |
+| combined | 600 | 333 | 151 (G-TOP 90, G-CURVED 21, G-BODIES 11, G-RECESS 9, G-CSEDGE 7, G-TANGENT 6, G-NOOP 4, three others 1 each) | 0 | 302 s to 587 s |
+| mt | 1930 | 4 | 0 | 0 | 294 s to 290 s (noise) |
+
+So in the combined corpus 45% of blocked holes had a mistake of their own that the student is not told today. The cost is about 0.9 s of kernel time
+per blocked hole; on a student script with one or two blocked holes that is 0.2 to 0.6 s.
+
+Not done: hollows, drafts, rounds and bevels (a hollow after a blocked hole still says "it needs hole1"); the contract copy `holes4-translate.mjs`;
+a unit test with a fake engine; the page (the switch is not set there).

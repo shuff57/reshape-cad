@@ -284,6 +284,11 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
         : f.kind === 'shell' && !f.open ? refuse(SHELL_CLOSED(f), 'G-CLOSED')
           : planFeature(f, st, fctx, BASE_PROFILE) as unknown as StepPlan;
   } catch (e) { const r: StepPlan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); r.raw = String((e as Error).message); plan = r; }
+  // PROTOTYPE (ctx.probeBlocked, off by default): a hole blocked by a refused step is test-built on the part as it stands; its own refusal, if any, is what the student is told
+  if (plan.refusal && plan.guard === 'dependency' && f.kind === 'hole' && ctx.probeBlocked) {
+    const own = await probeBlockedHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB }, hs.allCount);
+    if (own) { st.refused[f.id] = own.refusal; note({ status: 'refused', refusal: own.refusal, guard: own.guard, raw: `blocked (${plan.refusal}); own refusal found by a test build on ${own.base}`, commands: [] }); return; }
+  }
   if (plan.refusal) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); return; }
   if (plan.noop) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
@@ -356,6 +361,37 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   const sentence = f.kind === 'hole' ? (engineSentence(f as unknown as HoleView, lastErr) ?? SENTENCE.engine(f as unknown as HoleView)) : `${f.id} (${f.kind}): this step could not be built cleanly, so ${f.id} is shown without it.`;
   st.refused[f.id] = sentence;
   note({ status: 'refused', refusal: sentence, raw: lastErr, guard: 'G-ENGINE', commands: plan.variants![0] });
+}
+
+/**
+ * PROTOTYPE (pilot 2026-11 F5/F8). `f` is blocked: the step before it was refused. Find the last step of the same part that WAS built, plan `f` on it with
+ * the usual guards, and (if they pass) cut it on the engine and run the usual after-the-build check. Nothing is kept. Returns the hole's own refusal, or null
+ * when the hole would build (or the part before the refused steps cannot be found), in which case the blocked sentence stands.
+ */
+async function probeBlockedHole(f: HoleView, st: TranslateState, G: HoleG, allCountBefore: number): Promise<{ refusal: string; guard: string; base: string } | null> {
+  let base: string | undefined = G.headOf(f.target); const seen = new Set<string>();
+  while (base && st.refused[base] && !seen.has(base)) {
+    seen.add(base); const x: RootView | undefined = G.byId[base];
+    base = x && ['hole', 'fillet', 'shell', 'draft'].includes(x.kind) && x.target ? G.headOf(x.target) : undefined;
+  }
+  if (!base || st.refused[base] || st.stale[base] || !st.bodies[base] || !st.measure[base]) return null;
+  const f2: HoleView = { ...f, target: base };
+  let plan: HolePlan | GuardRefusal;
+  try { plan = await planHole(f2, st, G); } catch { return null; }
+  if ('refusal' in plan && plan.refusal) return plan.guard === 'dependency' ? null : { refusal: plan.refusal, guard: plan.guard ?? 'guard', base };
+  const hp = plan as HolePlan; let lastErr: string | null = null; let errored = false;
+  for (const variant of hp.variants) {
+    const res = await G.runB([...G.accepted, ...variant], { replay: false });
+    if (res.timedOut) return { refusal: SENTENCE.budget(f), guard: 'G-BUDGET', base };
+    if (!res.ok) { if (res.erroredBody) errored = true; lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
+    const m = aggregateOf(res, hp.produces);
+    if (!m) { lastErr = 'no body came back'; continue; }
+    const allBodies: BodyRow[] = res.measure!.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
+    const bad = hp.post ? hp.post(m, st.measure[base], { allBodies, allCountBefore, accepted: G.accepted, variant, off: G.off }) : null;
+    return bad ? { refusal: bad.refusal, guard: bad.guard ?? 'guard', base } : null; // null: it would build
+  }
+  if (errored) return { refusal: erroredBodySentence(f), guard: ERRORED_BODY_GUARD, base };
+  return { refusal: engineSentence(f, lastErr) ?? SENTENCE.engine(f), guard: 'G-ENGINE', base };
 }
 
 // ---- helpers ---------------------------------------------------------------------------------------------------------------------------
