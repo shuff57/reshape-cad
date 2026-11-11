@@ -348,7 +348,8 @@ function showResult(r, extra) {
   const bb = bboxOf(bodies);
   const rows = [
     ['bodies', bodies.map((b) => `${b.name} (${fmt(b.volume_mm3, 3)} mm3)`).join(', ') || '(none)'],
-    ['total volume', bodies.length && m ? `${fmt(m.volume_mm3 ?? m.volume, 6)} mm3` : '-'],
+    // upstream's measure reply has no total (it showed "undefined mm3"): the total is the sum over the bodies it does report
+    ['total volume', bodies.length ? `${fmt(m?.volume_mm3 ?? m?.volume ?? bodies.reduce((t, b) => t + b.volume_mm3, 0), 6)} mm3` : '-'],
     ['bbox', bb ? `[${bb.map((v) => fmt(v, 3)).join(', ')}]` : '-'],
     ['faces', String(bodies.reduce((s, b) => s + b.faces, 0))],
     ...extra,

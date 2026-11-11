@@ -1,0 +1,357 @@
+[
+ {
+  "id": "t1a-bracket",
+  "title": "L bracket: sketch, extrude, two screw holes, one rounded edge",
+  "script": "// an L-shaped bracket, 30 wide, with a screw hole in each leg\nconst sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nhole(part, { across: 5, along: 'y', at: [10, 0] })\nhole(part, { across: 5, along: 'x', at: [5, 0] })\nround(part.edge('top', 'right'), 2)",
+  "expect": 26598.716844837174,
+  "wallMs": 1104,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1\nhole2\thole\trefused\thole2 (hole): it crosses hole1, a hole drilled in another direction, and crossing holes are not supported yet, so hole2 is shown without it -- drill the holes so they do not meet, or drill along one direction only.\nround1\tfillet\trefused\tround1 builds on hole2, which is shown without its round, so round1 is shown without it too -- fix hole2 first.",
+  "status": "built with 2 refusal(s)",
+  "diag": null,
+  "volume": 26803.683073533215,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26803.683073533215,
+    "faces": 9
+   }
+  ]
+ },
+ {
+  "id": "t2a-tray-naive",
+  "title": "Tray with a countersunk screw hole: drill first, then hollow",
+  "script": "// a small parts tray with one screw hole in the middle\nconst b = box(80, 50, 30)\nhole(b, { across: 4, countersink: { across: 8, angle: 90 } })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": null,
+  "wallMs": 3160,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or drill after hollowing.",
+  "status": "built with 1 refusal(s)",
+  "diag": null,
+  "volume": 119589.5607892095,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 119589.5607892095,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t2b-tray-advice",
+  "title": "Tray, following the sentence: hollow first, then drill",
+  "script": "const b = box(80, 50, 30)\nhollow(b, { wall: 2, open: 'top' })\nhole(b, { across: 4, countersink: { across: 8, angle: 90 } })",
+  "expect": 22086.867258771283,
+  "wallMs": 1789,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1\nhole1\thole\trefused\thole1 (hole): a countersink is cut from the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top.",
+  "status": "built with 1 refusal(s)",
+  "diag": null,
+  "volume": 22111.999999999996,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 22111.999999999996,
+    "faces": 11
+   }
+  ]
+ },
+ {
+  "id": "t2c-tray-plain",
+  "title": "Tray with a plain hole, drilled first",
+  "script": "const b = box(80, 50, 30)\nhole(b, { across: 4 })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": 23142.44239037746,
+  "wallMs": 2406,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "status": "built",
+  "diag": null,
+  "volume": 23142.34619783583,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23142.34619783583,
+    "faces": 14
+   }
+  ]
+ },
+ {
+  "id": "t3a-bushing",
+  "title": "Flanged bushing: revolve a profile, four bolt holes in the flange",
+  "script": "// profile in (radius, height): bore 10, flange 40 across and 5 thick, sleeve 20 across and 25 tall\nconst sk = sketch('front', 0)\nsk.polygon([[5, 0], [20, 0], [20, 5], [10, 5], [10, 25], [5, 25]])\nconst part = revolve(sk, 360)\nhole(part, { across: 3, at: [15, 0] })\nhole(part, { across: 3, at: [-15, 0] })\nhole(part, { across: 3, at: [0, 15] })\nhole(part, { across: 3, at: [0, -15] })",
+  "expect": 10461.50353645401,
+  "wallMs": 1822,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\nrev1\trevolve\tbuilt\tbuilt: b_rev1\nhole1\thole\trefused\thole1 (hole): drilling a spun shape is not supported yet, so hole1 is shown without it -- leave a gap for the hole in the sketch that is spun instead.\nhole2\thole\trefused\thole2 (hole): the part it drills (hole1) could not be built, so hole2 is shown without it -- fix hole1 first.\nhole3\thole\trefused\thole3 (hole): the part it drills (hole2) could not be built, so hole3 is shown without it -- fix hole2 first.\nhole4\thole\trefused\thole4 (hole): the part it drills (hole3) could not be built, so hole4 is shown without it -- fix hole3 first.",
+  "status": "built with 4 refusal(s)",
+  "diag": null,
+  "volume": 10601.88415961558,
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 10601.88415961558,
+    "faces": 6
+   }
+  ]
+ },
+ {
+  "id": "t4a-plate",
+  "title": "Dimensioned plate: constrained sketch with a hole, extrude, one more drilled hole, bevelled edge",
+  "script": "// a 50 x 30 plate drawn by hand and then dimensioned, 6 thick\nconst sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nconst big = sk.circle([34, 14], { r: 4.6 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nsk.diameter(big, 10)\nsk.dx(plate.bottom.a, big.c, 35)\nsk.dy(plate.bottom.a, big.c, 15)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0] })\nchamfer(part.edge('top', 'right'), 1)",
+  "expect": 8438.362878275375,
+  "wallMs": 46,
+  "threw": null,
+  "features": "SCRIPT ERROR (line 12): hole() cannot find how thick this extrude is along z yet, so it cannot drill all the way through. Give it a depth: hole(shape, { across: 4, deep: 20 }). No new build. The viewport still shows the previous run.",
+  "status": "ready",
+  "diag": null,
+  "volume": 0,
+  "bodies": []
+ },
+ {
+  "id": "t5a-mould",
+  "title": "Moulded cup: box, draft two opposite sides, hollow",
+  "script": "// a cup with two sloped sides so it comes out of a mould\nconst b = box(60, 40, 25)\ndraft(b.face('right'), 5, { from: 'bottom' })\ndraft(b.face('left'), 5, { from: 'bottom' })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": 13413.331275581011,
+  "wallMs": 2268,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\ndraft1\tdraft\tbuilt\tbuilt: b_box1\ndraft2\tdraft\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "status": "built",
+  "diag": null,
+  "volume": 13413.331275580998,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13413.331275580998,
+    "faces": 11
+   }
+  ]
+ },
+ {
+  "id": "t5b-mould-four",
+  "title": "Moulded cup, all four sides sloped (what a student would want)",
+  "script": "const b = box(60, 40, 25)\ndraft(b.face('right'), 5, { from: 'bottom' })\ndraft(b.face('left'), 5, { from: 'bottom' })\ndraft(b.face('front'), 5, { from: 'bottom' })\ndraft(b.face('back'), 5, { from: 'bottom' })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": null,
+  "wallMs": 2953,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\ndraft1\tdraft\tbuilt\tbuilt: b_box1\ndraft2\tdraft\tbuilt\tbuilt: b_box1\ndraft3\tdraft\tbuilt\tbuilt: b_box1\ndraft4\tdraft\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "status": "built",
+  "diag": null,
+  "volume": 13193.107966871607,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13193.107966871607,
+    "faces": 11
+   }
+  ]
+ },
+ {
+  "id": "t6a-mistakes",
+  "title": "Common mistakes on one part: wall too thick, round too big, hole wider than the part",
+  "script": "const b = box(40, 30, 10)\nround(b.edge('top', 'right'), 12)\nhole(b, { across: 35 })\nhollow(b, { wall: 6, open: 'top' })",
+  "expect": null,
+  "wallMs": 1576,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nround1\tfillet\trefused\tThe round round1 is as big as or bigger than the face it cuts into (10 wide), so round1 is shown without it -- use a size under 10.\nhole1\thole\trefused\thole1 (hole): the part it drills (round1) could not be built, so hole1 is shown without it -- fix round1 first.\nshell1\tshell\trefused\tshell1 (hollow): it needs hole1, which could not be built, so shell1 is shown without it.",
+  "status": "built with 3 refusal(s)",
+  "diag": null,
+  "volume": 12000,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 12000,
+    "faces": 6
+   }
+  ]
+ },
+ {
+  "id": "t6b-fixed",
+  "title": "The same part with sensible numbers",
+  "script": "const b = box(40, 30, 10)\nround(b.edge('top', 'right'), 2)\nhole(b, { across: 6 })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": null,
+  "wallMs": 2422,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nround1\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[+z] ^ box1.face[+x]] \u2192 solidcraft edge(s) F1:+x|F1:+z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:+x|F1:+z); pick (20, 0, 5)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): the open edge of hole1 is rounded with a radius of 2, which is as large as the wall (2), so the rim would have no thickness and shell1 is shown without it -- make the round smaller than the wall.",
+  "status": "built with 1 refusal(s)",
+  "diag": null,
+  "volume": 11691.521833759383,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11691.521833759383,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t1b-bracket-advice",
+  "title": "L bracket, following the sentence: both holes along one direction",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nhole(part, { across: 5, along: 'y', at: [10, 0] })\nhole(part, { across: 5, along: 'y', at: [-5, 0] })\nround(part.edge('top', 'right'), 2)",
+  "expect": 26598.716844837174,
+  "wallMs": 3784,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1\nhole2\thole\tbuilt\tbuilt: b_pull1\nround1\tfillet\tbuilt\tbuilt: b_pull1\nname pull1.edge[pull1.face[+z] ^ pull1.face[+x]] \u2192 solidcraft edge(s) F2:side:l2|F2:top; candidates on the name's own shape: 1\non the target body b_pull1: candidates 1 (F2:side:l2|F2:top); pick (60, 5, 30)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees",
+  "status": "built",
+  "diag": null,
+  "volume": 26598.76493619005,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26598.76493619005,
+    "faces": 11
+   }
+  ]
+ },
+ {
+  "id": "t2d-tray-bottom",
+  "title": "Tray, following the sentence the other way: countersink first, open a different face (bottom)",
+  "script": "const b = box(80, 50, 30)\nhole(b, { across: 4, countersink: { across: 8, angle: 90 } })\nhollow(b, { wall: 2, open: 'bottom' })",
+  "expect": null,
+  "wallMs": 5974,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "status": "built",
+  "diag": null,
+  "volume": 23118.059074251865,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23118.059074251865,
+    "faces": 16
+   }
+  ]
+ },
+ {
+  "id": "t3b-bushing-solids-r",
+  "title": "Flanged bushing from solids, sizes typed as radii (a slip: cylinder takes a diameter)",
+  "script": "const flange = cylinder(20, 5, { at: [0, 0, 2.5] })\nconst sleeve = cylinder(10, 25, { at: [0, 0, 12.5] })\nconst part = union(flange, sleeve)\nhole(part, { across: 10 })\nhole(part, { across: 3, at: [15, 0] })\nhole(part, { across: 3, at: [-15, 0] })\nhole(part, { across: 3, at: [0, 15] })\nhole(part, { across: 3, at: [0, -15] })",
+  "expect": 10461.50353645401,
+  "wallMs": 3429,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\ncyl1\tcylinder\tbuilt\tbuilt: b_cyl1\ncyl2\tcylinder\tbuilt\tbuilt: b_cyl2\nop1\tcombine\tbuilt\tbuilt: b_cyl1\nhole1\thole\tbuilt\tbuilt: b_cyl1\nhole2\thole\trefused\thole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider.\nhole3\thole\trefused\thole3 (hole): the part it drills (hole2) could not be built, so hole3 is shown without it -- fix hole2 first.\nhole4\thole\trefused\thole4 (hole): the part it drills (hole3) could not be built, so hole4 is shown without it -- fix hole3 first.\nhole5\thole\trefused\thole5 (hole): the part it drills (hole4) could not be built, so hole5 is shown without it -- fix hole4 first.",
+  "status": "built with 4 refusal(s)",
+  "diag": null,
+  "volume": 1178.0441694791405,
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 1178.0441694791405,
+    "faces": 4
+   }
+  ]
+ },
+ {
+  "id": "t3c-bushing-gap",
+  "title": "Flanged bushing, following the sentence literally: the bore left as a gap in the spun sketch, no bolt holes",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[5, 0], [20, 0], [20, 5], [10, 5], [10, 25], [5, 25]])\nconst part = revolve(sk, 360)",
+  "expect": 10602.875205865552,
+  "wallMs": 1366,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\nrev1\trevolve\tbuilt\tbuilt: b_rev1",
+  "status": "built",
+  "diag": null,
+  "volume": 10601.88415961558,
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 10601.88415961558,
+    "faces": 6
+   }
+  ]
+ },
+ {
+  "id": "t4b-plate-deep",
+  "title": "Dimensioned plate, following the error: the drilled hole given its depth (6, the plate thickness)",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nconst big = sk.circle([34, 14], { r: 4.6 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nsk.diameter(big, 10)\nsk.dx(plate.bottom.a, big.c, 35)\nsk.dy(plate.bottom.a, big.c, 15)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0], deep: 6 })\nchamfer(part.edge('top', 'right'), 1)",
+  "expect": 8438.362878275375,
+  "wallMs": 4047,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1\nbevel1\tfillet\tbuilt\tbuilt: b_pull1\nname pull1.edge[pull1.face[+z] ^ pull1.face[+x]] \u2192 solidcraft edge(s) F2:side:g2|F2:top; candidates on the name's own shape: 1\non the target body b_pull1: candidates 1 (F2:side:g2|F2:top); pick (50, 15, 6)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees",
+  "status": "built",
+  "diag": null,
+  "volume": 8438.420660012012,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8438.420660012012,
+    "faces": 9
+   }
+  ]
+ },
+ {
+  "id": "t4c-plate-deep20",
+  "title": "Dimensioned plate, copying the error's own example depth (20, deeper than the plate)",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nconst big = sk.circle([34, 14], { r: 4.6 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nsk.diameter(big, 10)\nsk.dx(plate.bottom.a, big.c, 35)\nsk.dy(plate.bottom.a, big.c, 15)\nconst part = extrude(sk, 6)\nhole(part, { across: 4, at: [-15, 0], deep: 20 })",
+  "expect": 8453.362878275375,
+  "wallMs": 2037,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nhole1\thole\tbuilt\tbuilt: b_pull1",
+  "status": "built",
+  "diag": null,
+  "volume": 8453.420660012014,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8453.420660012014,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t4d-plate-nohole",
+  "title": "Dimensioned plate without the drilled hole: sketch, extrude, bevel",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.4, 0.3], [48, 31])\nconst big = sk.circle([34, 14], { r: 4.6 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 50)\nsk.length(plate.right, 30)\nsk.diameter(big, 10)\nsk.dx(plate.bottom.a, big.c, 35)\nsk.dy(plate.bottom.a, big.c, 15)\nconst part = extrude(sk, 6)\nchamfer(part.edge('top', 'right'), 1)",
+  "expect": 8513.76110196153,
+  "wallMs": 1977,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nsk1\tsketch\tnoop\tsketch (staged; built with the feature that uses it)\npull1\textrude\tbuilt\tbuilt: b_pull1\nbevel1\tfillet\tbuilt\tbuilt: b_pull1\nname pull1.edge[pull1.face[+z] ^ pull1.face[+x]] \u2192 solidcraft edge(s) F2:side:g2|F2:top; candidates on the name's own shape: 1\non the target body b_pull1: candidates 1 (F2:side:g2|F2:top); pick (50, 15, 6)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees",
+  "status": "built",
+  "diag": null,
+  "volume": 8513.839376479338,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 8513.839376479338,
+    "faces": 8
+   }
+  ]
+ },
+ {
+  "id": "t6c-round-smaller",
+  "title": "Following the sentence: the round made smaller than the wall",
+  "script": "const b = box(40, 30, 10)\nround(b.edge('top', 'right'), 1)\nhole(b, { across: 6 })\nhollow(b, { wall: 2, open: 'top' })",
+  "expect": 4851.1371367967995,
+  "wallMs": 3861,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nround1\tfillet\tbuilt\tbuilt: b_box1\nname box1.edge[box1.face[+z] ^ box1.face[+x]] \u2192 solidcraft edge(s) F1:+x|F1:+z; candidates on the name's own shape: 1\non the target body b_box1: candidates 1 (F1:+x|F1:+z); pick (20, 0, 5)\ncross-checks on the name's OWN shape only: geometry vs persistent names agrees\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "status": "built",
+  "diag": null,
+  "volume": 4851.128829440338,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 4851.128829440338,
+    "faces": 15
+   }
+  ]
+ },
+ {
+  "id": "t3d-bushing-solids",
+  "title": "Flanged bushing from solids instead of a spun sketch: two cylinders joined, bore, four bolt holes",
+  "script": "const flange = cylinder(40, 5, { at: [0, 0, 2.5] })\nconst sleeve = cylinder(20, 25, { at: [0, 0, 12.5] })\nconst part = union(flange, sleeve)\nhole(part, { across: 10 })\nhole(part, { across: 3, at: [15, 0] })\nhole(part, { across: 3, at: [-15, 0] })\nhole(part, { across: 3, at: [0, 15] })\nhole(part, { across: 3, at: [0, -15] })",
+  "expect": 10461.50353645401,
+  "wallMs": 8072,
+  "threw": null,
+  "features": "id\tkind\tstatus\tdetail\ncyl1\tcylinder\tbuilt\tbuilt: b_cyl1\ncyl2\tcylinder\tbuilt\tbuilt: b_cyl2\nop1\tcombine\tbuilt\tbuilt: b_cyl1\nhole1\thole\tbuilt\tbuilt: b_cyl1\nhole2\thole\tbuilt\tbuilt: b_cyl1\nhole3\thole\tbuilt\tbuilt: b_cyl1\nhole4\thole\tbuilt\tbuilt: b_cyl1\nhole5\thole\tbuilt\tbuilt: b_cyl1",
+  "status": "built",
+  "diag": null,
+  "volume": 10461.36747917533,
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 10461.36747917533,
+    "faces": 10
+   }
+  ]
+ }
+]

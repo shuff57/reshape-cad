@@ -1245,7 +1245,7 @@
   "id": "named-cylinder-rim",
   "group": "3d",
   "title": "Round the top rim of a cylinder (edge between top and side)",
-  "script": "// the rim of a 12 mm radius, 30 mm tall cylinder; solidcraft splits the wall into 2 halves and the rim into 2 half circles\nconst c = cylinder(12, 30)\nround(c.edge('top', 'side'), 3)",
+  "script": "// the rim of a cylinder 12 mm across and 30 mm tall; solidcraft splits the wall into 2 halves and the rim into 2 half circles\nconst c = cylinder(12, 30)\nround(c.edge('top', 'side'), 3)",
   "expect": "PASS, curved. The name resolves to ONE closed loop of 2 engine half-edges (F1:side#1|F1:top + F1:side#2|F1:top); picking one point rounds the whole rim. Volume = OCCT's.",
   "curved": true,
   "ref": {
