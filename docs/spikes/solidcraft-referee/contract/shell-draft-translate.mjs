@@ -66,6 +66,7 @@ export const SENTENCE = {
   thickGeneric: (f) => `Hollowing ${f.target} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width.`,
   tie: (f, word, kind, n) => `${f.id}: the ${word} face is ambiguous on this ${n ? n + '-sided ' : ''}${kind} because two faces are equally far ${word}, so ${f.id} is shown without it -- pick a face that has only one candidate (for example top or bottom), or ${kind === 'box' ? 'turn the box a little less' : 'use a different number of sides'}.`,
   stale: (f, what) => `${f.id}: the ${what} cannot be found reliably after the part was turned or copied, so ${f.id} is shown without it -- apply it before turning the part.`,
+  csinkOpen: (f, hole) => `${f.id} (hollow): not supported yet because ${hole} has a countersink on the face being opened, so ${f.id} is shown without it -- open a different face, or drill after hollowing.`,
   holeNear: (f, why) => `${f.id} (hollow): not supported yet because a hole would be too close to a wall or to another hole (${why}), so ${f.id} is shown without it -- move the holes apart, or drill after hollowing.`,
   rim: (f, rr, t, style) => `${f.id} (hollow): the open edge of ${f.target} is ${style === 'chamfer' ? 'bevelled by' : 'rounded with a radius of'} ${fmt(rr)}, which is as large as the wall (${fmt(t)}), so the rim would have no thickness and ${f.id} is shown without it -- make the ${style === 'chamfer' ? 'bevel' : 'round'} smaller than the wall.`,
   openAxisEngine: (f) => `${f.id} (hollow): ${f.target} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`,
@@ -591,7 +592,9 @@ function planShell(f, st, ctx, G) {
     const tubes = [];
     for (const h of holes) {
       const box = G.holeBox[h.id]; if (!box) return bad('the part was measured before the hole');
-      const ax = AXI[h.axis ?? 'z']; const r = Math.max(h.diameter, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2; const R = r + f.thickness; // the recess mouth included (HALT-7)
+      const ax = AXI[h.axis ?? 'z'];
+      if (h.countersink && ax === O && openHi) return { ...refuse(SENTENCE.csinkOpen(f, h.id)), guard: 'G-CSOPEN' }; // HALT-8: a countersink's mouth on the face being opened
+      const r = Math.max(h.diameter, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2; const R = r + f.thickness; // the recess mouth included (HALT-7)
       const bc = [0, 1, 2].map((i) => (box[i] + box[i + 3]) / 2);
       const c = [0, 1, 2].map((i) => bc[i] + h.center[i]);
       for (const i of [0, 1, 2].filter((k) => k !== ax)) {

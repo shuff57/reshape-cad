@@ -1,0 +1,164 @@
+[
+ {
+  "id": "r-corner-csink90-w2",
+  "wallMs": 3433,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or drill after hollowing.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 247,
+    "cpuMs": 48,
+    "loadMs": 5,
+    "vol": 10800
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 107,
+    "cpuMs": 79,
+    "loadMs": 5,
+    "vol": 10799.97792064475
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.072,
+    "status": "done",
+    "wallMs": 737,
+    "cpuMs": 724,
+    "loadMs": 3,
+    "vol": 10669.376965930982
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "csink-plate-top",
+  "wallMs": 3349,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or drill after hollowing.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 243,
+    "cpuMs": 52,
+    "loadMs": 5,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 78,
+    "cpuMs": 63,
+    "loadMs": 4,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.078,
+    "status": "done",
+    "wallMs": 803,
+    "cpuMs": 791,
+    "loadMs": 5,
+    "vol": 11840.846318399332
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "csink-plate-bottom",
+  "wallMs": 3773,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\trefused\tshell1 (hollow): the bottom face of hole1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 246,
+    "cpuMs": 44,
+    "loadMs": 6,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 82,
+    "cpuMs": 68,
+    "loadMs": 4,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.066,
+    "status": "done",
+    "wallMs": 714,
+    "cpuMs": 685,
+    "loadMs": 5,
+    "vol": 11840.846318399332
+   }
+  ],
+  "volume": 0
+ },
+ {
+  "id": "cbore-plate-top",
+  "wallMs": 3147,
+  "features": "id\tkind\tstatus\tdetail\nbox1\tbox\tbuilt\tbuilt: b_box1\nhole1\thole\tbuilt\tbuilt: b_box1\nshell1\tshell\tbuilt\tbuilt: b_box1",
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 248,
+    "cpuMs": 44,
+    "loadMs": 7,
+    "vol": 12000
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 81,
+    "cpuMs": 63,
+    "loadMs": 4,
+    "vol": 11999.960747812904
+   },
+   {
+    "cmds": 2,
+    "last": "solid.hole",
+    "budgetS": 45.066,
+    "status": "done",
+    "wallMs": 163,
+    "cpuMs": 151,
+    "loadMs": 3,
+    "vol": 11798.966112459044
+   },
+   {
+    "cmds": 3,
+    "last": "solid.shell",
+    "budgetS": 45.2265,
+    "status": "done",
+    "wallMs": 373,
+    "cpuMs": 361,
+    "loadMs": 5,
+    "vol": 4964.370772589602
+   }
+  ],
+  "volume": 0
+ }
+]

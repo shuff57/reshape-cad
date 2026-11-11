@@ -3,7 +3,20 @@
 2026-11-10, branch `t3/halt-7-hollow-recess-fix`, after the HALT-7 fix (`adcb8c37`), pin SolidCraft v0.30.1 (`8e2b0cd6`). Found by the seeded
 hollow-after-recess family the HALT-7 brief asked for. No fix is made here: the owner chose the radius fix only, and this needs a new decision.
 
-Status: OPEN. Evidence: `halt-7-fix/` beside this file.
+Status: **GUARDED 2026-11-10** by owner decision (option 1 below): `G-CSOPEN` in `packages/layer/src/shell-draft.ts` refuses every hollow that opens the
+face a countersink's mouth is on, with the sentence the owner approved:
+
+> shell1 (hollow): not supported yet because hole1 has a countersink on the face being opened, so shell1 is shown without it -- open a different face, or drill after hollowing.
+
+Checked (`halt-8-fix/`): all 8 wrong builds and the round-number repros are refused; of the 249 seeded scripts the 89 that open a countersink's
+face are refused by it (38 of them built right before: the accepted cost), 4 more stop earlier at the hole, and the other 156 are unchanged; a
+counterbore, and a countersink with another face opened, still reach the kernel. In the real page the corner repro and the clean plate show the
+new sentence in 3.4 s; a counterbore builds; a countersink with the bottom opened still gets the name-lookup sentence (below). Existing corpora
+through the host route: 0 rows changed in sd, holes, combined and mt (3984 rows); fccombined and rgcombined were still running when this was written.
+The page's name-lookup refusal is still open: upstream's `model.faces` describes planes and cylinders only, so the bridge has nothing to verify a
+pick point against beside a cone.
+
+Evidence for the finding: `halt-7-fix/` beside this file.
 
 ## What is wrong
 
