@@ -30,8 +30,87 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The kernel's own native tests, in their own job. They need neither Node nor
+  # the wasm, and nothing in build-and-test reads their output, so they run in
+  # parallel with it instead of in front of it. Before this split they were
+  # ~4 of the job's ~6.5 minutes (run 42961392405: compile 61 s, then the full
+  # 746-test suite twice at ~93 s each), all of it on the critical path.
+  kernel-native:
+    runs-on: ubuntu-latest
+    # Measured ~3 min. The ceiling is for a hung test, not a slow day: without
+    # it a deadlocked test holds the runner for GitHub's 6-hour default.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      # Keyed on Cargo.lock. Its own key, not build-and-test's: this job builds
+      # host-target release artifacts and that one builds wasm32, so sharing a
+      # key would make the two jobs race to save a cache that only fits one.
+      #
+      # v6, not v4: v4's action.yml declares `using: node20`, which GitHub
+      # force-runs on Node 24 and warned about on every run. Nothing in this
+      # repo would have changed when Node 20 stops being supported -- the job
+      # would just start failing from the outside.
+      - name: Cache cargo
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            archive/brep-rs/target
+          key: cargo-native-${{ runner.os }}-${{ hashFiles('archive/brep-rs/Cargo.lock') }}
+          restore-keys: cargo-native-${{ runner.os }}-
+
+      # They never needed wasm and so were never run here either; the toolchain
+      # is present, so there is no reason for the Rust half of the product to
+      # stay unmeasured on push.
+      #
+      # THE BLOCKING HALF. This repo's convention is that a pinned known defect
+      # is a RED test (`spike_*`), not an ignored one, so a plain
+      # `cargo test --release` exits non-zero on a healthy tree. Each --skip is
+      # one pinned known defect -- the two long-standing spikes plus K-H's C0,
+      # C2 and C6 -- and everything else must pass. The skip list is the whole
+      # contract: a renamed test stops matching its pattern and therefore starts
+      # blocking again (fail-safe), and a new deliberate red test has to be
+      # added here on purpose.
+      - name: Test the kernel natively, new breakage only
+        run: >-
+          cargo test --release --
+          --skip spike_coplanar_chamfer
+          --skip spike_countersink
+          --skip spike_c0_
+          --skip spike_c2_
+          --skip spike_c6_
+        working-directory: archive/brep-rs
+
+      # THE REPORTING HALF: exactly the tests skipped above, and nothing else,
+      # so the two steps together cover the full suite once. This used to be a
+      # second full `cargo test --release` that re-ran all ~740 non-spike tests
+      # (~93 s) only to report on these five patterns. Same filters, so the
+      # same tests: libtest's positional filters and --skip are both substring
+      # matches on the test path.
+      #
+      # continue-on-error is load-bearing: a red spike is the expected state of
+      # a known defect and must not red the job. `!cancelled()` so the report
+      # still runs when the blocking step above fails, as it did when this step
+      # ran first.
+      - name: Test the kernel natively, known defects (reports, never blocks)
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: >-
+          cargo test --release --
+          spike_coplanar_chamfer
+          spike_countersink
+          spike_c0_
+          spike_c2_
+          spike_c6_
+        working-directory: archive/brep-rs
+
   build-and-test:
     runs-on: ubuntu-latest
+    # Measured ~2-3 min after the split; the suites once took 12+ min on their
+    # own (run 38269968000), so the ceiling leaves room for that, not more.
+    timeout-minutes: 30
     steps:
       # v7, not v4. The first green run carried a deprecation annotation: v4
       # targets Node 20, which GitHub now force-runs on Node 24 and will stop
@@ -62,65 +141,32 @@ jobs:
       - name: Add the wasm target
         run: rustup target add wasm32-unknown-unknown
 
-      # Keyed on Cargo.lock, and it caches ~/.cargo/bin so wasm-pack itself is
-      # installed once rather than compiled on every run (a cold
-      # `cargo install wasm-pack` is minutes, not seconds).
-      #
-      # v6, not v4, for the same reason checkout and setup-node are v7: v4's
-      # action.yml declares `using: node20`, which GitHub force-runs on Node 24
-      # and warned about on every run. v5 and v6 both declare node24. Nothing in
-      # this repo would have changed when Node 20 stops being supported -- the
-      # job would just start failing from the outside.
+      # Keyed on Cargo.lock; see kernel-native for why the key is per job and
+      # why v6. ~/.cargo/bin is no longer cached: wasm-pack arrives prebuilt
+      # from the step below.
       - name: Cache cargo
         uses: actions/cache@v6
         with:
           path: |
-            ~/.cargo/bin
             ~/.cargo/registry
             ~/.cargo/git
             archive/brep-rs/target
-          key: cargo-${{ runner.os }}-${{ hashFiles('archive/brep-rs/Cargo.lock') }}
-          restore-keys: cargo-${{ runner.os }}-
+          key: cargo-wasm-${{ runner.os }}-${{ hashFiles('archive/brep-rs/Cargo.lock') }}
+          restore-keys: cargo-wasm-${{ runner.os }}-
 
+      # A prebuilt, checksum-verified wasm-pack binary, not `cargo install`.
+      # The cargo cache used to carry the compiled binary, but GitHub evicts a
+      # cache after 7 days unused and every Cargo.lock change misses it, and a
+      # cold `cargo install wasm-pack` is ~60 s (run 42961392405). This takes
+      # seconds either way. Pinned by commit (v2.90.3) and by wasm-pack version
+      # so a release of either cannot change what this job runs.
       - name: Install wasm-pack
-        run: command -v wasm-pack || cargo install wasm-pack --locked
+        uses: taiki-e/install-action@cfdb7ed4ccc7c7dce37759eae89dc5674b469b39 # v2.90.3
+        with:
+          tool: wasm-pack@0.15.1
 
       - name: Build the kernel wasm
         run: wasm-pack build --release --target web --out-dir pkg
-        working-directory: archive/brep-rs
-
-      # The kernel's own native tests. They never needed wasm and so were never
-      # run here either; the toolchain is present now, so there is no reason
-      # for the Rust half of the product to stay unmeasured on push.
-      #
-      # continue-on-error is load-bearing, and the reason is this repo's own
-      # convention: a pinned known defect is a RED test (`spike_*`), not an
-      # ignored one. So `cargo test --release` exits non-zero on a healthy tree,
-      # and without this every later step is SKIPPED -- measured on the 2026-10-01
-      # run of 36794016882: the build was never attempted and `npm test` never
-      # ran, so one deliberate red test cost the whole JS half of the product its
-      # only coverage. main has been red since 4dd1e58 for exactly this reason.
-      #
-      # This step therefore reports without blocking, and the step BELOW re-runs
-      # the same suite with the known-defect tests skipped, so a NEW failure still
-      # blocks. The skip list is the whole contract: a renamed test stops
-      # matching its pattern and therefore starts blocking again (fail-safe), and a
-      # new deliberate red test has to be added here on purpose.
-      - name: Test the kernel natively
-        continue-on-error: true
-        run: cargo test --release
-        working-directory: archive/brep-rs
-
-      # The blocking half: 256 pass / 0 fail locally at 3b5aa9a. Each --skip is one
-      # pinned known defect -- the two long-standing spikes plus K-H's C0, C2 and C6.
-      - name: Test the kernel natively, new breakage only
-        run: >-
-          cargo test --release --
-          --skip spike_coplanar_chamfer
-          --skip spike_countersink
-          --skip spike_c0_
-          --skip spike_c2_
-          --skip spike_c6_
         working-directory: archive/brep-rs
 
       # `npm run build`, NOT `npm run build --workspaces`. Measured on this
