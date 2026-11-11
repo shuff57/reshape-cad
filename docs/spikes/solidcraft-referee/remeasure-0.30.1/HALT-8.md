@@ -39,6 +39,24 @@ confined to a countersink on the opened face, which is now refused. Eight two-ho
 built right. Not covered: three or more recessed holes, holes in different directions (refused by G-HOLE), a recess on a part that is not a plain
 box (refused by G-HOLE), and a blind recessed hole (refused today by G-BLIND).
 
+### A draft after a hole, 2026-11-11
+
+Not swept before. Probe (`dprobe.json`, 83 scripts): a draft builds only when the drafted face is not one the hole passes through; a draft of the
+face the hole runs through is refused by the kernel with its sentence, and a draft of a face square to the pull by G-CAP. Seeded family `sd51`
+(189 scripts): a plain, counterbored or countersunk hole along z whose edge is 0.2 to 5 mm from the face being drafted, drafts of 3 to 15 degrees on the
+right face, the front face or both, from the middle, the bottom or the top. The closed form is exact cross-sections with the tilted planes, so it
+stays exact where the tilted face cuts into the hole.
+
+| outcome | scripts |
+|---|---|
+| built, within 2e-5 of the closed form (worst 1.0e-5) | 98 |
+| built wrong | 0 |
+| refused by G-SWEEP or G-REACH (the tilted face would run into the hole) | 45 |
+| refused by the kernel (the second of two drafts on adjacent faces: "already tilted by an earlier draft") | 46 |
+
+All 48 scripts where the tilted face reaches the hole are refused or built right (3 built right, with the face touching by under 0.01 mm).
+A draft after a countersink builds right in the Node route. In the page it is still refused by the pick-point limit, with the old wording.
+
 Evidence for the finding: `halt-7-fix/` beside this file.
 
 ## What is wrong

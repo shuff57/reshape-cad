@@ -1,0 +1,6428 @@
+[
+ {
+  "id": "sd51-001-plain-right-default-g0.2-a8",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 17.28,
+  "D": 29.18,
+  "cx": 7.44,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(17.28, 29.18, 8);\nhole(b, { across: 2, at: [7.44, 0] });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 4009.1171978722555,
+   "clear": -0.3621633388095651,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-002-plain-right-default-g0.5-a5",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 26.2,
+  "D": 37.56,
+  "cx": 11.6,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(26.2, 37.56, 10);\nhole(b, { across: 2, at: [11.6, 0] });\ndraft(b.face('right'), 5);",
+  "model": null,
+  "closed": {
+   "P": 9809.304073464098,
+   "clear": 0.06255668237037959,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-003-plain-right-default-g1-a10",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 1,
+  "deg": 10,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 18.86,
+  "D": 26.96,
+  "cx": 7.43,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(18.86, 26.96, 14);\nhole(b, { across: 2, at: [7.43, 0] });\ndraft(b.face('right'), 10);",
+  "model": null,
+  "closed": {
+   "P": 7074.646852916377,
+   "clear": -0.23428886495925383,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-004-plain-right-default-g1.5-a8",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 1.5,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 19.96,
+  "D": 36.4,
+  "cx": 7.48,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(19.96, 36.4, 14);\nhole(b, { across: 2, at: [7.48, 0] });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 10127.633702849747,
+   "clear": 0.5162141570832599,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-005-plain-right-default-g2-a5",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 22.6,
+  "D": 34.35,
+  "cx": 7.8,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(22.6, 34.35, 14);\nhole(b, { across: 3, at: [7.8, 0] });\ndraft(b.face('right'), 5);",
+  "model": null,
+  "closed": {
+   "P": 10769.379831411929,
+   "clear": 1.3875793553185334,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-006-plain-right-default-g3-a15",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 3,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 24.7,
+  "D": 30.53,
+  "cx": 7.85,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(24.7, 30.53, 10);\nhole(b, { across: 3, at: [7.85, 0] });\ndraft(b.face('right'), 15);",
+  "model": null,
+  "closed": {
+   "P": 7470.224165294227,
+   "clear": 1.6602540378443873,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-007-plain-right-default-g5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "default",
+  "g": 5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 35.11,
+  "D": 34.79,
+  "cx": 10.56,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(35.11, 34.79, 14);\nhole(b, { across: 4, at: [10.56, 0] });\ndraft(b.face('right'), 3);",
+  "model": null,
+  "closed": {
+   "P": 16924.747411398952,
+   "clear": 4.628145545018709,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-008-plain-right-bottom-g0.2-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 22.99,
+  "D": 35.18,
+  "cx": 9.8,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(22.99, 35.18, 14);\nhole(b, { across: 3, at: [9.8, 0] });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 11046.997652629861,
+   "clear": -0.5387089099625779,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-009-plain-right-bottom-g0.5-a5",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 21.18,
+  "D": 36.65,
+  "cx": 9.09,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(21.18, 36.65, 8);\nhole(b, { across: 2, at: [9.09, 0] });\ndraft(b.face('right'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 6082.387251333275,
+   "clear": -0.19990930820739194,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-010-plain-right-bottom-g1-a15",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 1,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 20.46,
+  "D": 36.38,
+  "cx": 7.73,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(20.46, 36.38, 12);\nhole(b, { across: 3, at: [7.73, 0] });\ndraft(b.face('right'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8165.981803803579,
+   "clear": -2.215390309173472,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-011-plain-right-bottom-g1.5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 27.11,
+  "D": 27.9,
+  "cx": 10.56,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(27.11, 27.9, 14);\nhole(b, { across: 3, at: [10.56, 0] });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10346.91248129623,
+   "clear": 0.7612910900374228,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-012-plain-right-bottom-g2-a10",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 2,
+  "deg": 10,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 29.68,
+  "D": 29.33,
+  "cx": 10.84,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(29.68, 29.33, 12);\nhole(b, { across: 4, at: [10.84, 0] });\ndraft(b.face('right'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9923.043593759243,
+   "clear": -0.11592376850157926,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-013-plain-right-bottom-g3-a8",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 3,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 28.79,
+  "D": 31.15,
+  "cx": 9.89,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.79, 31.15, 12);\nhole(b, { across: 3, at: [9.89, 0] });\ndraft(b.face('right'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10361.674014282551,
+   "clear": 1.3185099835713014,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-014-plain-right-bottom-g5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "bottom",
+  "g": 5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 26.08,
+  "D": 26.71,
+  "cx": 7.04,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(26.08, 26.71, 14);\nhole(b, { across: 2, at: [7.04, 0] });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9571.191347954045,
+   "clear": 4.266291090037423,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-015-plain-right-top-g0.2-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 20.92,
+  "D": 31.07,
+  "cx": 8.76,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(20.92, 31.07, 10);\nhole(b, { across: 3, at: [8.76, 0] });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 6510.573650410434,
+   "clear": 0.20000000000000107,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-016-plain-right-top-g0.5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 0.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 19.18,
+  "D": 32.28,
+  "cx": 7.59,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(19.18, 32.28, 8);\nhole(b, { across: 3, at: [7.59, 0] });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 4950.629671923593,
+   "clear": 0.5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-017-plain-right-top-g1-a8",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 1,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 28.3,
+  "D": 30.95,
+  "cx": 11.65,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(28.3, 30.95, 14);\nhole(b, { across: 3, at: [11.65, 0] });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 12589.704237147751,
+   "clear": 1,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-018-plain-right-top-g1.5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 1.5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 24.66,
+  "D": 39.87,
+  "cx": 8.83,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(24.66, 39.87, 14);\nhole(b, { across: 4, at: [8.83, 0] });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13793.56043108042,
+   "clear": 1.5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-019-plain-right-top-g2-a5",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 2,
+  "deg": 5,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 31.78,
+  "D": 36.48,
+  "cx": 11.89,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(31.78, 36.48, 8);\nhole(b, { across: 4, at: [11.89, 0] });\ndraft(b.face('right'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 9276.275001338752,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-020-plain-right-top-g3-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 3,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 27.97,
+  "D": 36.48,
+  "cx": 9.98,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(27.97, 36.48, 10);\nhole(b, { across: 2, at: [9.98, 0] });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10267.63186287637,
+   "clear": 3.004999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-021-plain-right-top-g5-a3",
+  "kind": "plain",
+  "which": "right",
+  "from": "top",
+  "g": 5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 34.09,
+  "D": 31.81,
+  "cx": 10.55,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(34.09, 31.81, 10);\nhole(b, { across: 3, at: [10.55, 0] });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10856.697738243907,
+   "clear": 4.995000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-022-plain-front-default-g0.2-a3",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 0.2,
+  "deg": 3,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 33.14,
+  "D": 27.26,
+  "cx": 0,
+  "cy": -11.43,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(33.14, 27.26, 12);\nhole(b, { across: 4, at: [0, -11.43] });\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 10690.049983832727,
+   "clear": -0.11444667569824674,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-023-plain-front-default-g0.5-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 33.26,
+  "D": 21.74,
+  "cx": 0,
+  "cy": -8.87,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(33.26, 21.74, 10);\nhole(b, { across: 3, at: [0, -8.87] });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 7160.0381652942315,
+   "clear": 0.06255668237037959,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-024-plain-front-default-g1-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 1,
+  "deg": 5,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 37.16,
+  "D": 26.07,
+  "cx": 0,
+  "cy": -11.03,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(37.16, 26.07, 14);\nhole(b, { across: 2, at: [0, -11.03] });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 13518.67450284975,
+   "clear": 0.3925793553185333,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-025-plain-front-default-g1.5-a8",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 1.5,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 33.62,
+  "D": 19.02,
+  "cx": 0,
+  "cy": -7.01,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(33.62, 19.02, 14);\nhole(b, { across: 2, at: [0, -7.01] });\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 8908.35130284974,
+   "clear": 0.5162141570832599,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-026-plain-front-default-g2-a8",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 35.27,
+  "D": 23.34,
+  "cx": 0,
+  "cy": -7.67,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(35.27, 23.34, 8);\nhole(b, { across: 4, at: [0, -7.67] });\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 6485.0834350851255,
+   "clear": 1.4378366611904347,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-027-plain-front-default-g3-a15",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 3,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 34.46,
+  "D": 29.42,
+  "cx": 0,
+  "cy": -10.21,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(34.46, 29.42, 12);\nhole(b, { across: 3, at: [0, -10.21] });\ndraft(b.face('front'), 15);",
+  "model": null,
+  "closed": {
+   "P": 12080.935398353075,
+   "clear": 1.392304845413264,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-028-plain-front-default-g5-a8",
+  "kind": "plain",
+  "which": "front",
+  "from": "default",
+  "g": 5,
+  "deg": 8,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 34.41,
+  "D": 32.82,
+  "cx": 0,
+  "cy": -9.41,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(34.41, 32.82, 10);\nhole(b, { across: 4, at: [0, -9.41] });\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 11167.69829385641,
+   "clear": 4.2972958264880425,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-029-plain-front-bottom-g0.2-a15",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 34.64,
+  "D": 23.21,
+  "cx": 0,
+  "cy": -9.91,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.64, 23.21, 12);\nhole(b, { across: 3, at: [0, -9.91] });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8934.931447759567,
+   "clear": -3.0203903091734716,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-030-plain-front-bottom-g0.5-a3",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 34.55,
+  "D": 23.05,
+  "cx": 0,
+  "cy": -10.02,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.55, 23.05, 12);\nhole(b, { across: 2, at: [0, -10.02] });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9388.5380118531,
+   "clear": -0.12389335139649305,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-031-plain-front-bottom-g1-a10",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 1,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 28.52,
+  "D": 20.34,
+  "cx": 0,
+  "cy": -7.67,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.52, 20.34, 8);\nhole(b, { across: 3, at: [0, -7.67] });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 4423.851762707697,
+   "clear": -0.4106158456677189,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-032-plain-front-bottom-g1.5-a3",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 34.79,
+  "D": 21.36,
+  "cx": 0,
+  "cy": -8.18,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.79, 21.36, 8);\nhole(b, { across: 2, at: [0, -8.18] });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 5861.437926251064,
+   "clear": 1.0807377657356696,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-033-plain-front-bottom-g2-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 2,
+  "deg": 5,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 30.4,
+  "D": 28.44,
+  "cx": 0,
+  "cy": -10.22,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(30.4, 28.44, 14);\nhole(b, { across: 4, at: [0, -10.22] });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 11667.488585022546,
+   "clear": 0.7751587106370632,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-034-plain-front-bottom-g3-a8",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 3,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 32.96,
+  "D": 23.53,
+  "cx": 0,
+  "cy": -7.26,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(32.96, 23.53, 8);\nhole(b, { across: 3, at: [0, -7.26] });\ndraft(b.face('front'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 5999.610503058077,
+   "clear": 1.8806733223808685,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-035-plain-front-bottom-g5-a15",
+  "kind": "plain",
+  "which": "front",
+  "from": "bottom",
+  "g": 5,
+  "deg": 15,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 29.58,
+  "D": 37,
+  "cx": 0,
+  "cy": -11.5,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(29.58, 37, 14);\nhole(b, { across: 4, at: [0, -11.5] });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 14369.768974411943,
+   "clear": 1.2487113059642816,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-036-plain-front-top-g0.2-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 0.2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 30.02,
+  "D": 25.11,
+  "cx": 0,
+  "cy": -10.85,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(30.02, 25.11, 14);\nhole(b, { across: 3, at: [0, -10.85] });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10711.658779958654,
+   "clear": 0.20500000000000007,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-037-plain-front-top-g0.5-a3",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 0.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 34.09,
+  "D": 27.85,
+  "cx": 0,
+  "cy": -11.92,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(34.09, 27.85, 10);\nhole(b, { across: 3, at: [0, -11.92] });\ndraft(b.face('front'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 9512.70822508218,
+   "clear": 0.5050000000000008,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-038-plain-front-top-g1-a3",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 1,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 27.15,
+  "D": 21.7,
+  "cx": 0,
+  "cy": -8.35,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(27.15, 21.7, 12);\nhole(b, { across: 3, at: [0, -8.35] });\ndraft(b.face('front'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 7087.483725295569,
+   "clear": 1,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-039-plain-front-top-g1.5-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 38.58,
+  "D": 28.97,
+  "cx": 0,
+  "cy": -10.98,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(38.58, 28.97, 12);\nhole(b, { across: 4, at: [0, -10.98] });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13504.177262623458,
+   "clear": 1.504999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-040-plain-front-top-g2-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 36.97,
+  "D": 22.17,
+  "cx": 0,
+  "cy": -7.59,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(36.97, 22.17, 14);\nhole(b, { across: 3, at: [0, -7.59] });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11692.765108686153,
+   "clear": 1.995000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-041-plain-front-top-g3-a5",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 3,
+  "deg": 5,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 26.96,
+  "D": 25.86,
+  "cx": 0,
+  "cy": -8.93,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(26.96, 25.86, 8);\nhole(b, { across: 2, at: [0, -8.93] });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 5627.8302785683645,
+   "clear": 3,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-042-plain-front-top-g5-a15",
+  "kind": "plain",
+  "which": "front",
+  "from": "top",
+  "g": 5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 29.12,
+  "D": 28.08,
+  "cx": 0,
+  "cy": -7.54,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(29.12, 28.08, 10);\nhole(b, { across: 3, at: [0, -7.54] });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8496.344189473944,
+   "clear": 5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-043-plain-both-default-g0.2-a8",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 21.2,
+  "D": 18.33,
+  "cx": 9.4,
+  "cy": -7.96,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(21.2, 18.33, 8);\nhole(b, { across: 2, at: [9.4, -7.96] });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 3085.2764347876546,
+   "clear": -0.36216333880956597,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-044-plain-both-default-g0.5-a8",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 0.5,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 24.07,
+  "D": 20.95,
+  "cx": 10.54,
+  "cy": -8.97,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(24.07, 20.95, 8);\nhole(b, { across: 2, at: [10.54, -8.97] });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 4009.8523947006533,
+   "clear": -0.06716333880956427,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-045-plain-both-default-g1-a3",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 1,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 24.49,
+  "D": 23.05,
+  "cx": 10.25,
+  "cy": -9.52,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(24.49, 23.05, 14);\nhole(b, { across: 2, at: [10.25, -9.52] });\ndraft(b.face('right'), 3);\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 7859.568753075067,
+   "clear": 0.628145545018711,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-046-plain-both-default-g1.5-a8",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 1.5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 20.12,
+  "D": 20.46,
+  "cx": 7.06,
+  "cy": -7.23,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(20.12, 20.46, 14);\nhole(b, { across: 3, at: [7.06, -7.23] });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 5668.729192807299,
+   "clear": 0.5162141570832599,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-047-plain-both-default-g2-a10",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 2,
+  "deg": 10,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 26.26,
+  "D": 22.04,
+  "cx": 9.13,
+  "cy": -7.02,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(26.26, 22.04, 14);\nhole(b, { across: 4, at: [9.13, -7.02] });\ndraft(b.face('right'), 10);\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 7933.965933409063,
+   "clear": 0.7657111350407444,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-048-plain-both-default-g3-a8",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 3,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 28.3,
+  "D": 30.7,
+  "cx": 10.15,
+  "cy": -11.35,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(28.3, 30.7, 10);\nhole(b, { across: 2, at: [10.15, -11.35] });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 8658.330050649012,
+   "clear": 2.2972958264880425,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-049-plain-both-default-g5-a10",
+  "kind": "plain",
+  "which": "both",
+  "from": "default",
+  "g": 5,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 12,
+  "W": 32.11,
+  "D": 35.6,
+  "cx": 9.56,
+  "cy": -11.3,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(32.11, 35.6, 12);\nhole(b, { across: 3, at: [9.56, -11.3] });\ndraft(b.face('right'), 10);\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 13637.046131747193,
+   "clear": 3.9370381157492087,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-050-plain-both-bottom-g0.2-a8",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 21.64,
+  "D": 20.78,
+  "cx": 9.62,
+  "cy": -9.19,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(21.64, 20.78, 8);\nhole(b, { across: 2, at: [9.62, -9.19] });\ndraft(b.face('right'), 8, { from: 'bottom' });\ndraft(b.face('front'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 3391.76694261791,
+   "clear": -0.9243266776191312,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-051-plain-both-bottom-g0.5-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 19.89,
+  "D": 26.22,
+  "cx": 7.95,
+  "cy": -11.11,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(19.89, 26.22, 10);\nhole(b, { across: 3, at: [7.95, -11.11] });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 4947.115487495151,
+   "clear": -0.3798866352592407,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-052-plain-both-bottom-g1-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 1,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 20.22,
+  "D": 20.33,
+  "cx": 7.61,
+  "cy": -7.66,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(20.22, 20.33, 8);\nhole(b, { across: 3, at: [7.61, -7.66] });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 3119.81317055005,
+   "clear": 0.30009069179260717,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-053-plain-both-bottom-g1.5-a3",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 21.99,
+  "D": 20.45,
+  "cx": 8.49,
+  "cy": -7.72,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(21.99, 20.45, 14);\nhole(b, { across: 2, at: [8.49, -7.72] });\ndraft(b.face('right'), 3, { from: 'bottom' });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 6036.2966607793405,
+   "clear": 0.7712910900374226,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-054-plain-both-bottom-g2-a10",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 2,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 22.64,
+  "D": 22.39,
+  "cx": 7.82,
+  "cy": -7.69,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(22.64, 22.39, 10);\nhole(b, { across: 3, at: [7.82, -7.69] });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 4611.7737029377095,
+   "clear": 0.2367301929153509,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-055-plain-both-bottom-g3-a3",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 3,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 23.09,
+  "D": 23.13,
+  "cx": 7.05,
+  "cy": -7.06,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(23.09, 23.13, 8);\nhole(b, { across: 3, at: [7.05, -7.06] });\ndraft(b.face('right'), 3, { from: 'bottom' });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 4138.980479220808,
+   "clear": 2.5757377657356697,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-056-plain-both-bottom-g5-a15",
+  "kind": "plain",
+  "which": "both",
+  "from": "bottom",
+  "g": 5,
+  "deg": 15,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 33.78,
+  "D": 33.94,
+  "cx": 9.89,
+  "cy": -9.97,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(33.78, 33.94, 14);\nhole(b, { across: 4, at: [9.89, -9.97] });\ndraft(b.face('right'), 15, { from: 'bottom' });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 14162.384830919627,
+   "clear": 1.2487113059642798,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-057-plain-both-top-g0.2-a15",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 0.2,
+  "deg": 15,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 21,
+  "D": 24.52,
+  "cx": 9.3,
+  "cy": -11.06,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 10
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(21, 24.52, 10);\nhole(b, { across: 2, at: [9.3, -11.06] });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 5751.568692012167,
+   "clear": 0.1999999999999993,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-058-plain-both-top-g0.5-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 1.5,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 20.05,
+  "D": 18.75,
+  "cx": 8.03,
+  "cy": -7.37,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 10
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(20.05, 18.75, 10);\nhole(b, { across: 3, at: [8.03, -7.37] });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 3860.968594616375,
+   "clear": 0.495000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-059-plain-both-top-g1-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 1,
+  "deg": 5,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 22.35,
+  "D": 26.56,
+  "cx": 8.18,
+  "cy": -10.28,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(22.35, 26.56, 8);\nhole(b, { across: 4, at: [8.18, -10.28] });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 4786.633620248728,
+   "clear": 0.995000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-060-plain-both-top-g1.5-a10",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 1.5,
+  "deg": 10,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 8,
+  "W": 25.86,
+  "D": 22.02,
+  "cx": 10.43,
+  "cy": -8.51,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "top",
+    "n": 8
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(25.86, 22.02, 8);\nhole(b, { across: 2, at: [10.43, -8.51] });\ndraft(b.face('right'), 10, { from: 'top' });\ndraft(b.face('front'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 4805.832237704363,
+   "clear": 1.5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-061-plain-both-top-g2-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 2,
+  "deg": 5,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 26.56,
+  "D": 21.37,
+  "cx": 10.28,
+  "cy": -7.68,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(26.56, 21.37, 14);\nhole(b, { across: 2, at: [10.28, -7.68] });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8320.186106036497,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-062-plain-both-top-g3-a5",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 3,
+  "deg": 5,
+  "r": 2,
+  "Rm": 2,
+  "depth": null,
+  "angle": null,
+  "H": 14,
+  "W": 33.99,
+  "D": 27.97,
+  "cx": 12,
+  "cy": -8.98,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(33.99, 27.97, 14);\nhole(b, { across: 4, at: [12, -8.98] });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13672.114277614079,
+   "clear": 2.995000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-063-plain-both-top-g5-a3",
+  "kind": "plain",
+  "which": "both",
+  "from": "top",
+  "g": 5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 1,
+  "depth": null,
+  "angle": null,
+  "H": 10,
+  "W": 28.05,
+  "D": 34.4,
+  "cx": 8.03,
+  "cy": -11.2,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(28.05, 34.4, 10);\nhole(b, { across: 2, at: [8.03, -11.2] });\ndraft(b.face('right'), 3, { from: 'top' });\ndraft(b.face('front'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 9782.342889385218,
+   "clear": 4.995000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-064-cbore-right-default-g0.2-a3",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 3.76,
+  "depth": 3.05,
+  "angle": null,
+  "H": 10,
+  "W": 21.95,
+  "D": 41.8,
+  "cx": 7.02,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(21.95, 41.8, 10);\nhole(b, { across: 3, at: [7.02, 0], counterbore: { across: 7.52, deep: 3.05 } });\ndraft(b.face('right'), 3);",
+  "model": null,
+  "closed": {
+   "P": 8990.54128634879,
+   "clear": -0.06703889641520533,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-065-cbore-right-default-g0.5-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 0.5,
+  "deg": 10,
+  "r": 1,
+  "Rm": 3.99,
+  "depth": 1.69,
+  "angle": null,
+  "H": 10,
+  "W": 25.15,
+  "D": 43.2,
+  "cx": 8.08,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(25.15, 43.2, 10);\nhole(b, { across: 2, at: [8.08, 0], counterbore: { across: 7.98, deep: 1.69 } });\ndraft(b.face('right'), 10);",
+  "model": null,
+  "closed": {
+   "P": 10754.89039683436,
+   "clear": -0.3766349035423264,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-066-cbore-right-default-g1-a5",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 1,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4.23,
+  "depth": 2.03,
+  "angle": null,
+  "H": 14,
+  "W": 30.03,
+  "D": 43.83,
+  "cx": 9.79,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(30.03, 43.83, 14);\nhole(b, { across: 4, at: [9.79, 0], counterbore: { across: 8.46, deep: 2.03 } });\ndraft(b.face('right'), 5);",
+  "model": null,
+  "closed": {
+   "P": 18162.478371267545,
+   "clear": 0.3825793553185335,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-067-cbore-right-default-g1.5-a3",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 3.74,
+  "depth": 4.31,
+  "angle": null,
+  "H": 10,
+  "W": 31.07,
+  "D": 39.78,
+  "cx": 10.3,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(31.07, 39.78, 10);\nhole(b, { across: 3, at: [10.3, 0], counterbore: { across: 7.48, deep: 4.31 } });\ndraft(b.face('right'), 3);",
+  "model": null,
+  "closed": {
+   "P": 12130.029958612595,
+   "clear": 1.2329611035847936,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-068-cbore-right-default-g2-a15",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 2,
+  "deg": 15,
+  "r": 2,
+  "Rm": 3.12,
+  "depth": 4.04,
+  "angle": null,
+  "H": 14,
+  "W": 32.1,
+  "D": 42.09,
+  "cx": 10.93,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(32.1, 42.09, 14);\nhole(b, { across: 4, at: [10.93, 0], counterbore: { across: 6.24, deep: 4.04 } });\ndraft(b.face('right'), 15);",
+  "model": null,
+  "closed": {
+   "P": 18666.53560979151,
+   "clear": 0.12435565298214168,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-069-cbore-right-default-g3-a15",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 3,
+  "deg": 15,
+  "r": 1,
+  "Rm": 2.45,
+  "depth": 4,
+  "angle": null,
+  "H": 8,
+  "W": 34.73,
+  "D": 31.81,
+  "cx": 11.92,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(34.73, 31.81, 8);\nhole(b, { across: 2, at: [11.92, 0], counterbore: { across: 4.9, deep: 4 } });\ndraft(b.face('right'), 15);",
+  "model": null,
+  "closed": {
+   "P": 8750.094389772948,
+   "clear": 1.9232032302755089,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-070-cbore-right-default-g5-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "default",
+  "g": 5,
+  "deg": 10,
+  "r": 2,
+  "Rm": 3.79,
+  "depth": 3.39,
+  "angle": null,
+  "H": 10,
+  "W": 34.1,
+  "D": 42.43,
+  "cx": 8.26,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(34.1, 42.43, 10);\nhole(b, { across: 4, at: [8.26, 0], counterbore: { across: 7.58, deep: 3.39 } });\ndraft(b.face('right'), 10);",
+  "model": null,
+  "closed": {
+   "P": 14232.58863822898,
+   "clear": 4.118365096457677,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-071-cbore-right-bottom-g0.2-a5",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.21,
+  "depth": 0.5,
+  "angle": null,
+  "H": 14,
+  "W": 32.36,
+  "D": 35.83,
+  "cx": 11.77,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(32.36, 35.83, 14);\nhole(b, { across: 3, at: [11.77, 0], counterbore: { across: 8.42, deep: 0.5 } });\ndraft(b.face('right'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 15803.826139113735,
+   "clear": -1.0248412893629366,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-072-cbore-right-bottom-g0.5-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 3.54,
+  "depth": 3.77,
+  "angle": null,
+  "H": 12,
+  "W": 29.13,
+  "D": 34.54,
+  "cx": 10.52,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(29.13, 34.54, 12);\nhole(b, { across: 3, at: [10.52, 0], counterbore: { across: 7.08, deep: 3.77 } });\ndraft(b.face('right'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 11447.070099609162,
+   "clear": -1.6109237685015794,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-073-cbore-right-bottom-g1-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 1,
+  "deg": 10,
+  "r": 1,
+  "Rm": 2.43,
+  "depth": 3.67,
+  "angle": null,
+  "H": 8,
+  "W": 20.99,
+  "D": 30.76,
+  "cx": 7.06,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(20.99, 30.76, 8);\nhole(b, { across: 2, at: [7.06, 0], counterbore: { across: 4.86, deep: 3.67 } });\ndraft(b.face('right'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 4910.658576092601,
+   "clear": -0.40561584566771947,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-074-cbore-right-bottom-g1.5-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 4.93,
+  "depth": 0.64,
+  "angle": null,
+  "H": 14,
+  "W": 33.62,
+  "D": 34.29,
+  "cx": 10.38,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(33.62, 34.29, 14);\nhole(b, { across: 3, at: [10.38, 0], counterbore: { across: 9.86, deep: 0.64 } });\ndraft(b.face('right'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 15406.049682899235,
+   "clear": -0.9685777299185112,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-075-cbore-right-bottom-g2-a8",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 2,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 4.81,
+  "depth": 2.06,
+  "angle": null,
+  "H": 12,
+  "W": 35.64,
+  "D": 41.94,
+  "cx": 11.01,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(35.64, 41.94, 12);\nhole(b, { across: 3, at: [11.01, 0], counterbore: { across: 9.62, deep: 2.06 } });\ndraft(b.face('right'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 17292.519676875316,
+   "clear": 0.31350998357130155,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-076-cbore-right-bottom-g3-a5",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 3,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4.08,
+  "depth": 3.11,
+  "angle": null,
+  "H": 14,
+  "W": 34.46,
+  "D": 43.83,
+  "cx": 10.15,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.46, 43.83, 14);\nhole(b, { across: 4, at: [10.15, 0], counterbore: { across: 8.16, deep: 3.11 } });\ndraft(b.face('right'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 20470.06266129968,
+   "clear": 1.775158710637065,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-077-cbore-right-bottom-g5-a15",
+  "kind": "cbore",
+  "which": "right",
+  "from": "bottom",
+  "g": 5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 3.69,
+  "depth": 4.41,
+  "angle": null,
+  "H": 8,
+  "W": 35.5,
+  "D": 42.2,
+  "cx": 9.06,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(35.5, 42.2, 8);\nhole(b, { across: 3, at: [9.06, 0], counterbore: { across: 7.38, deep: 4.41 } });\ndraft(b.face('right'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 11408.94197866995,
+   "clear": 2.856406460551017,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-078-cbore-right-top-g0.2-a3",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1,
+  "Rm": 2.92,
+  "depth": 3.72,
+  "angle": null,
+  "H": 10,
+  "W": 27.37,
+  "D": 38.44,
+  "cx": 10.57,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(27.37, 38.44, 10);\nhole(b, { across: 2, at: [10.57, 0], counterbore: { across: 5.84, deep: 3.72 } });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10502.38086067963,
+   "clear": 0.19500000000000028,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-079-cbore-right-top-g0.5-a10",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 0.5,
+  "deg": 10,
+  "r": 2,
+  "Rm": 4.2,
+  "depth": 0.66,
+  "angle": null,
+  "H": 10,
+  "W": 32.9,
+  "D": 33.03,
+  "cx": 11.75,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(32.9, 33.03, 10);\nhole(b, { across: 4, at: [11.75, 0], counterbore: { across: 8.4, deep: 0.66 } });\ndraft(b.face('right'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11004.128428791759,
+   "clear": 0.4999999999999991,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-080-cbore-right-top-g1-a8",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 1,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.3,
+  "depth": 3.49,
+  "angle": null,
+  "H": 14,
+  "W": 29.12,
+  "D": 33.69,
+  "cx": 9.26,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(29.12, 33.69, 14);\nhole(b, { across: 4, at: [9.26, 0], counterbore: { across: 8.6, deep: 3.49 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13863.951787417784,
+   "clear": 1.0000000000000009,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-081-cbore-right-top-g1.5-a8",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 1.5,
+  "deg": 8,
+  "r": 1,
+  "Rm": 3.88,
+  "depth": 0.66,
+  "angle": null,
+  "H": 10,
+  "W": 31.95,
+  "D": 34.91,
+  "cx": 10.59,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(31.95, 34.91, 10);\nhole(b, { across: 2, at: [10.59, 0], counterbore: { across: 7.76, deep: 0.66 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11338.501988575325,
+   "clear": 1.505,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-082-cbore-right-top-g2-a8",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 3.46,
+  "depth": 3.8,
+  "angle": null,
+  "H": 10,
+  "W": 25.52,
+  "D": 40.86,
+  "cx": 7.3,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(25.52, 40.86, 10);\nhole(b, { across: 4, at: [7.3, 0], counterbore: { across: 6.92, deep: 3.8 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10493.767843163438,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-083-cbore-right-top-g3-a15",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 3,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 4.99,
+  "depth": 3.92,
+  "angle": null,
+  "H": 12,
+  "W": 31.03,
+  "D": 45.03,
+  "cx": 7.53,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(31.03, 45.03, 12);\nhole(b, { across: 3, at: [7.53, 0], counterbore: { across: 9.98, deep: 3.92 } });\ndraft(b.face('right'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 17272.344992054317,
+   "clear": 2.995,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-084-cbore-right-top-g5-a8",
+  "kind": "cbore",
+  "which": "right",
+  "from": "top",
+  "g": 5,
+  "deg": 8,
+  "r": 2,
+  "Rm": 3.95,
+  "depth": 0.7,
+  "angle": null,
+  "H": 14,
+  "W": 39.56,
+  "D": 36.65,
+  "cx": 10.83,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(39.56, 36.65, 14);\nhole(b, { across: 4, at: [10.83, 0], counterbore: { across: 7.9, deep: 0.7 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 20601.572097265274,
+   "clear": 5.000000000000001,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-085-cbore-front-default-g0.2-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 4.25,
+  "depth": 1.42,
+  "angle": null,
+  "H": 8,
+  "W": 39.59,
+  "D": 31,
+  "cx": 0,
+  "cy": -11.05,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(39.59, 31, 8);\nhole(b, { across: 3, at: [0, -11.05], counterbore: { across: 8.5, deep: 1.42 } });\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 9691.231066211403,
+   "clear": -0.009631117132165912,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-086-cbore-front-default-g0.5-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 0.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 5.34,
+  "depth": 3.45,
+  "angle": null,
+  "H": 10,
+  "W": 41.08,
+  "D": 29.46,
+  "cx": 0,
+  "cy": -8.89,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(41.08, 29.46, 10);\nhole(b, { across: 4, at: [0, -8.89], counterbore: { across: 10.68, deep: 3.45 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 11710.792094295111,
+   "clear": 0.06255668237037959,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-087-cbore-front-default-g1-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 1,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 3.34,
+  "depth": 3.23,
+  "angle": null,
+  "H": 8,
+  "W": 35.4,
+  "D": 29.97,
+  "cx": 0,
+  "cy": -10.64,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(35.4, 29.97, 8);\nhole(b, { across: 3, at: [0, -10.64], counterbore: { across: 6.68, deep: 3.23 } });\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 8340.587143094719,
+   "clear": 0.7953688828678338,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-088-cbore-front-default-g1.5-a15",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 1.5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 2.92,
+  "depth": 1.88,
+  "angle": null,
+  "H": 10,
+  "W": 33.67,
+  "D": 25.53,
+  "cx": 0,
+  "cy": -8.34,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(33.67, 25.53, 10);\nhole(b, { across: 3, at: [0, -8.34], counterbore: { across: 5.84, deep: 1.88 } });\ndraft(b.face('front'), 15);",
+  "model": null,
+  "closed": {
+   "P": 8488.195528087968,
+   "clear": 0.1652540378443863,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-089-cbore-front-default-g2-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 2,
+  "deg": 5,
+  "r": 1,
+  "Rm": 4.11,
+  "depth": 4.25,
+  "angle": null,
+  "H": 8,
+  "W": 38.31,
+  "D": 26.31,
+  "cx": 0,
+  "cy": -7.04,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(38.31, 26.31, 8);\nhole(b, { across: 2, at: [0, -7.04], counterbore: { across: 8.22, deep: 4.25 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 7826.1684141782935,
+   "clear": 1.655045345896303,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-090-cbore-front-default-g3-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 3,
+  "deg": 3,
+  "r": 2,
+  "Rm": 4.04,
+  "depth": 2.13,
+  "angle": null,
+  "H": 8,
+  "W": 32.56,
+  "D": 29.78,
+  "cx": 0,
+  "cy": -7.85,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(32.56, 29.78, 8);\nhole(b, { across: 4, at: [0, -7.85], counterbore: { across: 8.08, deep: 2.13 } });\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 7574.112310758923,
+   "clear": 2.790368882867835,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-091-cbore-front-default-g5-a8",
+  "kind": "cbore",
+  "which": "front",
+  "from": "default",
+  "g": 5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 2.95,
+  "depth": 2.9,
+  "angle": null,
+  "H": 14,
+  "W": 35.75,
+  "D": 35.45,
+  "cx": 0,
+  "cy": -9.78,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(35.75, 35.45, 14);\nhole(b, { across: 3, at: [0, -9.78], counterbore: { across: 5.9, deep: 2.9 } });\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 17584.978564279787,
+   "clear": 4.011214157083259,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-092-cbore-front-bottom-g0.2-a15",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 4.44,
+  "depth": 2.68,
+  "angle": null,
+  "H": 10,
+  "W": 38.19,
+  "D": 25.89,
+  "cx": 0,
+  "cy": -8.3,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(38.19, 25.89, 10);\nhole(b, { across: 3, at: [0, -8.3], counterbore: { across: 8.88, deep: 2.68 } });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9188.404038349126,
+   "clear": -2.474491924311229,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-093-cbore-front-bottom-g0.5-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.34,
+  "depth": 0.6,
+  "angle": null,
+  "H": 12,
+  "W": 38.28,
+  "D": 30.49,
+  "cx": 0,
+  "cy": -11.4,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(38.28, 30.49, 12);\nhole(b, { across: 4, at: [0, -11.4], counterbore: { across: 6.68, deep: 0.6 } });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 13601.223417344821,
+   "clear": -0.5448639623110889,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-094-cbore-front-bottom-g1-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 1,
+  "deg": 3,
+  "r": 1,
+  "Rm": 2.11,
+  "depth": 3.75,
+  "angle": null,
+  "H": 14,
+  "W": 37.73,
+  "D": 21.22,
+  "cx": 0,
+  "cy": -7.5,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(37.73, 21.22, 14);\nhole(b, { across: 2, at: [0, -7.5], counterbore: { across: 4.22, deep: 3.75 } });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10930.39714764156,
+   "clear": 0.2662910900374236,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-095-cbore-front-bottom-g1.5-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 2.5,
+  "depth": 1.5,
+  "angle": null,
+  "H": 10,
+  "W": 34.67,
+  "D": 23.73,
+  "cx": 0,
+  "cy": -7.86,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.67, 23.73, 10);\nhole(b, { across: 3, at: [0, -7.86], counterbore: { across: 5, deep: 1.5 } });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8046.806723985542,
+   "clear": 0.9809222071695896,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-096-cbore-front-bottom-g2-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 3.21,
+  "depth": 0.96,
+  "angle": null,
+  "H": 14,
+  "W": 39.24,
+  "D": 26.49,
+  "cx": 0,
+  "cy": -8.03,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(39.24, 26.49, 14);\nhole(b, { across: 3, at: [0, -8.03], counterbore: { across: 6.42, deep: 0.96 } });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 14227.760474687777,
+   "clear": 1.2712910900374244,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-097-cbore-front-bottom-g3-a3",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 3,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 3.83,
+  "depth": 3.88,
+  "angle": null,
+  "H": 8,
+  "W": 41.7,
+  "D": 29.4,
+  "cx": 0,
+  "cy": -7.87,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(41.7, 29.4, 8);\nhole(b, { across: 3, at: [0, -7.87], counterbore: { across: 7.66, deep: 3.88 } });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9529.979706538112,
+   "clear": 2.5807377657356696,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-098-cbore-front-bottom-g5-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "bottom",
+  "g": 5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.59,
+  "depth": 2.89,
+  "angle": null,
+  "H": 8,
+  "W": 45.17,
+  "D": 37.56,
+  "cx": 0,
+  "cy": -9.19,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(45.17, 37.56, 8);\nhole(b, { across: 3, at: [0, -9.19], counterbore: { across: 9.18, deep: 2.89 } });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 13218.819972803525,
+   "clear": 4.30009069179261,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-099-cbore-front-top-g0.2-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 0.2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.41,
+  "depth": 2.9,
+  "angle": null,
+  "H": 14,
+  "W": 36.64,
+  "D": 26.07,
+  "cx": 0,
+  "cy": -8.42,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(36.64, 26.07, 14);\nhole(b, { across: 3, at: [0, -8.42], counterbore: { across: 8.82, deep: 2.9 } });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13431.36899392219,
+   "clear": 0.20500000000000007,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-100-cbore-front-top-g0.5-a15",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 0.5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 2.79,
+  "depth": 3.78,
+  "angle": null,
+  "H": 8,
+  "W": 29.85,
+  "D": 25.83,
+  "cx": 0,
+  "cy": -9.62,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(29.85, 25.83, 8);\nhole(b, { across: 3, at: [0, -9.62], counterbore: { across: 5.58, deep: 3.78 } });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 6301.881744567602,
+   "clear": 0.504999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-101-cbore-front-top-g1-a15",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 1,
+  "deg": 15,
+  "r": 2,
+  "Rm": 5.2,
+  "depth": 3.94,
+  "angle": null,
+  "H": 8,
+  "W": 36.48,
+  "D": 28.25,
+  "cx": 0,
+  "cy": -7.92,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(36.48, 28.25, 8);\nhole(b, { across: 4, at: [0, -7.92], counterbore: { across: 10.4, deep: 3.94 } });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8171.555963091005,
+   "clear": 1.004999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-102-cbore-front-top-g1.5-a15",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 1.5,
+  "deg": 15,
+  "r": 1,
+  "Rm": 4.1,
+  "depth": 1.74,
+  "angle": null,
+  "H": 14,
+  "W": 38.98,
+  "D": 25.57,
+  "cx": 0,
+  "cy": -7.18,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(38.98, 25.57, 14);\nhole(b, { across: 2, at: [0, -7.18], counterbore: { across: 8.2, deep: 1.74 } });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 14847.23140695966,
+   "clear": 1.5050000000000008,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-103-cbore-front-top-g2-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 2,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.14,
+  "depth": 3.79,
+  "angle": null,
+  "H": 10,
+  "W": 35.78,
+  "D": 33.56,
+  "cx": 0,
+  "cy": -11.64,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(35.78, 33.56, 10);\nhole(b, { across: 4, at: [0, -11.64], counterbore: { across: 6.28, deep: 3.79 } });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11968.853387678126,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-104-cbore-front-top-g3-a5",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 3,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 3.51,
+  "depth": 0.92,
+  "angle": null,
+  "H": 10,
+  "W": 37.1,
+  "D": 34.64,
+  "cx": 0,
+  "cy": -10.81,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(37.1, 34.64, 10);\nhole(b, { across: 3, at: [0, -10.81], counterbore: { across: 7.02, deep: 0.92 } });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 12913.940376128376,
+   "clear": 3,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-105-cbore-front-top-g5-a8",
+  "kind": "cbore",
+  "which": "front",
+  "from": "top",
+  "g": 5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 4.51,
+  "depth": 4.17,
+  "angle": null,
+  "H": 14,
+  "W": 45.01,
+  "D": 34.47,
+  "cx": 0,
+  "cy": -7.72,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(45.01, 34.47, 14);\nhole(b, { across: 3, at: [0, -7.72], counterbore: { across: 9.02, deep: 4.17 } });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 22004.900148121975,
+   "clear": 5.004999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-106-cbore-both-default-g0.2-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 0.2,
+  "deg": 10,
+  "r": 1,
+  "Rm": 4.36,
+  "depth": 1.99,
+  "angle": null,
+  "H": 12,
+  "W": 31.65,
+  "D": 28.84,
+  "cx": 11.27,
+  "cy": -9.86,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(31.65, 28.84, 12);\nhole(b, { across: 2, at: [11.27, -9.86], counterbore: { across: 8.72, deep: 1.99 } });\ndraft(b.face('right'), 10);\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 10816.354410683598,
+   "clear": -0.8629618842507911,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-107-cbore-both-default-g0.5-a8",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 0.5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 3.35,
+  "depth": 1.86,
+  "angle": null,
+  "H": 12,
+  "W": 28.01,
+  "D": 24.57,
+  "cx": 10.16,
+  "cy": -8.43,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(28.01, 24.57, 12);\nhole(b, { across: 3, at: [10.16, -8.43], counterbore: { across: 6.7, deep: 1.86 } });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 8125.363850311433,
+   "clear": -0.34824500821434734,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-108-cbore-both-default-g1-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 1,
+  "deg": 10,
+  "r": 1,
+  "Rm": 4.06,
+  "depth": 1.17,
+  "angle": null,
+  "H": 14,
+  "W": 25.24,
+  "D": 26.41,
+  "cx": 7.56,
+  "cy": -8.14,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(25.24, 26.41, 14);\nhole(b, { across: 2, at: [7.56, -8.14], counterbore: { across: 8.12, deep: 1.17 } });\ndraft(b.face('right'), 10);\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 9238.89374341793,
+   "clear": -0.2342888649592556,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-109-cbore-both-default-g1.5-a3",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 1.5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 4.74,
+  "depth": 2.91,
+  "angle": null,
+  "H": 14,
+  "W": 26.97,
+  "D": 29.73,
+  "cx": 7.24,
+  "cy": -8.62,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(26.97, 29.73, 14);\nhole(b, { across: 4, at: [7.24, -8.62], counterbore: { across: 9.48, deep: 2.91 } });\ndraft(b.face('right'), 3);\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 10881.320823040034,
+   "clear": 1.1381455450187108,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-110-cbore-both-default-g2-a3",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 2,
+  "deg": 3,
+  "r": 2,
+  "Rm": 3.56,
+  "depth": 2.84,
+  "angle": null,
+  "H": 12,
+  "W": 27.82,
+  "D": 25.62,
+  "cx": 8.35,
+  "cy": -7.25,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(27.82, 25.62, 12);\nhole(b, { across: 4, at: [8.35, -7.25], counterbore: { across: 7.12, deep: 2.84 } });\ndraft(b.face('right'), 3);\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 8325.192932241018,
+   "clear": 1.6855533243017522,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-111-cbore-both-default-g3-a8",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 3,
+  "deg": 8,
+  "r": 2,
+  "Rm": 5.31,
+  "depth": 3.78,
+  "angle": null,
+  "H": 12,
+  "W": 34.99,
+  "D": 38.9,
+  "cx": 9.19,
+  "cy": -11.14,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(34.99, 38.9, 12);\nhole(b, { across: 4, at: [9.19, -11.14], counterbore: { across: 10.62, deep: 3.78 } });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 15898.045784982325,
+   "clear": 2.151754991785652,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-112-cbore-both-default-g5-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "default",
+  "g": 5,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 3.05,
+  "depth": 0.6,
+  "angle": null,
+  "H": 14,
+  "W": 30.42,
+  "D": 33.07,
+  "cx": 7.16,
+  "cy": -8.48,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(30.42, 33.07, 14);\nhole(b, { across: 3, at: [7.16, -8.48], counterbore: { across: 6.1, deep: 0.6 } });\ndraft(b.face('right'), 10);\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 13978.707304108346,
+   "clear": 3.765711135040747,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-113-cbore-both-bottom-g0.2-a8",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 3.29,
+  "depth": 0.64,
+  "angle": null,
+  "H": 8,
+  "W": 28.86,
+  "D": 25.38,
+  "cx": 10.94,
+  "cy": -9.2,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.86, 25.38, 8);\nhole(b, { across: 2, at: [10.94, -9.2], counterbore: { across: 6.58, deep: 0.64 } });\ndraft(b.face('right'), 8, { from: 'bottom' });\ndraft(b.face('front'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 5577.748727214824,
+   "clear": -0.9243266776191321,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-114-cbore-both-bottom-g0.5-a5",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4.92,
+  "depth": 1.26,
+  "angle": null,
+  "H": 14,
+  "W": 31.12,
+  "D": 26.67,
+  "cx": 10.14,
+  "cy": -7.92,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(31.12, 26.67, 14);\nhole(b, { across: 4, at: [10.14, -7.92], counterbore: { across: 9.84, deep: 1.26 } });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10880.880243529757,
+   "clear": -0.7298412893629358,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-115-cbore-both-bottom-g1-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 1,
+  "deg": 10,
+  "r": 2,
+  "Rm": 4.94,
+  "depth": 0.6,
+  "angle": null,
+  "H": 10,
+  "W": 32.09,
+  "D": 26.54,
+  "cx": 10.11,
+  "cy": -7.33,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(32.09, 26.54, 10);\nhole(b, { across: 4, at: [10.11, -7.33], counterbore: { across: 9.88, deep: 0.6 } });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 7848.986098585137,
+   "clear": -0.7682698070846472,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-116-cbore-both-bottom-g1.5-a15",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 3.06,
+  "depth": 1.37,
+  "angle": null,
+  "H": 8,
+  "W": 25,
+  "D": 29.98,
+  "cx": 7.94,
+  "cy": -10.43,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(25, 29.98, 8);\nhole(b, { across: 3, at: [7.94, -10.43], counterbore: { across: 6.12, deep: 1.37 } });\ndraft(b.face('right'), 15, { from: 'bottom' });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 5452.474343950109,
+   "clear": -0.6435935394489829,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-117-cbore-both-bottom-g2-a15",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 2,
+  "deg": 15,
+  "r": 2,
+  "Rm": 3.08,
+  "depth": 1.27,
+  "angle": null,
+  "H": 14,
+  "W": 31.41,
+  "D": 24.98,
+  "cx": 10.63,
+  "cy": -7.41,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(31.41, 24.98, 14);\nhole(b, { across: 4, at: [10.63, -7.41], counterbore: { across: 6.16, deep: 1.27 } });\ndraft(b.face('right'), 15, { from: 'bottom' });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9386.622111731122,
+   "clear": -1.7562886940357174,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-118-cbore-both-bottom-g3-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 3,
+  "deg": 10,
+  "r": 2,
+  "Rm": 3.25,
+  "depth": 3.77,
+  "angle": null,
+  "H": 14,
+  "W": 27.33,
+  "D": 35.41,
+  "cx": 7.41,
+  "cy": -11.45,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(27.33, 35.41, 14);\nhole(b, { across: 4, at: [7.41, -11.45], counterbore: { across: 6.5, deep: 3.77 } });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 12239.208166268509,
+   "clear": 0.5364222700814896,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-119-cbore-both-bottom-g5-a3",
+  "kind": "cbore",
+  "which": "both",
+  "from": "bottom",
+  "g": 5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 4.69,
+  "depth": 0.93,
+  "angle": null,
+  "H": 8,
+  "W": 40.63,
+  "D": 38.78,
+  "cx": 10.63,
+  "cy": -9.7,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(40.63, 38.78, 8);\nhole(b, { across: 4, at: [10.63, -9.7], counterbore: { across: 9.38, deep: 0.93 } });\ndraft(b.face('right'), 3, { from: 'bottom' });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 12319.235661385093,
+   "clear": 4.57573776573567,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-120-cbore-both-top-g0.2-a3",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 0.2,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 2.55,
+  "depth": 4.36,
+  "angle": null,
+  "H": 14,
+  "W": 28.96,
+  "D": 20.37,
+  "cx": 11.73,
+  "cy": -7.44,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(28.96, 20.37, 14);\nhole(b, { across: 3, at: [11.73, -7.44], counterbore: { across: 5.1, deep: 4.36 } });\ndraft(b.face('right'), 3, { from: 'top' });\ndraft(b.face('front'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8357.47390078143,
+   "clear": 0.19500000000000028,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-121-cbore-both-top-g0.5-a8",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 0.5,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.7,
+  "depth": 2.14,
+  "angle": null,
+  "H": 10,
+  "W": 33.73,
+  "D": 30.85,
+  "cx": 11.67,
+  "cy": -10.23,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(33.73, 30.85, 10);\nhole(b, { across: 4, at: [11.67, -10.23], counterbore: { across: 9.4, deep: 2.14 } });\ndraft(b.face('right'), 8, { from: 'top' });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10618.812338088685,
+   "clear": 0.49499999999999833,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-122-cbore-both-top-g1-a8",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 1,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.01,
+  "depth": 2.04,
+  "angle": null,
+  "H": 14,
+  "W": 24.62,
+  "D": 25.34,
+  "cx": 7.3,
+  "cy": -7.66,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(24.62, 25.34, 14);\nhole(b, { across: 4, at: [7.3, -7.66], counterbore: { across: 8.02, deep: 2.04 } });\ndraft(b.face('right'), 8, { from: 'top' });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 9187.007889984308,
+   "clear": 1,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-123-cbore-both-top-g1.5-a10",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 1.5,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 4.86,
+  "depth": 2.48,
+  "angle": null,
+  "H": 12,
+  "W": 32.17,
+  "D": 28.86,
+  "cx": 9.73,
+  "cy": -8.07,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "top",
+    "n": 12
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(32.17, 28.86, 12);\nhole(b, { across: 3, at: [9.73, -8.07], counterbore: { across: 9.72, deep: 2.48 } });\ndraft(b.face('right'), 10, { from: 'top' });\ndraft(b.face('front'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11682.51514312145,
+   "clear": 1.495,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-124-cbore-both-top-g2-a15",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 2,
+  "deg": 15,
+  "r": 2,
+  "Rm": 5.03,
+  "depth": 4.39,
+  "angle": null,
+  "H": 14,
+  "W": 30.76,
+  "D": 31.32,
+  "cx": 8.35,
+  "cy": -8.63,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(30.76, 31.32, 14);\nhole(b, { across: 4, at: [8.35, -8.63], counterbore: { across: 10.06, deep: 4.39 } });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 14713.772421628664,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-125-cbore-both-top-g3-a3",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 3,
+  "deg": 3,
+  "r": 1,
+  "Rm": 4.13,
+  "depth": 3.82,
+  "angle": null,
+  "H": 14,
+  "W": 35.91,
+  "D": 34.69,
+  "cx": 10.83,
+  "cy": -10.21,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(35.91, 34.69, 14);\nhole(b, { across: 2, at: [10.83, -10.21], counterbore: { across: 8.26, deep: 3.82 } });\ndraft(b.face('right'), 3, { from: 'top' });\ndraft(b.face('front'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 17568.4824537711,
+   "clear": 2.9949999999999983,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-126-cbore-both-top-g5-a15",
+  "kind": "cbore",
+  "which": "both",
+  "from": "top",
+  "g": 5,
+  "deg": 15,
+  "r": 2,
+  "Rm": 5.17,
+  "depth": 1.97,
+  "angle": null,
+  "H": 8,
+  "W": 34.86,
+  "D": 36.92,
+  "cx": 7.26,
+  "cy": -8.29,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 8
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(34.86, 36.92, 8);\nhole(b, { across: 4, at: [7.26, -8.29], counterbore: { across: 10.34, deep: 1.97 } });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10682.772785327597,
+   "clear": 5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-127-csink-right-default-g0.2-a15",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 0.2,
+  "deg": 15,
+  "r": 1,
+  "Rm": 2.11,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 26.67,
+  "D": 37.13,
+  "cx": 11.03,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(26.67, 37.13, 12);\nhole(b, { across: 2, at: [11.03, 0], countersink: { across: 4.22, angle: 82 } });\ndraft(b.face('right'), 15);",
+  "model": null,
+  "closed": {
+   "P": 11841.20764447527,
+   "clear": -1.412695154586734,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-128-csink-right-default-g0.5-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 0.5,
+  "deg": 8,
+  "r": 1,
+  "Rm": 3.28,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 24.24,
+  "D": 31.71,
+  "cx": 8.34,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(24.24, 31.71, 12);\nhole(b, { across: 2, at: [8.34, 0], countersink: { across: 6.56, angle: 90 } });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 9157.443310890785,
+   "clear": -0.3432450082143492,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-129-csink-right-default-g1-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 1,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.08,
+  "depth": null,
+  "angle": 82,
+  "H": 14,
+  "W": 30.24,
+  "D": 37.58,
+  "cx": 10.04,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(30.24, 37.58, 14);\nhole(b, { across: 4, at: [10.04, 0], countersink: { across: 8.16, angle: 82 } });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 15691.82783178668,
+   "clear": 0.016214157083259906,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-130-csink-right-default-g1.5-a5",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.08,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 32.23,
+  "D": 30.72,
+  "cx": 11.53,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(32.23, 30.72, 12);\nhole(b, { across: 4, at: [11.53, 0], countersink: { across: 6.16, angle: 100 } });\ndraft(b.face('right'), 5);",
+  "model": null,
+  "closed": {
+   "P": 11723.214324186742,
+   "clear": 0.9800680188444542,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-131-csink-right-default-g2-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.43,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 32.72,
+  "D": 41.9,
+  "cx": 9.93,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(32.72, 41.9, 8);\nhole(b, { across: 4, at: [9.93, 0], countersink: { across: 8.86, angle: 120 } });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 10837.117081222037,
+   "clear": 1.4378366611904347,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-132-csink-right-default-g3-a15",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 3,
+  "deg": 15,
+  "r": 1,
+  "Rm": 2.76,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 35.37,
+  "D": 33.5,
+  "cx": 11.92,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(35.37, 33.5, 14);\nhole(b, { across: 2, at: [11.92, 0], countersink: { across: 5.52, angle: 120 } });\ndraft(b.face('right'), 15);",
+  "model": null,
+  "closed": {
+   "P": 16535.633135324842,
+   "clear": 1.1293556529821398,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-133-csink-right-default-g5-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "default",
+  "g": 5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 4.79,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 38.5,
+  "D": 43.44,
+  "cx": 9.46,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(38.5, 43.44, 10);\nhole(b, { across: 3, at: [9.46, 0], countersink: { across: 9.58, angle: 90 } });\ndraft(b.face('right'), 8);",
+  "model": null,
+  "closed": {
+   "P": 16565.414741095898,
+   "clear": 4.297295826488041,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-134-csink-right-bottom-g0.2-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 3,
+  "r": 2,
+  "Rm": 5.3,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 28.75,
+  "D": 36.63,
+  "cx": 8.88,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.75, 36.63, 12);\nhole(b, { across: 4, at: [8.88, 0], countersink: { across: 10.6, angle: 100 } });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 12259.512537684524,
+   "clear": -0.43389335139649354,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-135-csink-right-bottom-g0.5-a5",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 3.64,
+  "depth": null,
+  "angle": 100,
+  "H": 14,
+  "W": 27.99,
+  "D": 31.86,
+  "cx": 9.85,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(27.99, 31.86, 14);\nhole(b, { across: 3, at: [9.85, 0], countersink: { across: 7.28, angle: 100 } });\ndraft(b.face('right'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 12086.28562992969,
+   "clear": -0.7198412893629365,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-136-csink-right-bottom-g1-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 1,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 4.16,
+  "depth": null,
+  "angle": 82,
+  "H": 10,
+  "W": 28.2,
+  "D": 36.16,
+  "cx": 8.94,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.2, 36.16, 10);\nhole(b, { across: 3, at: [8.94, 0], countersink: { across: 8.32, angle: 82 } });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9970.651112590323,
+   "clear": 0.4759222071695888,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-137-csink-right-bottom-g1.5-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 8,
+  "r": 2,
+  "Rm": 3.04,
+  "depth": null,
+  "angle": 82,
+  "H": 10,
+  "W": 30.83,
+  "D": 33.76,
+  "cx": 10.88,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(30.83, 33.76, 10);\nhole(b, { across: 4, at: [10.88, 0], countersink: { across: 6.08, angle: 82 } });\ndraft(b.face('right'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10036.138501992924,
+   "clear": 0.0895916529760834,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-138-csink-right-bottom-g2-a10",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 2,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 3.31,
+  "depth": null,
+  "angle": 100,
+  "H": 14,
+  "W": 32.62,
+  "D": 40.64,
+  "cx": 11,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(32.62, 40.64, 14);\nhole(b, { across: 3, at: [11, 0], countersink: { across: 6.62, angle: 100 } });\ndraft(b.face('right'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 17740.235039000938,
+   "clear": -0.4685777299185112,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-139-csink-right-bottom-g3-a5",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 3,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.47,
+  "depth": null,
+  "angle": 90,
+  "H": 14,
+  "W": 32.16,
+  "D": 33.88,
+  "cx": 8.61,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(32.16, 33.88, 14);\nhole(b, { across: 3, at: [8.61, 0], countersink: { across: 8.94, angle: 90 } });\ndraft(b.face('right'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 14795.685601377869,
+   "clear": 1.7751587106370614,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-140-csink-right-bottom-g5-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "bottom",
+  "g": 5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 3.49,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 39.88,
+  "D": 32.45,
+  "cx": 11.45,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(39.88, 32.45, 12);\nhole(b, { across: 4, at: [11.45, 0], countersink: { across: 6.98, angle: 82 } });\ndraft(b.face('right'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 15235.998219735746,
+   "clear": 4.371106648603507,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-141-csink-right-top-g0.2-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 0.2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.27,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 24.79,
+  "D": 38.66,
+  "cx": 7.93,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(24.79, 38.66, 8);\nhole(b, { across: 4, at: [7.93, 0], countersink: { across: 8.54, angle: 90 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 7695.76033026904,
+   "clear": 0.19500000000000028,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-142-csink-right-top-g0.5-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 0.5,
+  "deg": 3,
+  "r": 1.5,
+  "Rm": 2.57,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 26.44,
+  "D": 30.21,
+  "cx": 10.15,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(26.44, 30.21, 8);\nhole(b, { across: 3, at: [10.15, 0], countersink: { across: 5.14, angle: 90 } });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 6377.456104450532,
+   "clear": 0.5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-143-csink-right-top-g1-a10",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 1,
+  "deg": 10,
+  "r": 1,
+  "Rm": 4.24,
+  "depth": null,
+  "angle": 120,
+  "H": 10,
+  "W": 29.46,
+  "D": 43.03,
+  "cx": 9.49,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(29.46, 43.03, 10);\nhole(b, { across: 2, at: [9.49, 0], countersink: { across: 8.48, angle: 120 } });\ndraft(b.face('right'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 12984.985248829922,
+   "clear": 1.0000000000000018,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-144-csink-right-top-g1.5-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 1.5,
+  "deg": 3,
+  "r": 1,
+  "Rm": 2.56,
+  "depth": null,
+  "angle": 90,
+  "H": 14,
+  "W": 27.66,
+  "D": 39.84,
+  "cx": 9.77,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(27.66, 39.84, 14);\nhole(b, { across: 2, at: [9.77, 0], countersink: { across: 5.12, angle: 90 } });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 15576.65506623981,
+   "clear": 1.5000000000000004,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-145-csink-right-top-g2-a8",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 5.15,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 32.44,
+  "D": 45.71,
+  "cx": 9.07,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(32.44, 45.71, 8);\nhole(b, { across: 4, at: [9.07, 0], countersink: { across: 10.3, angle: 90 } });\ndraft(b.face('right'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11872.624142850018,
+   "clear": 1.9999999999999982,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-146-csink-right-top-g3-a5",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 3,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.16,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 35.88,
+  "D": 30.45,
+  "cx": 11.78,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(35.88, 30.45, 14);\nhole(b, { across: 4, at: [11.78, 0], countersink: { across: 6.32, angle: 120 } });\ndraft(b.face('right'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 15374.964717986877,
+   "clear": 3.0000000000000018,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-147-csink-right-top-g5-a3",
+  "kind": "csink",
+  "which": "right",
+  "from": "top",
+  "g": 5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 5.08,
+  "depth": null,
+  "angle": 100,
+  "H": 8,
+  "W": 37.43,
+  "D": 34.78,
+  "cx": 8.64,
+  "cy": 0,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(37.43, 34.78, 8);\nhole(b, { across: 4, at: [8.64, 0], countersink: { across: 10.16, angle: 100 } });\ndraft(b.face('right'), 3, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10296.631578809085,
+   "clear": 4.994999999999999,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-148-csink-front-default-g0.2-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 0.2,
+  "deg": 5,
+  "r": 1,
+  "Rm": 3.89,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 33.07,
+  "D": 29.73,
+  "cx": 0,
+  "cy": -10.77,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(33.07, 29.73, 14);\nhole(b, { across: 2, at: [0, -10.77], countersink: { across: 7.78, angle: 120 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 13690.754885041251,
+   "clear": -0.40742064468146744,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-149-csink-front-default-g0.5-a10",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 0.5,
+  "deg": 10,
+  "r": 2,
+  "Rm": 3.2,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 40.25,
+  "D": 29.45,
+  "cx": 0,
+  "cy": -11.02,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(40.25, 29.45, 10);\nhole(b, { across: 4, at: [0, -11.02], countersink: { across: 6.4, angle: 100 } });\ndraft(b.face('front'), 10);",
+  "model": null,
+  "closed": {
+   "P": 11718.934380882187,
+   "clear": -0.3766349035423264,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-150-csink-front-default-g1-a15",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 1,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 4.47,
+  "depth": null,
+  "angle": 82,
+  "H": 10,
+  "W": 34.31,
+  "D": 28.63,
+  "cx": 0,
+  "cy": -8.84,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(34.31, 28.63, 10);\nhole(b, { across: 3, at: [0, -8.84], countersink: { across: 8.94, angle: 82 } });\ndraft(b.face('front'), 15);",
+  "model": null,
+  "closed": {
+   "P": 9672.978786399757,
+   "clear": -0.3347459621556119,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-151-csink-front-default-g1.5-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4.86,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 44.59,
+  "D": 27.36,
+  "cx": 0,
+  "cy": -7.32,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(44.59, 27.36, 12);\nhole(b, { across: 4, at: [0, -7.32], countersink: { across: 9.72, angle: 90 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 14413.100630812347,
+   "clear": 0.9750680188444534,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-152-csink-front-default-g2-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 2,
+  "deg": 5,
+  "r": 1,
+  "Rm": 3.38,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 33.43,
+  "D": 33.71,
+  "cx": 0,
+  "cy": -11.48,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 4
+   }
+  ],
+  "script": "const b = box(33.43, 33.71, 8);\nhole(b, { across: 2, at: [0, -11.48], countersink: { across: 6.76, angle: 120 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 8971.844799458295,
+   "clear": 1.6450453458963015,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-153-csink-front-default-g3-a3",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 3,
+  "deg": 3,
+  "r": 1,
+  "Rm": 3.7,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 41.27,
+  "D": 34.44,
+  "cx": 0,
+  "cy": -10.52,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(41.27, 34.44, 12);\nhole(b, { across: 2, at: [0, -10.52], countersink: { across: 7.4, angle: 120 } });\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 16993.2435531629,
+   "clear": 2.685553324301754,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-154-csink-front-default-g5-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "default",
+  "g": 5,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 3.81,
+  "depth": null,
+  "angle": 82,
+  "H": 14,
+  "W": 33.37,
+  "D": 36.3,
+  "cx": 0,
+  "cy": -9.34,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(33.37, 36.3, 14);\nhole(b, { across: 3, at: [0, -9.34], countersink: { across: 7.62, angle: 82 } });\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 16815.897774958874,
+   "clear": 4.387579355318531,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-155-csink-front-bottom-g0.2-a8",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 3.91,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 39.6,
+  "D": 26.61,
+  "cx": 0,
+  "cy": -9.19,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(39.6, 26.61, 8);\nhole(b, { across: 2, at: [0, -9.19], countersink: { across: 7.82, angle: 120 } });\ndraft(b.face('front'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8197.171695515468,
+   "clear": -0.9193266776191305,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-156-csink-front-bottom-g0.5-a15",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 15,
+  "r": 2,
+  "Rm": 4.53,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 44.42,
+  "D": 24.98,
+  "cx": 0,
+  "cy": -7.46,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(44.42, 24.98, 12);\nhole(b, { across: 4, at: [0, -7.46], countersink: { across: 9.06, angle: 90 } });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 12263.579690349765,
+   "clear": -2.7153903091734737,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-157-csink-front-bottom-g1-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 1,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.92,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 33.09,
+  "D": 26.54,
+  "cx": 0,
+  "cy": -8.35,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(33.09, 26.54, 12);\nhole(b, { across: 4, at: [0, -8.35], countersink: { across: 7.84, angle: 90 } });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10148.693240371787,
+   "clear": -0.04986396231108792,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-158-csink-front-bottom-g1.5-a3",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 3,
+  "r": 2,
+  "Rm": 4.68,
+  "depth": null,
+  "angle": 82,
+  "H": 8,
+  "W": 45.27,
+  "D": 29.19,
+  "cx": 0,
+  "cy": -8.42,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(45.27, 29.19, 8);\nhole(b, { across: 4, at: [0, -8.42], countersink: { across: 9.36, angle: 82 } });\ndraft(b.face('front'), 3, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10319.896846121952,
+   "clear": 1.0757377657356706,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-159-csink-front-bottom-g2-a15",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 2,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 4.15,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 36.08,
+  "D": 27.12,
+  "cx": 0,
+  "cy": -7.41,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(36.08, 27.12, 10);\nhole(b, { across: 3, at: [0, -7.41], countersink: { across: 8.3, angle: 90 } });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 9178.693380805078,
+   "clear": -0.6794919243112272,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-160-csink-front-bottom-g3-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 3,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.83,
+  "depth": null,
+  "angle": 100,
+  "H": 8,
+  "W": 39.07,
+  "D": 37.11,
+  "cx": 0,
+  "cy": -10.72,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(39.07, 37.11, 8);\nhole(b, { across: 3, at: [0, -10.72], countersink: { across: 9.66, angle: 100 } });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 11356.876755566156,
+   "clear": 2.305090691792607,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-161-csink-front-bottom-g5-a15",
+  "kind": "csink",
+  "which": "front",
+  "from": "bottom",
+  "g": 5,
+  "deg": 15,
+  "r": 1,
+  "Rm": 2.57,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 35.77,
+  "D": 38.65,
+  "cx": 0,
+  "cy": -11.75,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(35.77, 38.65, 8);\nhole(b, { across: 2, at: [0, -11.75], countersink: { across: 5.14, angle: 90 } });\ndraft(b.face('front'), 15, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 10716.449640942095,
+   "clear": 2.8614064605510166,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-162-csink-front-top-g0.2-a8",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 0.2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.25,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 42.76,
+  "D": 25.96,
+  "cx": 0,
+  "cy": -8.53,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(42.76, 25.96, 10);\nhole(b, { across: 4, at: [0, -8.53], countersink: { across: 8.5, angle: 90 } });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 11231.571738225934,
+   "clear": 0.20000000000000107,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-163-csink-front-top-g0.5-a15",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 0.5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 2.61,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 31.14,
+  "D": 27.31,
+  "cx": 0,
+  "cy": -10.54,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(31.14, 27.31, 12);\nhole(b, { across: 3, at: [0, -10.54], countersink: { across: 5.22, angle: 100 } });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 10715.067656862198,
+   "clear": 0.5050000000000008,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-164-csink-front-top-g1-a10",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 1,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 4.14,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 32.92,
+  "D": 27.14,
+  "cx": 0,
+  "cy": -8.43,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(32.92, 27.14, 14);\nhole(b, { across: 3, at: [0, -8.43], countersink: { across: 8.28, angle: 120 } });\ndraft(b.face('front'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 12948.095418097808,
+   "clear": 1,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-165-csink-front-top-g1.5-a8",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 1.5,
+  "deg": 8,
+  "r": 1.5,
+  "Rm": 3.26,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 33.14,
+  "D": 25.07,
+  "cx": 0,
+  "cy": -7.77,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(33.14, 25.07, 10);\nhole(b, { across: 3, at: [0, -7.77], countersink: { across: 6.52, angle: 100 } });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8453.349418080486,
+   "clear": 1.5050000000000008,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-166-csink-front-top-g2-a8",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 5.3,
+  "depth": null,
+  "angle": 100,
+  "H": 14,
+  "W": 39.78,
+  "D": 32.22,
+  "cx": 0,
+  "cy": -8.81,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(39.78, 32.22, 14);\nhole(b, { across: 4, at: [0, -8.81], countersink: { across: 10.6, angle: 100 } });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 18226.930811306433,
+   "clear": 2,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-167-csink-front-top-g3-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 3,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 40.93,
+  "D": 31.36,
+  "cx": 0,
+  "cy": -8.68,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(40.93, 31.36, 12);\nhole(b, { across: 4, at: [0, -8.68], countersink: { across: 8, angle: 100 } });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 15481.688245964735,
+   "clear": 3,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-168-csink-front-top-g5-a5",
+  "kind": "csink",
+  "which": "front",
+  "from": "top",
+  "g": 5,
+  "deg": 5,
+  "r": 1,
+  "Rm": 2.07,
+  "depth": null,
+  "angle": 82,
+  "H": 14,
+  "W": 34.04,
+  "D": 36.96,
+  "cx": 0,
+  "cy": -11.41,
+  "drafts": [
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(34.04, 36.96, 14);\nhole(b, { across: 2, at: [0, -11.41], countersink: { across: 4.14, angle: 82 } });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 17855.91706539535,
+   "clear": 5,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-169-csink-both-default-g0.2-a8",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 0.2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 2.95,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 20.91,
+  "D": 29.19,
+  "cx": 7.31,
+  "cy": -11.44,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(20.91, 29.19, 10);\nhole(b, { across: 2, at: [7.31, -11.44], countersink: { across: 5.9, angle: 90 } });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 6054.53890974873,
+   "clear": -0.5077041735119581,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-170-csink-both-default-g0.5-a15",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 0.5,
+  "deg": 15,
+  "r": 2,
+  "Rm": 4.52,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 25.69,
+  "D": 24.62,
+  "cx": 7.83,
+  "cy": -7.29,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 5
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(25.69, 24.62, 10);\nhole(b, { across: 4, at: [7.83, -7.29], countersink: { across: 9.04, angle: 100 } });\ndraft(b.face('right'), 15);\ndraft(b.face('front'), 15);",
+  "model": null,
+  "closed": {
+   "P": 6159.024058381329,
+   "clear": -0.8447459621556117,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-171-csink-both-default-g1-a3",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 1,
+  "deg": 3,
+  "r": 1,
+  "Rm": 4.23,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 29.33,
+  "D": 28.66,
+  "cx": 9.43,
+  "cy": -9.1,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 3,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(29.33, 28.66, 12);\nhole(b, { across: 2, at: [9.43, -9.1], countersink: { across: 8.46, angle: 90 } });\ndraft(b.face('right'), 3);\ndraft(b.face('front'), 3);",
+  "model": null,
+  "closed": {
+   "P": 9981.805330326744,
+   "clear": 0.6855533243017522,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-172-csink-both-default-g1.5-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 3.88,
+  "depth": null,
+  "angle": 100,
+  "H": 14,
+  "W": 24.93,
+  "D": 30.41,
+  "cx": 7.09,
+  "cy": -9.82,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(24.93, 30.41, 14);\nhole(b, { across: 4, at: [7.09, -9.82], countersink: { across: 7.76, angle: 100 } });\ndraft(b.face('right'), 5);\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 10415.046464227866,
+   "clear": 0.8825793553185322,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-173-csink-both-default-g2-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 2,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 4.46,
+  "depth": null,
+  "angle": 100,
+  "H": 12,
+  "W": 29.42,
+  "D": 34.01,
+  "cx": 8.25,
+  "cy": -10.54,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "default",
+    "n": 6
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "default",
+    "n": 6
+   }
+  ],
+  "script": "const b = box(29.42, 34.01, 12);\nhole(b, { across: 3, at: [8.25, -10.54], countersink: { across: 8.92, angle: 100 } });\ndraft(b.face('right'), 5);\ndraft(b.face('front'), 5);",
+  "model": null,
+  "closed": {
+   "P": 11865.736229762444,
+   "clear": 1.475068018844456,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-174-csink-both-default-g3-a15",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 3,
+  "deg": 15,
+  "r": 1,
+  "Rm": 3.27,
+  "depth": null,
+  "angle": 100,
+  "H": 14,
+  "W": 35.01,
+  "D": 31.37,
+  "cx": 11.24,
+  "cy": -9.42,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "default",
+    "n": 7
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "default",
+    "n": 7
+   }
+  ],
+  "script": "const b = box(35.01, 31.37, 14);\nhole(b, { across: 2, at: [11.24, -9.42], countersink: { across: 6.54, angle: 100 } });\ndraft(b.face('right'), 15);\ndraft(b.face('front'), 15);",
+  "model": null,
+  "closed": {
+   "P": 15324.265160725894,
+   "clear": 1.1193556529821396,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-175-csink-both-default-g5-a8",
+  "kind": "csink",
+  "which": "both",
+  "from": "default",
+  "g": 5,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.48,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 36.79,
+  "D": 37.76,
+  "cx": 8.91,
+  "cy": -9.4,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "default",
+    "n": 5
+   }
+  ],
+  "script": "const b = box(36.79, 37.76, 10);\nhole(b, { across: 4, at: [8.91, -9.4], countersink: { across: 8.96, angle: 90 } });\ndraft(b.face('right'), 8);\ndraft(b.face('front'), 8);",
+  "model": null,
+  "closed": {
+   "P": 13713.269272257203,
+   "clear": 4.297295826488041,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-176-csink-both-bottom-g0.2-a8",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.2,
+  "deg": 8,
+  "r": 2,
+  "Rm": 4.55,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 31.63,
+  "D": 32.9,
+  "cx": 11.07,
+  "cy": -11.7,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(31.63, 32.9, 14);\nhole(b, { across: 4, at: [11.07, -11.7], countersink: { across: 9.1, angle: 120 } });\ndraft(b.face('right'), 8, { from: 'bottom' });\ndraft(b.face('front'), 8, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 13494.946886142878,
+   "clear": -1.7725716858334817,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-177-csink-both-bottom-g0.5-a10",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 0.5,
+  "deg": 10,
+  "r": 1,
+  "Rm": 3.58,
+  "depth": null,
+  "angle": 82,
+  "H": 12,
+  "W": 26.41,
+  "D": 28.84,
+  "cx": 9.13,
+  "cy": -10.34,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(26.41, 28.84, 12);\nhole(b, { across: 2, at: [9.13, -10.34], countersink: { across: 7.16, angle: 82 } });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8381.967835257989,
+   "clear": -1.6209237685015796,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-178-csink-both-bottom-g1-a10",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 1,
+  "deg": 10,
+  "r": 2,
+  "Rm": 3.09,
+  "depth": null,
+  "angle": 90,
+  "H": 10,
+  "W": 28.69,
+  "D": 23.08,
+  "cx": 10.26,
+  "cy": -7.45,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.69, 23.08, 10);\nhole(b, { across: 4, at: [10.26, -7.45], countersink: { across: 6.18, angle: 90 } });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 6042.197463603266,
+   "clear": -0.7682698070846481,
+   "breaks": true
+  }
+ },
+ {
+  "id": "sd51-179-csink-both-bottom-g1.5-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 5.35,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 33.62,
+  "D": 31.97,
+  "cx": 9.96,
+  "cy": -9.13,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(33.62, 31.97, 8);\nhole(b, { across: 4, at: [9.96, -9.13], countersink: { across: 10.7, angle: 90 } });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 8205.915525343604,
+   "clear": 0.8000906917926063,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-180-csink-both-bottom-g2-a10",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 2,
+  "deg": 10,
+  "r": 2,
+  "Rm": 5.03,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 28.56,
+  "D": 33.01,
+  "cx": 7.25,
+  "cy": -9.47,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(28.56, 33.01, 8);\nhole(b, { across: 4, at: [7.25, -9.47], countersink: { across: 10.06, angle: 90 } });\ndraft(b.face('right'), 10, { from: 'bottom' });\ndraft(b.face('front'), 10, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 7012.677226324922,
+   "clear": 0.5893841543322793,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-181-csink-both-bottom-g3-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 3,
+  "deg": 5,
+  "r": 1.5,
+  "Rm": 3.24,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 34.53,
+  "D": 34.91,
+  "cx": 11.03,
+  "cy": -11.21,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.53, 34.91, 12);\nhole(b, { across: 3, at: [11.03, -11.21], countersink: { across: 6.48, angle: 90 } });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 13927.694243743765,
+   "clear": 1.9451360376889113,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-182-csink-both-bottom-g5-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "bottom",
+  "g": 5,
+  "deg": 5,
+  "r": 1,
+  "Rm": 2.03,
+  "depth": null,
+  "angle": 120,
+  "H": 14,
+  "W": 34.32,
+  "D": 29.77,
+  "cx": 10.13,
+  "cy": -7.85,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "bottom",
+    "n": 0
+   }
+  ],
+  "script": "const b = box(34.32, 29.77, 14);\nhole(b, { across: 2, at: [10.13, -7.85], countersink: { across: 4.06, angle: 120 } });\ndraft(b.face('right'), 5, { from: 'bottom' });\ndraft(b.face('front'), 5, { from: 'bottom' });",
+  "model": null,
+  "closed": {
+   "P": 13714.82293513731,
+   "clear": 3.7751587106370637,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-183-csink-both-top-g0.2-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 0.2,
+  "deg": 5,
+  "r": 1,
+  "Rm": 2.94,
+  "depth": null,
+  "angle": 90,
+  "H": 8,
+  "W": 26.92,
+  "D": 25.72,
+  "cx": 10.32,
+  "cy": -9.72,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(26.92, 25.72, 8);\nhole(b, { across: 2, at: [10.32, -9.72], countersink: { across: 5.88, angle: 90 } });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 5643.136001257142,
+   "clear": 0.1999999999999993,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-184-csink-both-top-g0.5-a15",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 0.5,
+  "deg": 15,
+  "r": 1,
+  "Rm": 2.79,
+  "depth": null,
+  "angle": 82,
+  "H": 14,
+  "W": 22.43,
+  "D": 26.66,
+  "cx": 7.93,
+  "cy": -10.04,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(22.43, 26.66, 14);\nhole(b, { across: 2, at: [7.93, -10.04], countersink: { across: 5.58, angle: 82 } });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 9664.027616303982,
+   "clear": 0.49500000000000055,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-185-csink-both-top-g1-a10",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 1,
+  "deg": 10,
+  "r": 1.5,
+  "Rm": 2.89,
+  "depth": null,
+  "angle": 120,
+  "H": 12,
+  "W": 26.76,
+  "D": 25.72,
+  "cx": 9.49,
+  "cy": -8.97,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 10,
+    "from": "top",
+    "n": 12
+   },
+   {
+    "face": "front",
+    "deg": 10,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(26.76, 25.72, 12);\nhole(b, { across: 3, at: [9.49, -8.97], countersink: { across: 5.78, angle: 120 } });\ndraft(b.face('right'), 10, { from: 'top' });\ndraft(b.face('front'), 10, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 8851.67362084958,
+   "clear": 0.9999999999999982,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-186-csink-both-top-g1.5-a5",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 1.5,
+  "deg": 5,
+  "r": 2,
+  "Rm": 4.63,
+  "depth": null,
+  "angle": 120,
+  "H": 8,
+  "W": 26.56,
+  "D": 34.99,
+  "cx": 7.15,
+  "cy": -11.37,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   },
+   {
+    "face": "front",
+    "deg": 5,
+    "from": "top",
+    "n": 8
+   }
+  ],
+  "script": "const b = box(26.56, 34.99, 8);\nhole(b, { across: 4, at: [7.15, -11.37], countersink: { across: 9.26, angle: 120 } });\ndraft(b.face('right'), 5, { from: 'top' });\ndraft(b.face('front'), 5, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 7471.677952225705,
+   "clear": 1.4950000000000028,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-187-csink-both-top-g2-a8",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 2,
+  "deg": 8,
+  "r": 1,
+  "Rm": 3.09,
+  "depth": null,
+  "angle": 100,
+  "H": 10,
+  "W": 25.57,
+  "D": 25.78,
+  "cx": 7.7,
+  "cy": -7.8,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   },
+   {
+    "face": "front",
+    "deg": 8,
+    "from": "top",
+    "n": 10
+   }
+  ],
+  "script": "const b = box(25.57, 25.78, 10);\nhole(b, { across: 2, at: [7.7, -7.8], countersink: { across: 6.18, angle: 100 } });\ndraft(b.face('right'), 8, { from: 'top' });\ndraft(b.face('front'), 8, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 6908.415817042945,
+   "clear": 1.9949999999999997,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-188-csink-both-top-g3-a15",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 3,
+  "deg": 15,
+  "r": 1,
+  "Rm": 4.23,
+  "depth": null,
+  "angle": 90,
+  "H": 14,
+  "W": 29.89,
+  "D": 29.63,
+  "cx": 7.72,
+  "cy": -7.58,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 14
+   }
+  ],
+  "script": "const b = box(29.89, 29.63, 14);\nhole(b, { across: 2, at: [7.72, -7.58], countersink: { across: 8.46, angle: 90 } });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 13915.529871696504,
+   "clear": 2.995,
+   "breaks": false
+  }
+ },
+ {
+  "id": "sd51-189-csink-both-top-g5-a15",
+  "kind": "csink",
+  "which": "both",
+  "from": "top",
+  "g": 5,
+  "deg": 15,
+  "r": 1.5,
+  "Rm": 2.74,
+  "depth": null,
+  "angle": 90,
+  "H": 12,
+  "W": 33.14,
+  "D": 34.31,
+  "cx": 8.83,
+  "cy": -9.42,
+  "drafts": [
+   {
+    "face": "right",
+    "deg": 15,
+    "from": "top",
+    "n": 12
+   },
+   {
+    "face": "front",
+    "deg": 15,
+    "from": "top",
+    "n": 12
+   }
+  ],
+  "script": "const b = box(33.14, 34.31, 12);\nhole(b, { across: 3, at: [8.83, -9.42], countersink: { across: 5.48, angle: 90 } });\ndraft(b.face('right'), 15, { from: 'top' });\ndraft(b.face('front'), 15, { from: 'top' });",
+  "model": null,
+  "closed": {
+   "P": 14892.95881455679,
+   "clear": 4.995000000000001,
+   "breaks": false
+  }
+ }
+]
