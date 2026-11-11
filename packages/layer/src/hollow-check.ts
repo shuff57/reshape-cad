@@ -29,6 +29,7 @@ import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx } from './types.js';
 import type { TranslateState } from './translate.js';
 import { lastRunOf } from './pocket-cut.js';
+import { partName, partNameOf, setPartName } from './part-name.js';
 
 export const HOLLOW_CHECK_GUARD = 'HOLLOW-ROUND';
 /** relative to the hollow's own volume: curved (a round or a hole) and planar (bevels only, no hole) */
@@ -204,6 +205,7 @@ export function hollowRefusal(f: Feature, features: Feature[], st: TranslateStat
   { sentence: string; guard: string; detail: Record<string, unknown> } | null {
   if (f.kind !== 'shell' || ctx.skipHollowCheck || ctx.skipSketchVolume || !res.measure || !FV(f).open) return null;
   const byId: Record<string, Feature> = {}; for (const g of features) byId[g.id] = g;
+  setPartName(f, partNameOf(FV(f).target, byId as never)); // the hollow may come through a step that did not set it
   const cov = hollowModel(f, byId);
   const refuse = (detail: Record<string, unknown>) => ({ sentence: openSentence(f), guard: HOLLOW_CHECK_GUARD, detail });
   if (!cov.ok) return cov.rounds ? refuse({ uncovered: cov.why }) : null;
@@ -224,5 +226,5 @@ export function hollowRefusal(f: Feature, features: Feature[], st: TranslateStat
  * The shell group's sentence for a hollow the build could not make with this wall and open side. It is shell-draft.ts SENTENCE.openAxisEngine, moved here unchanged so
  * both read one text (shell-draft.ts imports it; importing shell-draft.ts from here would close an import cycle through translate.ts).
  */
-export const openAxisEngineSentence = (f: { id: string; target?: string }): string => `${f.id} (hollow): ${f.target} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`;
+export const openAxisEngineSentence = (f: { id: string; target?: string }): string => `${f.id} (hollow): ${partName(f)} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`;
 const openSentence = (f: Feature) => openAxisEngineSentence(FV(f));

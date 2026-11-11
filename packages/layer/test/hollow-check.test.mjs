@@ -89,6 +89,7 @@ async function each(features, part, hollow, extra, fn) {
     fn(Object.fromEntries(tr.features.map((f) => [f.id, f])), `${set}${resolveAt ? ' (resolveAt)' : ''}`);
   }
 }
+// the sentence names the part by the step that made it (b1, the box), not by the last round (r1, e3): part-name.ts, owner decision 2026-11-11
 const SENT = (target) => sdm.SENTENCE.openAxisEngine({ id: 's1', target });
 
 test('in all nine sets and the host entry: a right family-C hollow is built, a wrong one is refused with the shell group\'s sentence', async () => {
@@ -101,7 +102,7 @@ test('in all nine sets and the host entry: a right family-C hollow is built, a w
   await each(f, cf.part, cf.hollow * (1 + 1.06e-3), {}, (n, at) => {
     assert.equal(n.s1.status, 'refused', at);
     assert.equal(n.s1.guard, hc.HOLLOW_CHECK_GUARD, at);
-    assert.equal(n.s1.refusal, SENT('r1'), at);
+    assert.equal(n.s1.refusal, SENT('b1'), at);
   });
   // the measuring switch, and the fake-engine switch of every check after the build
   await each(f, cf.part, cf.hollow * (1 + 1.06e-3), { skipHollowCheck: true }, (n, at) => assert.equal(n.s1.status, 'built', at));
@@ -124,7 +125,7 @@ test('a bevelled part is checked at the planar bar; an uncovered hollow is refus
     assert.ok(cov.ok && 'why' in hc.hollowClosedForm(cov.model), style);
     const res = { ok: true, measure: { bodies: [{ name: 'b1', volume_mm3: 1, bbox: { min: [0, 0, 0], max: [1, 1, 1] } }] } };
     const r = hc.hollowRefusal(s, fs, { measure: {} }, {}, res, ['b1'], []);
-    if (style === 'fillet') { assert.equal(r?.guard, hc.HOLLOW_CHECK_GUARD); assert.equal(r.sentence, SENT('e3')); } else assert.equal(r, null);
+    if (style === 'fillet') { assert.equal(r?.guard, hc.HOLLOW_CHECK_GUARD); assert.equal(r.sentence, SENT('b1')); } else assert.equal(r, null);
   }
 });
 

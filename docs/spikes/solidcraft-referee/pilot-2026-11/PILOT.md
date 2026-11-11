@@ -345,3 +345,18 @@ Not changed: the sketch check for a dimensioned sketch still shows the solver's 
 
 Checked on 0.30.1: `npm test` 1015 tests, 1009 pass, 6 skipped, 0 fail; the six browser checks pass; the 56 examples give the same 46 passes with the
 same verdicts and refusals as recorded.
+
+### F9, done for hollows and drafts (owner chose "the starting shape's name")
+
+`packages/layer/src/part-name.ts`: a sentence that means the whole part names the step that made it (box1, pull1, cyl1, op1 for a join), found by
+walking back through the holes, rounds, hollows, drafts, moves and turns that only change it. Used by every hollow and draft sentence
+(`shell-draft.ts`, mirrored in `shell-draft-translate.mjs`) and by the hollow check. A sentence that means one particular step ("it comes after
+hole1", "it crosses hole1") is unchanged.
+
+In the page: "the open edge of box1 is rounded ..." (was "of hole1"), "Hollowing box1 to 12 thick would collapse it ...", "box1 is already hollow ...",
+"Hollowing box1 is not supported yet because the part has a blind hole ...". A part made by a join reads "Hollowing op1 ...".
+
+Not changed: two groove sentences ("... was left in 2 separate pieces", "... is not a single body") still name the last step.
+
+Checked on 0.30.1: `npm test` 1019 tests, 1013 pass, 6 skipped, 0 fail; 0 of 4784 host-route rows changed in built / refused / guard; the shell-draft
+live replay is 1085 of 1089 identical with the same 4 known differences as before; the six browser checks pass; the 56 examples give the same 46 passes.

@@ -48,29 +48,45 @@ const fmt = (n) => (Number.isInteger(n) ? String(n) : String(+n.toFixed(4)));
 // ---- plain sentences -----------------------------------------------------------------------------------------------
 // Every refusal is ONE sentence: what was asked, why it cannot be built, that the feature is shown without it, and (after a dash) what to try.
 // shell-draft-runner.mjs checks that no sentence contains a second sentence.
+// ---- what a sentence calls the part (pilot 2026-11 F9; mirrors packages/layer/src/part-name.ts) -------------------------------------------------
+const PART_CHANGES = new Set(['hole', 'fillet', 'shell', 'draft', 'move', 'rotate']);
+function partNameOf(id, byId) {
+  let cur = id; const seen = new Set();
+  while (cur && !seen.has(cur)) {
+    seen.add(cur);
+    const f = byId[cur]; if (!f) return id;
+    const next = PART_CHANGES.has(f.kind) && !(f.kind === 'move' && f.copy) ? f.target : f.kind === 'pocket' || f.kind === 'groove' ? f.into : undefined;
+    if (!next) return cur;
+    cur = next;
+  }
+  return id;
+}
+const PART = new WeakMap();
+const setPartName = (f, name) => { if (name) PART.set(f, name); };
+const partName = (f) => PART.get(f) ?? f.target;
 export const SENTENCE = {
   closed: (f, what) => `${f.id} (hollow): a hollow with no open side is only built for a plain box, cylinder or prism, and ${what}, so ${f.id} is shown without it -- add open:'top' (or 'bottom', 'front', 'back', 'left', 'right') to leave one side open.`,
-  shellTwice: (f) => `${f.id} (hollow): ${f.target} is already hollow and a second hollow is not supported yet, so ${f.id} is shown without it -- give the first hollow the wall you want instead.`,
+  shellTwice: (f) => `${f.id} (hollow): ${partName(f)} is already hollow and a second hollow is not supported yet, so ${f.id} is shown without it -- give the first hollow the wall you want instead.`,
   afterClosedHollow: (f, what) => `${f.id} (${f.kind === 'shell' ? 'hollow' : f.kind}): ${what} has no open side, and nothing but a move or a turn can be added to a hollow like that yet, so ${f.id} is shown without it -- apply ${f.id} before the hollow, or open one side of the hollow.`,
-  closedFail: (f) => `${f.id} (hollow): a hollow with no open side could not be built for ${f.target} with a wall of ${fmt(f.thickness)}, so ${f.id} is shown without it -- use a different wall, or add open:'top' to leave one side open.`,
+  closedFail: (f) => `${f.id} (hollow): a hollow with no open side could not be built for ${partName(f)} with a wall of ${fmt(f.thickness)}, so ${f.id} is shown without it -- use a different wall, or add open:'top' to leave one side open.`,
   noFaceDrafted: (f, word, dr) => `${f.id} (hollow): the ${word} face was tilted by ${dr.id}, so it can no longer be picked by name and ${f.id} is shown without it -- open a different face, or hollow before drafting.`,
   swallowed: (f, word, name) => `${f.id} (hollow): the ${word} face of ${name} is inside the part after the mirror or join, so ${f.id} is shown without it -- open a face that is still on the outside.`,
-  hollowCone: (f) => `${f.id} (hollow): ${f.target} has a drafted curved wall (a cone) and a hollow of that is not supported yet, so ${f.id} is shown without it -- leave out either the draft or the hollow.`,
+  hollowCone: (f) => `${f.id} (hollow): ${partName(f)} has a drafted curved wall (a cone) and a hollow of that is not supported yet, so ${f.id} is shown without it -- leave out either the draft or the hollow.`,
   chamferBox: (f) => `Bevelling every edge of a box at once is not supported, so ${f.id} is shown without it -- bevel the edges one at a time.`,
-  chamferCyl: (f) => `${f.id} (hollow): ${f.target} has its edges bevelled and a hollow of a bevelled cylinder is not supported yet, so ${f.id} is shown without it -- hollow the plain cylinder, or leave the hollow out.`,
-  concave: (f, why) => `Hollowing ${f.target} is not supported yet because the part has inside corners (${why}) where the new wall would come out thicker than ${fmt(f.thickness)}, so ${f.id} is shown without it -- hollow the plain shape first, or leave the hollow out.`,
-  blindHole: (f) => `Hollowing ${f.target} is not supported yet because the part has a blind hole, whose floor is an inside corner, so ${f.id} is shown without it -- hollow the plain shape first, then drill the hole.`,
+  chamferCyl: (f) => `${f.id} (hollow): ${partName(f)} has its edges bevelled and a hollow of a bevelled cylinder is not supported yet, so ${f.id} is shown without it -- hollow the plain cylinder, or leave the hollow out.`,
+  concave: (f, why) => `Hollowing ${partName(f)} is not supported yet because the part has inside corners (${why}) where the new wall would come out thicker than ${fmt(f.thickness)}, so ${f.id} is shown without it -- hollow the plain shape first, or leave the hollow out.`,
+  blindHole: (f) => `Hollowing ${partName(f)} is not supported yet because the part has a blind hole, whose floor is an inside corner, so ${f.id} is shown without it -- hollow the plain shape first, then drill the hole.`,
   noFlat: (f, word, kind) => `${f.id} (hollow): ${kind === 'sphere' ? 'a sphere has no flat face to open' : kind === 'cone' && (word === 'top') ? 'the top of a cone is a point, not a flat face to open' : `a ${kind} only has flat top and bottom faces, not a ${word} one to open`}, so ${f.id} is shown without it -- use ${kind === 'sphere' ? 'a box, cylinder or other flat-faced shape' : kind === 'cone' ? "open:'bottom'" : "open:'top' or open:'bottom'"}.`,
-  noFace: (f, word, why) => `${f.id}${f.kind === 'shell' ? ' (hollow)' : f.kind === 'draft' ? ' (draft)' : ''}: the ${word} face of ${f.target} ${why ?? 'could not be found on the part as it is now'}, so ${f.id} is shown without it${f.kind === 'shell' ? " -- open a different face, or hollow before drafting." : '.'}`,
-  thickBox: (f, limit) => `Hollowing ${f.target} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- the wall has to be under ${fmt(limit)}.`,
-  thickGeneric: (f) => `Hollowing ${f.target} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width.`,
+  noFace: (f, word, why) => `${f.id}${f.kind === 'shell' ? ' (hollow)' : f.kind === 'draft' ? ' (draft)' : ''}: the ${word} face of ${partName(f)} ${why ?? 'could not be found on the part as it is now'}, so ${f.id} is shown without it${f.kind === 'shell' ? " -- open a different face, or hollow before drafting." : '.'}`,
+  thickBox: (f, limit) => `Hollowing ${partName(f)} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- the wall has to be under ${fmt(limit)}.`,
+  thickGeneric: (f) => `Hollowing ${partName(f)} to ${fmt(f.thickness)} thick would collapse it, so ${f.id} is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width.`,
   tie: (f, word, kind, n) => `${f.id}: the ${word} face is ambiguous on this ${n ? n + '-sided ' : ''}${kind} because two faces are equally far ${word}, so ${f.id} is shown without it -- pick a face that has only one candidate (for example top or bottom), or ${kind === 'box' ? 'turn the box a little less' : 'use a different number of sides'}.`,
   stale: (f, what) => `${f.id}: the ${what} cannot be found reliably after the part was turned or copied, so ${f.id} is shown without it -- apply it before turning the part.`,
   noPickCsink: (f, word) => `${f.id} (hollow): not supported yet because the ${word} face cannot be picked reliably on a part with a countersink, so ${f.id} is shown without it -- hollow before drilling the countersink.`, // the layer's topology path only (HALT-8.md); never reached here, where the pick comes from the primitive's own frame
   csinkOpen: (f, hole) => `${f.id} (hollow): not supported yet because ${hole} has a countersink on the face being opened, so ${f.id} is shown without it -- open a different face, or use a plain hole without the countersink.`,
   holeNear: (f, why) => `${f.id} (hollow): not supported yet because a hole would be too close to a wall or to another hole (${why}), so ${f.id} is shown without it -- move the holes apart, or drill after hollowing.`,
-  rim: (f, rr, t, style) => `${f.id} (hollow): the open edge of ${f.target} is ${style === 'chamfer' ? 'bevelled by' : 'rounded with a radius of'} ${fmt(rr)}, which is as large as the wall (${fmt(t)}), so the rim would have no thickness and ${f.id} is shown without it -- make the ${style === 'chamfer' ? 'bevel' : 'round'} smaller than the wall.`,
-  openAxisEngine: (f) => `${f.id} (hollow): ${f.target} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`,
+  rim: (f, rr, t, style) => `${f.id} (hollow): the open edge of ${partName(f)} is ${style === 'chamfer' ? 'bevelled by' : 'rounded with a radius of'} ${fmt(rr)}, which is as large as the wall (${fmt(t)}), so the rim would have no thickness and ${f.id} is shown without it -- make the ${style === 'chamfer' ? 'bevel' : 'round'} smaller than the wall.`,
+  openAxisEngine: (f) => `${f.id} (hollow): ${partName(f)} could not be hollowed with this wall and open side, so ${f.id} is shown without it -- try another wall or another open side.`,
   hollowSide: (f) => `${f.id} (hollow): "side" is the curved wall of a cylinder, not a flat face, so ${f.id} is shown without it -- open top or bottom instead.`,
   cap: (f, word, why = {}) => {
     const fa = ['right', 'left'].includes(word) ? 'x' : ['front', 'back'].includes(word) ? 'y' : 'z';
@@ -86,19 +102,19 @@ export const SENTENCE = {
   vanish: (f) => `Tilting ${f.id} at ${fmt(f.angle)} degrees would not fit because the tilted face would run into another face of the part, so ${f.id} is shown without it -- use a smaller angle.`,
   twice: (f) => `${f.id} (draft): that face was already drafted, so ${f.id} is shown without it -- draft it once with the angle you want.`,
   fromStale: (f, word, got, want) => `${f.id} (draft): from:'${word}' would put the neutral plane at ${fmt(got)}, but the ${word} of this part is at ${fmt(want)} now (the part was moved, joined or turned), so ${f.id} is shown without it -- give the plane yourself, for example neutral: ${fmt(want)}.`,
-  wholeChanged: (f, what) => `${f.id} (draft): drafting a whole shape is only built for a plain box, prism, wedge, cylinder or extruded outline (optionally moved), and ${f.target} has been changed by ${what}, so ${f.id} is shown without it -- draft the shape before ${what === 'a hollow' ? 'hollowing it' : 'that step'}, or draft one face at a time.`,
+  wholeChanged: (f, what) => `${f.id} (draft): drafting a whole shape is only built for a plain box, prism, wedge, cylinder or extruded outline (optionally moved), and ${partName(f)} has been changed by ${what}, so ${f.id} is shown without it -- draft the shape before ${what === 'a hollow' ? 'hollowing it' : 'that step'}, or draft one face at a time.`,
   wholeHollow: (f) => `${f.id} (draft): drafting a whole shape that is hollow is not supported yet, so ${f.id} is shown without it -- draft the shape first and hollow it afterwards.`,
-  wholeDrafted: (f) => `${f.id} (draft): ${f.target} already has a drafted face, so drafting the whole shape as well is not supported yet and ${f.id} is shown without it -- draft the whole shape first, or draft the faces one at a time.`,
+  wholeDrafted: (f) => `${f.id} (draft): ${partName(f)} already has a drafted face, so drafting the whole shape as well is not supported yet and ${f.id} is shown without it -- draft the whole shape first, or draft the faces one at a time.`,
   wholeCone: (f) => `${f.id} (draft): the sloping side of a cone is not parallel to the pull direction, so it cannot be drafted and ${f.id} is shown without it -- draft a box, prism or cylinder instead.`,
   wholeSphere: (f) => `${f.id} (draft): a sphere has no side faces to draft, so ${f.id} is shown without it -- draft a box, prism, cylinder or other shape with straight sides.`,
   wholeAxis: (f, kind, axis) => `${f.id} (draft): the sides of this ${kind} are not parallel to the ${axis} pull direction, so ${f.id} is shown without it -- pull along the ${kind === 'cylinder' ? 'cylinder\'s own axis' : 'axis the sides run along'} (usually z), for example with from:'top' or from:'bottom'.`,
-  outlineCrosses: (f) => `${f.id} (draft): the outline of ${f.target} touches or crosses itself, so its sides cannot be drafted and ${f.id} is shown without it -- fix the outline first.`,
+  outlineCrosses: (f) => `${f.id} (draft): the outline of ${partName(f)} touches or crosses itself, so its sides cannot be drafted and ${f.id} is shown without it -- fix the outline first.`,
   wholeShape: (f, kind) => `${f.id} (draft): drafting a whole shape is not built for ${kind} yet, so ${f.id} is shown without it -- draft a plain box, prism, wedge, cylinder or extruded outline, or draft one face at a time.`,
   sphereFace: (f) => `${f.id} (draft): a sphere has no flat face to draft, so ${f.id} is shown without it -- draft a box, prism or other shape with flat sides.`,
   curvedFace: (f, word) => `${f.id} (draft): the curved side of a cylinder cannot be picked for a draft yet, so ${f.id} is shown without it -- draft a flat face instead.`,
   squareNeighbours: (f) => `${f.id} (draft): the faces next to the one you are drafting must be square to the pull direction and the wall of a hole or a round cut into that face is not, so ${f.id} is shown without it -- draft the plain face first, then add the hole or round.`,
   tiltedNeighbour: (f) => `${f.id} (draft): the face next to the one you are drafting was already tilted by an earlier draft and this part cannot take a second tilted neighbour, so ${f.id} is shown without it -- draft one face of it, or draft the faces of a plain box one after another.`,
-  engineDraft: (f) => `${f.id} (draft): this face of ${f.target} could not be drafted at ${fmt(f.angle)} degrees, so ${f.id} is shown without it -- try a smaller angle or a different face.`,
+  engineDraft: (f) => `${f.id} (draft): this face of ${partName(f)} could not be drafted at ${fmt(f.angle)} degrees, so ${f.id} is shown without it -- try a smaller angle or a different face.`,
   noOpposite: (f) => `${f.id} (draft): the face could not be found on the part as it is now, so ${f.id} is shown without it.`,
   unverified: (f) => `Tilting ${f.id} at ${fmt(f.angle)} degrees could not be checked against a smaller tilt of the same face, so ${f.id} is shown without it -- use a smaller angle.`,
 };
@@ -334,6 +350,7 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
     if (f.kind === 'sketch') st.sketches[f.id] = f;
     // holes need the target's extent to tell through from blind: annotate from what was measured so far
     if (f.kind === 'hole') { const m = st.measure[f.target]; if (m) { holeExt[f.id] = [0, 1, 2].map((i) => m.bbox[i + 3] - m.bbox[i]); holeBox[f.id] = m.bbox; } }
+    setPartName(f, partNameOf(f.target, byId)); // what the sentences call the part: the step that made it (mirrors packages/layer/src/part-name.ts)
     let plan;
     try {
       const vd = voidedDep(f, st);
@@ -479,13 +496,13 @@ function planClosedShell(f, st, ctx, G, bs) {
   if (st.voided[head] || G.byId[head]?.kind === 'shell') return { ...refuse(SENTENCE.shellTwice(f)), guard: 'G-TWICE' };
   const why = (w) => ({ ...refuse(SENTENCE.closed(f, w)), guard: 'G-CLOSED' });
   const root = rootOf(f.target, G.byId);
-  if (!root) return why(`${f.target} has a history this cannot follow`);
-  if (!['box', 'cylinder', 'sphere', 'prism'].includes(root.kind)) return why(`${f.target} is made from ${/^[aeiou]/.test(KIND_NAME[root.kind] ?? root.kind) ? 'an' : 'a'} ${KIND_NAME[root.kind] ?? root.kind}`);
+  if (!root) return why(`${partName(f)} has a history this cannot follow`);
+  if (!['box', 'cylinder', 'sphere', 'prism'].includes(root.kind)) return why(`${partName(f)} is made from ${/^[aeiou]/.test(KIND_NAME[root.kind] ?? root.kind) ? 'an' : 'a'} ${KIND_NAME[root.kind] ?? root.kind}`);
   const chain = hops(root.id, f.target, G.byId);
-  if (!chain) return why(`${f.target} has a history this cannot follow`);
+  if (!chain) return why(`${partName(f)} has a history this cannot follow`);
   const bad = chain.find((h) => !(h.kind === 'move' && !h.copy));
-  if (bad) return why(`${f.target} has been changed by ${HOP_NAME[bad.kind] ?? `a ${bad.kind}`}`);
-  if (root.round) return { ...refuse(root.kind === 'cylinder' && root.roundStyle === 'chamfer' ? SENTENCE.chamferCyl(f) : SENTENCE.closed(f, `${f.target} has rounded or bevelled edges`)), guard: 'G-CLOSED' };
+  if (bad) return why(`${partName(f)} has been changed by ${HOP_NAME[bad.kind] ?? `a ${bad.kind}`}`);
+  if (root.round) return { ...refuse(root.kind === 'cylinder' && root.roundStyle === 'chamfer' ? SENTENCE.chamferCyl(f) : SENTENCE.closed(f, `${partName(f)} has rounded or bevelled edges`)), guard: 'G-CLOSED' };
   const t = f.thickness;
   const clone = (o) => ({ ...root, id: `${f.id}_in`, ...o });
   let inner, vInner, limit, curved = false;
@@ -538,7 +555,7 @@ function planShell(f, st, ctx, G) {
   };
   const d = dep(f.target); if (d) return refuse(d);
   const bs = st.bodies[G.headOf(f.target)];
-  if (!bs || bs.length !== 1) return refuse(`${f.id} (hollow): ${f.target} is not a single solid, so ${f.id} is shown without it.`);
+  if (!bs || bs.length !== 1) return refuse(`${f.id} (hollow): ${partName(f)} is not a single solid, so ${f.id} is shown without it.`);
   if (!f.open) return planClosedShell(f, st, ctx, G, bs);
   let cv = convexity(G.headOf(f.target), G.byId, ctx.arc, G.holeExt);
   // G-CONVEX over-refusal fix: a mirror or a join whose RESULT is measured to be a plain axis-aligned box (6 plane faces, volume = bounding-box volume) has no inside
@@ -907,7 +924,7 @@ function planDraft(f, st, ctx, G) {
   };
   const d = dep(f.target); if (d) return refuse(d);
   const bs = st.bodies[G.headOf(f.target)];
-  if (!bs || bs.length !== 1) return refuse(`${f.id} (draft): ${f.target} is not a single solid, so ${f.id} is shown without it.`);
+  if (!bs || bs.length !== 1) return refuse(`${f.id} (draft): ${partName(f)} is not a single solid, so ${f.id} is shown without it.`);
   if (f.whole || !f.face) return planWholeDraft(f, st, ctx, G, bs);
   const part = f.face.part;
   if (part === 'side') return refuse(SENTENCE.curvedFace(f, 'side'));
