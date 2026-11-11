@@ -182,11 +182,11 @@ const lazySc = { inspect: (...a) => scApi().inspect(...a), execute: (...a) => sc
 // The kernel is the referee wasm of the pinned 0.30.1 engine (kernel/build.sh), served at ../kernel/ (see README). Without it (or with ?probe=off) a budgeted run is NOT
 // limited and the pane says so in the status line; the layer's G-BUDGET then stays advice only.
 const KERNEL_URL = new URL('../kernel/solidcraft_referee_bg.wasm', BASE);
-const probeLog = []; // one row per probe: { cmds, status, wallMs, cpuMs, loadMs }
+const probeLog = []; // one row per probe: { cmds, last (the probed list's last command), budgetS, status, wallMs, cpuMs, loadMs, vol }
 let kernelModule = null;
 const getModule = () => (kernelModule ??= WebAssembly.compileStreaming(fetch(KERNEL_URL)).catch((e) => { kernelModule = null; throw e; }));
 const rawProber = createProber({ makeWorker: () => new Worker(new URL('../src/probe-worker.mjs', import.meta.url), { type: 'module' }), getModule });
-const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null, vol: r.reply && r.reply.measure ? r.reply.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) : null }); return r; } };
+const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, last: cmds.length ? cmds[cmds.length - 1].command : null, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null, vol: r.reply && r.reply.measure ? r.reply.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) : null }); return r; } };
 const capS = params.get('budgetCapS') ? Number(params.get('budgetCapS')) : undefined;
 const bridge = createUpstreamBridge(lazySc, { prober, capS });
 let keepNext = false; // kept so the run logic reads unchanged; this build has no stash, so it is never acted on

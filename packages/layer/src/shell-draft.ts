@@ -1161,19 +1161,27 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
   if (plan.noop) { note({ status: 'noop', commands: [] }); return; }
   let lastErr: string | null = null;
   let errored = false; // an engine reply with an errored body (errored-body.ts)
+  // time: a hollow's engine runs share ONE budget (45 s + 1.5 x the CPU the last accepted run used, the rule of the holes, booleans and groove groups; advice to the host, as
+  // there). A failing hollow can run for minutes on SolidCraft 0.30.1 (docs/spikes/solidcraft-referee/remeasure-0.30.1/REMEASURE-0.30.1.md), and it may try up to 10 open-face
+  // points: each run is sent what is left of the one budget, and once nothing is left the hollow is refused. Spent = the CPU the host reports (cpuMs), else the wall time of the call.
+  // Every other kind runs as before.
+  const shellBudgetS = f.kind === 'shell' ? hollowBudgetS(sd.lastRunS) : 0;
+  let shellSpentS = 0;
+  const outOfTime = (variant: Cmd[], raw: string, cpuMs?: number): void => {
+    const sentence = budgetSentenceOther(f.id, f.kind);
+    st.refused[f.id] = sentence;
+    note({ status: 'refused', refusal: sentence, guard: 'G-BUDGET', raw, cpuMs: cpuMs ?? Math.round(shellSpentS * 1000), commands: variant });
+  };
   for (const variant0 of plan.variants!) {
     let variant = variant0;
     let repaired: { pads: number; reason: string } | undefined;
     let res: RunResult;
-    // time: a hollow's engine runs carry { budgetS } (45 s + 1.5 x the CPU the last accepted run used, the rule of the holes, booleans and groove groups; advice to the host, as
-    // there). A failing hollow can run for minutes on SolidCraft 0.30.1 (docs/spikes/solidcraft-referee/remeasure-0.30.1/REMEASURE-0.30.1.md). Every other kind runs as before.
-    try { res = f.kind === 'shell' ? await ctx.runSC([...accepted, ...variant], { budgetS: BUDGET_S + 1.5 * sd.lastRunS }) : await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
-    if (res.timedOut && f.kind === 'shell') {
-      const sentence = budgetSentenceOther(f.id, f.kind);
-      st.refused[f.id] = sentence;
-      note({ status: 'refused', refusal: sentence, guard: 'G-BUDGET', raw: `${res.failed?.error}`, cpuMs: res.cpuMs, commands: variant });
-      return;
-    }
+    const leftS = shellBudgetS - shellSpentS;
+    if (f.kind === 'shell' && leftS <= 0) { outOfTime(variant, `TIME BUDGET: ${plan.variants!.indexOf(variant0)} open-face points used the hollow's ${fmt(shellBudgetS)} s`); return; }
+    const t0 = Date.now();
+    try { res = f.kind === 'shell' ? await ctx.runSC([...accepted, ...variant], { budgetS: leftS }) : await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `WASM TRAP: ${(e as Error).message}` } }; }
+    if (f.kind === 'shell') shellSpentS += (typeof res.cpuMs === 'number' ? res.cpuMs : Date.now() - t0) / 1000;
+    if (res.timedOut && f.kind === 'shell') { outOfTime(variant, `${res.failed?.error}`, res.cpuMs); return; }
     if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     let m = aggregateOf(res, plan.produces!);
@@ -1222,6 +1230,9 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
   st.refused[f.id] = sentence as string;
   note({ status: 'refused', refusal: sentence as string, raw, guard: errored ? ERRORED_BODY_GUARD : 'engine', commands: plan.variants![0] });
 }
+
+/** The one time budget of a hollow, shared by every open-face point it tries: 45 s + 1.5 x the CPU (s) of the last accepted run. */
+export const hollowBudgetS = (lastRunS: number): number => BUDGET_S + 1.5 * lastRunS;
 
 // ---- the planner set -----------------------------------------------------------------------------------------------------
 /** What `planFeature` does with a shell or draft under the shell-draft set: the planners are asynchronous (the name may be resolved from the engine's topology, the post-check re-runs the engine), so they run inside translateDoc's step, never here. */
