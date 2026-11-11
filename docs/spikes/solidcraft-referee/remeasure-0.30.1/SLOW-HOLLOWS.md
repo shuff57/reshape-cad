@@ -2,7 +2,12 @@
 
 2026-11-10, pin SolidCraft v0.30.1 (`8e2b0cd6`). Stage B found 35 failing fuzz shells that ran for over a minute, 4 of them past 600 s. This
 asks whether a student script can reach them, and what the student sees. Evidence: `slow-hollows/` (before the HALT-7 fix) and `halt-7-fix/`
-(after it). The work was interrupted twice by wrong builds: `HALT-7.md` (fixed, `adcb8c37`) and `HALT-8.md` (open).
+(after it). The work was interrupted twice by wrong builds: `HALT-7.md` (fixed, `adcb8c37`) and `HALT-8.md` (guarded, `23b47411`).
+
+**Update, later on 2026-11-10:** this page was written before the HALT-8 guard. With `G-CSOPEN` in, a hollow opened on the face a countersink is on
+is refused before the kernel runs, in the Node route and in the page, so the 21 to 32 s wrong builds and the one 45.8 s stop described below no
+longer happen. In 524 further seeded scripts (`HALT-8.md`, follow-up sweep) no hollow run took over 10 s. No student script is known today that
+reaches a slow hollow.
 
 ## Short answer
 

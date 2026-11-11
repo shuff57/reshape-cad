@@ -23,6 +23,20 @@ Seen in the page (`halt-8-fix/browser-lookup-030.json`): open bottom and open fr
 sentence; a plain hole and a counterbore still build. A draft after a countersink keeps the old "could not be found" wording (no sentence approved
 for it). The Node route is unchanged: its stand-in reports pick hits, so it never reaches this.
 
+### Follow-up sweep, 2026-11-10: the openings and hole directions the first family did not cover
+
+The first seeded family had the hole along z and opened only the top or the bottom. Two more seeded families through the Node host route on
+0.30.1, scored against the closed form (same cross-section method, limits moved to the opened face); scripts and runs in `halt-8-fix/`:
+
+| family | scripts | built | right (within 2e-5) | wrong | refused |
+|---|---|---|---|---|---|
+| `ss21`: hole along z, hollow opened right or front, or closed; counterbore, countersink, plain hole; mouth 0.5 to 4 walls from the opened, opposite and adjacent sides and corners | 260 | 125 | 125 (worst 8.4e-6) | 0 | 60 G-CLOSED, 73 G-HOLE, 2 by the kernel |
+| `sa31`: hole along x or y with a counterbore or countersink; hollow opened on the mouth face, the far face, or a side | 264 | 185 | 185 (worst 9.1e-6) | 0 | 36 G-CSOPEN, 41 G-HOLE, 2 by the kernel |
+
+No hollow run took over 10 s. G-CSOPEN fires on the mouth face for a hole along x and along y as well. So the wrong builds found so far are
+confined to a countersink on the opened face, which is now refused. Not covered: more than one recessed hole, a recess on a part that is not a plain
+box, and a blind recessed hole (refused today by G-BLIND).
+
 Evidence for the finding: `halt-7-fix/` beside this file.
 
 ## What is wrong
