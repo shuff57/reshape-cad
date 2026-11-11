@@ -232,6 +232,11 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
         : f.kind === 'shell' && !f.open ? refuse(SHELL_SENTENCE.closed(f), 'G-CLOSED')
           : basePlan(f, st, fctx);
     } catch (e) { plan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); plan.raw = String(e.message); }
+    // PROTOTYPE (ctx.probeBlocked, off by default; mirrors packages/layer/src/holes.ts probeBlockedHole): a hole blocked by a refused step is test-built on the part as it stands
+    if (plan.refusal && plan.guard === 'dependency' && f.kind === 'hole' && ctx.probeBlocked) {
+      const own = probeBlockedHole(f, st, { ...fctx, accepted, headOf, byId, off, runB }, st.allCount);
+      if (own) { st.refused[f.id] = own.refusal; return note({ status: 'refused', refusal: own.refusal, guard: own.guard, raw: `blocked (${plan.refusal}); own refusal found by a test build on ${own.base}`, commands: [] }); }
+    }
     if (plan.refusal) { st.refused[f.id] = plan.refusal; return note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); }
     if (plan.noop) return note({ status: 'noop', commands: [] });
     let lastErr = null;
@@ -280,6 +285,31 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
   return { features: out, commands: accepted, spentS: st.spentS };
 }
 
+/** PROTOTYPE (pilot 2026-11 F5/F8), the original-side copy of the layer's probeBlockedHole: plan the blocked hole on the last built step of its part, cut it, check it, keep nothing. */
+function probeBlockedHole(f, st, G, allCountBefore) {
+  let base = G.headOf(f.target); const seen = new Set();
+  while (base && st.refused[base] && !seen.has(base)) {
+    seen.add(base); const x = G.byId[base];
+    base = x && ['hole', 'fillet', 'shell', 'draft'].includes(x.kind) && x.target ? G.headOf(x.target) : undefined;
+  }
+  if (!base || st.refused[base] || st.stale[base] || !st.bodies[base] || !st.measure[base]) return null;
+  const f2 = { ...f, target: base };
+  let plan;
+  try { plan = planHole(f2, st, G); } catch { return null; }
+  if (plan.refusal) return plan.guard === 'dependency' ? null : { refusal: plan.refusal, guard: plan.guard ?? 'guard', base };
+  let lastErr = null;
+  for (const variant of plan.variants) {
+    const res = G.runB([...G.accepted, ...variant], { replay: false });
+    if (res.timedOut) return { refusal: SENTENCE.budget(f), guard: 'G-BUDGET', base };
+    if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
+    const m = aggregateOf(res, plan.produces);
+    if (!m) { lastErr = 'no body came back'; continue; }
+    const allBodies = res.measure.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
+    const bad = plan.post ? plan.post(m, st.measure[base], { allBodies, allCountBefore, accepted: G.accepted, variant, off: G.off }) : null;
+    return bad ? { refusal: bad.refusal, guard: bad.guard ?? 'guard', base } : null;
+  }
+  return { refusal: engineSentence(f, lastErr) ?? SENTENCE.engine(f), guard: 'G-ENGINE', base };
+}
 const byIdOf = (G, id) => G.byId[id];
 function planHole(f, st, G) {
   const { accepted, headOf, off, runB } = G;

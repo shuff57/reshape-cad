@@ -59,7 +59,7 @@ const st = document.createElement('style'); st.textContent = CSS; document.head.
 const root = document.createElement('div'); root.id = 'scp'; root.setAttribute('role', 'complementary'); root.setAttribute('aria-label', 'reSHape script pane');
 root.innerHTML = `
 <header>
-  <span class="tag">SPIKE</span><b>reSHape script</b>
+  <b>reSHape script</b>
   <select id="exsel" aria-label="Examples"></select>
   <button class="run" id="run" title="Run the script (Ctrl+Enter in the editor)">Run</button>
   <button id="undo" hidden disabled>Restore my design</button>
@@ -68,15 +68,19 @@ root.innerHTML = `
 </header>
 <div class="body">
   <div class="card">
-    <h2>reSHape script (evaluated only in a sandboxed iframe; this page never evaluates it)</h2>
+    <h2>Your script</h2>
     <div class="ed"><div class="gut" id="gut" aria-hidden="true"></div><textarea id="src" wrap="off" spellcheck="false" aria-label="reSHape script"></textarea></div>
     <div id="expect" class="mut" style="margin-top:4px"></div>
+    <div id="warnings" class="mut" style="margin-top:4px" hidden></div>
   </div>
   <div class="confirm" id="confirm" hidden></div>
-  <div class="card"><h2>Verdict</h2><div id="verdict" class="mut">Not run yet.</div><div id="verdict-detail" class="mut"></div></div>
-  <div class="card"><h2>Features: what solidcraft built or refused</h2><div id="features">Not run yet.</div></div>
-  <div class="card"><h2>Sketch solver report (solidcraft's own, per constrained sketch)</h2><div id="sketches">Not run yet.</div></div>
-  <div class="card"><h2>Result</h2><dl class="kv" id="result"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+  <div class="card"><h2>Steps</h2><div id="features">Not run yet.</div></div>
+  <div class="card"><h2>Sketch check</h2><div id="sketches">Not run yet.</div></div>
+  <div class="card"><h2>The part</h2><dl class="kv" id="result"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+  <div class="card"><details id="dev"><summary>For teachers and developers</summary>
+  <div class="card"><h2>Check against the reference numbers</h2><div id="verdict" class="mut">Not run yet.</div><div id="verdict-detail" class="mut"></div></div>
+  <div class="card"><h2>The run in detail</h2><dl class="kv" id="result-dev"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+  <div class="card"><h2>How each named edge or face was found</h2><div id="evidence" class="mut">Not run yet.</div></div>
   <div class="card warn"><h2>What Run does, and known limits</h2><ul>
     <li><b>Run replaces the design on screen</b> with the script's result. If you have worked by hand, the pane asks first. <b>It does not keep your hand-made design</b>: this build has no restore, so save it from SolidCraft first if you want it.</li>
     <li>Ribbon: <b>Ctrl+.</b> or the ribbon button in the title bar shows or hides it; <code>?ribbon=off</code> starts hidden.</li>
@@ -89,6 +93,7 @@ root.innerHTML = `
     <li>Geometry is solidcraft's (truck), not brep-rs. This is a referee/demo, not a product.</li></ul></div>
   <div class="card"><details><summary>Translated solidcraft commands</summary><pre id="cmds">(none)</pre></details></div>
   <div class="card"><details><summary>ModelDoc from the sandbox (after solveDoc)</summary><pre id="doc">(none)</pre></details></div>
+  </details></div>
 </div>`;
 document.body.appendChild(root);
 const split = document.createElement('div'); split.id = 'scs'; split.title = 'Drag to resize the script pane'; split.setAttribute('role', 'separator'); split.setAttribute('aria-orientation', 'vertical'); document.body.appendChild(split);
@@ -158,7 +163,7 @@ $('exsel').onchange = () => { if ($('exsel').value) load($('exsel').value); };
 $('src').addEventListener('input', () => {
   gutter(null);
   lsSet('sc_pane_src', $('src').value);
-  if (current && $('src').value !== current.script) { current = null; $('exsel').value = ''; $('expect').textContent = 'Edited script: no reference numbers for it (the verdict only reports what was built).'; }
+  if (current && $('src').value !== current.script) { current = null; $('exsel').value = ''; $('expect').textContent = ''; }
 });
 $('src').addEventListener('scroll', () => { $('gut').scrollTop = $('src').scrollTop; });
 $('src').addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); } e.stopPropagation(); });
@@ -321,6 +326,7 @@ const runLog = [];
 
 // ---- render --------------------------------------------------------------------------------------------------
 function showFeatures(tr) {
+  const evid = [];
   const rows = tr.features.map((f) => {
     const fmtP = (p) => (Array.isArray(p) ? `(${p.map((v) => (Math.abs(v) < 1e-9 ? 0 : +v.toFixed(4))).join(', ')})` : '-');
     const ev = f.evidence ? (() => {
@@ -331,10 +337,15 @@ function showFeatures(tr) {
         + (t ? `<br><b>on the target body ${esc(t.body)}</b>: candidates ${esc(t.candidates)} (${esc(t.face ?? (t.edges ?? []).join(' + '))}); pick ${esc(fmtP(t.point))}${t.pickSource ? ` via ${esc(t.pickSource)}; solidcraft's pick test on it: centroid &rarr; face ${esc(t.centroidHit?.index ?? '-')}, interior point &rarr; face ${esc(t.innerHit?.index ?? '-')}, this face ${esc(t.faceIndex)}` : ''}` : '<br><b>no target-body check ran</b>')
         + `<br>cross-checks on the name's OWN shape only: ${esc(checks)}</span>`;
     })() : '';
-    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? `built: ${esc(f.measure.bodies.join(', '))}${ev}` : f.kind === 'sketch' ? 'sketch (staged; built with the feature that uses it)' : 'no command (staged)';
-    return `<tr><td>${esc(f.id)}</td><td>${esc(f.kind)}</td><td class="${esc(f.status)}">${esc(f.status)}</td><td>${note}</td></tr>`;
+    if (ev) evid.push(`<div><b>${esc(f.id)}</b>${ev}</div>`);
+    // what a student reads: the step's own name for its kind, built or not built, and the sentence when it was not built
+    const kind = f.kind === 'fillet' ? (/^bevel/.test(f.id) ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind;
+    const result = f.status === 'refused' ? 'not built' : f.status === 'built' ? 'built' : '';
+    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? '' : f.kind === 'sketch' ? 'drawn; it is built by the step that uses it' : '';
+    return `<tr><td>${esc(f.id)}</td><td>${esc(kind)}</td><td class="${esc(f.status)}" style="white-space:nowrap">${esc(result)}</td><td>${note}</td></tr>`;
   }).join('');
-  $('features').innerHTML = `<table><tr><th>id</th><th>kind</th><th>status</th><th>detail</th></tr>${rows}</table>`;
+  $('features').innerHTML = `<table><tr><th>step</th><th>kind</th><th>result</th><th>what happened</th></tr>${rows}</table>`;
+  $('evidence').innerHTML = evid.join('') || 'No edge or face was named in this script.';
 }
 function bboxOf(bodies) {
   if (!bodies.length) return null;
@@ -342,19 +353,27 @@ function bboxOf(bodies) {
   const hi = [0, 1, 2].map((i) => Math.max(...bodies.map((b) => b.bbox.max[i])));
   return [...lo, ...hi];
 }
-function showResult(r, extra) {
+function showResult(r, steps, extra) {
   const bodies = r?.measure?.bodies ?? [];
   const m = r?.measure?.total ?? r?.measure;
   const bb = bboxOf(bodies);
+  const num = (v) => String(+(+v).toFixed(3));
+  // upstream's measure reply has no total (it showed "undefined mm3"): the total is the sum over the bodies it does report
+  const vol = bodies.length ? `${fmt(m?.volume_mm3 ?? m?.volume ?? bodies.reduce((t, b) => t + b.volume_mm3, 0), 3)} mm3` : '-';
   const rows = [
-    ['bodies', bodies.map((b) => `${b.name} (${fmt(b.volume_mm3, 3)} mm3)`).join(', ') || '(none)'],
-    // upstream's measure reply has no total (it showed "undefined mm3"): the total is the sum over the bodies it does report
-    ['total volume', bodies.length ? `${fmt(m?.volume_mm3 ?? m?.volume ?? bodies.reduce((t, b) => t + b.volume_mm3, 0), 6)} mm3` : '-'],
-    ['bbox', bb ? `[${bb.map((v) => fmt(v, 3)).join(', ')}]` : '-'],
+    ['pieces', String(bodies.length)],
+    ['volume', vol],
+    ['size', bb ? `${num(bb[3] - bb[0])} x ${num(bb[4] - bb[1])} x ${num(bb[5] - bb[2])} mm` : '-'],
     ['faces', String(bodies.reduce((s, b) => s + b.faces, 0))],
-    ...extra,
+    ['steps built', `${steps.built} of ${steps.total}`],
   ];
   $('result').innerHTML = rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
+  const dev = [
+    ['bodies', bodies.map((b) => `${b.name} (${fmt(b.volume_mm3, 6)} mm3)`).join(', ') || '(none)'],
+    ['bbox', bb ? `[${bb.map((v) => fmt(v, 3)).join(', ')}]` : '-'],
+    ...extra,
+  ];
+  $('result-dev').innerHTML = dev.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
 }
 const reportRow = (name, snap, label) => {
   const rp = snap.report ?? {};
@@ -372,7 +391,7 @@ const reportRow = (name, snap, label) => {
   return { id: meta ? meta.sketchId : name, label, status: rp.status, dof: rp.dof, failing: rp.failing, redundant: rp.redundant, folded: rp.folded, resid: rp.max_residual, worstRes, profiles: snap.profiles, rule, notes: meta?.notes ?? [] };
 };
 function showSketches(rows) {
-  if (!rows.length) { $('sketches').textContent = 'No constrained (rows + rules) sketch in this script, so there is no solidcraft solver report. A plain sketch is passed to solidcraft as solved geometry.'; return; }
+  if (!rows.length) { $('sketches').textContent = 'No dimensioned sketch in this script.'; return; }
   $('sketches').innerHTML = `<table><tr><th>sketch</th><th>state</th><th>solver status</th><th>dof</th><th>failing</th><th>redundant</th><th>max residual</th><th>profiles</th></tr>` + rows.map((r) =>
     `<tr><td>${esc(r.id)}</td><td>${esc(r.label)}</td><td>${esc(r.status ?? '-')}${r.status === 'solved' && r.worstRes > 1e-6 ? `<br><span class="fail">MISMATCH: solidcraft says solved; independent rule check residual ${r.worstRes.toExponential(2)} mm${r.label.startsWith('at refusal') ? ' (the refused rule is not in solidcraft\'s sketch)' : ''}</span>` : ''}</td><td><b>${esc(r.dof ?? '-')}</b></td><td>${esc(JSON.stringify(r.failing ?? []))}</td><td>${esc(JSON.stringify(r.redundant ?? []))}</td><td>${r.resid != null ? Number(r.resid).toExponential(1) : '-'}</td><td>${esc(r.profiles ?? '-')}</td></tr>` +
     `<tr><td></td><td colspan="7" class="mut">independent rule check (phase 2 rule-check.mjs, no solver code): ${esc(r.rule)}${r.label.startsWith('at refusal') ? '<br>this is the sketch as solidcraft held it when it refused the rule: the refused rule is not in it, so the checker (which reads ALL rows) sees that rule unsatisfied' : ''}${r.notes.length ? '<br>mapper notes: ' + esc(r.notes.join(' | ')) : ''}</td></tr>`).join('') + '</table>';
@@ -465,6 +484,7 @@ function resetPanels(msg) {
   $('features').textContent = msg;
   $('sketches').textContent = msg;
   $('result').innerHTML = `<dt>-</dt><dd>${esc(msg)}</dd>`;
+  $('result-dev').innerHTML = `<dt>-</dt><dd>${esc(msg)}</dd>`; $('evidence').textContent = msg; $('warnings').hidden = true;
   $('cmds').textContent = '(none)';
   $('doc').textContent = '(none)';
   $('confirm').hidden = true;
@@ -477,6 +497,7 @@ function failState(summary, status_, headline, detail) {
   $('features').textContent = `${headline} ${NO_BUILD}`;
   $('sketches').textContent = NO_BUILD;
   $('result').innerHTML = `<dt>-</dt><dd>${esc(NO_BUILD)}</dd>`;
+  $('result-dev').innerHTML = `<dt>-</dt><dd>${esc(NO_BUILD)}</dd>`; $('evidence').textContent = NO_BUILD; $('warnings').hidden = true;
   Object.assign(summary, { error: headline, pass: false, noNewBuild: true });
   return summary;
 }
@@ -570,7 +591,8 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
+    // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8)
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
     const fin = await runSC(tr.commands);
     keepNext = false;
@@ -589,14 +611,16 @@ async function run({ confirmed = false } = {}) {
     // the interpreter's warnings that still stand (a round cut down to fit, ...), verbatim, beside the verdict
     $('verdict-detail').textContent = [v.detail, ...prep.warnings].filter(Boolean).join(' ');
     const failedCmd = refused.map((f) => f.failed).find(Boolean);
-    showResult(fin, [
+    const counted = tr.features.filter((f) => f.status === 'built' || f.status === 'refused');
+    $('warnings').textContent = prep.warnings.join(' '); $('warnings').hidden = !prep.warnings.length;
+    showResult(fin, { built: counted.filter((f) => f.status === 'built').length, total: counted.length }, [
       ['bridge ok', String(fin.ok)],
       ['features built / refused', `${tr.features.filter((f) => f.status === 'built').length} / ${refused.length}`],
       ['refusals', refused.length ? refused.map((f) => f.refusal).join(' | ') : 'none'],
       ...(failedCmd ? [['refused command', `${failedCmd.command} ${JSON.stringify(failedCmd.params ?? {})}`]] : []),
       ['time', `${Math.round(performance.now() - t0)} ms`],
     ]);
-    status(refused.length ? `built with ${refused.length} refusal(s)` : 'built');
+    status(refused.length ? `built with ${refused.length} step${refused.length === 1 ? '' : 's'} not built` : 'built');
     const bodies = fin?.measure?.bodies ?? [];
     summary = {
       id: ex?.id ?? null, ok: fin.ok, verdict: v.text, pass: v.pass, dofMatch: v.dofMatch ?? null, detail: v.detail ?? '',
@@ -668,10 +692,11 @@ renderGallery();
 if (EXAMPLES.length) load(params.get('ex') && EXAMPLES.some((e) => e.id === params.get('ex')) ? params.get('ex') : '3d-box-hole');
 { // a reload keeps the editor text (the script is the only thing the pane can rebuild a result from)
   const saved = lsGet('sc_pane_src');
-  if (saved !== null && saved !== '' && !params.get('ex')) { $('src').value = saved; current = EXAMPLES.find((e) => e.script === saved) ?? null; $('exsel').value = current ? current.id : ''; $('expect').textContent = current ? '' : 'Script restored from the last session in this browser (no reference numbers for it).'; if (current) $('expect').innerHTML = `<b>Expect:</b> ${esc(current.expect)}`; gutter(null); }
+  if (saved !== null && saved !== '' && !params.get('ex')) { $('src').value = saved; current = EXAMPLES.find((e) => e.script === saved) ?? null; $('exsel').value = current ? current.id : ''; $('expect').textContent = current ? '' : 'Script restored from the last session in this browser.'; if (current) $('expect').innerHTML = `<b>Expect:</b> ${esc(current.expect)}`; gutter(null); }
 }
 status('waiting for solidcraft...');
-waitForBridge().then(() => { status('ready'); return refreshUndo(); }).catch((e) => status(e.message));
+waitForBridge().then(() => { if ($('status').textContent === 'waiting for solidcraft...') status('ready'); return refreshUndo(); }) // a run that already finished keeps its own status line
+.catch((e) => status(e.message));
 
 /** Verification hook (phase 4): translate a ModelDoc directly (no script, no sandbox). */
 async function translateRaw(docIn, names = []) {
@@ -680,7 +705,7 @@ async function translateRaw(docIn, names = []) {
   soups = {};
   // no script ran here: a draft the doc does not mark (DraftFeature.neutralFrom) is from-unknown, and G-FROM checks it against every `from:` word that could
   // have given its neutral (hostFromUsage recorded: false), so a stale from-bottom draft is refused here too, never built unchecked
-  const ctx = { arc, mt, runSC, soups, followMoves: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
+  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
   const tr = await translateDoc(doc, ctx);
   const fin = await runSC(tr.commands);
   const resolved = [];

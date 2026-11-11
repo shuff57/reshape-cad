@@ -324,5 +324,24 @@ Corpora with the switch on, against the same corpora with it off:
 So in the combined corpus 45% of blocked holes had a mistake of their own that the student is not told today. The cost is about 0.9 s of kernel time
 per blocked hole; on a student script with one or two blocked holes that is 0.2 to 0.6 s.
 
-Not done: hollows, drafts, rounds and bevels (a hollow after a blocked hole still says "it needs hole1"); the contract copy `holes4-translate.mjs`;
-a unit test with a fake engine; the page (the switch is not set there).
+Then finished for holes (owner chose "turn it on for holes in the page"): mirrored in the contract copy `holes4-translate.mjs`; a differential test
+runs both sides with the switch on over the holes corpus (equal output, no status change, own refusals found and not found); the host page sets
+`probeBlocked: true`. In the page the pilot's task 6 hole now says "it would leave 2 separate pieces ... make the hole narrower than the part" and each
+bolt hole of task 3 gets the spun-shape sentence. Not done: hollows, drafts, rounds and bevels (a hollow after a blocked hole still says
+"it needs hole1").
+
+### F10, F11 and the panel, done (owner approved the layout)
+
+The panel a student sees is now: Your script, Steps (step, kind, result, what happened; "built" or "not built"; round and hollow by their script names),
+Sketch check, The part (pieces, volume, size, faces, steps built). Everything written for us is in one collapsed section, "For teachers and developers":
+the check against reference numbers, the run in detail, how each named edge or face was found, what Run does and known limits, the commands and the
+document. The "SPIKE" tag is gone and the status line reads "built with 1 step not built". Screenshot: `followup/panel-after.png`.
+
+Also changed, beyond the approved mock-up: a sketch step reads "drawn; it is built by the step that uses it"; the interpreter's warnings show under
+the script instead of in the reference check; the "no reference numbers" line under the editor is gone for a student's own script; a script error's
+status line is no longer overwritten by "ready" when the page has just loaded.
+
+Not changed: the sketch check for a dimensioned sketch still shows the solver's own table (dof, residuals, "phase 2 rule-check"). It needs wording.
+
+Checked on 0.30.1: `npm test` 1015 tests, 1009 pass, 6 skipped, 0 fail; the six browser checks pass; the 56 examples give the same 46 passes with the
+same verdicts and refusals as recorded.

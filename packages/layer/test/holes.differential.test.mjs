@@ -98,7 +98,7 @@ const CONFIGS = [
 const errOf = (e) => `${e?.constructor?.name}: ${e?.message}`;
 async function runOrig(doc, cfg, off = []) {
   const fake = makeFake({ sync: true, ...cfg.fake });
-  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, skipFilletChain: true, runSC: fake.runSC, resolveAt: () => null, ...(cfg.useMt ? { mt } : {}) };
+  const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, skipFilletChain: true, runSC: fake.runSC, resolveAt: () => null, ...(cfg.useMt ? { mt } : {}), ...(cfg.ctx ?? {}) };
   let result; let error = null;
   try { result = orig.h4.translateDocGuarded(structuredClone(doc), ctx, { off }); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log };
@@ -107,6 +107,7 @@ async function runPort(tr, doc, cfg, off = [], asyncFake = false) {
   const fake = makeFake({ sync: !asyncFake, ...cfg.fake });
   const soups = {};
   const ctx = { arc, skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, skipFilletChain: true, runSC: fake.runSC, topologyOf: fake.topologyOf, soups, ...(cfg.useMt ? { mt } : {}), ...(off.length ? { guardsOff: off } : {}) };
+  Object.assign(ctx, cfg.ctx ?? {});
   let result; let error = null;
   try { const { _state, ...rest } = await tr.translateDoc(structuredClone(doc), ctx); result = rest; assert.ok(_state); } catch (e) { error = errOf(e); }
   return { result, error, log: fake.log, soups };
@@ -540,4 +541,40 @@ test.after(() => {
   guard switched off: ${JSON.stringify(s.offDiffer)}
   composition [extrude-pocket, holes] vs extrude-pocket: ${compo.epDocs} runs, ${compo.epFull} fully identical (no hole in the doc), ${compo.epPrefix} with a hole (identical up to the first hole), whole result differs after a hole in ${compo.epDiffer.length} runs (${compo.epHoleDiffer} hole results differ; non-hole results that follow a differing hole: ${JSON.stringify(compo.epAfterHole)})
   composition [extrude-pocket, holes] vs holes: ${compo.hDocs} docs; no extrude / pocket / combine: ${compo.hHoleOnly} (hole results, accepted commands and engine calls identical; [holes, extrude-pocket] identical in full: ${compo.hOrderFull}/${compo.hOrderDocs}); with one: ${compo.hDocs - compo.hHoleOnly}, of which a hole result after the first extrude / pocket / combine differs in ${compo.hDiffer.length}: ${compo.hDiffer.slice(0, 12).join(', ')}`);
+});
+
+// ---- PROTOTYPE switch ctx.probeBlocked (pilot 2026-11 F5/F8): a hole blocked by a refused step is test-built on the part as it stands -------------------
+// Both sides carry the same test build; with the switch on they must still agree on every in-set doc, the built / refused status of every feature must be what
+// it is with the switch off, and the corpus must actually reach it (a blocked hole whose own refusal is found, and one that would build and stays blocked).
+test('probeBlocked on: the port equals the original, no status changes, and blocked holes get their own refusal where they have one', async () => {
+  const cfg = { ...CONFIGS[0], name: 'holeModel+boxBool, mt, probeBlocked', ctx: { probeBlocked: true } };
+  const B = 'const b = box(40, 30, 10)\n';
+  const extra = [
+    ['blocked: wider than the part', B + "hole(b, { across: 4, countersink: { across: 8, angle: 175 } })\nhole(b, { across: 35 })"],
+    ['blocked: off the part', B + "hole(b, { across: 4, countersink: { across: 8, angle: 175 } })\nhole(b, { across: 4, at: [100, 0] })"],
+    ['blocked: would build', B + "hole(b, { across: 4, countersink: { across: 8, angle: 175 } })\nhole(b, { across: 4, at: [10, 5] })"],
+    ['blocked twice, then a flat countersink', B + "hole(b, { across: 4, countersink: { across: 8, angle: 175 } })\nhole(b, { across: 4, at: [10, 5] })\nhole(b, { across: 4, at: [-10, 5], countersink: { across: 8, angle: 176 } })"],
+  ].map(([n, src]) => { const r = runScript(src); assert.deepEqual(r.errors, [], n); return [n, solveDoc(r.doc)]; });
+  let docs = 0, own = 0, stay = 0;
+  for (const [name, doc] of [...extra, ...caseDocs, ...generated, ...hand]) {
+    if (differences(doc).length) continue;
+    const off0 = await runPort(HOLES, doc, CONFIGS[0]);
+    const a = await runOrig(doc, cfg); const b = await runPort(HOLES, doc, cfg);
+    closedHollowException(a);
+    assert.deepStrictEqual(b.error, a.error, `${name}: thrown error differs`);
+    assert.deepStrictEqual(b.result, a.result, `${name}: translateDoc result differs with probeBlocked`);
+    assert.deepStrictEqual(b.log, a.log, `${name}: engine call sequence differs with probeBlocked`);
+    docs++;
+    const f0 = off0.result?.features ?? []; const f1 = b.result?.features ?? [];
+    assert.deepStrictEqual(f1.map((f) => [f.id, f.status]), f0.map((f) => [f.id, f.status]), `${name}: a status changed with probeBlocked`);
+    assert.deepStrictEqual(b.result?.commands, off0.result?.commands, `${name}: the accepted commands changed with probeBlocked`);
+    f0.forEach((f, i) => { if (f.guard === 'dependency' && f.kind === 'hole') { if (f1[i].guard !== 'dependency') { own++; assert.notEqual(f1[i].refusal, f.refusal); assert.match(f1[i].raw, /^blocked \(/); } else { stay++; assert.equal(f1[i].refusal, f.refusal); } } });
+  }
+  assert.ok(docs > 300 && own >= 3 && stay >= 2, `docs ${docs}, own refusals ${own}, still only blocked ${stay}`);
+  const by = Object.fromEntries(extra.map(([n, doc]) => [n, doc]));
+  const g = async (n) => (await runPort(HOLES, by[n], cfg)).result.features.map((f) => f.guard ?? f.status);
+  assert.deepStrictEqual((await g('blocked: would build')).slice(-2), ['G-CSFLAT', 'dependency']);
+  assert.deepStrictEqual((await g('blocked: off the part')).slice(-2), ['G-CSFLAT', 'G-NOOP']);
+  assert.equal((await g('blocked twice, then a flat countersink')).at(-1), 'G-CSFLAT');
+  tally.probeBlocked = { docs, own, stay };
 });
