@@ -40,7 +40,7 @@ export function solveVerdict(S) {
   if (!S || S.unsupported || S.residual == null) return null;
   if (!(S.residual > RULE_TOL)) return null;
   if (!S.converged) return verdict('rules-conflict', `The rules of this sketch cannot all be met at once (the closest the shape can get still misses a rule by ${fmt(+S.residualAfter.toPrecision(2))} mm); remove or loosen one of them.`);
-  if (S.dofMoved > 0) return verdict('rules-underdetermined', `The rules of this sketch have to move its shape (by up to ${fmt(+S.moved.toPrecision(2))} mm) but leave ${S.dofMoved} ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.`);
+  if (S.dofMoved > 0) return verdict('rules-underdetermined', `The rules of this sketch have to move its shape (by up to ${fmt(+S.moved.toPrecision(2))} mm) but leave ${S.dofMoved} way${S.dofMoved === 1 ? '' : 's'} for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.`);
   return null;
 }
 /** The contract's solvedOf without ctx.solve: its own solver on a copy of the rows; a solve that throws (a rule naming a row that does not exist) judges nothing. */
@@ -72,6 +72,8 @@ export const SG13_GUARD = { 'rules-conflict': 'SG-RULES-CONFLICT', 'rules-underd
 export const STALE_GUARD = 'G-STALE';
 /** guard code on a feature refused only because a feature it reads was refused by one of these pre-flights */
 export const PREFLIGHT_DEP_GUARD = 'HOST-PREFLIGHT-DEP';
+/** A step that pulls or cuts a sketch the sketch guard refused (owner-approved text, 2026-11-12). */
+export const usesSentence = (id, sketch) => `${id}: it uses ${sketch}, which could not be built; fix ${sketch} first.`;
 const SKIP_KEYS = new Set(['id', 'kind', 'name']);
 /** Every string anywhere in a feature's fields (ids, picks naming a feature), except its own id, kind and name: what it may read. */
 function refsOf(f) {
@@ -99,8 +101,9 @@ export function hostPreflight(doc, roots = null) {
     }
     if (dead) {
       const d = out.get(dead);
-      // sg-guarded.mjs: a feature that reads a refused sketch gets the sketch's own sentence; anything further down, the pointer sentence
-      if (d.from === 'sg' && kindOf.get(dead) === 'sketch') out.set(f.id, { refusal: d.refusal, guard: d.guard, root: d.root, from: 'sg', subject: true });
+      // A feature that reads a refused sketch points at the sketch, which carries the full sentence (owner-approved text, 2026-11-12; sg-guarded.mjs
+      // repeats the sketch's own sentence here, and the page showed it twice). Anything further down gets the pointer sentence of the contract.
+      if (d.from === 'sg' && kindOf.get(dead) === 'sketch') out.set(f.id, { refusal: usesSentence(f.id, dead), guard: d.guard, root: d.root, from: 'sg', subject: true });
       else if (d.from === 'sg') out.set(f.id, { refusal: `${f.id} was not built because ${dead} was refused: ${d.refusal}`, guard: PREFLIGHT_DEP_GUARD, root: d.root, from: 'sg' });
       else out.set(f.id, { refusal: `${f.id} is not built because ${dead} could not be built, so ${f.id} is shown without it.`, guard: PREFLIGHT_DEP_GUARD, root: d.root, from: 'stale' });
       continue;

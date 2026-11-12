@@ -7,6 +7,9 @@ export * as arc from '../../../sketch/dist/sketch-arc.js';
 import { createTranslator } from '../../../layer/dist/index.js';
 import { hostPreflight } from './host-guards.mjs';
 export { hostPreflight, soupSolveVerdict, staleConsumers } from './host-guards.mjs';
+// the student-facing sketch check (sketch-check.mjs) and what it reads: the independent soup solver's count of free ways
+export { soupSolve, isSoup } from './host-guards.mjs';
+export { sketchCheck, refusedRule, ruleWords } from './sketch-check.mjs';
 export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
 import { extentAlong } from '../../../script/dist/model-types.js';

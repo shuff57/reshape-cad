@@ -360,3 +360,54 @@ Not changed: two groove sentences ("... was left in 2 separate pieces", "... is 
 
 Checked on 0.30.1: `npm test` 1019 tests, 1013 pass, 6 skipped, 0 fail; 0 of 4784 host-route rows changed in built / refused / guard; the shell-draft
 live replay is 1085 of 1089 identical with the same 4 known differences as before; the six browser checks pass; the 56 examples give the same 46 passes.
+
+### Sketch check, done (owner approved the wording, 2026-11-12)
+
+What was there: the Sketch check card showed the solver's raw table (state, solver status, dof, failing, redundant, max residual, profiles). On this pin
+the table was also mostly blank: the page read the solver's fields from where the spike's patched bridge put them (`report`), and upstream's bridge
+reports them on the sketch itself, so status and dof showed "-" for every sketch. A sketch whose rules clash showed "No dimensioned sketch in this
+script." (nothing was built, so there was no row).
+
+Now, one line per dimensioned sketch, in the script's order (`packages/solidcraft-host/pane/src/sketch-check.mjs`):
+
+| result | what it means |
+|---|---|
+| fully defined | Its rules fix every size and position. |
+| not fully defined | It can still slide, turn or change size in 3 ways. It was built as you drew it; add rules or dimensions to pin it down. |
+| rules clash | A length of 40 cannot hold together with the rules before it; remove or change one of them. |
+| rule repeated | A length of 30 is already fixed by the rules before it; remove it. |
+| not built | It is not fully defined, and its rules have to move it. See sk1 under Steps. |
+| not confirmed | It was built, but this check could not confirm whether it is fully defined. |
+| not checked | The step that uses it was not built. See Steps. / No step uses it yet. |
+
+Two counts, not one. "Fully defined" and the number of free ways are said only when SolidCraft's own count (dof of the built sketch) and the
+host's independent solver (`soup-solve.mjs`: the rank of the rules at the solution, no kernel) give the same number, SolidCraft reports the sketch
+solved, and the independent rule check finds every rule met (worst residual at most 1e-6 mm). Anything else reads "not confirmed". Measured in the
+real page on 0.30.1: 25 of 25 built sketches agree (17 with nothing free, 8 with 1 to 4 ways free); "not confirmed" was never reached.
+
+The rule in a clash or a repeat is the student's own: SolidCraft refuses one command, the translator's record says which rule of the sketch that
+command came from, and the line names that rule by kind and value as written ("a length of 40", "an up distance (dy) of 7", "an angle of 100",
+"a horizontal rule"). The kernel's ids (k1, g3) are never shown. 11 of 11 clashes and repeats in the run name the rule the script added last.
+The line says the rule "cannot hold together with the rules before it": SolidCraft stops at the first rule it cannot add, so the page knows
+which rule that was, not which of the two the student meant to keep.
+
+The raw table moved to "For teachers and developers" ("The sketch solver in detail"), reads the right fields, and shows both counts side by side.
+
+Two sentence changes with it (owner approved the exact text):
+
+- "... but leave 1 ways for it to slide ..." is now "... but leave 1 way for it to slide ..." (`host-guards.mjs`, mirrored in the contract's
+  `sketch-geometry.guard.mjs`). The plural is unchanged.
+- A step that pulls or cuts a refused sketch showed the sketch's whole sentence a second time. It now reads
+  "pull1: it uses sk1, which could not be built; fix sk1 first." The sketch's own line keeps the full sentence; the guard code on both is unchanged.
+
+Evidence: `followup/sketch-check.json` (44 scripts: the page's 18 sketch examples and 26 probes; per script the lines shown, both counts, and the
+refused command of a clash), `followup/sketch-check-run.mjs` with its two case files, `followup/sketch-check-two.png`, `followup/sketch-check-clash.png`.
+Tests: `packages/solidcraft-host/test/sketch-check.test.mjs` (7), `host-guards.test.mjs` (the singular, the pointer sentence).
+
+Not covered: a sketch drawn as an outline of points, or dimensioned through the handle words (`sk.across`, `sk.up`), is solved by reSHape's own solver
+before the build and gets no line here ("No dimensioned sketch in this script." when there is no other). The line does not say which rule is
+missing, only how many ways are free. A tangent whose contact is pinned only by a distance is a known limit of both the count and the contact
+(the known-limits card); no such sketch is in the 44.
+
+Checked on 0.30.1: `npm test` 1027 tests, 1021 pass, 6 skipped, 0 fail; the 44 sketch scripts give the same lines, statuses and volumes before
+and after the two sentence changes; the 56 examples give the same 46 passes as recorded; the pane check passes.

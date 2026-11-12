@@ -79,8 +79,10 @@ test('SG-13: the audit\'s HALT-4 cases are refused in the contract\'s sentence (
     for (const fid of ['sk1', 'pull1']) {
       assert.equal(by.get(fid).status, 'refused', `${id} ${fid}`);
       assert.equal(by.get(fid).guard, 'SG-RULES-UNDERDETERMINED', `${id} ${fid}`);
-      assert.equal(by.get(fid).refusal, sentence, `${id} ${fid}`);
     }
+    // the sketch carries the contract's sentence; the pull points at the sketch and does not repeat it (owner-approved text, 2026-11-12)
+    assert.equal(by.get('sk1').refusal, sentence, id);
+    assert.equal(by.get('pull1').refusal, 'pull1: it uses sk1, which could not be built; fix sk1 first.', id);
   }
 });
 
@@ -103,10 +105,22 @@ test('SG-13: a soup whose rules hold as drawn, or pin what they move, builds; a 
   // resized with no lock: free to slide, refused; the move after the pull points at it
   const { by } = await host(soup(RECT(38, 20), [...JOIN_HV, { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }], 'const part = extrude(sk, 10); move(part, [0, 0, 5]);'));
   assert.equal(by.get('pull1').guard, 'SG-RULES-UNDERDETERMINED');
-  assert.equal(by.get('pull1').refusal, 'The rules of this sketch have to move its shape (by up to 1 mm) but leave 3 ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.');
+  assert.equal(by.get('sk1').refusal, 'The rules of this sketch have to move its shape (by up to 1 mm) but leave 3 ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.');
+  assert.equal(by.get('pull1').refusal, HG.usesSentence('pull1', 'sk1'));
+  assert.equal(by.get('pull1').refusal, 'pull1: it uses sk1, which could not be built; fix sk1 first.');
   assert.equal(by.get('move1').status, 'refused');
   assert.equal(by.get('move1').guard, HG.PREFLIGHT_DEP_GUARD);
   assert.equal(by.get('move1').refusal, `move1 was not built because pull1 was refused: ${by.get('pull1').refusal}`);
+});
+
+test('SG-13: one free way is told in the singular (owner-approved text, 2026-11-12), in the host copy and in the contract guard alike', async () => {
+  // placed and given a width, resized by the width, the height left free: one way
+  const rules = [...JOIN_HV, { k: 'lock', a: 1, aEnd: 'a' }, { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }];
+  const sk = { id: 'sk1', kind: 'sketch', geoms: RECT(38, 20), rules };
+  const v = HG.soupSolveVerdict(sk);
+  assert.equal(v.code, 'rules-underdetermined');
+  assert.equal(v.sentence, 'The rules of this sketch have to move its shape (by up to 2 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.');
+  assert.deepStrictEqual(G.solveVerdict(G.solvedOf(structuredClone(sk))), v);
 });
 
 test('SG-13: where the layer refused the pull already, its own sentence stands (the pane\'s diag-conflict example)', async () => {

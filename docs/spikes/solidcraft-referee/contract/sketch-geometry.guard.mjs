@@ -715,7 +715,7 @@ export function solveVerdict(S) {
   if (!S || S.unsupported || S.residual == null) return null;
   if (!(S.residual > RULE_TOL)) return null;
   if (!S.converged) return verdict('rules-conflict', `The rules of this sketch cannot all be met at once (the closest the shape can get still misses a rule by ${fmt(+S.residualAfter.toPrecision(2))} mm); remove or loosen one of them.`);
-  if (S.dofMoved > 0) return verdict('rules-underdetermined', `The rules of this sketch have to move its shape (by up to ${fmt(+S.moved.toPrecision(2))} mm) but leave ${S.dofMoved} ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.`);
+  if (S.dofMoved > 0) return verdict('rules-underdetermined', `The rules of this sketch have to move its shape (by up to ${fmt(+S.moved.toPrecision(2))} mm) but leave ${S.dofMoved} way${S.dofMoved === 1 ? '' : 's'} for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.`);
   return null;
 }
 export function guardDoc(doc, ctx) {

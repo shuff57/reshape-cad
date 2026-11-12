@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -80,6 +80,7 @@ root.innerHTML = `
   <div class="card"><details id="dev"><summary>For teachers and developers</summary>
   <div class="card"><h2>Check against the reference numbers</h2><div id="verdict" class="mut">Not run yet.</div><div id="verdict-detail" class="mut"></div></div>
   <div class="card"><h2>The run in detail</h2><dl class="kv" id="result-dev"><dt>-</dt><dd>Not run yet.</dd></dl></div>
+  <div class="card"><h2>The sketch solver in detail</h2><div id="sketches-dev" class="mut">Not run yet.</div></div>
   <div class="card"><h2>How each named edge or face was found</h2><div id="evidence" class="mut">Not run yet.</div></div>
   <div class="card warn"><h2>What Run does, and known limits</h2><ul>
     <li><b>Run replaces the design on screen</b> with the script's result. If you have worked by hand, the pane asks first. <b>It does not keep your hand-made design</b>: this build has no restore, so save it from SolidCraft first if you want it.</li>
@@ -376,8 +377,9 @@ function showResult(r, steps, extra) {
   $('result-dev').innerHTML = dev.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
 }
 const reportRow = (name, snap, label) => {
-  const rp = snap.report ?? {};
+  const rp = snap.report ?? snap; // the spike's patched bridge reported under .report; upstream's bridge reports dof/status/failing on the sketch itself
   const meta = soups[name];
+  const own = meta ? soupSolve({ geoms: meta.geoms, rules: meta.rules }) : null; // the independent count of free ways (no kernel)
   let rule = '-'; let worstRes = null;
   if (meta && snap.sketch?.points) {
     try {
@@ -388,13 +390,26 @@ const reportRow = (name, snap, label) => {
       rule = rs.length ? `worst residual ${worst.residual.toExponential(2)} (${worst.kind ?? 'none'}${worst.unit ? ' ' + worst.unit : ''}) over ${rs.length} rules` : 'no checkable rules';
     } catch (e) { rule = 'checker error: ' + e.message; }
   }
-  return { id: meta ? meta.sketchId : name, label, status: rp.status, dof: rp.dof, failing: rp.failing, redundant: rp.redundant, folded: rp.folded, resid: rp.max_residual, worstRes, profiles: snap.profiles, rule, notes: meta?.notes ?? [] };
+  return { id: meta ? meta.sketchId : name, label, status: rp.status, dof: rp.dof, failing: rp.failing, redundant: rp.redundant, folded: rp.folded, resid: rp.max_residual, worstRes, profiles: snap.profiles ?? snap.profile_list?.length, rule, notes: meta?.notes ?? [], ownDof: own && !own.unsupported ? own.dof : null, ownNote: own?.unsupported ?? null };
 };
-function showSketches(rows) {
-  if (!rows.length) { $('sketches').textContent = 'No dimensioned sketch in this script.'; return; }
-  $('sketches').innerHTML = `<table><tr><th>sketch</th><th>state</th><th>solver status</th><th>dof</th><th>failing</th><th>redundant</th><th>max residual</th><th>profiles</th></tr>` + rows.map((r) =>
-    `<tr><td>${esc(r.id)}</td><td>${esc(r.label)}</td><td>${esc(r.status ?? '-')}${r.status === 'solved' && r.worstRes > 1e-6 ? `<br><span class="fail">MISMATCH: solidcraft says solved; independent rule check residual ${r.worstRes.toExponential(2)} mm${r.label.startsWith('at refusal') ? ' (the refused rule is not in solidcraft\'s sketch)' : ''}</span>` : ''}</td><td><b>${esc(r.dof ?? '-')}</b></td><td>${esc(JSON.stringify(r.failing ?? []))}</td><td>${esc(JSON.stringify(r.redundant ?? []))}</td><td>${r.resid != null ? Number(r.resid).toExponential(1) : '-'}</td><td>${esc(r.profiles ?? '-')}</td></tr>` +
-    `<tr><td></td><td colspan="7" class="mut">independent rule check (phase 2 rule-check.mjs, no solver code): ${esc(r.rule)}${r.label.startsWith('at refusal') ? '<br>this is the sketch as solidcraft held it when it refused the rule: the refused rule is not in it, so the checker (which reads ALL rows) sees that rule unsatisfied' : ''}${r.notes.length ? '<br>mapper notes: ' + esc(r.notes.join(' | ')) : ''}</td></tr>`).join('') + '</table>';
+function showSketches(checks, rows) {
+  // what a student reads: one line per dimensioned sketch (sketch-check.mjs)
+  if (!checks.length) $('sketches').textContent = 'No dimensioned sketch in this script.';
+  else $('sketches').innerHTML = `<table><tr><th>sketch</th><th>result</th><th>what it means</th></tr>${checks.map((c) => `<tr><td>${esc(c.id)}</td><td class="${esc(c.cls)}" style="white-space:nowrap">${esc(c.result)}</td><td>${esc(c.text)}</td></tr>`).join('')}</table>`;
+  // the solver's own report, for teachers and developers
+  if (!rows.length) { $('sketches-dev').textContent = 'No sketch was solved by solidcraft in this run.'; return; }
+  $('sketches-dev').innerHTML = `<table><tr><th>sketch</th><th>state</th><th>solver status</th><th>dof (solidcraft)</th><th>dof (own solver)</th><th>failing</th><th>redundant</th><th>max residual</th><th>profiles</th></tr>` + rows.map((r) =>
+    `<tr><td>${esc(r.id)}</td><td>${esc(r.label)}</td><td>${esc(r.status ?? '-')}${r.status === 'solved' && r.worstRes > 1e-6 ? `<br><span class="fail">MISMATCH: solidcraft says solved; independent rule check residual ${r.worstRes.toExponential(2)} mm${r.label.startsWith('at refusal') ? ' (the refused rule is not in solidcraft\'s sketch)' : ''}</span>` : ''}</td><td><b>${esc(r.dof ?? '-')}</b></td><td><b>${esc(r.ownDof ?? '-')}</b>${r.ownDof != null && r.dof != null && r.ownDof !== r.dof ? '<br><span class="fail">the two counts differ</span>' : ''}${r.ownNote ? `<br>${esc(r.ownNote)}` : ''}</td><td>${esc(JSON.stringify(r.failing ?? []))}</td><td>${esc(r.redundant ? JSON.stringify(r.redundant) : '-')}</td><td>${r.resid != null ? Number(r.resid).toExponential(1) : '-'}</td><td>${esc(r.profiles ?? '-')}</td></tr>` +
+    `<tr><td></td><td colspan="8" class="mut">independent rule check (phase 2 rule-check.mjs, no solver code): ${esc(r.rule)}${r.label.startsWith('at refusal') ? '<br>this is the sketch as solidcraft held it when it refused the rule: the refused rule is not in it, so the checker (which reads ALL rows) sees that rule unsatisfied' : ''}${r.notes.length ? '<br>mapper notes: ' + esc(r.notes.join(' | ')) : ''}</td></tr>`).join('') + '</table>';
+}
+/** One check per dimensioned sketch of the doc, in the doc's order (sketch-check.mjs). */
+function sketchChecks(doc, tr, rows) {
+  const byId = new Map(tr.features.map((f) => [f.id, f]));
+  return doc.features.filter((f) => f.kind === 'sketch' && isSoup(f)).map((sk) => {
+    const users = doc.features.filter((f) => f.target === sk.id).map((f) => byId.get(f.id)).filter(Boolean);
+    const refused = users.map((u) => (u.status === 'refused' ? refusedRule(u, soups) : null)).find((r) => r && r.sketchId === sk.id) ?? null;
+    return sketchCheck({ id: sk.id, feature: byId.get(sk.id), users, refused, accepted: rows.filter((r) => r.id === sk.id && r.label === 'accepted'), own: soupSolve(sk) });
+  });
 }
 
 // ---- verdict: score what was built against the reference numbers --------------------------------------------------
@@ -482,7 +497,7 @@ function resetPanels(msg) {
   $('verdict').className = 'mut'; $('verdict').textContent = msg;
   $('verdict-detail').textContent = '';
   $('features').textContent = msg;
-  $('sketches').textContent = msg;
+  $('sketches').textContent = msg; $('sketches-dev').textContent = msg;
   $('result').innerHTML = `<dt>-</dt><dd>${esc(msg)}</dd>`;
   $('result-dev').innerHTML = `<dt>-</dt><dd>${esc(msg)}</dd>`; $('evidence').textContent = msg; $('warnings').hidden = true;
   $('cmds').textContent = '(none)';
@@ -495,7 +510,7 @@ function failState(summary, status_, headline, detail) {
   $('verdict').className = 'fail'; $('verdict').textContent = headline;
   $('verdict-detail').textContent = `${detail} ${NO_BUILD}`;
   $('features').textContent = `${headline} ${NO_BUILD}`;
-  $('sketches').textContent = NO_BUILD;
+  $('sketches').textContent = NO_BUILD; $('sketches-dev').textContent = NO_BUILD;
   $('result').innerHTML = `<dt>-</dt><dd>${esc(NO_BUILD)}</dd>`;
   $('result-dev').innerHTML = `<dt>-</dt><dd>${esc(NO_BUILD)}</dd>`; $('evidence').textContent = NO_BUILD; $('warnings').hidden = true;
   Object.assign(summary, { error: headline, pass: false, noNewBuild: true });
@@ -583,7 +598,7 @@ async function run({ confirmed = false } = {}) {
       if (!yes) {
         status('cancelled; your design is untouched');
         $('verdict').className = 'mut'; $('verdict').textContent = 'Cancelled. Nothing was built and your design is untouched.';
-        $('features').textContent = 'Cancelled.'; $('sketches').textContent = 'Cancelled.'; $('result').innerHTML = '<dt>-</dt><dd>Cancelled.</dd>';
+        $('features').textContent = 'Cancelled.'; $('sketches').textContent = 'Cancelled.'; $('sketches-dev').textContent = 'Cancelled.'; $('result').innerHTML = '<dt>-</dt><dd>Cancelled.</dd>';
         return Object.assign(summary, { cancelled: true, pass: null });
       }
     }
@@ -605,7 +620,8 @@ async function run({ confirmed = false } = {}) {
     for (const f of refused) {
       if (f.sketchAtFailure && soups[f.sketchAtFailure.name]) rows.push(reportRow(f.sketchAtFailure.name, f.sketchAtFailure, `at refusal (${f.failed?.command ?? '?'})`));
     }
-    showSketches(rows);
+    const checks = sketchChecks(doc, tr, rows);
+    showSketches(checks, rows);
     const v = verdict(ex, tr, fin, rows);
     $('verdict').className = v.cls; $('verdict').textContent = v.text;
     // the interpreter's warnings that still stand (a round cut down to fit, ...), verbatim, beside the verdict
@@ -626,7 +642,8 @@ async function run({ confirmed = false } = {}) {
       id: ex?.id ?? null, ok: fin.ok, verdict: v.text, pass: v.pass, dofMatch: v.dofMatch ?? null, detail: v.detail ?? '',
       volume: bodies.reduce((s, b) => s + b.volume_mm3, 0), bodies: bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, faces: b.faces, bbox: b.bbox, com: b.center_of_mass ?? b.com ?? null })), bbox: bboxOf(bodies),
       features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, pickedFrom: f.pickedFrom ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
-      refusals: refused.map((f) => f.refusal), sketches: rows.map((x) => ({ sketch: x.id, state: x.label, status: x.status, dof: x.dof, failing: x.failing, redundant: x.redundant, resid: x.resid, worstRes: x.worstRes, profiles: x.profiles, rule: x.rule })),
+      refusals: refused.map((f) => f.refusal), sketches: rows.map((x) => ({ sketch: x.id, state: x.label, status: x.status, dof: x.dof, failing: x.failing, redundant: x.redundant, resid: x.resid, worstRes: x.worstRes, profiles: x.profiles, rule: x.rule, ownDof: x.ownDof })),
+      sketchCheck: checks,
       refusedCommand: failedCmd ?? null, commands: tr.commands.length,
       warnings: prep.warnings, interpreterWarnings: r.warnings ?? [],
     };

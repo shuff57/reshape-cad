@@ -1,0 +1,1175 @@
+[
+ {
+  "id": "fr-rect-dims",
+  "status": "built",
+  "volume": 5999.999999999956,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.8118839761882555e-13
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-plate-hole-dims",
+  "status": "built",
+  "volume": 9214.732294132635,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 4.171666546577709e-38
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-slot-tangent",
+  "status": "built",
+  "volume": 11141.176810322648,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.1368683772161603e-15
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-triangle-angle",
+  "status": "built",
+  "volume": 5196.152422706632,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-hexagon",
+  "status": "built",
+  "volume": 10392.30484541647,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 3.8184566619747784e-11
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-untouched-default",
+  "status": "built",
+  "volume": 10000,
+  "check": [],
+  "solver": [],
+  "refused": []
+ },
+ {
+  "id": "fr-bracket-rounded",
+  "status": "built",
+  "volume": 18500.37304862796,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-symmetric-profile",
+  "status": "built",
+  "volume": 6999.999999998639,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.4068746168049984e-12
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "fr-symmetric-axis",
+  "status": "built",
+  "volume": 6999.9999999986685,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.355767167167232e-12
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-rect-dims",
+  "status": "built",
+  "volume": 5999.999999999956,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.8118839761882555e-13
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-plate-hole-dims",
+  "status": "built",
+  "volume": 9214.732294132635,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 4.171666546577709e-38
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-slot-tangent",
+  "status": "built",
+  "volume": 11141.176810322648,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.1368683772161603e-15
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-triangle-angle",
+  "status": "built",
+  "volume": 5196.152422706632,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-hexagon",
+  "status": "built",
+  "volume": 10392.30484541647,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 3.8184566619747784e-11
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "2d-handle-api",
+  "status": "built",
+  "volume": 12000,
+  "check": [],
+  "solver": [],
+  "refused": []
+ },
+ {
+  "id": "diag-under",
+  "status": "built",
+  "volume": 8000,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 3 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 3,
+    "dofOwnSolver": 3,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "diag-conflict",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A sideways distance (dx) of 50 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 16,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k10)",
+     "params": {
+      "entities": [
+       "g1.start",
+       "g1.end"
+      ],
+      "type": "horizontal",
+      "value": 50
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "diag-redundant",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "repeat",
+    "cls": "refused",
+    "result": "rule repeated",
+    "text": "A sideways distance (dx) of 40 is already fixed by the rules before it; remove it."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is added; remove it, or make it a reference dimension",
+    "failed": {
+     "index": 16,
+     "command": "sketch.dimension",
+     "error": "invalid parameters for `sketch.dimension`: that dimension is already determined by k10 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+     "params": {
+      "entities": [
+       "g1.start",
+       "g1.end"
+      ],
+      "type": "horizontal",
+      "value": 40
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "full",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 5999.999999999956,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 1.8118839761882555e-13
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "no-height",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nconst part = extrude(sk, 10)",
+  "status": "built with 2 steps not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free-moved",
+    "cls": "refused",
+    "result": "not built",
+    "text": "It is not fully defined, and its rules have to move it. See sk1 under Steps."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "sk1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "The rules of this sketch have to move its shape (by up to 2.6 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "failed": null
+   },
+   {
+    "id": "pull1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "failed": null
+   }
+  ]
+ },
+ {
+  "id": "not-placed",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nconst part = extrude(sk, 10)",
+  "status": "built with 2 steps not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free-moved",
+    "cls": "refused",
+    "result": "not built",
+    "text": "It is not fully defined, and its rules have to move it. See sk1 under Steps."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "sk1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1.5 mm) but leave 2 ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "failed": null
+   },
+   {
+    "id": "pull1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "failed": null
+   }
+  ]
+ },
+ {
+  "id": "nothing",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 4794,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 4 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 4,
+    "dofOwnSolver": 4,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "clash",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.length(r.top, 40)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A length of 40 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 17,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k11)",
+     "params": {
+      "entities": [
+       "g3"
+      ],
+      "type": "length",
+      "value": 40
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "twice",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.length(r.top, 30)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "repeat",
+    "cls": "refused",
+    "result": "rule repeated",
+    "text": "A length of 30 is already fixed by the rules before it; remove it."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is added; remove it, or make it a reference dimension",
+    "failed": {
+     "index": 17,
+     "command": "sketch.dimension",
+     "error": "invalid parameters for `sketch.dimension`: that dimension is already determined by k1 (Coincident), k2 (Coincident), k3 (Coincident), k4 (Coincident), k6 (Vertical), k8 (Vertical), k11 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+     "params": {
+      "entities": [
+       "g3"
+      ],
+      "type": "length",
+      "value": 30
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "same-twice",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.length(r.bottom, 30)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "repeat",
+    "cls": "refused",
+    "result": "rule repeated",
+    "text": "A length of 30 is already fixed by the rules before it; remove it."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a dimension in this sketch is already determined by the other rules, so adding it again would be redundant and nothing is added; remove it, or make it a reference dimension",
+    "failed": {
+     "index": 17,
+     "command": "sketch.dimension",
+     "error": "invalid parameters for `sketch.dimension`: that dimension is already determined by k11 (LinearDimension); add it as a driven (reference) dimension with driven: true",
+     "params": {
+      "entities": [
+       "g1"
+      ],
+      "type": "length",
+      "value": 30
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "hole-free",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0.3, 0.2], [39, 25.6])\nconst hole = sk.circle([19, 13.5], { r: 4.4 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 40)\nsk.length(plate.right, 25)\nsk.diameter(hole, 10)\nconst part = extrude(sk, 10)",
+  "status": "built with 2 steps not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free-moved",
+    "cls": "refused",
+    "result": "not built",
+    "text": "It is not fully defined, and its rules have to move it. See sk1 under Steps."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "sk1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 2 ways for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "failed": null
+   },
+   {
+    "id": "pull1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "failed": null
+   }
+  ]
+ },
+ {
+  "id": "handle-api",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [40, 0], [40, 25], [0, 25]])\nsk.across(1)\nsk.up(2)\nsk.length(1, 40)\nconst shape = extrude(sk, 12)",
+  "status": "built",
+  "volume": 12000,
+  "check": [],
+  "solver": [],
+  "refused": []
+ },
+ {
+  "id": "plain-polygon",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [40, 0], [40, 25], [0, 25]])\nconst shape = extrude(sk, 12)",
+  "status": "built",
+  "volume": 12000,
+  "check": [],
+  "solver": [],
+  "refused": []
+ },
+ {
+  "id": "two-sketches",
+  "script": "const a = sketch('top')\nconst r = a.rectangle([0, 0], [30, 20])\na.at(r.bottom.a, [0, 0])\na.length(r.bottom, 30)\na.length(r.right, 20)\nconst p = extrude(a, 10)\nconst b = sketch('top')\nconst c = b.circle([60, 10], { r: 5 })\nconst q = extrude(b, 10)",
+  "status": "built",
+  "volume": 6785.309540542653,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   },
+   {
+    "id": "sk2",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 3 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   },
+   {
+    "sketch": "sk2",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 3,
+    "dofOwnSolver": 3,
+    "worstRuleResidual": null
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "box-only",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })",
+  "status": "built",
+  "volume": 5717.30362588783,
+  "check": [],
+  "solver": [],
+  "refused": []
+ },
+ {
+  "id": "triangle-no-angle",
+  "script": "const sk = sketch('top')\nconst base = sk.line([0.5, 0.4], [39, 1])\nconst side = sk.line(base.b, [25, 26.5])\nconst back = sk.line(side.b, base.a)\nsk.horizontal(base)\nsk.at(base.a, [0, 0])\nsk.length(base, 40)\nsk.length(side, 30)\nconst part = extrude(sk, 10)",
+  "status": "built with 2 steps not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free-moved",
+    "cls": "refused",
+    "result": "not built",
+    "text": "It is not fully defined, and its rules have to move it. See sk1 under Steps."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "sk1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "failed": null
+   },
+   {
+    "id": "pull1",
+    "guard": "SG-RULES-UNDERDETERMINED",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "failed": null
+   }
+  ]
+ },
+ {
+  "id": "angle-clash",
+  "script": "const sk = sketch('top')\nconst base = sk.line([0.5, 0.4], [39, 1])\nconst side = sk.line(base.b, [25, 26.5])\nconst back = sk.line(side.b, base.a)\nsk.horizontal(base)\nsk.at(base.a, [0, 0])\nsk.length(base, 40)\nsk.length(side, 30)\nsk.length(back, 100)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A length of 100 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 11,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k1, k2, k3, k6, k7)",
+     "params": {
+      "entities": [
+       "g3"
+      ],
+      "type": "length",
+      "value": 100
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "x-exact-no-height",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([5, 3], [35, 23])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 6000,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 1 way. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 1,
+    "dofOwnSolver": 1,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-exact-not-placed",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([5, 3], [35, 23])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 6000,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 2 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 2,
+    "dofOwnSolver": 2,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-exact-full",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([5, 3], [35, 23])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 6000,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-circle-only",
+  "script": "const sk = sketch('top')\nconst c = sk.circle([10, 10], { r: 5 })\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 785.3095405426566,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 3 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 3,
+    "dofOwnSolver": 3,
+    "worstRuleResidual": null
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-circle-dia",
+  "script": "const sk = sketch('top')\nconst c = sk.circle([10, 10], { r: 5 })\nsk.diameter(c, 10)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 785.3095405426566,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 2 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 2,
+    "dofOwnSolver": 2,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-circle-full",
+  "script": "const sk = sketch('top')\nconst c = sk.circle([10, 10], { r: 5 })\nsk.diameter(c, 10)\nsk.at(c.c, [10, 10])\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 785.3095405426566,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "defined",
+    "cls": "built",
+    "result": "fully defined",
+    "text": "Its rules fix every size and position."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 0,
+    "dofOwnSolver": 0,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-plate-hole-exact-free",
+  "script": "const sk = sketch('top')\nconst plate = sk.rectangle([0, 0], [40, 25])\nconst hole = sk.circle([20, 12.5], { r: 5 })\nsk.at(plate.bottom.a, [0, 0])\nsk.length(plate.bottom, 40)\nsk.length(plate.right, 25)\nsk.diameter(hole, 10)\nconst part = extrude(sk, 10)",
+  "status": "built",
+  "volume": 9214.732294132635,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "free",
+    "cls": "note",
+    "result": "not fully defined",
+    "text": "It can still slide, turn or change size in 2 ways. It was built as you drew it; add rules or dimensions to pin it down."
+   }
+  ],
+  "solver": [
+   {
+    "sketch": "sk1",
+    "state": "accepted",
+    "status": "solved",
+    "dofSolidcraft": 2,
+    "dofOwnSolver": 2,
+    "worstRuleResidual": 0
+   }
+  ],
+  "refused": []
+ },
+ {
+  "id": "x-box-then-clash",
+  "script": "const b = box(10, 10, 5)\nconst sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.dx(r.bottom.a, r.bottom.b, 44)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 500,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A sideways distance (dx) of 44 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 18,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k11)",
+     "params": {
+      "entities": [
+       "g1.start",
+       "g1.end"
+      ],
+      "type": "horizontal",
+      "value": 44
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "x-clash-dy",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.dy(r.bottom.a, r.top.a, 7)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "An up distance (dy) of 7 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 17,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k1, k2, k5, k12)",
+     "params": {
+      "entities": [
+       "g1.start",
+       "g3.start"
+      ],
+      "type": "vertical",
+      "value": 7
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "x-clash-horizontal",
+  "script": "const sk = sketch('top')\nconst base = sk.line([0, 0], [40, 0])\nconst side = sk.line(base.b, [25, 26])\nconst back = sk.line(side.b, base.a)\nsk.horizontal(base)\nsk.at(base.a, [0, 0])\nsk.length(base, 40)\nsk.length(side, 30)\nsk.angle(base, side, 120)\nsk.horizontal(side)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A horizontal rule cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 12,
+     "command": "sketch.constraint.horizontal_vertical",
+     "error": "that would over-constrain the sketch (conflicts with k4, k6, k7, k8)",
+     "params": {
+      "line": "g2",
+      "mode": "horizontal"
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "x-clash-angle",
+  "script": "const sk = sketch('top')\nconst base = sk.line([0, 0], [40, 0])\nconst side = sk.line(base.b, [25, 26])\nconst back = sk.line(side.b, base.a)\nsk.horizontal(base)\nsk.at(base.a, [0, 0])\nsk.length(base, 40)\nsk.length(side, 30)\nsk.length(back, 36)\nsk.angle(base, side, 100)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 0,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "An angle of 100 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 12,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k1, k2, k3, k6, k7, k8)",
+     "params": {
+      "entities": [
+       "g1",
+       "g2"
+      ],
+      "type": "angle",
+      "value": "100 deg"
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": "x-pocket-clash",
+  "script": "const b = box(60, 40, 10)\nconst sk = sketch('top')\nconst r = sk.rectangle([4.2, 2.1], [32.4, 19.1])\nsk.at(r.bottom.a, [5, 3])\nsk.length(r.bottom, 30)\nsk.length(r.right, 20)\nsk.length(r.top, 40)\nconst part = extrude(sk, 10)",
+  "status": "built with 1 step not built",
+  "volume": 24000,
+  "check": [
+   {
+    "id": "sk1",
+    "state": "clash",
+    "cls": "refused",
+    "result": "rules clash",
+    "text": "A length of 40 cannot hold together with the rules before it; remove or change one of them."
+   }
+  ],
+  "solver": [],
+  "refused": [
+   {
+    "id": "pull1",
+    "guard": null,
+    "refusal": "pull1: a rule or dimension in this sketch conflicts with the others (it would over-constrain the sketch), so nothing is added; remove or change one of the conflicting rules",
+    "failed": {
+     "index": 18,
+     "command": "sketch.dimension",
+     "error": "that would over-constrain the sketch (conflicts with k1, k2, k3, k4, k6, k8, k11)",
+     "params": {
+      "entities": [
+       "g3"
+      ],
+      "type": "length",
+      "value": 40
+     }
+    }
+   }
+  ]
+ }
+]
