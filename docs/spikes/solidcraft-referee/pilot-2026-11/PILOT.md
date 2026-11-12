@@ -478,9 +478,10 @@ that failed, or one the failed step hides, is not found.
 A sentence slip fixed with it (owner approved the exact text): a hollow or draft that picks a face with no word (a side of a pulled outline)
 read "d5 (draft): the undefined face of e2 could not be found on the part as it is now ...". It now reads "d5 (draft): that face of e2 could
 not be found on the part as it is now, so d5 is shown without it." (`shell-draft.ts`, mirrored in the contract copy; a face that has a word
-is unchanged). Still open, no text approved: "s5: the undefined face cannot be found reliably after the part was turned or copied ..." (a
-different sentence, 4 times in the corpora), and the same face with a reason attached ("the undefined face of e2 was tilted by d3", not seen
-in any corpus).
+is unchanged). Two more places showed the same slip and got the owner's text next: "s5: that face cannot be found reliably after the part
+was turned or copied, so s5 is shown without it -- apply it before turning the part." (4 times in the corpora) and "d5 (draft): that face of
+e2 was tilted by d3, so d5 is shown without it." (not seen in any corpus). Still as it was, no text approved: the hollow form "the undefined
+face was tilted by d3, so it can no longer be picked by name ..." and the sphere form, neither seen in any corpus.
 
 Checked on 0.30.1 with the switch on in the page and the sentence fix in: `npm test` 1036 tests, 1030 pass, 6 skipped, 0 fail; the six browser
 checks give the same results as the last recorded run (examples 46 of 56); the 44 sketch scripts and the 14 blocked-step page scripts are

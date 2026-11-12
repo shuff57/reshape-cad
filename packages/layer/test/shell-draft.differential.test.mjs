@@ -381,6 +381,11 @@ test('a face with no word reads "that face of ..." (owner-approved text, 2026-11
     // a face that has a word is unchanged
     assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'b1' }, 'left'), 'd5 (draft): the left face of b1 could not be found on the part as it is now, so d5 is shown without it.');
     assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'b1' }, 'left', 'was tilted by d3'), 'd5 (draft): the left face of b1 was tilted by d3, so d5 is shown without it.');
+    // the two other places a face with no word showed (owner-approved text, 2026-11-12)
+    assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'e2' }, undefined, 'was tilted by d3'), 'd5 (draft): that face of e2 was tilted by d3, so d5 is shown without it.');
+    assert.equal(S.stale({ id: 's5', kind: 'shell', target: 'e2' }, `${undefined} face`), 's5: that face cannot be found reliably after the part was turned or copied, so s5 is shown without it -- apply it before turning the part.');
+    assert.equal(S.stale({ id: 's5', kind: 'shell', target: 'b1' }, 'right face'), 's5: the right face cannot be found reliably after the part was turned or copied, so s5 is shown without it -- apply it before turning the part.');
+    assert.equal(S.stale({ id: 's5', kind: 'shell', target: 'b1' }, 'chosen face'), 's5: the chosen face cannot be found reliably after the part was turned or copied, so s5 is shown without it -- apply it before turning the part.');
   }
 });
 
