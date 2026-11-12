@@ -606,8 +606,9 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
-    // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8)
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
+    // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8);
+    // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
     const fin = await runSC(tr.commands);
     keepNext = false;
@@ -722,7 +723,7 @@ async function translateRaw(docIn, names = []) {
   soups = {};
   // no script ran here: a draft the doc does not mark (DraftFeature.neutralFrom) is from-unknown, and G-FROM checks it against every `from:` word that could
   // have given its neutral (hostFromUsage recorded: false), so a stale from-bottom draft is refused here too, never built unchecked
-  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
+  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
   const tr = await translateDoc(doc, ctx);
   const fin = await runSC(tr.commands);
   const resolved = [];

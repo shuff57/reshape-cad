@@ -1,0 +1,418 @@
+[
+ {
+  "id": "hollow-too-thick",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })",
+  "ms": 2429,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nshell1\thollow\tnot built\tHollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10."
+ },
+ {
+  "id": "hollow-fine",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nhollow(b, { wall: 2, open: 'top' })",
+  "ms": 3875,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (hollow): it needs hole1, which could not be built, so shell1 is shown without it."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nshell1\thollow\tnot built\tshell1 (hollow): it needs hole1, which could not be built, so shell1 is shown without it."
+ },
+ {
+  "id": "hollow-twice",
+  "script": "const b = box(30, 20, 10)\nhollow(b, { wall: 2, open: 'top' })\nhole(b, { across: 35 })\nhollow(b, { wall: 1, open: 'top' })",
+  "ms": 3069,
+  "status": "built with 2 steps not built",
+  "volume": 2672,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "shell2",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell2 (hollow): box1 is already hollow and a second hollow is not supported yet, so shell2 is shown without it -- give the first hollow the wall you want instead."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nshell1\thollow\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nshell2\thollow\tnot built\tshell2 (hollow): box1 is already hollow and a second hollow is not supported yet, so shell2 is shown without it -- give the first hollow the wall you want instead."
+ },
+ {
+  "id": "draft-too-steep",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\ndraft(b.face('right'), 60)",
+  "ms": 3632,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): it needs hole1, which could not be built, so draft1 is shown without it."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\ndraft1\tdraft\tnot built\tdraft1 (draft): it needs hole1, which could not be built, so draft1 is shown without it."
+ },
+ {
+  "id": "draft-fine",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\ndraft(b.face('right'), 5)",
+  "ms": 2545,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): it needs hole1, which could not be built, so draft1 is shown without it."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\ndraft1\tdraft\tnot built\tdraft1 (draft): it needs hole1, which could not be built, so draft1 is shown without it."
+ },
+ {
+  "id": "draft-top-face",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\ndraft(b.face('top'), 5)",
+  "ms": 2112,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): the top face is square to the pull direction (z), so it cannot be tilted, and draft1 is shown without it -- draft a side face, or set from: to left, right, front or back so the pull no longer points along the top face."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\ndraft1\tdraft\tnot built\tdraft1 (draft): the top face is square to the pull direction (z), so it cannot be tilted, and draft1 is shown without it -- draft a side face, or set from: to left, right, front or back so the pull no longer points along the top face."
+ },
+ {
+  "id": "round-too-big",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nround(b.edge('top', 'front'), 25)",
+  "ms": 2415,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "The round round1 is as big as or bigger than the face it cuts into (20 wide), so round1 is shown without it -- use a size under 20."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nround1\tround\tnot built\tThe round round1 is as big as or bigger than the face it cuts into (20 wide), so round1 is shown without it -- use a size under 20."
+ },
+ {
+  "id": "round-fine",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nround(b.edge('top', 'front'), 2)",
+  "ms": 2454,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 builds on hole1, which could not be built, so round1 is shown without it too -- fix hole1 first."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nround1\tround\tnot built\tround1 builds on hole1, which could not be built, so round1 is shown without it too -- fix hole1 first."
+ },
+ {
+  "id": "bevel-too-big",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nbevel(b.edge('top', 'front'), 25)",
+  "ms": 2254,
+  "status": "built with 2 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "bevel1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "The bevel bevel1 is as big as or bigger than the face it cuts into (20 wide), so bevel1 is shown without it -- use a size under 20."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nbevel1\tbevel\tnot built\tThe bevel bevel1 is as big as or bigger than the face it cuts into (20 wide), so bevel1 is shown without it -- use a size under 20."
+ },
+ {
+  "id": "chain",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\ndraft(b.face('right'), 5)\nround(b.edge('top', 'front'), 2)",
+  "ms": 1993,
+  "status": "built with 4 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10."
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): it needs shell1, which could not be built, so draft1 is shown without it."
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 builds on draft1, which could not be built, so round1 is shown without it too -- fix draft1 first."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nshell1\thollow\tnot built\tHollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.\ndraft1\tdraft\tnot built\tdraft1 (draft): it needs shell1, which could not be built, so draft1 is shown without it.\nround1\tround\tnot built\tround1 builds on draft1, which could not be built, so round1 is shown without it too -- fix draft1 first."
+ },
+ {
+  "id": "chain-fine-then-bad",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nround(b.edge('top', 'front'), 2)\nhollow(b, { wall: 12, open: 'top' })",
+  "ms": 2172,
+  "status": "built with 3 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it."
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 builds on hole1, which could not be built, so round1 is shown without it too -- fix hole1 first."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.\nround1\tround\tnot built\tround1 builds on hole1, which could not be built, so round1 is shown without it too -- fix hole1 first.\nshell1\thollow\tnot built\tHollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10."
+ },
+ {
+  "id": "sphere-hollow-after-bad-hole",
+  "script": "const s = sphere(20)\nhole(s, { across: 50 })\nhollow(s, { wall: 2, open: 'top' })",
+  "ms": 5039,
+  "status": "built with 2 steps not built",
+  "volume": 4188.49308566101,
+  "steps": [
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the hole is wider than the part, so nothing of it would be left and hole1 is shown without it -- make the hole narrower than the part."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (hollow): a sphere has no flat face to open, so shell1 is shown without it -- use a box, cylinder or other flat-faced shape."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nball1\tsphere\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): the hole is wider than the part, so nothing of it would be left and hole1 is shown without it -- make the hole narrower than the part.\nshell1\thollow\tnot built\tshell1 (hollow): a sphere has no flat face to open, so shell1 is shown without it -- use a box, cylinder or other flat-faced shape."
+ },
+ {
+  "id": "cylinder-open-left",
+  "script": "const c = cylinder(20, 30)\nhole(c, { across: 40 })\nhollow(c, { wall: 2, open: 'left' })",
+  "ms": 1607,
+  "status": "built with 2 steps not built",
+  "volume": 9423.690515173834,
+  "steps": [
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the hole is as wide as the cylinder it drills, so nothing would be left and hole1 is shown without it -- make the hole narrower than the cylinder."
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "shell1 (hollow): a cylinder only has flat top and bottom faces, not a left one to open, so shell1 is shown without it -- use open:'top' or open:'bottom'."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\ncyl1\tcylinder\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): the hole is as wide as the cylinder it drills, so nothing would be left and hole1 is shown without it -- make the hole narrower than the cylinder.\nshell1\thollow\tnot built\tshell1 (hollow): a cylinder only has flat top and bottom faces, not a left one to open, so shell1 is shown without it -- use open:'top' or open:'bottom'."
+ },
+ {
+  "id": "nothing-blocked",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })\nhollow(b, { wall: 2, open: 'bottom' })",
+  "ms": 2490,
+  "status": "built",
+  "volume": 3017.5496602331655,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tbuilt\t\nshell1\thollow\tbuilt\t"
+ }
+]

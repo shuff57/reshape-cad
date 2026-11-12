@@ -1,0 +1,12 @@
+#!/bin/sh
+# onoff.sh <out dir> <corpora...>: the rows of each corpus that hold a blocked hollow, draft or round (pass1/drop-<corpus>.json), through the host route twice:
+# the page's settings (hole probe on), the blocked-step probe off then on. The host code is the frozen copy pane/src-oo.
+R=$HOME/.cache/solidcraft-0.30.1-rig; D=$R/h13/$1; shift
+export WT=/home/shuff57/Documents/GitHub/reshape-cad SOLIDCRAFT_REFEREE_PKG=$R/sc-referee-pkg SOLIDCRAFT_TOPOLOGY_PKG=$R/sc-referee-pkg-topology PROBE_BLOCKED=1 HOST_SRC=packages/solidcraft-host/pane/src-oo
+mkdir -p $D/off $D/on
+for c in "$@"; do
+  export ONLY_FILE=$R/h13/pass1/drop-$c.json
+  t0=$(date +%s); flock $R/rig.lock timeout --kill-after=120 14400 node $R/h13/host-route-drop.mjs --corpus=$c --out=$D/off --no-oracle --timeout=300 > $D/off/$c.log 2>&1; echo "OFF $c rc=$? $(( $(date +%s) - t0 ))s"
+  t0=$(date +%s); PROBE_STEPS=1 flock $R/rig.lock timeout --kill-after=120 14400 node $R/h13/host-route-drop.mjs --corpus=$c --out=$D/on --no-oracle --timeout=300 > $D/on/$c.log 2>&1; echo "ON  $c rc=$? $(( $(date +%s) - t0 ))s"
+done
+echo EXIT=0

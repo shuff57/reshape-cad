@@ -411,3 +411,78 @@ missing, only how many ways are free. A tangent whose contact is pinned only by 
 
 Checked on 0.30.1: `npm test` 1027 tests, 1021 pass, 6 skipped, 0 fail; the 44 sketch scripts give the same lines, statuses and volumes before
 and after the two sentence changes; the 56 examples give the same 46 passes as recorded; the pane check passes.
+
+### F5, F8: hollows, drafts, rounds and bevels (owner chose "blocked hollows, drafts, rounds", then "turn it on in the page")
+
+A hole that is blocked by a refused step already reports its own mistake. A hollow, draft, round or bevel still said only "it needs hole1,
+which could not be built" / "round1 builds on hole1 ... fix hole1 first", even when it could never have been built either.
+
+How it works (`probeBlockedSteps()` in `packages/solidcraft-host/pane/src/host-entry.mjs`, used only when `ctx.probeBlockedSteps` is set): when
+a script has such a blocked step, the page translates the script **once more without the steps that were not built**. A step that is left out
+hands its part on (what targeted the refused hole now targets the part the hole was drilled in). If the blocked step is refused in that second
+translation for a reason of its own, that sentence is shown in place of the blocked one. Nothing else from the second translation is used: the
+commands the page builds, the measures, and the built / not built result of every step are the first translation's. Existing sentences only.
+
+It is done at the page's host level and not in the layer, because the hollow, draft and round guards read the whole history of the part ("the edge
+was already changed by an earlier hole"), and a refused step must not count as history. Leaving it out of the script is the one way that is
+right for every guard, and it needs no change to the layer or to the contract copies.
+
+A blocked step keeps its blocked sentence when: it would build without the refused steps; the refused step made the part itself (a pull, a
+join, a pattern: there is nothing to hand on); one of its own fields names a refused step (an edge named by a face of the hole that was not
+built); or the second translation's refusal is about the translation and not about the student's step (a name that could not be resolved,
+"is not a single solid", the engine's own words).
+
+In the real page on 0.30.1 (`followup/blocked-steps-page.json`), each after `hole(b, { across: 35 })` on a 30 wide box, which is not built:
+
+| blocked step | before | now |
+|---|---|---|
+| `hollow(b, { wall: 12, open: 'top' })` | "it needs hole1 ..." | "Hollowing box1 to 12 thick would collapse it ... the wall has to be under 10." |
+| a second hollow | "it needs hole1 ..." | "box1 is already hollow and a second hollow is not supported yet ..." |
+| `draft(b.face('top'), 5)` | "it needs hole1 ..." | "the top face is square to the pull direction (z), so it cannot be tilted ..." |
+| `round(b.edge('top', 'front'), 25)`, and the bevel | "builds on hole1 ... fix hole1 first" | "The round round1 is as big as or bigger than the face it cuts into (20 wide) ... use a size under 20." |
+| a hollow on a sphere; `open: 'left'` on a cylinder | "it needs hole1 ..." | "a sphere has no flat face to open ..."; "a cylinder only has flat top and bottom faces, not a left one to open ..." |
+| a good hollow, a good draft, a good round | "it needs hole1 ..." | unchanged: they would build, so only the block is reported |
+| hollow (wall 12), then a draft, then a round | each "it needs ..." | the hollow says it would collapse; the draft and the round still wait on the step before them |
+
+Corpora, Node host route, the rows that hold a blocked hollow, draft or round, the page's settings, switch off against switch on
+(`followup/blocked-steps.json`: every step that got its own sentence, before and after):
+
+| corpus | rows | steps | blocked | own sentence found | built / not built changes | time, off to on |
+|---|---|---|---|---|---|---|
+| sd | 27 | 125 | 49 | 15 | 0 | 2 s to 4 s |
+| combined | 312 | 1798 | 385 | 196 | 0 | 660 s to 748 s |
+| rgcombined | 214 | 2159 | 253 | 126 | 0 | 314 s to 369 s |
+| fccombined | 295 | 2050 | 545 | 190 | 0 | 512 s to 700 s |
+| mt | 4 | 18 | 4 | 0 | 0 | under 1 s |
+| all | 852 | 6150 | 1236 | 527 (43%) | 0 | 1488 s to 1821 s (+22%) |
+
+By kind: 287 of 595 hollows, 166 of 334 drafts, 74 of 307 rounds and bevels. Most are refused before anything reaches the kernel: a part with
+inside corners (91), a hollow with no open side on a changed part (73), a face that cannot be found on the part as it is (86), a sphere or a
+cone with no flat face (58), a second hollow (24), an ambiguous face word (35). 49 come from a real build of the step (a draft the kernel
+refuses, a tilt that could not be checked).
+
+No step changed between built and not built, and no volume changed. Ten rows differed between the first off and on runs and were run three
+more times each: all ten are the same off and on every time. They were stalls of the rig (a plain box "took longer than 45 seconds" in one run
+and 0.8 s in the next) and last-digit noise in the kernel's volumes (1e-16), not the switch. One hole on a sphere sits at the 45 s budget and
+gets the budget sentence in some runs and its own sentence in others; that is the hole probe, as before.
+
+Cost: one more translation, only for a script that has a blocked hollow, draft, round or bevel; on those rows the whole run took 22% longer.
+A script with nothing blocked is not translated twice. The sample scripts in the page take 1.6 to 5.0 s.
+
+The owner chose to turn it on in the page: `pane.js` sets `probeBlockedSteps: true` beside the holes' `probeBlocked: true`. Any other caller of
+the host's `translateDoc` gets it only by asking. Tests: `packages/solidcraft-host/test/blocked-steps.test.mjs` (7).
+
+Limits: what is reported is the step's own mistake **if the refused steps were not there**. A mistake that exists only because of the step
+that failed, or one the failed step hides, is not found.
+
+A sentence slip fixed with it (owner approved the exact text): a hollow or draft that picks a face with no word (a side of a pulled outline)
+read "d5 (draft): the undefined face of e2 could not be found on the part as it is now ...". It now reads "d5 (draft): that face of e2 could
+not be found on the part as it is now, so d5 is shown without it." (`shell-draft.ts`, mirrored in the contract copy; a face that has a word
+is unchanged). Still open, no text approved: "s5: the undefined face cannot be found reliably after the part was turned or copied ..." (a
+different sentence, 4 times in the corpora), and the same face with a reason attached ("the undefined face of e2 was tilted by d3", not seen
+in any corpus).
+
+Checked on 0.30.1 with the switch on in the page and the sentence fix in: `npm test` 1036 tests, 1030 pass, 6 skipped, 0 fail; the six browser
+checks give the same results as the last recorded run (examples 46 of 56); the 44 sketch scripts and the 14 blocked-step page scripts are
+unchanged on a second run; the host-route sweep of the six corpora (4784 rows, 24717 steps, default settings) has 0 changes in built / not
+built, guard or volume against the sweep of 2026-11-11, and 13 sentences changed, all "the undefined face of" to "that face of".
