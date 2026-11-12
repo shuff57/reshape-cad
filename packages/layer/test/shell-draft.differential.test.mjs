@@ -374,6 +374,16 @@ test('without a resolver and without a topology: a named pick is refused in the 
   assert.match(r.features[1].raw, /no resolution/);
 });
 
+test('a face with no word reads "that face of ..." (owner-approved text, 2026-11-12), never "the undefined face", in the port and in the original alike', () => {
+  for (const S of [port.sd.SENTENCE, orig.sd.SENTENCE]) {
+    assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'e2' }, undefined), 'd5 (draft): that face of e2 could not be found on the part as it is now, so d5 is shown without it.');
+    assert.equal(S.noFace({ id: 's3', kind: 'shell', target: 'e2' }, undefined), 's3 (hollow): that face of e2 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.');
+    // a face that has a word is unchanged
+    assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'b1' }, 'left'), 'd5 (draft): the left face of b1 could not be found on the part as it is now, so d5 is shown without it.');
+    assert.equal(S.noFace({ id: 'd5', kind: 'draft', target: 'b1' }, 'left', 'was tilted by d3'), 'd5 (draft): the left face of b1 was tilted by d3, so d5 is shown without it.');
+  }
+});
+
 test('coverage: the corpus reaches the group paths (not a vacuous pass)', () => {
   const must = ['G-CONVEX', 'G-PICK', 'G-TIE', 'G-THICK', 'G-VANISH', 'G-SWEEP', 'G-REACH', 'G-BLIND', 'G-FROM', 'G-CLOSED', 'G-TWICE', 'G-VOID', 'G-CAP', 'G-ANGLE', 'G-HOLE', 'G-RIM', 'G-ROUND', 'G-CONE', 'G-FLAT', 'G-CHAMFER', 'G-WHOLE-AXIS', 'G-WHOLE-HISTORY', 'G-WHOLE-HOLLOW', 'G-WHOLE-SHAPE', 'engine'];
   const missing = must.filter((g) => !tally.guards[g]);
