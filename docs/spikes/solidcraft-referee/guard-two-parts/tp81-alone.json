@@ -1,1352 +1,1352 @@
 [
  {
   "id": "tp81-001-far-through-B-first-both",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 6, at: [0, 0] });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-002-far-through-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 4, at: [0, -5] });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-003-far-through-B-first-both",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 6, at: [0, -5] });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-004-far-through-A-first-both",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [-6, 4] });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4] });",
   "model": null
  },
  {
   "id": "tp81-005-far-through-A-first-both",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, at: [0, 4] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-006-far-through-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 6, at: [-6, -5] });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-007-far-blind-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 6, at: [5, 0], deep: 4 });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-008-far-blind-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 8, at: [-6, 4], deep: 4 });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-009-far-blind-B-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 6, at: [-6, 0], deep: 4 });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-010-far-blind-A-first-both",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 6, at: [5, -5], deep: 6 });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-011-far-blind-A-first-both",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [-6, 4], deep: 8 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-012-far-blind-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-013-far-cbore-B-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-014-far-cbore-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [-6, 4], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-015-far-cbore-B-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 8, at: [0, 4], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-016-far-cbore-A-first-both",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 2 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-017-far-cbore-A-first-both",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-018-far-cbore-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-019-far-csink-B-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 4, at: [0, -5], countersink: { across: 10, angle: 100 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], countersink: { across: 10, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-020-far-csink-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, 4], countersink: { across: 10, angle: 100 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4], countersink: { across: 10, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-021-far-csink-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 100 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-022-far-csink-A-first-both",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 8, at: [5, 0], countersink: { across: 12, angle: 82 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], countersink: { across: 12, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-023-far-csink-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 8, at: [5, -5], countersink: { across: 12, angle: 100 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5], countersink: { across: 12, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-024-far-csink-A-first-both",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 82 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-025-far-through-x-B-first-both",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-026-far-through-x-B-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-027-far-through-x-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-028-far-through-x-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-029-far-through-x-A-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-030-far-through-x-A-first-both",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-031-beside-touch-through-B-first-both",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 6, at: [5, 0] });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 0] });",
   "model": null
  },
  {
   "id": "tp81-032-beside-touch-through-B-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 4, at: [5, -5] });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5] });",
   "model": null
  },
  {
   "id": "tp81-033-beside-touch-through-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 6, at: [5, -5] });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, -5] });",
   "model": null
  },
  {
   "id": "tp81-034-beside-touch-through-A-first-both",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 8, at: [-6, 0] });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-035-beside-touch-through-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, at: [5, 4] });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 4] });",
   "model": null
  },
  {
   "id": "tp81-036-beside-touch-through-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, at: [0, 0] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-037-beside-touch-blind-B-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-038-beside-touch-blind-B-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 8, at: [0, -5], deep: 6 });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-039-beside-touch-blind-B-first-both",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 4, at: [0, 0], deep: 4 });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-040-beside-touch-blind-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, at: [5, 4], deep: 4 });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-041-beside-touch-blind-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 6, at: [-6, 4], deep: 4 });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-042-beside-touch-blind-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [-6, 0], deep: 8 });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-043-beside-touch-cbore-B-first-both",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 3 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-044-beside-touch-cbore-B-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-045-beside-touch-cbore-B-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 6, at: [0, 4], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-046-beside-touch-cbore-A-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-047-beside-touch-cbore-A-first-both",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-048-beside-touch-cbore-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 2 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-049-beside-touch-csink-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, 0], countersink: { across: 10, angle: 82 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], countersink: { across: 10, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-050-beside-touch-csink-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 100 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-051-beside-touch-csink-B-first-both",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 100 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-052-beside-touch-csink-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 8, angle: 90 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 8, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-053-beside-touch-csink-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 6, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-054-beside-touch-csink-A-first-both",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 8, at: [0, 4], countersink: { across: 14, angle: 82 } });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], countersink: { across: 14, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-055-beside-touch-through-x-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-056-beside-touch-through-x-B-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-057-beside-touch-through-x-B-first-both",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-058-beside-touch-through-x-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-059-beside-touch-through-x-A-first-both",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-060-beside-touch-through-x-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-061-beside-gap-through-B-first-both",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [0, -5] });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-062-beside-gap-through-B-first-both",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, at: [0, 0] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-063-beside-gap-through-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, at: [0, -5] });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-064-beside-gap-through-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [5, 4] });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 4] });",
   "model": null
  },
  {
   "id": "tp81-065-beside-gap-through-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, at: [5, 0] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0] });",
   "model": null
  },
  {
   "id": "tp81-066-beside-gap-through-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [0, 0] });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-067-beside-gap-blind-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, at: [5, -5], deep: 6 });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-068-beside-gap-blind-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-069-beside-gap-blind-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, at: [0, 4], deep: 4 });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-070-beside-gap-blind-A-first-both",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 6, at: [0, 4], deep: 6 });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-071-beside-gap-blind-A-first-both",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, at: [-6, 0], deep: 4 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-072-beside-gap-blind-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [5, 0], deep: 6 });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-073-beside-gap-cbore-B-first-both",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-074-beside-gap-cbore-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-075-beside-gap-cbore-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 6, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-076-beside-gap-cbore-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, at: [5, 0], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-077-beside-gap-cbore-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 8, deep: 2 } });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 8, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-078-beside-gap-cbore-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-079-beside-gap-csink-B-first-both",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 90 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 14, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-080-beside-gap-csink-B-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-081-beside-gap-csink-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 6, at: [-6, 4], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 4], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-082-beside-gap-csink-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 82 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-083-beside-gap-csink-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, -5], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-084-beside-gap-csink-A-first-both",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 6, at: [0, 0], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-085-beside-gap-through-x-B-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-086-beside-gap-through-x-B-first-both",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-087-beside-gap-through-x-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-088-beside-gap-through-x-A-first-both",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-089-beside-gap-through-x-A-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-090-beside-gap-through-x-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-091-top-touch-through-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, at: [-6, 0] });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-092-top-touch-through-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 6, at: [0, 4] });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-093-top-touch-through-B-first-both",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 8, at: [5, -5] });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5] });",
   "model": null
  },
  {
   "id": "tp81-094-top-touch-through-A-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 6, at: [-6, 0] });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-095-top-touch-through-A-first-both",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 8, at: [-6, 0] });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-096-top-touch-through-A-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 6, at: [0, -5] });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-097-top-touch-blind-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, 0], deep: 4 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-098-top-touch-blind-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [5, 0], deep: 6 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-099-top-touch-blind-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [5, 0], deep: 4 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-100-top-touch-blind-A-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-101-top-touch-blind-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, at: [5, -5], deep: 6 });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-102-top-touch-blind-A-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 8, at: [5, 0], deep: 4 });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-103-top-touch-cbore-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-104-top-touch-cbore-B-first-both",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-105-top-touch-cbore-B-first-both",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-106-top-touch-cbore-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 10, deep: 3 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 10, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-107-top-touch-cbore-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-108-top-touch-cbore-A-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 8, deep: 3 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 4], counterbore: { across: 8, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-109-top-touch-csink-B-first-both",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 4, at: [5, 0], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 0], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-110-top-touch-csink-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-111-top-touch-csink-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, at: [0, 0], countersink: { across: 10, angle: 82 } });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], countersink: { across: 10, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-112-top-touch-csink-A-first-both",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 100 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-113-top-touch-csink-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [0, 4], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-114-top-touch-csink-A-first-both",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 14, angle: 90 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 14, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-115-top-touch-through-x-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-116-top-touch-through-x-B-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-117-top-touch-through-x-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-118-top-touch-through-x-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-119-top-touch-through-x-A-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-120-top-touch-through-x-A-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-121-top-gap-through-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, 4] });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-122-top-gap-through-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 8, at: [0, 4] });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-123-top-gap-through-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 4, at: [-6, 0] });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-124-top-gap-through-A-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 6, at: [-6, 0] });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0] });",
   "model": null
  },
  {
   "id": "tp81-125-top-gap-through-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 8, at: [0, 4] });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-126-top-gap-through-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, at: [0, -5] });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-127-top-gap-blind-B-first-both",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [0, 4], deep: 6 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-128-top-gap-blind-B-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-129-top-gap-blind-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 4, at: [-6, 0], deep: 4 });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-130-top-gap-blind-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [5, -5], deep: 6 });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-131-top-gap-blind-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, -5], deep: 6 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-132-top-gap-blind-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [5, -5], deep: 8 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-133-top-gap-cbore-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [0, 4], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-134-top-gap-cbore-B-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, at: [5, 0], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 0], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-135-top-gap-cbore-B-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 3 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], counterbore: { across: 8, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-136-top-gap-cbore-A-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 3 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 10, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-137-top-gap-cbore-A-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-138-top-gap-cbore-A-first-both",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-139-top-gap-csink-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 8, at: [0, 4], countersink: { across: 14, angle: 90 } });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], countersink: { across: 14, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-140-top-gap-csink-B-first-both",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [0, 0], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-141-top-gap-csink-B-first-both",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 6, at: [5, 4], countersink: { across: 12, angle: 100 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 4], countersink: { across: 12, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-142-top-gap-csink-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 4, at: [0, -5], countersink: { across: 8, angle: 82 } });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], countersink: { across: 8, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-143-top-gap-csink-A-first-both",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 8, at: [5, -5], countersink: { across: 14, angle: 82 } });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5], countersink: { across: 14, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-144-top-gap-csink-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-145-top-gap-through-x-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-146-top-gap-through-x-B-first-both",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-147-top-gap-through-x-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-148-top-gap-through-x-A-first-both",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-149-top-gap-through-x-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-150-top-gap-through-x-A-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-151-below-touch-through-B-first-both",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, at: [-6, 4] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4] });",
   "model": null
  },
  {
   "id": "tp81-152-below-touch-through-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 6, at: [-6, -5] });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-153-below-touch-through-B-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, at: [0, -5] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-154-below-touch-through-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, at: [0, 0] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-155-below-touch-through-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, at: [0, 0] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-156-below-touch-through-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 4, at: [-6, -5] });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-157-below-touch-blind-B-first-both",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 4, at: [0, 4], deep: 6 });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-158-below-touch-blind-B-first-both",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 6, at: [5, 0], deep: 4 });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-159-below-touch-blind-B-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 6, at: [-6, 4], deep: 6 });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 4], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-160-below-touch-blind-A-first-both",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 6, at: [0, 0], deep: 6 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-161-below-touch-blind-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, at: [0, 0], deep: 4 });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-162-below-touch-blind-A-first-both",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-163-below-touch-cbore-B-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, at: [-6, -5], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-164-below-touch-cbore-B-first-both",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 3 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-165-below-touch-cbore-B-first-both",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 8, deep: 2 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 8, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-166-below-touch-cbore-A-first-both",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [5, -5], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, -5], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-167-below-touch-cbore-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-168-below-touch-cbore-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-169-below-touch-csink-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-170-below-touch-csink-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [5, -5], countersink: { across: 10, angle: 100 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, -5], countersink: { across: 10, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-171-below-touch-csink-B-first-both",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [-6, 4], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-172-below-touch-csink-A-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 6, at: [5, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-173-below-touch-csink-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-174-below-touch-csink-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 4, at: [5, 0], countersink: { across: 8, angle: 82 } });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 0], countersink: { across: 8, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-175-below-touch-through-x-B-first-both",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-176-below-touch-through-x-B-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-177-below-touch-through-x-B-first-both",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-178-below-touch-through-x-A-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-179-below-touch-through-x-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-180-below-touch-through-x-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-181-below-gap-through-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 6, at: [-6, -5] });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-182-below-gap-through-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 4, at: [0, -5] });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-183-below-gap-through-B-first-both",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, -5] });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-184-below-gap-through-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 6, at: [0, -5] });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-185-below-gap-through-A-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 6, at: [0, 0] });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-186-below-gap-through-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [0, 4] });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-187-below-gap-blind-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [0, 4], deep: 4 });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-188-below-gap-blind-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [0, 4], deep: 4 });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-189-below-gap-blind-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, at: [0, 0], deep: 6 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-190-below-gap-blind-A-first-both",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [5, 0], deep: 8 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-191-below-gap-blind-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, at: [0, -5], deep: 8 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-192-below-gap-blind-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 4, at: [0, -5], deep: 6 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-193-below-gap-cbore-B-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, -5], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-194-below-gap-cbore-B-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [5, 0], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-195-below-gap-cbore-B-first-both",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [-6, -5], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, -5], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-196-below-gap-cbore-A-first-both",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-197-below-gap-cbore-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-198-below-gap-cbore-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [-6, -5], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, -5], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-199-below-gap-csink-B-first-both",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 8, at: [5, 4], countersink: { across: 12, angle: 82 } });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 4], countersink: { across: 12, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-200-below-gap-csink-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-201-below-gap-csink-B-first-both",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 82 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-202-below-gap-csink-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 8, at: [5, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-203-below-gap-csink-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [0, -5], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-204-below-gap-csink-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [5, 4], countersink: { across: 8, angle: 100 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 4], countersink: { across: 8, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-205-below-gap-through-x-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-206-below-gap-through-x-B-first-both",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-207-below-gap-through-x-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-208-below-gap-through-x-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-209-below-gap-through-x-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-210-below-gap-through-x-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-211-overlap-through-B-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [0, -5] });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-212-overlap-through-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 4, at: [0, 4] });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-213-overlap-through-B-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 6, at: [0, 0] });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-214-overlap-through-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, at: [-6, -5] });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-215-overlap-through-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [-6, -5] });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-216-overlap-through-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, at: [0, 4] });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 4] });",
   "model": null
  },
  {
   "id": "tp81-217-overlap-blind-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [0, -5], deep: 8 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-218-overlap-blind-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 8, at: [-6, 0], deep: 4 });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-219-overlap-blind-B-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 6, at: [5, -5], deep: 8 });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, -5], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-220-overlap-blind-A-first",
-  "script": "const a = box(50, 40, 12);\nhole(a, { across: 8, at: [0, 0], deep: 4 });",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-221-overlap-blind-A-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-222-overlap-blind-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [0, -5], deep: 4 });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-223-overlap-cbore-B-first",
-  "script": "const a = box(30, 40, 20);\nhole(a, { across: 4, at: [-6, 0], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, 0], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-224-overlap-cbore-B-first",
-  "script": "const a = box(30, 30, 12);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-225-overlap-cbore-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-226-overlap-cbore-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 8, deep: 2 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 4], counterbore: { across: 8, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-227-overlap-cbore-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-228-overlap-cbore-A-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-229-overlap-csink-B-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 4, at: [5, -5], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-230-overlap-csink-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [0, -5], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-231-overlap-csink-B-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 8, at: [-6, 4], countersink: { across: 14, angle: 90 } });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 4], countersink: { across: 14, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-232-overlap-csink-A-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 100 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], countersink: { across: 12, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-233-overlap-csink-A-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 6, at: [5, 0], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 0], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-234-overlap-csink-A-first",
-  "script": "const a = box(50, 40, 16);\nhole(a, { across: 6, at: [0, -5], countersink: { across: 10, angle: 100 } });",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], countersink: { across: 10, angle: 100 } });",
   "model": null
  },
  {
   "id": "tp81-235-overlap-through-x-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-236-overlap-through-x-B-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-237-overlap-through-x-B-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-238-overlap-through-x-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-239-overlap-through-x-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-240-overlap-through-x-A-first",
-  "script": "const a = box(40, 30, 16);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-241-in-path-through-B-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, at: [5, -5] });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5] });",
   "model": null
  },
  {
   "id": "tp81-242-in-path-through-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 4, at: [-6, -5] });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5] });",
   "model": null
  },
  {
   "id": "tp81-243-in-path-through-B-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, at: [0, -5] });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5] });",
   "model": null
  },
  {
   "id": "tp81-244-in-path-through-A-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 8, at: [5, 0] });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0] });",
   "model": null
  },
  {
   "id": "tp81-245-in-path-through-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, at: [5, 4] });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 4] });",
   "model": null
  },
  {
   "id": "tp81-246-in-path-through-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, at: [0, 0] });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0] });",
   "model": null
  },
  {
   "id": "tp81-247-in-path-blind-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, 4], deep: 8 });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-248-in-path-blind-B-first",
-  "script": "const a = box(30, 30, 16);\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-249-in-path-blind-B-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 8, at: [0, 0], deep: 4 });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-250-in-path-blind-A-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 0], deep: 6 });",
   "model": null
  },
  {
   "id": "tp81-251-in-path-blind-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 6, at: [5, 4], deep: 4 });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [5, 4], deep: 4 });",
   "model": null
  },
  {
   "id": "tp81-252-in-path-blind-A-first",
-  "script": "const a = box(50, 30, 20);\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 0], deep: 8 });",
   "model": null
  },
  {
   "id": "tp81-253-in-path-cbore-B-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [-6, 4], counterbore: { across: 12, deep: 3 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [-6, 4], counterbore: { across: 12, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-254-in-path-cbore-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [-6, 0], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-255-in-path-cbore-B-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, -5], counterbore: { across: 12, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-256-in-path-cbore-A-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 4, at: [5, 0], counterbore: { across: 10, deep: 2 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, 0], counterbore: { across: 10, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-257-in-path-cbore-A-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 8, deep: 3 } });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [5, -5], counterbore: { across: 8, deep: 3 } });",
   "model": null
  },
  {
   "id": "tp81-258-in-path-cbore-A-first",
-  "script": "const a = box(50, 30, 12);\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 2 } });",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [0, 0], counterbore: { across: 14, deep: 2 } });",
   "model": null
  },
  {
   "id": "tp81-259-in-path-csink-B-first",
-  "script": "const a = box(40, 40, 12);\nhole(a, { across: 6, at: [0, 4], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, 4], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-260-in-path-csink-B-first",
-  "script": "const a = box(40, 40, 20);\nhole(a, { across: 8, at: [5, 0], countersink: { across: 14, angle: 82 } });",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 8, at: [5, 0], countersink: { across: 14, angle: 82 } });",
   "model": null
  },
  {
   "id": "tp81-261-in-path-csink-B-first",
-  "script": "const a = box(50, 40, 20);\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 90 } });",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [0, 0], countersink: { across: 8, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-262-in-path-csink-A-first",
-  "script": "const a = box(30, 30, 20);\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-263-in-path-csink-A-first",
-  "script": "const a = box(30, 40, 16);\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 10, angle: 90 } });",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, at: [-6, -5], countersink: { across: 10, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-264-in-path-csink-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 90 } });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 6, at: [0, -5], countersink: { across: 12, angle: 90 } });",
   "model": null
  },
  {
   "id": "tp81-265-in-path-through-x-B-first",
-  "script": "const a = box(50, 30, 16);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-266-in-path-through-x-B-first",
-  "script": "const a = box(30, 40, 12);\nhole(a, { across: 6, along: 'x' });",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhole(a, { across: 6, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-267-in-path-through-x-B-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-268-in-path-through-x-A-first",
-  "script": "const a = box(40, 40, 16);\nhole(a, { across: 8, along: 'x' });",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhole(a, { across: 8, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-269-in-path-through-x-A-first",
-  "script": "const a = box(40, 30, 20);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  },
  {
   "id": "tp81-270-in-path-through-x-A-first",
-  "script": "const a = box(40, 30, 12);\nhole(a, { across: 4, along: 'x' });",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhole(a, { across: 4, along: 'x' });",
   "model": null
  }
 ]

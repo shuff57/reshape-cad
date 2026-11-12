@@ -1,0 +1,2102 @@
+[
+ {
+  "id": "tq91-001-hollow-top-far-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-002-hollow-top-far-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-003-hollow-top-far-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-004-hollow-top-far-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-005-hollow-top-beside-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-006-hollow-top-beside-touch-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-007-hollow-top-beside-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-008-hollow-top-beside-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-009-hollow-top-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-010-hollow-top-beside-gap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-011-hollow-top-beside-gap-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-012-hollow-top-beside-gap-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-013-hollow-top-top-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-014-hollow-top-top-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-015-hollow-top-top-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-016-hollow-top-top-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-017-hollow-top-below-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-018-hollow-top-below-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-019-hollow-top-below-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-020-hollow-top-below-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-021-hollow-top-overlap-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-022-hollow-top-overlap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-023-hollow-top-overlap-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-024-hollow-top-overlap-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-025-hollow-top-behind-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-026-hollow-top-behind-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-027-hollow-top-behind-touch-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-028-hollow-top-behind-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'top' });",
+  "model": null
+ },
+ {
+  "id": "tq91-029-hollow-bottom-far-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-030-hollow-bottom-far-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-031-hollow-bottom-far-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-032-hollow-bottom-far-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-033-hollow-bottom-beside-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-034-hollow-bottom-beside-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-035-hollow-bottom-beside-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-036-hollow-bottom-beside-touch-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-037-hollow-bottom-beside-gap-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-038-hollow-bottom-beside-gap-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-039-hollow-bottom-beside-gap-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-040-hollow-bottom-beside-gap-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-041-hollow-bottom-top-touch-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-042-hollow-bottom-top-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-043-hollow-bottom-top-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-044-hollow-bottom-top-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-045-hollow-bottom-below-touch-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-046-hollow-bottom-below-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-047-hollow-bottom-below-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-048-hollow-bottom-below-touch-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-049-hollow-bottom-overlap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-050-hollow-bottom-overlap-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-051-hollow-bottom-overlap-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-052-hollow-bottom-overlap-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-053-hollow-bottom-behind-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-054-hollow-bottom-behind-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-055-hollow-bottom-behind-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-056-hollow-bottom-behind-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-057-hollow-right-far-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-058-hollow-right-far-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-059-hollow-right-far-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-060-hollow-right-far-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-061-hollow-right-beside-touch-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-062-hollow-right-beside-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-063-hollow-right-beside-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-064-hollow-right-beside-touch-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-065-hollow-right-beside-gap-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-066-hollow-right-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-067-hollow-right-beside-gap-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-068-hollow-right-beside-gap-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-069-hollow-right-top-touch-B-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-070-hollow-right-top-touch-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-071-hollow-right-top-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-072-hollow-right-top-touch-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-073-hollow-right-below-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-074-hollow-right-below-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-075-hollow-right-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-076-hollow-right-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-077-hollow-right-overlap-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-078-hollow-right-overlap-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-079-hollow-right-overlap-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-080-hollow-right-overlap-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-081-hollow-right-behind-touch-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-082-hollow-right-behind-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-083-hollow-right-behind-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-084-hollow-right-behind-touch-A-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5, open: 'right' });",
+  "model": null
+ },
+ {
+  "id": "tq91-085-draft-right-far-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-086-draft-right-far-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-087-draft-right-far-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-088-draft-right-far-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-089-draft-right-beside-touch-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-090-draft-right-beside-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-091-draft-right-beside-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-092-draft-right-beside-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-093-draft-right-beside-gap-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-094-draft-right-beside-gap-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-095-draft-right-beside-gap-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-096-draft-right-beside-gap-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-097-draft-right-top-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-098-draft-right-top-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-099-draft-right-top-touch-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-100-draft-right-top-touch-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-101-draft-right-below-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-102-draft-right-below-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-103-draft-right-below-touch-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-104-draft-right-below-touch-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-105-draft-right-overlap-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-106-draft-right-overlap-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-107-draft-right-overlap-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-108-draft-right-overlap-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-109-draft-right-behind-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-110-draft-right-behind-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-111-draft-right-behind-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-112-draft-right-behind-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('right'), 8);",
+  "model": null
+ },
+ {
+  "id": "tq91-113-draft-front-from-far-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-114-draft-front-from-far-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-115-draft-front-from-far-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-116-draft-front-from-far-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-117-draft-front-from-beside-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-118-draft-front-from-beside-touch-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-119-draft-front-from-beside-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-120-draft-front-from-beside-touch-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-121-draft-front-from-beside-gap-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-122-draft-front-from-beside-gap-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-123-draft-front-from-beside-gap-A-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-124-draft-front-from-beside-gap-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-125-draft-front-from-top-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-126-draft-front-from-top-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-127-draft-front-from-top-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-128-draft-front-from-top-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-129-draft-front-from-below-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-130-draft-front-from-below-touch-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-131-draft-front-from-below-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-132-draft-front-from-below-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-133-draft-front-from-overlap-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-134-draft-front-from-overlap-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-135-draft-front-from-overlap-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-136-draft-front-from-overlap-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-137-draft-front-from-behind-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-138-draft-front-from-behind-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 5, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-139-draft-front-from-behind-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 3, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-140-draft-front-from-behind-touch-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\ndraft(a.face('front'), 8, { from: 'bottom' });",
+  "model": null
+ },
+ {
+  "id": "tq91-141-round-far-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-142-round-far-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-143-round-far-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-144-round-far-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-145-round-beside-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-146-round-beside-touch-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-147-round-beside-touch-A-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-148-round-beside-touch-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-149-round-beside-gap-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-150-round-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-151-round-beside-gap-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-152-round-beside-gap-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-153-round-top-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-154-round-top-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-155-round-top-touch-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-156-round-top-touch-A-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-157-round-below-touch-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-158-round-below-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-159-round-below-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-160-round-below-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-161-round-overlap-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-162-round-overlap-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-163-round-overlap-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-164-round-overlap-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-165-round-behind-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-166-round-behind-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-167-round-behind-touch-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-168-round-behind-touch-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nround(a.edge('top', 'front'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-169-bevel-far-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-170-bevel-far-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-171-bevel-far-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-172-bevel-far-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-173-bevel-beside-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-174-bevel-beside-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-175-bevel-beside-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-176-bevel-beside-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-177-bevel-beside-gap-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-178-bevel-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-179-bevel-beside-gap-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-180-bevel-beside-gap-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-181-bevel-top-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-182-bevel-top-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-183-bevel-top-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-184-bevel-top-touch-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-185-bevel-below-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-186-bevel-below-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-187-bevel-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-188-bevel-below-touch-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-189-bevel-overlap-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-190-bevel-overlap-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-191-bevel-overlap-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-192-bevel-overlap-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-193-bevel-behind-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-194-bevel-behind-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-195-bevel-behind-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 1);",
+  "model": null
+ },
+ {
+  "id": "tq91-196-bevel-behind-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nchamfer(a.edge('top', 'right'), 2);",
+  "model": null
+ },
+ {
+  "id": "tq91-197-pocket-far-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-198-pocket-far-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-199-pocket-far-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-200-pocket-far-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-201-pocket-beside-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-202-pocket-beside-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-203-pocket-beside-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-204-pocket-beside-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-205-pocket-beside-gap-B-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-206-pocket-beside-gap-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-207-pocket-beside-gap-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-208-pocket-beside-gap-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-209-pocket-top-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-210-pocket-top-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-211-pocket-top-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-212-pocket-top-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-213-pocket-below-touch-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-214-pocket-below-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-215-pocket-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(8, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-216-pocket-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-217-pocket-overlap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-218-pocket-overlap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-219-pocket-overlap-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-220-pocket-overlap-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nconst sk = sketch('top', 10); sk.rect(10, 6, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-221-pocket-behind-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst sk = sketch('top', 6); sk.rect(8, 6, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-222-pocket-behind-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 3);",
+  "model": null
+ },
+ {
+  "id": "tq91-223-pocket-behind-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-224-pocket-behind-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst sk = sketch('top', 8); sk.rect(10, 8, { at: [-5, -4] }); pocket(sk, a, 5);",
+  "model": null
+ },
+ {
+  "id": "tq91-225-join-far-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-226-join-far-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-227-join-far-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-228-join-far-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-229-join-beside-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-230-join-beside-touch-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-231-join-beside-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-232-join-beside-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-233-join-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-234-join-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-235-join-beside-gap-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-236-join-beside-gap-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-237-join-top-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-238-join-top-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-239-join-top-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-240-join-top-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-241-join-below-touch-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-242-join-below-touch-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-243-join-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-244-join-below-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-245-join-overlap-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-246-join-overlap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 16, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-247-join-overlap-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-20, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-248-join-overlap-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-249-join-behind-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-250-join-behind-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 12, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-251-join-behind-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-15, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-252-join-behind-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 20, { at: [-25, 0, 0] }); union(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-253-cut-far-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-254-cut-far-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-255-cut-far-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-256-cut-far-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-257-cut-beside-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-258-cut-beside-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-259-cut-beside-touch-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-260-cut-beside-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-261-cut-beside-gap-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-262-cut-beside-gap-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-263-cut-beside-gap-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-264-cut-beside-gap-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-265-cut-top-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-266-cut-top-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-267-cut-top-touch-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-268-cut-top-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-269-cut-below-touch-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-270-cut-below-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-271-cut-below-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-272-cut-below-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-273-cut-overlap-B-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-274-cut-overlap-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-275-cut-overlap-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-276-cut-overlap-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nconst c = box(10, 10, 26, { at: [-20, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-277-cut-behind-touch-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-278-cut-behind-touch-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-279-cut-behind-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst c = box(10, 10, 30, { at: [-15, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-280-cut-behind-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst c = box(10, 10, 22, { at: [-25, 0, 0] }); subtract(a, c);",
+  "model": null
+ },
+ {
+  "id": "tq91-281-move-far-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nmove(a, [-80, 0, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-282-move-far-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nmove(a, [-80, 0, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-283-move-far-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-284-move-far-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmove(a, [-60, 0, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-285-move-beside-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-286-move-beside-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nmove(a, [-80, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-287-move-beside-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nmove(a, [-80, 0, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-288-move-beside-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-289-move-beside-gap-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-290-move-beside-gap-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-291-move-beside-gap-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nmove(a, [-80, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-292-move-beside-gap-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-293-move-top-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nmove(a, [-80, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-294-move-top-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-295-move-top-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nmove(a, [-80, 0, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-296-move-top-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-297-move-below-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nmove(a, [-80, 0, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-298-move-below-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-299-move-below-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nmove(a, [-80, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-300-move-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nmove(a, [-80, 0, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-301-move-overlap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmove(a, [-60, 0, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-302-move-overlap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nmove(a, [-60, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-303-move-overlap-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nmove(a, [-80, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-304-move-overlap-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nmove(a, [-80, -50, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-305-move-behind-touch-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-306-move-behind-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nmove(a, [-60, 0, 0]);",
+  "model": null
+ },
+ {
+  "id": "tq91-307-move-behind-touch-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nmove(a, [-60, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-308-move-behind-touch-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nmove(a, [-80, -50, 3]);",
+  "model": null
+ },
+ {
+  "id": "tq91-309-mirror-far-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-310-mirror-far-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-311-mirror-far-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-312-mirror-far-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-313-mirror-beside-touch-B-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-314-mirror-beside-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-315-mirror-beside-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-316-mirror-beside-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-317-mirror-beside-gap-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-318-mirror-beside-gap-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-319-mirror-beside-gap-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-320-mirror-beside-gap-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-321-mirror-top-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-322-mirror-top-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-323-mirror-top-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-324-mirror-top-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-325-mirror-below-touch-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-326-mirror-below-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-327-mirror-below-touch-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-328-mirror-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-329-mirror-overlap-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-330-mirror-overlap-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-331-mirror-overlap-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-332-mirror-overlap-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-333-mirror-behind-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-334-mirror-behind-touch-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-335-mirror-behind-touch-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-336-mirror-behind-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nmirror(a, 'left-right');",
+  "model": null
+ },
+ {
+  "id": "tq91-337-repeat-far-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-338-repeat-far-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-339-repeat-far-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-340-repeat-far-A-first",
+  "script": "const a = box(40, 40, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-341-repeat-beside-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-342-repeat-beside-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-343-repeat-beside-touch-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-344-repeat-beside-touch-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-345-repeat-beside-gap-B-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-346-repeat-beside-gap-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-347-repeat-beside-gap-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-348-repeat-beside-gap-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-349-repeat-top-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-350-repeat-top-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-351-repeat-top-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-352-repeat-top-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-353-repeat-below-touch-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-354-repeat-below-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-355-repeat-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-356-repeat-below-touch-A-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-357-repeat-overlap-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-358-repeat-overlap-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-359-repeat-overlap-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-360-repeat-overlap-A-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-40, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-361-repeat-behind-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-362-repeat-behind-touch-B-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-363-repeat-behind-touch-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-60, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-364-repeat-behind-touch-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nlinearPattern(a, { count: 3, step: [-50, 0, 0] });",
+  "model": null
+ },
+ {
+  "id": "tq91-365-groove-far-B-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 4], [-9, 4], [-9, 10], [-15, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-366-groove-far-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 2], [-9, 2], [-9, 8], [-15, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-367-groove-far-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 4], [-14, 4], [-14, 10], [-20, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-368-groove-far-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 4], [-14, 4], [-14, 10], [-20, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-369-groove-beside-touch-B-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 2], [-9, 2], [-9, 8], [-15, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-370-groove-beside-touch-B-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 4], [-14, 4], [-14, 10], [-20, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-371-groove-beside-touch-A-first",
+  "script": "const a = box(30, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 2], [-9, 2], [-9, 8], [-15, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-372-groove-beside-touch-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 2], [-14, 2], [-14, 8], [-20, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-373-groove-beside-gap-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 2], [-19, 2], [-19, 8], [-25, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-374-groove-beside-gap-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 2], [-19, 2], [-19, 8], [-25, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-375-groove-beside-gap-A-first",
+  "script": "const a = box(40, 30, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 6], [-14, 6], [-14, 12], [-20, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-376-groove-beside-gap-A-first",
+  "script": "const a = box(50, 30, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 4], [-19, 4], [-19, 10], [-25, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-377-groove-top-touch-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 2], [-14, 2], [-14, 8], [-20, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-378-groove-top-touch-B-first",
+  "script": "const a = box(30, 30, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 2], [-9, 2], [-9, 8], [-15, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-379-groove-top-touch-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 4], [-14, 4], [-14, 10], [-20, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-380-groove-top-touch-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 6], [-9, 6], [-9, 12], [-15, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-381-groove-below-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 6], [-9, 6], [-9, 12], [-15, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-382-groove-below-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 6], [-9, 6], [-9, 12], [-15, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-383-groove-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 2], [-14, 2], [-14, 8], [-20, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-384-groove-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 2], [-14, 2], [-14, 8], [-20, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-385-groove-overlap-B-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 4], [-9, 4], [-9, 10], [-15, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-386-groove-overlap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 6], [-19, 6], [-19, 12], [-25, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-387-groove-overlap-A-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 6], [-9, 6], [-9, 12], [-15, 12]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-388-groove-overlap-A-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 2], [-19, 2], [-19, 8], [-25, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-389-groove-behind-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-25, 2], [-19, 2], [-19, 8], [-25, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-390-groove-behind-touch-B-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 2], [-14, 2], [-14, 8], [-20, 8]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-391-groove-behind-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-15, 4], [-9, 4], [-9, 10], [-15, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-392-groove-behind-touch-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nconst sg = sketch('front'); sg.polygon([[-20, 4], [-14, 4], [-14, 10], [-20, 10]]); groove(sg, a, 180);",
+  "model": null
+ },
+ {
+  "id": "tq91-393-hollow-closed-far-B-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-394-hollow-closed-far-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-395-hollow-closed-far-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-396-hollow-closed-far-A-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-397-hollow-closed-beside-touch-B-first",
+  "script": "const a = box(50, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-398-hollow-closed-beside-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-399-hollow-closed-beside-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-400-hollow-closed-beside-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-401-hollow-closed-beside-gap-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-402-hollow-closed-beside-gap-B-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-403-hollow-closed-beside-gap-A-first",
+  "script": "const a = box(40, 40, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-404-hollow-closed-beside-gap-A-first",
+  "script": "const a = box(30, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-405-hollow-closed-top-touch-B-first",
+  "script": "const a = box(30, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-406-hollow-closed-top-touch-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-407-hollow-closed-top-touch-A-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-408-hollow-closed-top-touch-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-409-hollow-closed-below-touch-B-first",
+  "script": "const a = box(40, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-410-hollow-closed-below-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-411-hollow-closed-below-touch-A-first",
+  "script": "const a = box(40, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-412-hollow-closed-below-touch-A-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-413-hollow-closed-overlap-B-first",
+  "script": "const a = box(50, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-414-hollow-closed-overlap-B-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-415-hollow-closed-overlap-A-first",
+  "script": "const a = box(30, 30, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-416-hollow-closed-overlap-A-first",
+  "script": "const a = box(40, 30, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 3 });",
+  "model": null
+ },
+ {
+  "id": "tq91-417-hollow-closed-behind-touch-B-first",
+  "script": "const a = box(50, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-418-hollow-closed-behind-touch-B-first",
+  "script": "const a = box(50, 30, 12, { at: [0, 0, 0] });\nhollow(a, { wall: 1.5 });",
+  "model": null
+ },
+ {
+  "id": "tq91-419-hollow-closed-behind-touch-A-first",
+  "script": "const a = box(50, 40, 20, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ },
+ {
+  "id": "tq91-420-hollow-closed-behind-touch-A-first",
+  "script": "const a = box(30, 40, 16, { at: [0, 0, 0] });\nhollow(a, { wall: 2 });",
+  "model": null
+ }
+]

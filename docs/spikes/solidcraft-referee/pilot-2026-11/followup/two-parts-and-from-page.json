@@ -2,7 +2,7 @@
  {
   "id": "two-parts-plain-hole",
   "script": "const b = box(40, 40, 20)\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\nhole(b, { across: 6 })",
-  "ms": 901,
+  "ms": 1723,
   "status": "built",
   "volume": 37834.607251775655,
   "steps": [
@@ -30,7 +30,7 @@
  {
   "id": "two-parts-far-counterbore",
   "script": "const b = box(40, 40, 20)\nconst o = box(10, 10, 10, { at: [200, 0, 0] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
-  "ms": 2139,
+  "ms": 2129,
   "status": "built",
   "volume": 32095.34750606655,
   "steps": [
@@ -58,7 +58,7 @@
  {
   "id": "lid-after-box-counterbore",
   "script": "const b = box(40, 40, 20)\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
-  "ms": 2506,
+  "ms": 2107,
   "status": "built with 1 step not built",
   "volume": 38400,
   "steps": [
@@ -85,8 +85,36 @@
  },
  {
   "id": "lid-before-box-counterbore",
+  "script": "const lid = box(40, 40, 4, { at: [0, 0, 12] })\nconst b = box(40, 40, 20, { at: [0, 0, 0] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
+  "ms": 2232,
+  "status": "built with 1 step not built",
+  "volume": 38400,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): cutting it would also cut box1, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box1."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): cutting it would also cut box1, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box1."
+ },
+ {
+  "id": "lid-before-box-beside-counterbore",
   "script": "const lid = box(40, 40, 4, { at: [0, 0, 12] })\nconst b = box(40, 40, 20)\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
-  "ms": 2484,
+  "ms": 2214,
   "status": "built",
   "volume": 37495.347506066566,
   "steps": [
@@ -112,9 +140,37 @@
   "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t"
  },
  {
+  "id": "lid-before-box-plain-hole",
+  "script": "const lid = box(40, 40, 4, { at: [0, 0, 12] })\nconst b = box(40, 40, 20, { at: [0, 0, 0] })\nhole(b, { across: 6 })",
+  "ms": 1758,
+  "status": "built",
+  "volume": 37834.607251775655,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t"
+ },
+ {
   "id": "hole-then-lid-counterbore",
   "script": "const b = box(40, 40, 20)\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\n",
-  "ms": 2761,
+  "ms": 2461,
   "status": "built",
   "volume": 37495.34750606655,
   "steps": [
@@ -142,7 +198,7 @@
  {
   "id": "both-parts-drilled",
   "script": "const b = box(40, 40, 20)\nconst o = box(20, 20, 10, { at: [100, 0, 0] })\nhole(b, { across: 6 })\nhole(o, { across: 4 })",
-  "ms": 2455,
+  "ms": 2182,
   "status": "built",
   "volume": 35308.96441883691,
   "steps": [
@@ -176,7 +232,7 @@
  {
   "id": "pattern-copies-hole",
   "script": "const b = box(40, 40, 20)\nconst p = linearPattern(b, { count: 3, step: [60, 0, 0] })\nhole(p, { across: 6 })",
-  "ms": 1760,
+  "ms": 1583,
   "status": "built with 1 step not built",
   "volume": 96000,
   "steps": [
@@ -204,7 +260,7 @@
  {
   "id": "pull-draft-from-top",
   "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\ndraft(p.face('right'), 5, { from: 'top' })",
-  "ms": 2069,
+  "ms": 1726,
   "status": "built",
   "volume": 12131.232995288878,
   "steps": [
@@ -232,7 +288,7 @@
  {
   "id": "pull-draft-from-bottom",
   "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\ndraft(p.face('right'), 5, { from: 'bottom' })",
-  "ms": 1913,
+  "ms": 1714,
   "status": "built",
   "volume": 11868.767004711108,
   "steps": [
@@ -260,7 +316,7 @@
  {
   "id": "pull-moved-draft-from-top",
   "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\nmove(p, [0, 0, 5])\ndraft(p.face('right'), 5, { from: 'top' })",
-  "ms": 1456,
+  "ms": 1327,
   "status": "built with 1 step not built",
   "volume": 12000,
   "steps": [
@@ -294,7 +350,7 @@
  {
   "id": "box-draft-from-top",
   "script": "const b = box(30, 20, 10)\ndraft(b.face('right'), 5, { from: 'top' })",
-  "ms": 1778,
+  "ms": 1582,
   "status": "built",
   "volume": 6087.488663525922,
   "steps": [

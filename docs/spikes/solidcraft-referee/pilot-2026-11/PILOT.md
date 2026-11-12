@@ -594,3 +594,19 @@ Real kernel, Node host route, pull 40 x 30 x 10:
 
 In the corpora 1 row changes for this: `sd draft-from-bottom-extrude-lifted` goes from refused to built and is RIGHT by the oracles.
 Tests: `packages/script/test/extent-extrude.test.mjs` (3 new).
+
+### Other steps with a second part, and a correction (owner chose "other steps with two parts")
+
+The hole fault raised the question for every other step: does a step meant for one part change a part next to it? A seeded family of 420
+two-part scripts says no for the eleven kinds tried (hollow, draft, round, bevel, pocket, join, cut, move, mirror, repeat; the groove of the
+family is refused with and without the second part): the second part came back exactly in 420 of 420, and the first part came out identical to
+the same step on it alone in 392 of 392 built cases. Numbers and method: GUARD-TWO-PARTS.md, "Other kinds of step".
+
+Writing that family showed an error in my own two-part tests: a shape written without `at:` is placed beside the shape before it, so "the other
+part made first" had moved the part under test. The hole family was run again with the part placed explicitly. What changed: the kernel's
+recessed hole cuts a neighbouring part **whichever was made first** (51 of 108 recessed holes refused by G-OTHERS, not 24), and the earlier
+statement that it builds right with the other part made first was wrong. The check does not depend on the order, so no build was affected.
+GUARD-TWO-PARTS.md carries the correction; the AGENTS.md note was corrected with the owner's approval.
+
+Also done: the number in "the part it drills is N separate pieces" counts the drilled part's own pieces and its copies, not every body in the
+script (owner decision).

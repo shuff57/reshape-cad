@@ -5,7 +5,10 @@ export const CASES = [
   { id: 'two-parts-plain-hole', script: B + LID + `hole(b, { across: 6 })`, want: 32000 - Math.PI * 9 * 20 + 6400 },
   { id: 'two-parts-far-counterbore', script: B + `const o = box(10, 10, 10, { at: [200, 0, 0] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })`, want: 32000 - Math.PI * 9 * 20 - Math.PI * 27 * 4 + 1000 },
   { id: 'lid-after-box-counterbore', script: B + LID + `hole(b, { across: 6, counterbore: { across: 12, deep: 4 } })`, want: null },
-  { id: 'lid-before-box-counterbore', script: LID + B + `hole(b, { across: 6, counterbore: { across: 12, deep: 4 } })`, want: 32000 - Math.PI * 9 * 20 - Math.PI * 27 * 4 + 6400 },
+  // the box is given its place: a shape with no at: is put beside the one before it (the first version of this case left it out, and the box stood beside the lid)
+  { id: 'lid-before-box-counterbore', script: LID + `const b = box(40, 40, 20, { at: [0, 0, 0] })\n` + `hole(b, { across: 6, counterbore: { across: 12, deep: 4 } })`, want: null },
+  { id: 'lid-before-box-beside-counterbore', script: LID + B + `hole(b, { across: 6, counterbore: { across: 12, deep: 4 } })`, want: 32000 - Math.PI * 9 * 20 - Math.PI * 27 * 4 + 6400 },
+  { id: 'lid-before-box-plain-hole', script: LID + `const b = box(40, 40, 20, { at: [0, 0, 0] })\n` + `hole(b, { across: 6 })`, want: 32000 - Math.PI * 9 * 20 + 6400 },
   { id: 'hole-then-lid-counterbore', script: B + `hole(b, { across: 6, counterbore: { across: 12, deep: 4 } })\n` + LID, want: 32000 - Math.PI * 9 * 20 - Math.PI * 27 * 4 + 6400 },
   { id: 'both-parts-drilled', script: B + `const o = box(20, 20, 10, { at: [100, 0, 0] })\nhole(b, { across: 6 })\nhole(o, { across: 4 })`, want: 32000 - Math.PI * 9 * 20 + 4000 - Math.PI * 4 * 10 },
   { id: 'pattern-copies-hole', script: B + `const p = linearPattern(b, { count: 3, step: [60, 0, 0] })\nhole(p, { across: 6 })`, want: null },

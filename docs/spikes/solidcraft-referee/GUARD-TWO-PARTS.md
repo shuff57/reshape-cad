@@ -37,40 +37,70 @@ right part and matched the closed form to 3e-6 (`first-guard-off.jsonl`).
 
 A plain bore is cut with a cylinder aimed at named bodies, and never touched another part in any run. A **counterbore or countersink** is cut
 with SolidCraft's own `solid.hole`, given the body's name. It still cuts a second part that sits on top of the drilled part, under it (touching
-or with a gap), or stands in the hole, **when that part was made after the drilled one**:
+or with a gap), or stands in the hole, **whichever of the two was made first**:
 
 | script (the box is 40 x 40 x 20, the hole 6 across with a counterbore 12 across, 4 deep) | drilled box | other part | with the check |
 |---|---|---|---|
 | lid 40 x 40 x 4 on top, made after the box | 31095.348 (right) | 6332.153, 8 faces (was 6400, 6 faces) | refused, G-OTHERS |
 | the same with a countersink 12 across, 90 degrees | 31321.508 | 6325.136 (was 6400) | refused, G-OTHERS |
 | block 60 x 60 x 4 underneath | 31095.348 | 14286.921 (was 14400: the bore went on through it) | refused, G-OTHERS |
-| the lid made **before** the box | 31095.348 | 6400.000 | built |
-| the lid 5 above the box (a gap) | 31095.348 | 6400.000 | built |
+| the lid on top, made **before** the box (real page) | | | refused, G-OTHERS ("... would also cut box1 ...") |
+| the lid 5 above the box (a gap), made after the box | 31095.348 | 6400.000 | built |
 | a part beside the box, sharing a side face | 31095.348 | 32000.000 | built |
+| the hole drilled first, the lid made afterwards (real page) | right | 6400.000 | built |
 
-(`guard-two-parts/lid-cases.json`, `lid-check-on.jsonl`, `lid-check-off.jsonl`.) So before this change the blanket refusal was all that stood
-between a student and a lid with a hole nobody asked for. This is upstream behaviour and is not patched; the check is on our side of the seam.
+(`guard-two-parts/lid-cases.json`, `lid-check-on.jsonl`, `lid-check-off.jsonl`; the real page: `pilot-2026-11/followup/two-parts-and-from-page.json`.)
+So before this change the blanket refusal was all that stood between a student and a lid with a hole nobody asked for. This is upstream behaviour
+and is not patched; the check is on our side of the seam.
+
+**Correction, same day.** The first version of this report said the fault needs the other part to be made after the drilled one, and that 54 of
+54 recessed holes built right with the other part made first. That was an error of the test, not a measurement: a shape written without `at:` is
+placed beside the shape before it, so in every "made first" case the drilled box was not where the generator assumed (it stood beside the other
+part with a gap of 10). The generator now gives the drilled box its place, and the numbers below are from that run. The check itself never
+depended on the order, so nothing that was built is affected; the statement was wrong.
 
 ## Measured
 
-**Seeded family**, 270 scripts (`guard-two-parts/gen.mjs`, seed 81), Node host route, real kernel. A box with a hole (plain through, plain blind,
-counterbore, countersink, plain along x; hole centre and sizes random) and a second part placed far away, beside (touching, with a gap), on top
-(touching, gap), underneath (touching, gap), overlapping the box, or standing in the hole's path; made before or after the box; in about a third
-of the cases also drilled itself. Two references per case: the closed form of each body, and the same hole on the box alone.
+**Seeded family**, 270 scripts (`guard-two-parts/gen.mjs`, seed 81), Node host route, real kernel. A box at the origin with a hole (plain through,
+plain blind, counterbore, countersink, plain along x; hole centre and sizes random) and a second part placed far away, beside (touching, with a
+gap), on top (touching, gap), underneath (touching, gap), overlapping the box, or standing in the hole's path; made before or after the box; in
+about a third of the cases also drilled itself. Two references per case: the closed form of each body, and the same hole on the box alone.
 
 | | count |
 |---|---|
-| built | 246 |
-| of those, the drilled box within 3e-4 of the closed form (worst 2.7e-5: the facets of the bore) | 246 |
-| of those, the other part its own volume (exactly, 1e-9, where it is a box that is not drilled; within 3e-4 where it is the peg or is drilled itself) | 246 |
-| of those, the drilled box identical (1e-9) to the same hole on the box alone | 246 |
-| refused by G-OTHERS | 24 |
-| of those, the other part really cut when the check is switched off (`tp81-off.jsonl`) | 24 |
+| built | 219 |
+| of those, the drilled box within 3e-4 of the closed form (worst 2.7e-5: the facets of the bore) | 219 |
+| of those, the other part its own volume (exactly, 1e-9, where it is a box that is not drilled; within 3e-4 where it is the peg or is drilled itself) | 219 |
+| of those, the drilled box identical (1e-9) to the same hole on the box alone | 219 |
+| refused by G-OTHERS | 51 |
+| of those, built with the other part cut when the check is switched off (`tp81-off.jsonl`) | 45 |
+| of those, refused by the recess-size check when the check is switched off (the box's own recess came out the wrong size; in 3 the lid was cut as well) | 6 |
 | refused for any other reason, or built differently from the box alone | 0 |
 
-All 24 refusals are counterbores and countersinks with the other part made after the box: on top touching (6), underneath touching (6),
-underneath with a gap (6), standing in the hole (6). The other part lost 0.33 to 1.53% (on top), 0.42 to 3.14% (underneath) and 80 to 85% (the
-peg). The same placements with the other part made first: 54 of 54 built right. Plain holes: 162 of 162 built right.
+All 51 refusals are counterbores and countersinks. Other part made after the box: on top touching 6 of 6, underneath touching 6 of 6, underneath
+with a gap 6 of 6, standing in the hole 6 of 6 (24). Other part made first: on top touching 6 of 6, on top with a gap 3 of 6, underneath touching
+6 of 6, underneath with a gap 6 of 6, standing in the hole 6 of 6 (27). In the 45 that would have been shown as built, the other part lost 0.14
+to 1.53% of its volume when it is on top, 0.42 to 3.58% when it is underneath, and 80 to 86% when it is the peg. The other 57 recessed holes
+(the other part far away, beside or overlapping: 48; above with a gap: 9 of 12) built right. Plain holes: 162 of 162 built right.
+
+**Other kinds of step** (`guard-two-parts/other-steps-gen.mjs`, seed 91, 420 scripts; owner chose "other steps with two parts"): a hollow (open
+top, bottom, right, or closed), a draft (plain, and with `from:`), a round, a bevel, a pocket, a join, a cut, a move, a mirror, a repeat and a
+groove on a box at the origin, while a second box (17 x 13 x 7) is far away, beside (touching, gap), on top, underneath, behind, or overlapping,
+made before or after. Per case: the second box must come back exactly (1547 mm3, 6 faces), and the first part must come out exactly as the same
+step gives on it alone.
+
+| | count |
+|---|---|
+| the second box exactly as it was | 420 of 420 |
+| built with and without the second box | 392 |
+| of those, identical (1e-9) to the same step on the part alone | 392 |
+| of those with a closed form (all but the mirror), within 3e-4 of it | 364 of 364 |
+| refused with and without the second box, by the same guard (the groove of this family: its ring touches a flat face) | 28 |
+| built in one and refused in the other | 0 |
+
+So none of these steps touches the other part, and none is changed by it. The groove is not covered as a built step. The first run of this
+family had the same placement error as above in its "made first" half (joins, pockets and cuts then missed the part, because it was elsewhere);
+the table is the corrected run.
 
 **Patterns and joins** (`guard-two-parts/pattern-cases.json`, `pattern.jsonl`): a hole in a pattern of three separate copies is refused as before
 ("3 separate pieces"), with or without another part; a hole in another part beside such a pattern is built and the pattern is untouched; a hole in
@@ -90,8 +120,9 @@ with it. After the change, with other blocks at other places: 323 rows change, e
 built in one and not in the other, and no built volume differs.
 
 **In the real page** (`pilot-2026-11/followup/two-parts-and-from-page.json`): a plain hole under a lid, a counterbore with another part far away,
-a counterbore with the lid made first, and with the lid made after the hole, a hole in each of two parts: all built, within 4e-6 of the closed
-form. A counterbore with the lid made after the box: "hole1 (hole): cutting it would also cut box2, which is in the way of this hole ...". A hole in
+a counterbore with the lid made after the hole, a plain hole with the lid made first, a hole in each of two parts: all built, within 4e-6 of the
+closed form. A counterbore with the lid on the box, made after the box or before it: "hole1 (hole): cutting it would also cut box2 (box1), which is
+in the way of this hole ...". A hole in
 a pattern of three separate copies: "the part it drills is 3 separate pieces ...", as before.
 
 Checked: `npm test` 1045 tests, 1039 pass, 6 skipped, 0 fail; the six browser checks give the same results as the last recorded run (examples 46 of 56).
@@ -102,11 +133,13 @@ with both sides changed.
 
 ## Limits
 
-- A counterbore or countersink next to a part made later stays refused. The sentence's advice (drill before you make the other part) is measured.
+- A counterbore or countersink with another part on top of, under or in the hole stays refused, whichever was made first. The sentence's advice
+  (drill the hole before the other part is made) is measured in the page.
 - "Different part" is decided from the script: two parts that share a sketch or a primitive count as related and stay refused, even when they are
   separate solids (two pulls of one sketch).
 - G-OTHERS compares volume, shell count and face count. A cut that changed another part without changing any of the three has not been seen and
   is hard to imagine, but it is not excluded by proof.
-- Hollows, drafts, rounds, pockets and joins in a script with several parts were not changed and not measured here beyond the corpora.
-- The number in "the part it drills is N separate pieces" still counts every body in the script, so with another part present it can say 3 where
-  the drilled part is in 2 pieces. Not changed.
+- Hollows, drafts, rounds, bevels, pockets, joins, cuts, moves, mirrors and repeats with a second part present are measured above; a groove, a spin and a pull beside another part are not.
+- The number in "the part it drills is N separate pieces" counted every body in the script, so with another part present it said 3 where the
+  drilled part is in 2 pieces. It now counts the drilled part's own pieces, its copies and bodies no step lists (`ownPieces`; owner decision). On
+  the corpora no number changes (no row has a second part beside a split one); the sweep's example now reads 2.

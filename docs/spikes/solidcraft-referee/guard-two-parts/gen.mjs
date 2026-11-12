@@ -32,7 +32,7 @@ for (const place of PLACES) for (const hk of HOLES) for (const order of ['B-firs
   else { bKind = 'peg'; const pr = Math.max(1, r - 1); bh = H + 10; bSrc = `cylinder(${2 * pr}, ${bh}, { at: [${hx}, ${hy}, 0] })`; VB = PI * pr * pr * bh; }
   if (bKind === 'box') VB = bw * bd * bh;
   const both = bKind === 'box' && place !== 'overlap' && rnd() < 0.3; const r2 = 1.5;
-  const aSrc = `box(${W}, ${D}, ${H})`;
+  const aSrc = `box(${W}, ${D}, ${H}, { at: [0, 0, 0] })`; // explicit: a shape with no at: is placed beside the one before it
   const script = (order === 'B-first' ? `const o = ${bSrc};\nconst a = ${aSrc};\n` : `const a = ${aSrc};\nconst o = ${bSrc};\n`) + `hole(a, ${holeOpt});` + (both ? `\nhole(o, { across: ${2 * r2} });` : '');
   const alone = `const a = ${aSrc};\nhole(a, ${holeOpt});`;
   const nameA = bKind === 'peg' ? 'b_box1' : order === 'B-first' ? 'b_box2' : 'b_box1'; const nameB = bKind === 'peg' ? 'b_cyl1' : order === 'B-first' ? 'b_box1' : 'b_box2';
