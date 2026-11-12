@@ -1,0 +1,316 @@
+[
+ {
+  "id": "two-parts-plain-hole",
+  "script": "const b = box(40, 40, 20)\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\nhole(b, { across: 6 })",
+  "ms": 901,
+  "status": "built",
+  "volume": 37834.607251775655,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t"
+ },
+ {
+  "id": "two-parts-far-counterbore",
+  "script": "const b = box(40, 40, 20)\nconst o = box(10, 10, 10, { at: [200, 0, 0] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
+  "ms": 2139,
+  "status": "built",
+  "volume": 32095.34750606655,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t"
+ },
+ {
+  "id": "lid-after-box-counterbore",
+  "script": "const b = box(40, 40, 20)\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
+  "ms": 2506,
+  "status": "built with 1 step not built",
+  "volume": 38400,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): cutting it would also cut box2, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box2."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): cutting it would also cut box2, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box2."
+ },
+ {
+  "id": "lid-before-box-counterbore",
+  "script": "const lid = box(40, 40, 4, { at: [0, 0, 12] })\nconst b = box(40, 40, 20)\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })",
+  "ms": 2484,
+  "status": "built",
+  "volume": 37495.347506066566,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t"
+ },
+ {
+  "id": "hole-then-lid-counterbore",
+  "script": "const b = box(40, 40, 20)\nhole(b, { across: 6, counterbore: { across: 12, deep: 4 } })\nconst lid = box(40, 40, 4, { at: [0, 0, 12] })\n",
+  "ms": 2761,
+  "status": "built",
+  "volume": 37495.34750606655,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nhole1\thole\tbuilt\t\nbox2\tbox\tbuilt\t"
+ },
+ {
+  "id": "both-parts-drilled",
+  "script": "const b = box(40, 40, 20)\nconst o = box(20, 20, 10, { at: [100, 0, 0] })\nhole(b, { across: 6 })\nhole(o, { across: 4 })",
+  "ms": 2455,
+  "status": "built",
+  "volume": 35308.96441883691,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nhole1\thole\tbuilt\t\nhole2\thole\tbuilt\t"
+ },
+ {
+  "id": "pattern-copies-hole",
+  "script": "const b = box(40, 40, 20)\nconst p = linearPattern(b, { count: 3, step: [60, 0, 0] })\nhole(p, { across: 6 })",
+  "ms": 1760,
+  "status": "built with 1 step not built",
+  "volume": 96000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\npat1\tpattern\tbuilt\t\nhole1\thole\tnot built\thole1 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first."
+ },
+ {
+  "id": "pull-draft-from-top",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\ndraft(p.face('right'), 5, { from: 'top' })",
+  "ms": 2069,
+  "status": "built",
+  "volume": 12131.232995288878,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\ndraft1\tdraft\tbuilt\t"
+ },
+ {
+  "id": "pull-draft-from-bottom",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\ndraft(p.face('right'), 5, { from: 'bottom' })",
+  "ms": 1913,
+  "status": "built",
+  "volume": 11868.767004711108,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\ndraft1\tdraft\tbuilt\t"
+ },
+ {
+  "id": "pull-moved-draft-from-top",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30, { at: [20, 15] })\nconst p = extrude(sk, 10)\nmove(p, [0, 0, 5])\ndraft(p.face('right'), 5, { from: 'top' })",
+  "ms": 1456,
+  "status": "built with 1 step not built",
+  "volume": 12000,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "move1",
+    "kind": "move",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): from:'top' would put the neutral plane at 10, but the top of this part is at 15 now (the part was moved, joined or turned), so draft1 is shown without it -- give the plane yourself, for example neutral: 15."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nmove1\tmove\tbuilt\t\ndraft1\tdraft\tnot built\tdraft1 (draft): from:'top' would put the neutral plane at 10, but the top of this part is at 15 now (the part was moved, joined or turned), so draft1 is shown without it -- give the plane yourself, for example neutral: 15."
+ },
+ {
+  "id": "box-draft-from-top",
+  "script": "const b = box(30, 20, 10)\ndraft(b.face('right'), 5, { from: 'top' })",
+  "ms": 1778,
+  "status": "built",
+  "volume": 6087.488663525922,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ndraft1\tdraft\tbuilt\t"
+ }
+]

@@ -1,0 +1,16 @@
+#!/bin/sh
+# pipeline.sh <seed> <corpora...>: per corpus, the host route (the page's settings) three ways:
+#   O  the doc as it is
+#   G  the doc with a gadget injected (gadget.mjs): a step the page's own guards refuse and leave out of a second translation
+#   R  the doc with the gadget, and the left-out steps deleted by hand (so there is no second translation)
+R=$HOME/.cache/solidcraft-0.30.1-rig; D=$R/h16/s$1; SEED=$1; shift
+export WT=/home/shuff57/Documents/GitHub/reshape-cad SOLIDCRAFT_REFEREE_PKG=$R/sc-referee-pkg SOLIDCRAFT_TOPOLOGY_PKG=$R/sc-referee-pkg-topology PROBE_BLOCKED=1 PROBE_STEPS=1
+mkdir -p $D/O $D/G $D/R
+run() { t0=$(date +%s); flock $R/rig.lock timeout --kill-after=120 14400 node $R/h16/host-route-x.mjs --corpus=$2 --out=$D/$1 --no-oracle --timeout=300 > $D/$1/$2.log 2>&1; echo "$1 $2 rc=$? $(( $(date +%s) - t0 ))s"; }
+for c in "$@"; do
+  [ -f $R/h16/O/hr-$c.done ] || { ( D=$R/h16; mkdir -p $D/O; run O $c ) && touch $R/h16/O/hr-$c.done; }
+  GADGET_SEED=$SEED run G $c
+  node $R/h16/mkpre.mjs $D/G $c $D/pre-$c.json
+  GADGET_SEED=$SEED DROP_FILE=$D/pre-$c.json run R $c
+done
+echo EXIT=0

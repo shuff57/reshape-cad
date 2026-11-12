@@ -1,0 +1,24 @@
+#!/bin/sh
+# repair.sh <seed>: the machine was under heavy load from another job during part of the sweep, and a run that is starved goes past the 45 s budget.
+# Every row that differs (G against R, G against O) or hung is run again, O and G, one row per process; R is then run again in full for that corpus.
+# A difference that is real comes back; one that was the load does not.
+R=$HOME/.cache/solidcraft-0.30.1-rig; SEED=$1; D=$R/h16/s$SEED
+export WT=/home/shuff57/Documents/GitHub/reshape-cad SOLIDCRAFT_REFEREE_PKG=$R/sc-referee-pkg SOLIDCRAFT_TOPOLOGY_PKG=$R/sc-referee-pkg-topology PROBE_BLOCKED=1 PROBE_STEPS=1
+cd $R/h16 && SHOW=0 node compare.mjs s$SEED > $D/compare-before-repair.txt 2>&1 && cp $D/diffs.json $D/diffs-before-repair.json
+for c in sd combined rgcombined fccombined holes mt; do
+  n=$(node -e '
+    const fs=require("fs");const [D,O,c]=process.argv.slice(1);const d=JSON.parse(fs.readFileSync(D+"/diffs-before-repair.json","utf8"));
+    const real=(x)=>!x.bad||x.bad.some(b=>{const o=b.O??b.G,g=b.O?b.G:b.R;return !g||o[0]!==g[0]||o[1]==="G-BUDGET"||g[1]==="G-BUDGET";});
+    const ids=new Set([...d.GR,...d.GO.filter(real)].filter(x=>x.c===c).map(x=>x.id));
+    for(const p of [O+"/hr-"+c+".jsonl",D+"/G/hr-"+c+".jsonl",D+"/R/hr-"+c+".jsonl"]){for(const l of fs.readFileSync(p,"utf8").split("\n").filter(Boolean)){const r=JSON.parse(l);if(r.hang||r.crashed||!r.feats)ids.add(r.id);}}
+    for(const p of [O+"/hr-"+c+".jsonl",D+"/G/hr-"+c+".jsonl"]){const ls=fs.readFileSync(p,"utf8").split("\n").filter(Boolean);fs.writeFileSync(p+".before-repair",ls.join("\n")+"\n");fs.writeFileSync(p,ls.filter(l=>!ids.has(JSON.parse(l).id)).map(l=>l+"\n").join(""));}
+    if(ids.size)fs.renameSync(D+"/R/hr-"+c+".jsonl",D+"/R/hr-"+c+".jsonl.before-repair");
+    console.log(ids.size);' $D $R/h16/O $c)
+  echo "$c: $n rows again"
+  [ "$n" = "0" ] && continue
+  flock $R/rig.lock node $R/h16/host-route-x.mjs --corpus=$c --out=$R/h16/O --no-oracle --timeout=300 --chunk=1 > $R/h16/O/$c.repair.log 2>&1; echo " O rc=$?"
+  GADGET_SEED=$SEED flock $R/rig.lock node $R/h16/host-route-x.mjs --corpus=$c --out=$D/G --no-oracle --timeout=300 --chunk=1 > $D/G/$c.repair.log 2>&1; echo " G rc=$?"
+  node $R/h16/mkpre.mjs $D/G $c $D/pre-$c.json
+  GADGET_SEED=$SEED DROP_FILE=$D/pre-$c.json flock $R/rig.lock node $R/h16/host-route-x.mjs --corpus=$c --out=$D/R --no-oracle --timeout=300 > $D/R/$c.repair.log 2>&1; echo " R rc=$?"
+done
+echo EXIT=0

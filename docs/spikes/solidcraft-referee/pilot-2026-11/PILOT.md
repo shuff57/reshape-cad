@@ -487,3 +487,110 @@ Checked on 0.30.1 with the switch on in the page and the sentence fix in: `npm t
 checks give the same results as the last recorded run (examples 46 of 56); the 44 sketch scripts and the 14 blocked-step page scripts are
 unchanged on a second run; the host-route sweep of the six corpora (4784 rows, 24717 steps, default settings) has 0 changes in built / not
 built, guard or volume against the sweep of 2026-11-11, and 13 sentences changed, all "the undefined face of" to "that face of".
+
+### The page's second pass, swept (owner chose "sweep the page's second pass")
+
+HALT-9 was a wrong solid made by the page's own second translation, and no sweep had found it: in the six corpora (4784 rows) the page's own
+guards fire in 5 rows, and in none of them is anything built afterwards. So the path was unswept.
+
+Method (`followup/second-pass-*`): every corpus row is run three ways through the Node host route with the page's settings.
+
+- **O**: the row as it is.
+- **G**: the row with a small block of steps injected (`second-pass-gadget.mjs`), far away from everything else (x, y around 500 to 600), that makes
+  one of the page's own guards fire: a draft, hollow, round or bevel on a part a pocket or groove already cut (G-STALE), or a pull of a sketch
+  whose rules move it and leave it free (the sketch guard), alone or with a draft, hollow or hole on its part, with and without `from:` words.
+  The page then translates the row a second time without the refused step. The block goes at the start (6 in 10), at a random place (not
+  between two rounds), or at the end.
+- **R**: the same row with the block, and the left-out steps deleted by hand, so there is no second translation.
+
+Two questions. **G against R**: is the second translation the same as deleting the step by hand (every other step's result, guard, sentence,
+volume, box and face count, and the whole command list)? **G against O**: does an unrelated block change any step of the original row?
+
+First run, seed 1, before the two-part hole change:
+
+| corpus | rows | rows that went through a second translation | steps after a left-out step | G differs from R | G differs from O |
+|---|---|---|---|---|---|
+| sd | 1097 | 826 | 1622 | 0 | 25 |
+| combined | 600 | 418 | 1582 | 0 | 158 |
+| rgcombined | 400 | 288 | 1491 | 0 | 108 |
+| fccombined | 400 | 258 | 1189 | 0 | 94 |
+| holes | 357 | 264 | 455 | 0 | 205 |
+| mt | 1930 | 1479 | 6471 | 0 | 271 |
+| all | 4784 | 3533 | 12810 | 0 | 861 |
+
+**G against R: 0 of 3533.** After the HALT-9 fix the page's second translation is the same as deleting the refused step by hand, command for
+command. (This comparison was not run on the tree before the fix; the seeded family of HALT-9.md is the measurement of what was wrong there.)
+Two of the eleven block kinds never reach a second translation, because the layer refuses the stale step itself first (a hollow on a pocketed
+part: inside corners; the round after a groove).
+
+**G against O: 861 rows changed, none of them a different solid.** No step that was built came out with another volume, and no step that was
+refused got built. What changed:
+
+- 228 holes that were built without the block are refused with it, and several hundred more are refused for another reason than before, with
+  their dependents: "the part it drills is 2 separate pieces ...". A hole was refused whenever the script had any second part. That is the
+  finding of this sweep; see GUARD-TWO-PARTS.md for the change the owner chose.
+- The same blocked step is worded differently depending on what else is in the script: "m2 (move): its target b1 was refused (...)" in one
+  document and "m2 (move): its target b1 was refused, so there is nothing to build on (...)" or "This step was skipped because an earlier step it
+  depends on was not done; fix that earlier step first." in another (several hundred moves and turns in the mt and combined corpora). Each group of
+  steps has its own wording, and which group words a step depends on which kinds of step the script uses. Honest either way; not changed.
+- 16 rounds change their sentence. The two looked at say "The edge for f6 was already changed by an earlier round or bevel, mirror or repeat ..."
+  where the round or bevel it lists is the block's, on another part: that sentence lists the kinds of the steps before it, not only the steps on
+  its own part. Not changed.
+- Counted names move as they should when the block adds a step of the same kind ("Move 2" becomes "Move 3").
+
+Second run, seed 2 (other blocks at other places), on the code with the two-part hole change and the `from:` fix
+(`followup/second-pass-final.txt`, `second-pass-final.json`):
+
+| corpus | rows | rows that went through a second translation | steps after a left-out step | G differs from R | G differs from O | of those, a step built in one and not in the other |
+|---|---|---|---|---|---|---|
+| sd | 1097 | 908 | 1835 | 0 | 0 | 0 |
+| combined | 600 | 501 | 1869 | 0 | 23 | 0 |
+| rgcombined | 400 | 325 | 1772 | 0 | 45 | 0 |
+| fccombined | 400 | 334 | 1504 | 1 | 14 | 0 |
+| holes | 357 | 285 | 509 | 0 | 2 | 0 |
+| mt | 1930 | 1556 | 6745 | 0 | 239 | 0 |
+| all | 4784 | 3909 | 14234 | 1 | 323 | 0 |
+
+- **G against R: 1 of 3909**, and it is not the second translation: in `fc combined seed 184` one hole sits at the 45 s budget and is refused with
+  the budget sentence in one run and with its own sentence ("not flat and level under this spot") in the other. Refused both times.
+- **G against O: 323 rows, all of them a step refused in both with other words.** No step is built in one and not in the other, and no built
+  volume differs. The 228 holes of the first run build now (see GUARD-TWO-PARTS.md). What is left is the wording by group of steps described
+  above (moves and turns after a refused step, 959 steps), "the part it drills is 3 separate pieces" where it said 2 (6 holes: the number in
+  that sentence counts every body in the script, also the block's; not changed), 5 rounds that list the block's steps among "earlier" ones, 3
+  grooves that are refused by a different guard of their group when the script has more parts, and the budget row above.
+- One row (`fc combined seed 246`) went past the harness's 300 s limit with a block in it and is not in the table. It is not a hang: its hole takes
+  22 s of kernel time, every later step replays it, and a second translation and the blocked-step test build replay it again. A script whose one
+  step is that slow is slow in the page as well.
+
+The machine was under heavy load from another job during part of this run (load 50 to 80 on 32 cores), and a starved run goes past the 45 s
+budget. The 20 rows where a step was built in one run and not in the other, that showed the budget sentence, or that hung, were run again on the
+idle machine (`second-pass-repair.sh.txt`): the 18 in sd came back equal; the 2 in fccombined are the budget row and the row at the harness
+limit above.
+
+### `from:` on a part pulled from a sketch (found by the sweep's block; owner chose "fix it")
+
+`draft(face, angle, { from: 'top' })` turns the word into a plane by reading the size of the starting shape. The script only knew the size of a plain
+box or cylinder; for a part pulled from a sketch it read 0 for every word. So `from: 'top'` on a pull from z = 0 to 10 asked for a tilt about
+z = 0, and the build's G-FROM check refused it with a sentence that was not true: "from:'top' would put the neutral plane at 0, but the top of this
+part is at 10 now (the part was moved, joined or turned)". `from: 'bottom'` worked only because 0 happened to be right; on a sketch plane lifted
+by 5 it was refused too. Nothing wrong was built.
+
+Now (`packages/script/src/reshape-script.ts` `primitiveExtreme`): for a pulled part the word reads the part's real start or end along that axis
+when it is exact, from the same range function `hole()` uses: the pull's own length along the pull, the outline across it. Where it is not exact
+(a tapered or slanted pull, a dimensioned sketch across the pull, a part that was cut by a pocket) it still reads 0, and G-FROM still compares
+the plane with the built part. A plain box or cylinder is unchanged. The layer's copy of the reading (`shell-draft.ts` `interpreterExtreme`, used
+for a document no script produced here) follows it.
+
+Real kernel, Node host route, pull 40 x 30 x 10:
+
+| script | before | now |
+|---|---|---|
+| `from: 'top'` | refused, G-FROM (measured: the sweep's blocks and the HALT-9 family) | built 12131.2330 = closed form, and equal to `neutral: 10` |
+| `from: 'bottom'` | not run before the fix (the word read 0, which is the bottom) | built 11868.7670 = closed form |
+| the sketch plane lifted by 5, `from: 'bottom'` | refused, G-FROM (the corpus row below) | built, RIGHT by the oracles |
+| the sketch plane lifted by 5, `from: 'top'` | not run before the fix | built 12131.2330 |
+| the pull moved up by 5 afterwards, `from: 'top'` | not run before the fix | refused: "... at 10, but the top of this part is at 15 now (the part was moved, joined or turned)", which is true |
+| the top face tilted, `from: 'right'` | not run before the fix (the word read 0; the right of the part is at 40) | built 14099.7279 = closed form (the tilt about x = 40) |
+
+In the corpora 1 row changes for this: `sd draft-from-bottom-extrude-lifted` goes from refused to built and is RIGHT by the oracles.
+Tests: `packages/script/test/extent-extrude.test.mjs` (3 new).

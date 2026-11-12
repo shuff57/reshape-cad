@@ -1,0 +1,1242 @@
+{
+ "seed": 2,
+ "rows": 4784,
+ "GR": [
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 184",
+   "block": {
+    "kind": "sg-hollow",
+    "at": 0,
+    "ids": [
+     "zzsk1",
+     "zzpull1",
+     "zzshell1"
+    ]
+   },
+   "why": null,
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "G": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a countersink is cut from the top of the part, but the part is not flat and level under this spot, "
+     ],
+     "R": [
+      "refused",
+      "G-BUDGET",
+      null,
+      "h4 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h4 is shown witho"
+     ]
+    }
+   ]
+  }
+ ],
+ "GO_rows": 323,
+ "GO_builtOrNotBuiltChanges": 0,
+ "GO_examples": [
+  {
+   "corpus": "combined",
+   "row": "combined seed 23",
+   "block": [
+    "stale-round",
+    5
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2: the back face is ambiguous on this 8-sided prism because two faces a"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (the back face is ambiguous on this 8-si"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 46",
+   "block": [
+    "two-drafts",
+    2
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target d3 was refused (d3 (draft): drafting a whole shape is only built for a plain box, pri"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target d3 was refused, so there is nothing to build on (drafting a whole shape is only built"
+     ]
+    },
+    {
+     "id": "pt5",
+     "kind": "pattern",
+     "O": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target d3 was refused (d3 (draf"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target d3 was refused, so there"
+     ]
+    },
+    {
+     "id": "m7",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m7 (move): its target d6 was refused (d6 (draft): it needs pt5, which could not be built, so d6 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m7 (move): its target d6 was refused, so there is nothing to build on (it needs pt5, which could not be built,"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 74",
+   "block": [
+    "two-drafts",
+    5
+   ],
+   "steps": [
+    {
+     "id": "m5",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target c4 was refused (c4 (combine): the hollow s2 has no open side, and nothing but a move or "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target c4 was refused, so there is nothing to build on (the hollow s2 has no open side, and not"
+     ]
+    },
+    {
+     "id": "x6",
+     "kind": "mirror",
+     "O": [
+      "refused",
+      null,
+      null,
+      "mirror(): it needs move() to be built first, and that was refused: its target c4 was refused (c4 (combine): th"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "mirror(): it needs move() to be built first, and that was refused: its target c4 was refused, so there is noth"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 78",
+   "block": [
+    "stale-hollow",
+    3
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): it needs b1, which could not be built, so s2 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (it needs b1, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 99",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused (m2 (move): a copying move is not mapped (solidcraft names the copy itsel"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused, so there is nothing to build on (a copying move is not mapped (solidcraf"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 158",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m4",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target s3 was refused (s3 (hollow): c1 is already hollow and a second hollow is not supported y"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target s3 was refused, so there is nothing to build on (c1 is already hollow and a second hollo"
+     ]
+    },
+    {
+     "id": "rt5",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target m4 was refused (m4 (move): its target s3 was refused (s3 (hollow): c1 is already holl"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target m4 was refused, so there is nothing to build on (its target s3 was refused, so there "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 162",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m4",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target h3 was refused (h3 (hole): a countersink is cut from the top of the part, but the part i"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target h3 was refused, so there is nothing to build on (a countersink is cut from the top of th"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 163",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m5",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target x4 was refused (x4 (mirror): the hollow m3 has no open side, and nothing but a move or a"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target x4 was refused, so there is nothing to build on (the hollow m3 has no open side, and not"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 266",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target s3 was refused (s3 (hollow): c1 is already hollow and a second hollow is not supporte"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target s3 was refused, so there is nothing to build on (c1 is already hollow and a second ho"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 291",
+   "block": [
+    "two-drafts",
+    4
+   ],
+   "steps": [
+    {
+     "id": "rt3",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt3 (rotate): its target m2 was refused (m2 (move): a copying move is not mapped (solidcraft names the copy it"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt3 (rotate): its target m2 was refused, so there is nothing to build on (a copying move is not mapped (solidc"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 294",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 318",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 328",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 427",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target m3 was refused (m3 (move): a copying move is not mapped (solidcraft names the copy it"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target m3 was refused, so there is nothing to build on (a copying move is not mapped (solidc"
+     ]
+    },
+    {
+     "id": "m5",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target rt4 was refused (rt4 (rotate): its target m3 was refused (m3 (move): a copying move is n"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target rt4 was refused, so there is nothing to build on (its target m3 was refused, so there is"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 446",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m6",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m6 (move): its target c5 was refused (This step was skipped because an earlier step it depends on was not done"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m6 (move): its target c5 was refused, so there is nothing to build on (This step was skipped because an earlie"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 474",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target d2 was refused (d2 (draft): it needs b1, which could not be built, so d2 is shown withou"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target d2 was refused, so there is nothing to build on (it needs b1, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 475",
+   "block": [
+    "two-drafts",
+    1
+   ],
+   "steps": [
+    {
+     "id": "m5",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target f4 was refused (f4 (fillet): the hollow rt3 has no open side, and nothing but a move or "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target f4 was refused, so there is nothing to build on (the hollow rt3 has no open side, and no"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 478",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target h3 was refused (h3 (hole): a hole drilled across the cone would cut through its curve"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target h3 was refused, so there is nothing to build on (a hole drilled across the cone would"
+     ]
+    },
+    {
+     "id": "rt5",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target rt4 was refused (rt4 (rotate): its target h3 was refused (h3 (hole): a hole drilled a"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target rt4 was refused, so there is nothing to build on (its target h3 was refused, so there"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 503",
+   "block": [
+    "stale-bevel",
+    2
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target h2 was refused (h2 (hole): a hole drilled across the cone would cut through its curved w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target h2 was refused, so there is nothing to build on (a hole drilled across the cone would cu"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 510",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 550",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target s3 was refused (s3 (hollow): s1 is already hollow and a second hollow is not supporte"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target s3 was refused, so there is nothing to build on (s1 is already hollow and a second ho"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 551",
+   "block": [
+    "stale-draft-move",
+    3
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): a sphere has no flat face to open, so s2 is shown without i"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (a sphere has no flat face to open, so s"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 586",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m5",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target d4 was refused (d4 (draft): it needs h3, which could not be built, so d4 is shown withou"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m5 (move): its target d4 was refused, so there is nothing to build on (it needs h3, which could not be built, "
+     ]
+    },
+    {
+     "id": "rt6",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt6 (rotate): its target m5 was refused (m5 (move): its target d4 was refused (d4 (draft): it needs h3, which "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt6 (rotate): its target m5 was refused, so there is nothing to build on (its target d4 was refused, so there "
+     ]
+    },
+    {
+     "id": "pt7",
+     "kind": "pattern",
+     "O": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target m5 was refused (m5 (move"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target m5 was refused, so there"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 7",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m6",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m6 (move): its target s5 was refused (s5 (hollow): p1 is already hollow and a second hollow is not supported y"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m6 (move): its target s5 was refused, so there is nothing to build on (p1 is already hollow and a second hollo"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 46",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target f2 was refused (The edges of a cone cannot be picked yet, so f2 is shown without it -- r"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target f2 was refused, so there is nothing to build on (The edges of a cone cannot be picked ye"
+     ]
+    },
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target m3 was refused (m3 (move): its target f2 was refused (The edges of a cone cannot be p"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target m3 was refused, so there is nothing to build on (its target f2 was refused, so there "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 69",
+   "block": [
+    "two-drafts",
+    6
+   ],
+   "steps": [
+    {
+     "id": "bevelz2",
+     "kind": "fillet",
+     "O": [
+      "refused",
+      null,
+      null,
+      "The edge for bevelz2 was already changed by an earlier join or cut or round or bevel, so bevelz2 is shown with"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "The edge for bevelz2 was already changed by an earlier join or cut, pocket or round or bevel, so bevelz2 is sh"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 102",
+   "block": [
+    "two-drafts",
+    2
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 126",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): it needs b1, which could not be built, so s2 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (it needs b1, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 131",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): a sphere has no flat face to open, so s2 is shown without i"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (a sphere has no flat face to open, so s"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 147",
+   "block": [
+    "stale-draft-move",
+    1
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused (m2 (move): a copying move is not mapped (solidcraft names the copy itsel"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused, so there is nothing to build on (a copying move is not mapped (solidcraf"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 214",
+   "block": [
+    "stale-draft",
+    3
+   ],
+   "steps": [
+    {
+     "id": "roundz1",
+     "kind": "fillet",
+     "O": [
+      "refused",
+      null,
+      null,
+      "The edge for roundz1 was already changed by an earlier join or cut or turn, so roundz1 is shown without it -- "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "The edge for roundz1 was already changed by an earlier pocket, join or cut or turn, so roundz1 is shown withou"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 250",
+   "block": [
+    "stale-bevel",
+    5
+   ],
+   "steps": [
+    {
+     "id": "f10",
+     "kind": "fillet",
+     "O": [
+      "refused",
+      null,
+      null,
+      "The edge for f10 was already changed by an earlier round or bevel or hollow, so f10 is shown without it -- rou"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "The edge for f10 was already changed by an earlier round or bevel, pocket or hollow, so f10 is shown without i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 267",
+   "block": [
+    "stale-draft-move",
+    1
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused (m2 (move): a copying move is not mapped (solidcraft names the copy itsel"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target m2 was refused, so there is nothing to build on (a copying move is not mapped (solidcraf"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 299",
+   "block": [
+    "stale-draft",
+    4
+   ],
+   "steps": [
+    {
+     "id": "m4",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target d3 was refused (d3 (draft): it needs d2, which could not be built, so d3 is shown withou"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target d3 was refused, so there is nothing to build on (it needs d2, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 330",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 366",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "fccombined",
+   "row": "fc combined seed 184",
+   "block": [
+    "sg-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BUDGET",
+      null,
+      "h4 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h4 is shown witho"
+     ],
+     "G": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a countersink is cut from the top of the part, but the part is not flat and level under this spot, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "holes",
+   "row": "wider-than-plate-35",
+   "block": [
+    "two-drafts",
+    1
+   ],
+   "steps": [
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BODIES",
+      null,
+      "hole1 (hole): it would leave 2 separate pieces where there is 1 now, so hole1 is shown without it -- make the "
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "hole1 (hole): it would leave 3 separate pieces where there are 2 now, so hole1 is shown without it -- make the"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "holes",
+   "row": "wider-than-plate-31",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "hole1",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BODIES",
+      null,
+      "hole1 (hole): it would leave 2 separate pieces where there is 1 now, so hole1 is shown without it -- make the "
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "hole1 (hole): it would leave 3 separate pieces where there are 2 now, so hole1 is shown without it -- make the"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "mt",
+   "row": "k-pickguard:round1#5",
+   "block": [
+    "stale-hollow",
+    1
+   ],
+   "steps": [
+    {
+     "id": "round1",
+     "kind": "fillet",
+     "O": [
+      "refused",
+      null,
+      null,
+      "The edge for round1 was already changed by an earlier move, so round1 is shown without it -- round the edge be"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "The edge for round1 was already changed by an earlier pocket, hollow or move, so round1 is shown without it --"
+     ]
+    }
+   ]
+  }
+ ]
+}

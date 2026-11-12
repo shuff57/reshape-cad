@@ -1,0 +1,1647 @@
+{
+ "seed": 1,
+ "note": "before the two-part hole change",
+ "rows": 4784,
+ "GR_rows": 0,
+ "GO_rows": 861,
+ "GO_stepChangesByClass": {
+  "rotate: refused/K7 -> refused/-": 327,
+  "move: refused/K7 -> refused/-": 307,
+  "move: refused/- -> refused/-": 267,
+  "hole: built/- -> refused/G-BODIES": 228,
+  "hole: refused/G-TOP -> refused/G-BODIES": 223,
+  "rotate: refused/- -> refused/-": 76,
+  "pocket: refused/- -> refused/-": 58,
+  "hole: refused/G-BODIES -> refused/G-BODIES": 57,
+  "hole: refused/G-CURVED -> refused/G-BODIES": 56,
+  "hole: refused/dependency -> refused/G-BODIES": 33,
+  "hole: refused/G-RECESS -> refused/G-BODIES": 26,
+  "hole: refused/G-TANGENT -> refused/G-BODIES": 20,
+  "hole: refused/G-CSEDGE -> refused/G-BODIES": 16,
+  "fillet: refused/- -> refused/-": 16,
+  "hole: refused/G-NOOP -> refused/G-BODIES": 15,
+  "shell: built/- -> refused/-": 13,
+  "rotate: built/- -> refused/-": 13,
+  "hole: refused/G-CSBAND -> refused/G-BODIES": 11,
+  "move: built/- -> refused/-": 10,
+  "hole: refused/G-CROSS -> refused/G-BODIES": 8,
+  "shell: refused/G-HOLE -> refused/-": 8,
+  "move: refused/MT-CONE-CHAIN -> refused/MT-CONE-CHAIN": 8,
+  "hole: refused/G-CSFLAT -> refused/G-BODIES": 7,
+  "hole: refused/G-ENGINE -> refused/G-BODIES": 5,
+  "draft: built/- -> refused/-": 5,
+  "hole: refused/G-TORUS -> refused/G-BODIES": 5,
+  "hole: refused/G-RECESSMIN -> refused/G-BODIES": 5,
+  "hole: refused/G-CSOVERLAP -> refused/G-BODIES": 4,
+  "move: refused/MT-CUT-HEAD -> refused/MT-CUT-HEAD": 4,
+  "mirror: refused/- -> refused/-": 3,
+  "pattern: refused/- -> refused/-": 3,
+  "hole: refused/G-BUDGET -> refused/G-BODIES": 3,
+  "hole: refused/G-TINY -> refused/G-BODIES": 3,
+  "hole: refused/G-CORNERS -> refused/G-BODIES": 2,
+  "hole: refused/G-REVOLVE -> refused/G-BODIES": 2,
+  "hole: refused/G-NEST -> refused/G-BODIES": 2,
+  "pocket: built/- -> refused/-": 2,
+  "move: refused/MT-CUT-HEAD -> refused/-": 2,
+  "rotate: refused/MT-CONE-CHAIN -> refused/MT-CONE-CHAIN": 2,
+  "draft: refused/G-REACH -> refused/-": 2,
+  "shell: refused/G-BLIND -> refused/-": 2,
+  "draft: refused/engine -> refused/G-SWEEP": 1,
+  "draft: refused/G-TIE -> refused/-": 1,
+  "draft: refused/G-WHOLE-HISTORY -> refused/G-WHOLE-HOLLOW": 1,
+  "shell: refused/G-CLOSED -> refused/-": 1,
+  "fillet: refused/- -> refused/FC-IN-THE-WAY": 1,
+  "hole: refused/G-WIDE -> refused/G-BODIES": 1,
+  "rotate: refused/MT-CUT-HEAD -> refused/MT-CUT-HEAD": 1,
+  "move: refused/RG-CHAIN -> refused/-": 1,
+  "groove: refused/G8 -> refused/G10": 1,
+  "draft: refused/engine -> refused/-": 1,
+  "draft: refused/G-WHOLE-HISTORY -> refused/-": 1
+ },
+ "GO_examples": [
+  {
+   "corpus": "combined",
+   "row": "combined seed 0",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 4",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 8",
+   "block": [
+    "stale-draft-move",
+    3
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "dependency",
+      null,
+      "h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s3 first."
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 18",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m2",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused (Bevelling every edge of a box at once is not supported, so b1 is shown w"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m2 (move): its target b1 was refused, so there is nothing to build on (Bevelling every edge of a box at once i"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 23",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2: the back face is ambiguous on this 8-sided prism because two faces a"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (the back face is ambiguous on this 8-si"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 24",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      3783.566594038228,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    },
+    {
+     "id": "h6",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CROSS",
+      null,
+      "h6 (hole): it crosses h5, a hole drilled in another direction, and crossing holes are not supported yet, so h6"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h6 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h6 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 25",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      8937.178583530624,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "pk5",
+     "kind": "pocket",
+     "O": [
+      "refused",
+      null,
+      null,
+      "pk5 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or directi"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "pk5: its solid h3 was refused, so there is nothing to build on (the part it drills is 2 separate pieces and a "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 27",
+   "block": [
+    "two-drafts",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 32",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h2 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h4 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 34",
+   "block": [
+    "stale-draft",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    },
+    {
+     "id": "x6",
+     "kind": "mirror",
+     "O": [
+      "refused",
+      null,
+      null,
+      "mirror(): it needs hole() to be built first, and that was refused: a hole that stops short of the other side s"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "mirror(): it needs hole() to be built first, and that was refused: the part it drills is 2 separate pieces and"
+     ]
+    },
+    {
+     "id": "rt7",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt7 (rotate): its target x6 was refused, so there is nothing to build on (it needs hole() to be built first, a"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt7 (rotate): its target x6 was refused, so there is nothing to build on (it needs hole() to be built first, a"
+     ]
+    },
+    {
+     "id": "pt8",
+     "kind": "pattern",
+     "O": [
+      "refused",
+      null,
+      null,
+      "repeat(): it needs rotate() to be built first, and that was refused: its target x6 was refused, so there is no"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "repeat(): it needs rotate() to be built first, and that was refused: its target x6 was refused, so there is no"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 37",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CSEDGE",
+      null,
+      "h3 (hole): the countersink mouth reaches past the side of the part, which is not supported yet, so h3 is shown"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 39",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-NOOP",
+      null,
+      "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole ont"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 44",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      6351.91087766349,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "s3",
+     "kind": "shell",
+     "O": [
+      "built",
+      null,
+      1247.297602028195,
+      ""
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a counterbore is cut from the top of the part, but the part is not flat and level under this spot, "
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "d5",
+     "kind": "draft",
+     "O": [
+      "refused",
+      "engine",
+      null,
+      "d5 (draft): the faces next to the one you are drafting must be square to the pull direction and the wall of a "
+     ],
+     "G": [
+      "refused",
+      "G-SWEEP",
+      null,
+      "Tilting d5 at 15 degrees would not fit because the tilted face would run into another face of the part, so d5 "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 46",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "rt4",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target d3 was refused (d3 (draft): drafting a whole shape is only built for a plain box, pri"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt4 (rotate): its target d3 was refused, so there is nothing to build on (drafting a whole shape is only built"
+     ]
+    },
+    {
+     "id": "pt5",
+     "kind": "pattern",
+     "O": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target d3 was refused (d3 (draf"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target d3 was refused, so there"
+     ]
+    },
+    {
+     "id": "m7",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m7 (move): its target d6 was refused (d6 (draft): it needs pt5, which could not be built, so d6 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m7 (move): its target d6 was refused, so there is nothing to build on (it needs pt5, which could not be built,"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 56",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TANGENT",
+      null,
+      "h4 (hole): its hole would touch the edge of the part along a line, which leaves a zero-thickness wall, so h4 i"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 58",
+   "block": [
+    "stale-bevel",
+    1
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CSEDGE",
+      null,
+      "h3 (hole): the countersink mouth reaches past the side of the part, which is not supported yet, so h3 is shown"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 60",
+   "block": [
+    "stale-hollow",
+    2
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      9185.094219856075,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 63",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 64",
+   "block": [
+    "stale-draft",
+    3
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-ENGINE",
+      null,
+      "h4 (hole): this hole could not be cut cleanly into this part, so h4 is shown without it -- try a smaller hole,"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 66",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): it needs b1, which could not be built, so s2 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (it needs b1, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 68",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      5447.200247493037,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "dependency",
+      null,
+      "h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s3 first."
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "d5",
+     "kind": "draft",
+     "O": [
+      "refused",
+      "G-TIE",
+      null,
+      "d5: the right face is ambiguous on this 8-sided prism because two faces are equally far right, so d5 is shown "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "d5 (draft): it needs h4, which could not be built, so d5 is shown without it."
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 76",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 78",
+   "block": [
+    "stale-bevel",
+    4
+   ],
+   "steps": [
+    {
+     "id": "m3",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused (s2 (hollow): it needs b1, which could not be built, so s2 is shown witho"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m3 (move): its target s2 was refused, so there is nothing to build on (it needs b1, which could not be built, "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 81",
+   "block": [
+    "groove-stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 88",
+   "block": [
+    "groove-stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-RECESS",
+      null,
+      "h3 (hole): a countersink has to start on a face of the part, and this hole starts inside it, so h3 is shown wi"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 95",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-ENGINE",
+      null,
+      "h2 (hole): this hole could not be cut cleanly into this part, so h2 is shown without it -- try a smaller hole,"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h4 (hole): a hole drilled across the cone would cut through its curved wall at an angle, which is not supporte"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 97",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h3 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "pk5",
+     "kind": "pocket",
+     "O": [
+      "refused",
+      null,
+      null,
+      "pk5: its solid h3 was refused, so there is nothing to build on (a hole that stops short of the other side star"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "pk5: its solid h3 was refused, so there is nothing to build on (the part it drills is 2 separate pieces and a "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 100",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 4 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 101",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h3 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 104",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "pk6",
+     "kind": "pocket",
+     "O": [
+      "refused",
+      null,
+      null,
+      "pk6: its solid h4 was refused, so there is nothing to build on (a hole that stops short of the other side star"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "pk6: its solid h4 was refused, so there is nothing to build on (the part it drills is 2 separate pieces and a "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 109",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h3 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "pk5",
+     "kind": "pocket",
+     "O": [
+      "refused",
+      null,
+      null,
+      "pk5: its solid h3 was refused, so there is nothing to build on (a hole that stops short of the other side star"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "pk5: its solid h3 was refused, so there is nothing to build on (the part it drills is 2 separate pieces and a "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 118",
+   "block": [
+    "stale-hollow",
+    7
+   ],
+   "steps": [
+    {
+     "id": "rt6",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt6 (rotate): its target f5 was refused (f5 builds on d4, which could not be built, so f5 is shown without it "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt6 (rotate): its target f5 was refused, so there is nothing to build on (f5 builds on d4, which could not be "
+     ]
+    },
+    {
+     "id": "pt7",
+     "kind": "pattern",
+     "O": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target f5 was refused (f5 build"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "repeatAround(): it needs rotate() to be built first, and that was refused: its target f5 was refused, so there"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 121",
+   "block": [
+    "groove-stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "pk6",
+     "kind": "pocket",
+     "O": [
+      "refused",
+      null,
+      null,
+      "pk6: its solid h4 was refused, so there is nothing to build on (a hole that stops short of the other side star"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "pk6: its solid h4 was refused, so there is nothing to build on (the part it drills is 2 separate pieces and a "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 133",
+   "block": [
+    "stale-hollow",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h4 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-CURVED",
+      null,
+      "h5 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supp"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 135",
+   "block": [
+    "groove-stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a counterbore is cut from the top of the part, but the part is not flat and level under this spot, "
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 140",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h2",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      5353.736815229152,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h2 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h2 is shown w"
+     ]
+    },
+    {
+     "id": "s3",
+     "kind": "shell",
+     "O": [
+      "refused",
+      "G-HOLE",
+      null,
+      "s3 (hollow): not supported yet because a hole would be too close to a wall or to another hole (the hole is in "
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "dependency",
+      null,
+      "h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s3 first."
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "d5",
+     "kind": "draft",
+     "O": [
+      "refused",
+      "G-WHOLE-HISTORY",
+      null,
+      "d5 (draft): drafting a whole shape is only built for a plain box, prism, wedge, cylinder or extruded outline ("
+     ],
+     "G": [
+      "refused",
+      "G-WHOLE-HOLLOW",
+      null,
+      "d5 (draft): drafting a whole shape that is hollow is not supported yet, so d5 is shown without it -- draft the"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 144",
+   "block": [
+    "stale-bevel",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h7",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h7 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h7 is shown w"
+     ]
+    },
+    {
+     "id": "h8",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TANGENT",
+      null,
+      "h8 (hole): its hole would touch the edge of the part along a line, which leaves a zero-thickness wall, so h8 i"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h8 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h8 is shown w"
+     ]
+    },
+    {
+     "id": "h9",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TANGENT",
+      null,
+      "h9 (hole): its hole would touch the edge of the part along a line, which leaves a zero-thickness wall, so h9 i"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h9 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h9 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 157",
+   "block": [
+    "stale-draft-move",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      1390.3589292581594,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 158",
+   "block": [
+    "stale-hollow",
+    4
+   ],
+   "steps": [
+    {
+     "id": "m4",
+     "kind": "move",
+     "O": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target s3 was refused (s3 (hollow): c1 is already hollow and a second hollow is not supported y"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "m4 (move): its target s3 was refused, so there is nothing to build on (c1 is already hollow and a second hollo"
+     ]
+    },
+    {
+     "id": "rt5",
+     "kind": "rotate",
+     "O": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target m4 was refused (m4 (move): its target s3 was refused (s3 (hollow): c1 is already holl"
+     ],
+     "G": [
+      "refused",
+      null,
+      null,
+      "rt5 (rotate): its target m4 was refused, so there is nothing to build on (its target s3 was refused, so there "
+     ]
+    }
+   ]
+  },
+  {
+   "corpus": "combined",
+   "row": "combined seed 169",
+   "block": [
+    "stale-round",
+    0
+   ],
+   "steps": [
+    {
+     "id": "h3",
+     "kind": "hole",
+     "O": [
+      "built",
+      null,
+      4899.043764824849,
+      ""
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h3 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h3 is shown w"
+     ]
+    },
+    {
+     "id": "h4",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "G-TOP",
+      null,
+      "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat a"
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h4 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h4 is shown w"
+     ]
+    },
+    {
+     "id": "h5",
+     "kind": "hole",
+     "O": [
+      "refused",
+      "dependency",
+      null,
+      "h5 (hole): it comes after h4, which could not be built, so h5 is shown without it -- fix h4 first."
+     ],
+     "G": [
+      "refused",
+      "G-BODIES",
+      null,
+      "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown w"
+     ]
+    }
+   ]
+  }
+ ]
+}
