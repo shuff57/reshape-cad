@@ -365,15 +365,17 @@ const HI_WORD: Record<string, string> = { x: 'right', y: 'back', z: 'top' };
 /** the kinds whose handle keeps the root of the shape it works on (the interpreter's SolidHandle.rootId): the moves, turns, mirrors, repeats and the in-place edits */
 const KEEPS_ROOT = new Set(['move', 'rotate', 'mirror', 'pattern', 'hole', 'shell', 'fillet', 'draft']);
 /** The extreme draft()'s `from` word gives on the root `rootId`, as the interpreter computes it (reshape-script.ts primitiveExtreme): the centre plus or minus half the
- *  extent for a plain box or cylinder, and 0 for any root whose extent it cannot read. */
+ *  extent for a plain box or cylinder, the exact start or end of a part pulled from a sketch, and 0 for any root whose extent it cannot read. */
 function interpreterExtreme(doc: { version?: number; features: Feature[] }, byId: Record<string, FView>, rootId: string, axis: string, lo: boolean, mt: FromUsageMt): number {
   const f = byId[rootId];
+  // a part pulled from a sketch: its exact start or end along the axis (reshape-script.ts primitiveExtreme since 2026-11-12), else 0
+  if (f?.kind === 'extrude') { const r = mt.featureRangeAlong?.(doc, rootId, axis); return r && r.exact ? (lo ? r.lo : r.hi) : 0; }
   const half = mt.extentAlong(doc, rootId, axis);
   const center = f && ['box', 'cylinder', 'sphere', 'cone', 'torus'].includes(f.kind) ? (f.center?.[AXI[axis]] ?? 0) : 0;
   if (half == null) return 0;
   return lo ? center - half / 2 : center + half / 2;
 }
-export interface FromUsageMt { extentAlong(doc: any, featureId: string, axis: any): number | null }
+export interface FromUsageMt { extentAlong(doc: any, featureId: string, axis: any): number | null; featureRangeAlong?(doc: any, featureId: string, axis: any): { lo: number; hi: number; exact: boolean } | null }
 /**
  * ctx.fromUsage from the DOC, in the doc's draft order (the order shellDraftStep pairs it by). `recorded: true` = the doc is the one the interpreter returned for the
  * script that ran, which records DraftFeature.neutralFrom on every draft whose neutral came from a `from:` word and on no other; a draft without it gave its neutral

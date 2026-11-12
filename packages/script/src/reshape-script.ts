@@ -3084,13 +3084,22 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   // ---- draft ------------------------------------------------------------
 
-  /** The bounding extreme of a primitive along one axis, in world units --
-   *  used to turn a 'from' word into DraftFeature.neutral. Only answerable
-   *  for a plain primitive (same scope extentAlong() already has); anything
-   *  else falls back to 0, which draft()'s {neutral} escape hatch exists to
-   *  override by hand. */
+  /** The bounding extreme of a root shape along one axis, in world units --
+   *  used to turn a 'from' word into DraftFeature.neutral. Answerable for a
+   *  plain primitive (same scope extentAlong() already has) and for a part
+   *  pulled from a sketch (featureRangeAlong, exact only); anything else falls
+   *  back to 0, which draft()'s {neutral} escape hatch exists to override by
+   *  hand. packages/layer shell-draft.ts interpreterExtreme mirrors this. */
   function primitiveExtreme(id: string, axis: Axis3, dir: 'lo' | 'hi'): number {
     const f = findFeature(id);
+    // A part pulled from a sketch (pilot 2026-11 follow-up, owner decision 2026-11-12): its real start and end along the axis, when that is its exact extent
+    // (the pull's own length along the pull; the outline across it, when the outline is known). It used to read 0 for every word, so from:'top' was refused
+    // by the build's G-FROM check with a sentence that blamed a move. Anything not exact (a tapered or slanted pull, a dimensioned sketch across the pull)
+    // still falls back to 0, and G-FROM still compares the plane with the built part.
+    if (f.kind === 'extrude') {
+      const r = featureRangeAlong(docNow(), id, axis);
+      return r && r.exact ? (dir === 'lo' ? r.lo : r.hi) : 0;
+    }
     const half = extentAlong(docNow(), id, axis);
     const center =
       f.kind === 'box' || f.kind === 'cylinder' || f.kind === 'sphere' || f.kind === 'cone' || f.kind === 'torus'

@@ -130,3 +130,39 @@ test('hole() drills through an extruded dimensioned sketch along the pull withou
   const x = runScript(DIMMED + " hole(part, { across: 2, along: 'x' });");
   assert.match(x.errors[0].message, /cannot find how thick this extrude is along x yet/);
 });
+
+// owner decision 2026-11-12: draft()'s from: word on a part pulled from a sketch reads the pull's real start and end. It read 0 for every word, so from:'top'
+// was refused by the build's G-FROM check with a sentence that blamed a move.
+const draftOf = (code) => { const r = runScript(code); assert.deepEqual(r.errors, [], code); return r.doc.features.at(-1); };
+const PULL = "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10);";
+test("draft from: on a pulled sketch reads the pull's real top and bottom, and records the word", () => {
+  const top = draftOf(`${PULL} draft(p.face('right'), 5, { from: 'top' });`);
+  near(top.neutral, 10); assert.equal(top.pull, 'z'); assert.equal(top.neutralFrom, 'top');
+  const bottom = draftOf(`${PULL} draft(p.face('right'), 5, { from: 'bottom' });`);
+  near(bottom.neutral, 0); assert.equal(bottom.neutralFrom, 'bottom');
+  // a sketch plane lifted by 5: the part runs from 5 to 15
+  const LIFT = "const sk1 = sketch('top', 5); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10);";
+  near(draftOf(`${LIFT} draft(p.face('right'), 5, { from: 'top' });`).neutral, 15);
+  near(draftOf(`${LIFT} draft(p.face('right'), 5, { from: 'bottom' });`).neutral, 5);
+  // a sketch with dimensions and rules: along the pull the extent is still the pull
+  near(draftOf(`${DIMMED} draft(part.face('right'), 5, { from: 'top' });`).neutral, 6);
+});
+test('draft from: across the pull reads the outline where it is known, and stays 0 where it is not', () => {
+  // rect 40 x 30 centred on (20, 15): x runs 0 to 40, y 0 to 30
+  near(draftOf(`${PULL} draft(p.face('top'), 5, { from: 'right' });`).neutral, 40);
+  near(draftOf(`${PULL} draft(p.face('top'), 5, { from: 'left' });`).neutral, 0);
+  near(draftOf(`${PULL} draft(p.face('top'), 5, { from: 'back' });`).neutral, 30);
+  // a dimensioned sketch has no outline here until the solver runs: unknown across the pull, so 0 as before (the build's G-FROM check still compares it with the part)
+  near(draftOf(`${DIMMED} draft(part.face('top'), 5, { from: 'right' });`).neutral, 0);
+  // a tapered pull is only bounded, not exact: 0 as before
+  const TAPER = "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10, { taper: 5 });";
+  const t = runScript(`${TAPER} draft(p.face('right'), 5, { from: 'top' });`);
+  if (!t.errors.length) near(t.doc.features.at(-1).neutral, 0);
+});
+test('draft from: on a plain box or cylinder is unchanged, and a number still wins over the word', () => {
+  near(draftOf("const b = box(30, 20, 10); draft(b.face('right'), 5, { from: 'top' });").neutral, 5);
+  near(draftOf("const b = box(30, 20, 10); draft(b.face('right'), 5, { from: 'bottom' });").neutral, -5);
+  near(draftOf("const c = cylinder(20, 30); draft(c.face('side'), 3, { from: 'top' });").neutral, 15);
+  const n = draftOf(`${PULL} draft(p.face('right'), 5, { from: 'top', neutral: 3 });`);
+  near(n.neutral, 3); assert.equal(n.neutralFrom, undefined);
+});

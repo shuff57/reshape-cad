@@ -12,12 +12,12 @@ export { soupSolve, isSoup } from './host-guards.mjs';
 export { sketchCheck, refusedRule, ruleWords } from './sketch-check.mjs';
 export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
-import { extentAlong } from '../../../script/dist/model-types.js';
+import { extentAlong, featureRangeAlong } from '../../../script/dist/model-types.js';
 // ctx.fromUsage for the from-bottom draft guard (G-FROM), read from the DOC, not from the script text: the sandboxed interpreter records on each draft it
 // executes whether its neutral came from a `from:` word (DraftFeature.neutralFrom), so a comment, a string or a loop cannot misalign it (audit SD-5).
 // recorded: true for the doc the sandbox returned for the script that ran; false for any other doc (a ModelDoc example, translateRaw), where a draft with
 // no record is from-unknown and G-FROM checks every word a `from:` could have read its neutral from (never built unchecked).
-export const hostFromUsage = (doc, { recorded }) => fromUsageOfDoc(doc, { recorded, mt: { extentAlong } });
+export const hostFromUsage = (doc, { recorded }) => fromUsageOfDoc(doc, { recorded, mt: { extentAlong, featureRangeAlong } });
 
 // What pane.js run() does between the sandbox and the translator (DOF-1): solve the doc, then the legacy rule guard (packages/layer legacy-guard.ts, the
 // sketch-dof-diagnosis contract's guard). The interpreter settles each rule call by dropping an older rule when the new one does not fit, with no word, so the
