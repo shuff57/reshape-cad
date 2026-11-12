@@ -1,0 +1,51 @@
+[
+ {
+  "id": "03 lid stacked on top (touching)",
+  "script": "const b = box(40, 40, 20); const lid = box(40, 40, 4, { at: [0, 0, 12] }); hole(b, { across: 6 });",
+  "want": 37834.513322353836,
+  "model": null
+ },
+ {
+  "id": "08 lid on top, counterbore",
+  "script": "const b = box(40, 40, 20); const lid = box(40, 40, 4, { at: [0, 0, 12] }); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "want": 37495.22131576614,
+  "model": null
+ },
+ {
+  "id": "09 lid on top, countersink",
+  "script": "const b = box(40, 40, 20); const lid = box(40, 40, 4, { at: [0, 0, 12] }); hole(b, { across: 6, countersink: { across: 12, angle: 90 } });",
+  "want": 37721.415986824606,
+  "model": null
+ },
+ {
+  "id": "10 lid on top, blind hole",
+  "script": "const b = box(40, 40, 20); const lid = box(40, 40, 4, { at: [0, 0, 12] }); hole(b, { across: 6, deep: 10 });",
+  "want": 38117.25666117692,
+  "model": null
+ },
+ {
+  "id": "17 block below, counterbore",
+  "script": "const b = box(40, 40, 20); const base = box(60, 60, 4, { at: [0, 0, -12] }); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "model": null
+ },
+ {
+  "id": "18 far part, counterbore",
+  "script": "const b = box(40, 40, 20); const a = box(10, 10, 10, { at: [500, 500, 0] }); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "model": null
+ },
+ {
+  "id": "19 lid 5 above (gap), counterbore",
+  "script": "const b = box(40, 40, 20); const lid = box(40, 40, 4, { at: [0, 0, 17] }); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "model": null
+ },
+ {
+  "id": "20 part beside (touching side), counterbore",
+  "script": "const b = box(40, 40, 20); const s = box(40, 40, 20, { at: [40, 0, 0] }); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "model": null
+ },
+ {
+  "id": "21 lid on top made FIRST, counterbore",
+  "script": "const lid = box(40, 40, 4, { at: [0, 0, 12] }); const b = box(40, 40, 20); hole(b, { across: 6, counterbore: { across: 12, deep: 4 } });",
+  "model": null
+ }
+]

@@ -1,0 +1,42 @@
+[
+ {
+  "id": "p1 pattern of b (separate copies), hole on the pattern",
+  "script": "const b = box(40, 40, 20); const p = linearPattern(b, { count: 3, step: [60, 0, 0] }); hole(p, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p2 pattern of b, other part far, hole on other",
+  "script": "const b = box(40, 40, 20); const p = linearPattern(b, { count: 3, step: [60, 0, 0] }); const o = box(20, 20, 10, { at: [0, 300, 0] }); hole(o, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p3 other part, pattern of b, hole on the pattern",
+  "script": "const o = box(20, 20, 10, { at: [0, 300, 0] }); const b = box(40, 40, 20); const p = linearPattern(b, { count: 3, step: [60, 0, 0] }); hole(p, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p4 touching pattern (fused), other part, hole on pattern",
+  "script": "const o = box(20, 20, 10, { at: [0, 300, 0] }); const b = box(40, 40, 20); const p = linearPattern(b, { count: 3, step: [40, 0, 0] }); hole(p, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p5 mirror of b, other far, hole on other",
+  "script": "const b = box(40, 40, 20); const m = mirror(b, \"yz\"); const o = box(20, 20, 10, { at: [0, 300, 0] }); hole(o, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p6 cut that splits b in two, other far, hole on other",
+  "script": "const b = box(40, 40, 20); const k = cuboid(10, 60, 40); subtract(b, k); const o = box(20, 20, 10, { at: [0, 300, 0] }); hole(o, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "p7 cut that splits b in two, hole on b (two pieces)",
+  "script": "const b = box(40, 40, 20); const k = cuboid(10, 60, 40); const s = subtract(b, k); hole(s, { across: 6, at: [12, 0] });",
+  "model": null
+ },
+ {
+  "id": "p8 two joined parts + third, hole on the join",
+  "script": "const b = box(40, 40, 20); const c = box(40, 40, 20, { at: [30, 0, 0] }); const j = union(b, c); const o = box(20, 20, 10, { at: [0, 300, 0] }); hole(j, { across: 6 });",
+  "model": null
+ }
+]

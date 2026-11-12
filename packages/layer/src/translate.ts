@@ -111,6 +111,8 @@ export interface TranslateState {
 export interface HolesState {
   chain: Record<string, { baseIdx: number; baseMeasure: Aggregate | undefined }>;
   allCount: number;
+  /** every body the engine held after the last accepted feature (name, volume, shells, faces): what a hole's after-the-cut check compares the OTHER parts with */
+  allRows?: Array<{ name: string; volume: number; shells: number; faces?: number }>;
   spentS: number;
   lastRunS: number;
 }

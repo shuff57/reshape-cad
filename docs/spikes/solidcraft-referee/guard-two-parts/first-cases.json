@@ -1,0 +1,62 @@
+[
+ {
+  "id": "A far-box, box, hole deep22",
+  "script": "const a = box(10, 10, 10, { at: [500, 500, 0] }); const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ },
+ {
+  "id": "B box, far-box, hole deep22",
+  "script": "const b = box(40, 40, 20); const a = box(10, 10, 10, { at: [500, 500, 0] }); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ },
+ {
+  "id": "C far-box, box, hole through",
+  "script": "const a = box(10, 10, 10, { at: [500, 500, 0] }); const b = box(40, 40, 20); hole(b, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "D far-pull, box, hole deep22",
+  "script": "const sk9 = sketch(\"top\"); sk9.rect(40, 30, { at: [520, 515] }); const a = extrude(sk9, 10); const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ },
+ {
+  "id": "E box, hole deep22, far-box",
+  "script": "const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 }); const a = box(10, 10, 10, { at: [500, 500, 0] });",
+  "model": null
+ },
+ {
+  "id": "F box alone, hole deep22",
+  "script": "const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ },
+ {
+  "id": "G far-box, box, hole deep10",
+  "script": "const a = box(10, 10, 10, { at: [500, 500, 0] }); const b = box(40, 40, 20); hole(b, { across: 6, deep: 10 });",
+  "model": null
+ },
+ {
+  "id": "H far-pull, box, hole through",
+  "script": "const sk9 = sketch(\"top\"); sk9.rect(40, 30, { at: [520, 515] }); const a = extrude(sk9, 10); const b = box(40, 40, 20); hole(b, { across: 6 });",
+  "model": null
+ },
+ {
+  "id": "I far-pull, box, hole deep10",
+  "script": "const sk9 = sketch(\"top\"); sk9.rect(40, 30, { at: [520, 515] }); const a = extrude(sk9, 10); const b = box(40, 40, 20); hole(b, { across: 6, deep: 10 });",
+  "model": null
+ },
+ {
+  "id": "J near-box (touching nothing), box, hole deep22",
+  "script": "const a = box(10, 10, 10, { at: [60, 0, 0] }); const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ },
+ {
+  "id": "K far-box, box, hole deep22 at 5,5",
+  "script": "const a = box(10, 10, 10, { at: [500, 500, 0] }); const b = box(40, 40, 20); hole(b, { across: 6, deep: 22, at: [5, 5] });",
+  "model": null
+ },
+ {
+  "id": "L far-cyl, box, hole deep22",
+  "script": "const a = cylinder(10, 10, { at: [500, 500, 0] }); const b = box(40, 40, 20); hole(b, { across: 6, deep: 22 });",
+  "model": null
+ }
+]

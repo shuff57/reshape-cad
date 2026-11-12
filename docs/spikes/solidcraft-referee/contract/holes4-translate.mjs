@@ -75,6 +75,8 @@ export const SENTENCE = {
   torus: (f) => `${f.id} (hole): drilling a ring (torus) is not supported yet, so ${f.id} is shown without it -- drill a box, cylinder or other flat-faced shape.`,
   shells: (f) => `${f.id} (hole): it would leave a sealed hollow inside the part, or pieces that touch only along a line, so ${f.id} is shown without it -- move it, make it narrower than the part, or let it go all the way through.`,
   cross: (f, h) => `${f.id} (hole): it crosses ${h.id}, a hole drilled in another direction, and crossing holes are not supported yet, so ${f.id} is shown without it -- drill the holes so they do not meet, or drill along one direction only.`,
+  // G-OTHERS (owner-approved text, 2026-11-12): the cut would also change another part
+  others: (f, part) => `${f.id} (hole): cutting it would also cut ${part}, which is in the way of this hole, so ${f.id} is shown without it -- drill this hole before you make ${part}.`,
   engine: (f) => `${f.id} (hole): this hole could not be cut cleanly into this part, so ${f.id} is shown without it -- try a smaller hole, a different place, or drill the plain shape before it is shaped.`,
   csBand: (f, need, have) => `${f.id} (hole): the countersink cone needs a hole at least ${fmt(need)} deep but this hole is ${fmt(have)} deep, so ${f.id} is shown without it -- drill deeper than ${fmt(need)} or make the countersink narrower.`,
   cbDeep: (f, cb, limit, what) => `${f.id} (hole): the counterbore is ${fmt(cb)} deep but the ${what} is only ${fmt(limit)}, so ${f.id} is shown without it -- make the counterbore shallower than the ${what}.`,
@@ -98,7 +100,7 @@ export const SENTENCE = {
   engineWide: (f) => `${f.id} (hole): the hole is wider than the part, so nothing of it would be left and ${f.id} is shown without it -- make the hole narrower than the part.`,
 };
 /** every guard that can be switched off (H4_OFF / opts.off) */
-export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN'];
+export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
 /** the narrowest hole that cuts reliably (holes4-tiny sweep: 0.001 builds, 1e-4 fails with "cannot attach a plane to a wire") */
 export const MIN_ACROSS = 0.001;
 /** the flattest countersink cone that cuts with the right faces (holes4 sweep: 170 builds 8 faces, 175 and 178 and 179 build 9) */
@@ -206,7 +208,7 @@ export const csConeDepth = (d, D, a) => (D / 2 - d / 2) / Math.tan((a * PI) / 36
  */
 export function translateDocGuarded(doc, ctx, opts = {}) {
   const off = new Set(opts.off ?? []);
-  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, chain: {}, allCount: 0, allShells: 0, spentS: 0, lastRunS: 0 };
+  const st = { head: {}, bodies: {}, stale: {}, refused: {}, sketches: {}, measure: {}, counter: 0, chain: {}, allCount: 0, allRows: [], allShells: 0, spentS: 0, lastRunS: 0 };
   const byId = Object.fromEntries(doc.features.map((f) => [f.id, f]));
   // ---- G-BUDGET: every engine run goes through runB. One run may use BUDGET_S plus 1.5x what replaying the accepted commands cost; the whole translation DOC_BUDGET_S.
   const runB = (cmds, { replay = true } = {}) => {
@@ -255,10 +257,10 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
       if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
       const m = aggregateOf(res, plan.produces);
       if (!m) { lastErr = `solidcraft ran the commands but no body named ${plan.produces.join(', ')} came back`; continue; }
-      const allBodies = res.measure.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
+      const allBodies = rowsOf(res);
       if (plan.post) {
         const before = st.measure[headOf(f.target)] ?? st.measure[f.target];
-        const bad = plan.post(m, before, { allBodies, allCountBefore: st.allCount, accepted, variant, off });
+        const bad = plan.post(m, before, { allBodies, allCountBefore: st.allCount, allBefore: st.allRows, partOf: makerOf(st, byId), accepted, variant, off });
         if (bad) {
           st.refused[f.id] = bad.refusal;
           return note({ status: 'refused', refusal: bad.refusal, guard: bad.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox, shells: m.shells, bodies: allBodies.length, allVolume: allBodies.reduce((a, b) => a + b.volume, 0) }, commands: variant });
@@ -270,7 +272,7 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
         st.chain[f.id] = prev ?? { baseIdx: plan.baseIdx, baseMeasure: st.measure[h] ?? st.measure[f.target] };
       }
       accepted.push(...variant);
-      st.allCount = res.measure.bodies.length;
+      st.allCount = res.measure.bodies.length; st.allRows = rowsOf(res);
       st.bodies[f.id] = m.bodies; st.measure[f.id] = m;
       for (const c of plan.consumes) {
         if (c === f.id) continue;
@@ -304,12 +306,55 @@ function probeBlockedHole(f, st, G, allCountBefore) {
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.error ?? 'unknown'); continue; }
     const m = aggregateOf(res, plan.produces);
     if (!m) { lastErr = 'no body came back'; continue; }
-    const allBodies = res.measure.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1 }));
-    const bad = plan.post ? plan.post(m, st.measure[base], { allBodies, allCountBefore, accepted: G.accepted, variant, off: G.off }) : null;
+    const allBodies = rowsOf(res);
+    const bad = plan.post ? plan.post(m, st.measure[base], { allBodies, allCountBefore, allBefore: st.allRows, partOf: makerOf(st, G.byId), accepted: G.accepted, variant, off: G.off }) : null;
     return bad ? { refusal: bad.refusal, guard: bad.guard ?? 'guard', base } : null;
   }
   return { refusal: engineSentence(f, lastErr) ?? SENTENCE.engine(f), guard: 'G-ENGINE', base };
 }
+// ---- G-BODIES narrowed: other parts (mirrors packages/layer/src/holes.ts rootsOf, otherPartsOnly, othersChanged) ----
+/** every body of an engine reply: name, volume, shells, faces */
+const rowsOf = (res) => res.measure.bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, shells: b.kernel.shells ?? 1, faces: b.faces }));
+const NOT_A_REF = new Set(['id', 'kind', 'name']);
+/** The features `id` is built from that have no input themselves (its primitives and sketches). */
+export function rootsOf(id, byId) {
+  const roots = new Set(); const seen = new Set();
+  const walk = (cur) => {
+    if (seen.has(cur)) return; seen.add(cur);
+    const f = byId[cur]; if (!f) return;
+    const refs = new Set();
+    const scan = (v) => { if (typeof v === 'string') { if (v !== cur && byId[v] !== undefined) refs.add(v); } else if (Array.isArray(v)) v.forEach(scan); else if (v && typeof v === 'object') Object.values(v).forEach(scan); };
+    for (const [k, v] of Object.entries(f)) if (!NOT_A_REF.has(k)) scan(v);
+    if (!refs.size) roots.add(cur); else refs.forEach(walk);
+  };
+  walk(id);
+  return roots;
+}
+/** May a hole be cut although the engine holds other bodies? Only when every other body is a different part: listed by an accepted feature, none of them sharing a root with the drilled part. */
+export function otherPartsOnly(target, bs, st, byId) {
+  const rows = st.allRows;
+  if (!rows || rows.length !== st.allCount) return false;
+  const mine = rootsOf(target, byId);
+  if (!mine.size) return false;
+  for (const r of rows) {
+    if (bs.includes(r.name)) continue;
+    const makers = Object.keys(st.bodies).filter((id) => st.bodies[id]?.includes(r.name));
+    if (!makers.length) return false;
+    for (const mk of makers) for (const x of rootsOf(mk, byId)) if (mine.has(x)) return false;
+  }
+  return true;
+}
+/** G-OTHERS: the first body other than the drilled part's that changed, or null. */
+export function othersChanged(mine, before, after) {
+  for (const b0 of before) {
+    if (mine.includes(b0.name)) continue;
+    const b1 = after.find((x) => x.name === b0.name);
+    if (!b1 || b1.shells !== b0.shells || (b0.faces !== undefined && b1.faces !== undefined && b1.faces !== b0.faces) || Math.abs(b1.volume - b0.volume) > 1e-9 * Math.max(1, Math.abs(b0.volume))) return b0.name;
+  }
+  return null;
+}
+/** The step that made a body: the first step of the script that lists it, for the G-OTHERS sentence. */
+export const makerOf = (st, byId) => (body) => Object.keys(byId).find((id) => st.bodies[id]?.includes(body));
 const byIdOf = (G, id) => G.byId[id];
 function planHole(f, st, G) {
   const { accepted, headOf, off, runB } = G;
@@ -320,7 +365,9 @@ function planHole(f, st, G) {
   const bs = st.bodies[head];
   const m = st.measure[head] ?? st.measure[f.target];
   if (!bs || !bs.length || !m) return refuse(SENTENCE.noBody(f), 'G-BODIES');
-  if (!off.has('G-BODIES') && (bs.length !== 1 || st.allCount > 1)) return refuse(SENTENCE.multi(f, Math.max(bs.length, st.allCount)), 'G-BODIES');
+  // The part itself in several pieces is refused. Other bodies in the engine do not refuse the hole when each is a DIFFERENT PART (otherPartsOnly; owner decision
+  // 2026-11-12, mirrors packages/layer/src/holes.ts): the cut names its body, and the after-the-cut check G-OTHERS requires every other part to come back as it was.
+  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, Math.max(bs.length, st.allCount)), 'G-BODIES');
   // ---- ROUND 4 pre-checks (each exists so the student is told at once instead of after BUDGET_S seconds; the budget is the backstop)
   if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse(SENTENCE.multi(f, m.shells), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
   if (!off.has('G-TINY') && !(f.diameter >= MIN_ACROSS - 1e-12)) return refuse(SENTENCE.tiny(f), 'G-TINY');
@@ -606,6 +653,9 @@ function flatTopCurved(f, axis, G, centres, bc) {
 function commonPost(f, after, before, env, { expected, recess }) {
   const off = env.off;
   if (!off.has('G-BODIES') && env.allBodies.length > env.allCountBefore) return { guard: 'G-BODIES', refusal: SENTENCE.split(f, env.allCountBefore, env.allBodies.length) };
+  // G-OTHERS: a hole is cut into ONE part. Every other body the engine held must come back as it was: there, the same volume (1e-9), the same shells and faces.
+  const other = !off.has('G-OTHERS') && env.allBefore ? othersChanged(after.bodies, env.allBefore, env.allBodies) : null;
+  if (other !== null) { const part = env.partOf?.(other); return { guard: 'G-OTHERS', refusal: part ? SENTENCE.others(f, part) : SENTENCE.engine(f) }; }
   if (!before) return null;
   if (!off.has('G-SHELLS') && after.shells > before.shells) return { guard: 'G-SHELLS', refusal: SENTENCE.shells(f) };
   const curved = after.curved || before.curved;
