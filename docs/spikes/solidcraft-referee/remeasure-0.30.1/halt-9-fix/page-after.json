@@ -1,0 +1,240 @@
+[
+ {
+  "id": "alone-from-bottom",
+  "script": "const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });",
+  "status": "built with 1 step not built",
+  "volume": 6000,
+  "bodies": [
+   6000
+  ],
+  "features": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "move1",
+    "move",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    "draft1 (draft): from:'bottom' would put the neutral plane at -5, but the bottom of this part is at 0 now (the part was moved, joined or turned), so draft1 is shown without it -- give the plane yourself, for example neutral: 0."
+   ]
+  ]
+ },
+ {
+  "id": "alone-neutral-0",
+  "script": "const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { neutral: 0 });",
+  "status": "built",
+  "volume": 5912.5113364740755,
+  "bodies": [
+   5912.5113364740755
+  ],
+  "features": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "move1",
+    "move",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "built",
+    null
+   ]
+  ]
+ },
+ {
+  "id": "after-stale-draft",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });",
+  "status": "built with 2 steps not built",
+  "volume": 17600,
+  "bodies": [
+   11600,
+   6000
+  ],
+  "features": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead."
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "move1",
+    "move",
+    "built",
+    null
+   ],
+   [
+    "draft2",
+    "draft",
+    "refused",
+    "draft2 (draft): from:'bottom' would put the neutral plane at -5, but the bottom of this part is at 0 now (the part was moved, joined or turned), so draft2 is shown without it -- give the plane yourself, for example neutral: 0."
+   ]
+  ]
+ },
+ {
+  "id": "after-kept-draft",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); const q = pocket(sk2, p, 4); draft(q.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });",
+  "status": "built with 1 step not built",
+  "volume": 17468.76700471111,
+  "bodies": [
+   11468.767004711111,
+   6000
+  ],
+  "features": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "move1",
+    "move",
+    "built",
+    null
+   ],
+   [
+    "draft2",
+    "draft",
+    "refused",
+    "draft2 (draft): from:'bottom' would put the neutral plane at -5, but the bottom of this part is at 0 now (the part was moved, joined or turned), so draft2 is shown without it -- give the plane yourself, for example neutral: 0."
+   ]
+  ]
+ },
+ {
+  "id": "after-stale-draft-top",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'top' });",
+  "status": "built with 2 steps not built",
+  "volume": 17600,
+  "bodies": [
+   11600,
+   6000
+  ],
+  "features": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead."
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "move1",
+    "move",
+    "built",
+    null
+   ],
+   [
+    "draft2",
+    "draft",
+    "refused",
+    "draft2 (draft): from:'top' would put the neutral plane at 5, but the top of this part is at 10 now (the part was moved, joined or turned), so draft2 is shown without it -- give the plane yourself, for example neutral: 10."
+   ]
+  ]
+ }
+]

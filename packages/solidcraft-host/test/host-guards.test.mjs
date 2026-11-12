@@ -171,6 +171,30 @@ test('PNP-7: a hollow, a draft and a round on a part a pocket or groove already 
   assert.equal(HG.staleSentence({ id: 'round1', kind: 'fillet' }, st.get('round1')), STALE('round1', 'groove1', 'round'));
 });
 
+test('HALT-9: a draft left out of the second translation does not shift the from-word record of the drafts after it', async () => {
+  // a box moved up by 5, its right face drafted from:'bottom': the script read the bottom of the box as drawn (-5), the part's bottom is at 0 now, so G-FROM refuses it
+  const MOVED = (opt) => `const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, ${opt});`;
+  const alone = await host(MOVED("{ from: 'bottom' }"));
+  assert.equal(alone.by.get('draft1').guard, 'G-FROM');
+  // after a stale draft (left out, G-STALE): the same draft is judged by its OWN record. Before the fix it took the stale draft's (no from: word), G-FROM was
+  // skipped and the draft was built about the wrong plane (0.30.1: 5825.02 mm3 where from:'bottom' means 5912.51)
+  const after = await host(`${BASE} pocket(sk2, p, 4); draft(p.face('right'), 5); ${MOVED("{ from: 'bottom' }")}`);
+  assert.equal(after.by.get('draft1').guard, 'G-STALE');
+  assert.equal(after.by.get('draft2').status, 'refused');
+  assert.equal(after.by.get('draft2').guard, 'G-FROM');
+  assert.equal(after.by.get('draft2').refusal, alone.by.get('draft1').refusal.replaceAll('draft1', 'draft2'));
+  // the other direction: the stale draft carries a from: word, the later one gives its neutral by number and is not judged by that word
+  const num = await host(`${BASE} pocket(sk2, p, 4); draft(p.face('right'), 5, { from: 'bottom' }); ${MOVED('{ neutral: 2 }')}`);
+  assert.equal(num.by.get('draft1').guard, 'G-STALE');
+  assert.equal(num.by.get('draft2').status, 'built');
+  // and a draft left out because it reads the part of a refused sketch
+  const SOUP = soup(RECT(38, 20), [...JOIN_HV, { k: 'distanceX', a: 1, aEnd: 'a', b: 1, bEnd: 'b', value: 40 }], "const q = extrude(sk, 10); draft(q.face('right'), 5);");
+  const sg = await host(`${SOUP} ${MOVED("{ from: 'bottom' }")}`);
+  assert.equal(sg.by.get('pull1').guard, 'SG-RULES-UNDERDETERMINED');
+  assert.equal(sg.by.get('draft1').status, 'refused');
+  assert.equal(sg.by.get('draft2').guard, 'G-FROM');
+});
+
 test('PNP-7: a kept result, a round made before the cut, and a hole are not touched', async () => {
   for (const tail of ["const q = pocket(sk2, p, 4); hollow(q, { wall: 1, open: 'bottom' });", "const q = pocket(sk2, p, 4); draft(q.face('right'), 5);", "const r = round(p.edge('top','front'), 1); pocket(sk2, r, 4);", "hole(p, { across: 6, at: [20, 15], deep: 5 }); hollow(p, { wall: 1, open: 'bottom' });"]) {
     const doc = H.solveDoc(runScript(`${BASE} ${tail}`).doc);

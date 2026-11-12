@@ -1,0 +1,38 @@
+[
+ {
+  "id": "alone-from-bottom",
+  "script": "const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });"
+ },
+ {
+  "id": "alone-neutral-0",
+  "script": "const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { neutral: 0 });"
+ },
+ {
+  "id": "alone-neutral-m5",
+  "script": "const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { neutral: -5 });"
+ },
+ {
+  "id": "after-stale-draft",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });"
+ },
+ {
+  "id": "after-kept-draft",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); const q = pocket(sk2, p, 4); draft(q.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });"
+ },
+ {
+  "id": "after-stale-hollow",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); hollow(p, { wall: 1, open: 'bottom' }); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'bottom' });"
+ },
+ {
+  "id": "after-stale-draft-top",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5); const c = box(30, 20, 10); move(c, [100, 0, 5]); draft(c.face('right'), 5, { from: 'top' });"
+ },
+ {
+  "id": "stale-only",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5);"
+ },
+ {
+  "id": "base-pocket-only",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4);"
+ }
+]

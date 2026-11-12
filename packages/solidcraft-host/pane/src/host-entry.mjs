@@ -74,7 +74,12 @@ export const translateDoc = async (doc, ctx0) => {
 /** The layer's translation of `doc` without the features of `pre` (id -> { refusal, guard }), which are reported refused in doc order. */
 async function translateWithout(doc, ctx, pre) {
   if (!pre.size) return layer.translateDoc(doc, ctx);
-  const tr = await layer.translateDoc({ ...doc, features: doc.features.filter((f) => !pre.has(f.id)) }, ctx);
+  // ctx.fromUsage is paired with the doc's drafts BY POSITION (shell-draft.ts fromGuard). A draft left out here (a G-STALE draft, a draft that reads a refused
+  // sketch's part) would shift every later draft onto the record of the one before it, and G-FROM would judge it by the wrong word or by none: measured, a
+  // from:'bottom' draft on a moved part was BUILT after a stale draft where the same draft alone is refused (HALT-9.md). The record is cut down with the doc.
+  const drafts = doc.features.filter((f) => f.kind === 'draft');
+  const fromUsage = Array.isArray(ctx.fromUsage) ? ctx.fromUsage.filter((_u, i) => drafts[i] && !pre.has(drafts[i].id)) : ctx.fromUsage;
+  const tr = await layer.translateDoc({ ...doc, features: doc.features.filter((f) => !pre.has(f.id)) }, { ...ctx, fromUsage });
   const by = new Map(tr.features.map((f) => [f.id, f]));
   tr.features = doc.features.map((f) => (pre.has(f.id)
     ? { id: f.id, kind: f.kind, status: 'refused', refusal: pre.get(f.id).refusal, guard: pre.get(f.id).guard }
