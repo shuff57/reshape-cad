@@ -52,6 +52,23 @@ test('otherPartsOnly: other bodies are let through only when each is a different
   }
 });
 
+test('ownPieces: the number in "the part it drills is N separate pieces" counts the part, its copies and unknown bodies, not another part', () => {
+  const feats = [box('b1'), box('b2', [10, 10, 10], [50, 0, 0]), pattern('p1', 'b1'), hole('h1', 'b1')];
+  const byId = byIdOf(feats);
+  const row = (name) => ({ name, volume: 1000, shells: 1, faces: 6 });
+  const st = (bodies, rows) => ({ bodies, holes: { allRows: rows, allCount: rows.length }, allRows: rows, allCount: rows.length });
+  for (const f of [H.ownPieces, C.ownPieces]) {
+    // the part in two pieces, another part beside it: 2, not 3
+    assert.equal(f('b1', ['B1', 'B1 (2)'], st({ b1: ['B1', 'B1 (2)'], b2: ['B2'] }, [row('B1'), row('B1 (2)'), row('B2')]), byId), 2);
+    // one body, two pattern copies of it, another part: 3
+    assert.equal(f('b1', ['B1'], st({ b1: ['B1'], p1: ['P1', 'P2'], b2: ['B2'] }, [row('B1'), row('P1'), row('P2'), row('B2')]), byId), 3);
+    // a body nobody lists counts (it is why the hole is refused)
+    assert.equal(f('b1', ['B1'], st({ b1: ['B1'], b2: ['B2'] }, [row('B1'), row('X'), row('B2')]), byId), 2);
+    // the rows are not known: the old count (every body)
+    assert.equal(f('b1', ['B1', 'B1 (2)'], { bodies: {}, holes: { allRows: [], allCount: 3 }, allRows: [], allCount: 3 }, byId), 3);
+  }
+});
+
 test('othersChanged and makerOf: the body that changed, and the step that made it', () => {
   const before = [{ name: 'A', volume: 32000, shells: 1, faces: 6 }, { name: 'B', volume: 6400, shells: 1, faces: 6 }];
   for (const f of [H.othersChanged, C.othersChanged]) {

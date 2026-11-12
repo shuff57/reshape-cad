@@ -433,6 +433,22 @@ export function otherPartsOnly(target: string, bs: string[], st: TranslateState,
   }
   return true;
 }
+/**
+ * The number the G-BODIES sentence gives ("the part it drills is N separate pieces"): the drilled part's own bodies, the bodies that share a starting shape with it
+ * (copies, a pattern, a mirror) and the bodies no accepted step lists. A different part in the script is not counted (owner decision 2026-11-12; it used to count
+ * every body the engine held). Where the engine's rows are not known it falls back to that old count.
+ */
+export function ownPieces(target: string, bs: string[], st: TranslateState, byId: Record<string, unknown>): number {
+  const rows = st.holes!.allRows; const mine = rootsOf(target, byId);
+  if (!rows || rows.length !== st.holes!.allCount || !mine.size) return Math.max(bs.length, st.holes!.allCount);
+  let n = 0;
+  for (const r of rows) {
+    if (bs.includes(r.name)) { n++; continue; }
+    const makers = Object.keys(st.bodies).filter((id) => st.bodies[id]?.includes(r.name));
+    if (!makers.length || makers.some((mk) => [...rootsOf(mk, byId)].some((x) => mine.has(x)))) n++;
+  }
+  return Math.max(n, bs.length);
+}
 /** G-OTHERS: the first body other than the drilled part's that changed (gone, or another volume, shell or face count), or null. `mine` = the names the hole produced; `before` / `after` = every body the engine held. */
 export function othersChanged(mine: string[], before: BodyRow[], after: BodyRow[]): string | null {
   for (const b0 of before) {
@@ -461,7 +477,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   // The part itself in several pieces (copies of it) is refused. Other bodies in the engine used to refuse every hole too; now (owner decision 2026-11-12) they do
   // not when each of them is a DIFFERENT PART (otherPartsOnly): the cut names its body, and the after-the-cut check G-OTHERS (commonPost) requires every other
   // part to come back exactly as it was.
-  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.holes!.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, Math.max(bs.length, st.holes!.allCount)), 'G-BODIES');
+  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.holes!.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, ownPieces(f.target, bs, st, G.byId)), 'G-BODIES');
   // ---- ROUND 4 pre-checks (each exists so the student is told at once instead of after BUDGET_S seconds; the budget is the backstop)
   if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse(SENTENCE.multi(f, m.shells!), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
   if (!off.has('G-TINY') && !(f.diameter >= MIN_ACROSS - 1e-12)) return refuse(SENTENCE.tiny(f), 'G-TINY');

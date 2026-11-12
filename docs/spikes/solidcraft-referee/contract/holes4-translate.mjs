@@ -344,6 +344,18 @@ export function otherPartsOnly(target, bs, st, byId) {
   }
   return true;
 }
+/** The number the G-BODIES sentence gives: the drilled part's own bodies, the bodies that share a starting shape with it and the bodies no accepted step lists; another part is not counted. */
+export function ownPieces(target, bs, st, byId) {
+  const rows = st.allRows; const mine = rootsOf(target, byId);
+  if (!rows || rows.length !== st.allCount || !mine.size) return Math.max(bs.length, st.allCount);
+  let n = 0;
+  for (const r of rows) {
+    if (bs.includes(r.name)) { n++; continue; }
+    const makers = Object.keys(st.bodies).filter((id) => st.bodies[id]?.includes(r.name));
+    if (!makers.length || makers.some((mk) => [...rootsOf(mk, byId)].some((x) => mine.has(x)))) n++;
+  }
+  return Math.max(n, bs.length);
+}
 /** G-OTHERS: the first body other than the drilled part's that changed, or null. */
 export function othersChanged(mine, before, after) {
   for (const b0 of before) {
@@ -367,7 +379,7 @@ function planHole(f, st, G) {
   if (!bs || !bs.length || !m) return refuse(SENTENCE.noBody(f), 'G-BODIES');
   // The part itself in several pieces is refused. Other bodies in the engine do not refuse the hole when each is a DIFFERENT PART (otherPartsOnly; owner decision
   // 2026-11-12, mirrors packages/layer/src/holes.ts): the cut names its body, and the after-the-cut check G-OTHERS requires every other part to come back as it was.
-  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, Math.max(bs.length, st.allCount)), 'G-BODIES');
+  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, ownPieces(f.target, bs, st, G.byId)), 'G-BODIES');
   // ---- ROUND 4 pre-checks (each exists so the student is told at once instead of after BUDGET_S seconds; the budget is the backstop)
   if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse(SENTENCE.multi(f, m.shells), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
   if (!off.has('G-TINY') && !(f.diameter >= MIN_ACROSS - 1e-12)) return refuse(SENTENCE.tiny(f), 'G-TINY');
