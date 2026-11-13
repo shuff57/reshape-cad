@@ -524,3 +524,54 @@ resolves on the referee by the sweep's own start and end, which may not be the e
 so none shows it; it is not excluded.
 
 Checked: `npm test` 1121 tests, 1115 pass, 6 skipped, 0 fail.
+
+## The referee's remaining gaps (owner chose it, 2026-11-13)
+
+The rows still resting on one oracle or on a hand-worked volume came down to three more things the OCCT referee did, and one the harness did:
+
+- **It read no counterbore and no countersink.** Every hole was drilled as its plain bore. It now cuts the recess as one spun outline with the
+  bore (HoleFeature: from the mouth inwards; the mouth is the +axis face, where the bore starts for a blind hole and the part's own face for one
+  that runs through), on each drill axis and for a four-hole pattern. A recess it cannot make sense of (both kinds at once, a counterbore not
+  wider or not shallower than its bore, a countersink without `angleDeg` or with a cone as deep as the hole) is refused by name.
+- **A whole-body draft tilted some of the walls.** It tilted one face at a time, taking the faces from the ORIGINAL solid; after the first face
+  its neighbours were new faces and were skipped without a word. A 40 x 20 x 10 box came back with two walls tilted of four and its volume
+  unchanged: 8000, where the form is 8023.932. All side faces are now tilted in one draft, and when the kernel will not take them all the
+  feature is refused instead of done on some.
+- **The neutral plane of a draft ignored `neutral` unless the pull was along z** (the plane was put at (0, 0, neutral) whatever the pull). It is
+  now at `neutral` along the pull.
+- **The harness scored a step built on a refused one.** The referee leaves a refused step's part as it was ("shown without it") and builds the
+  next step on it. A hollowed ball, refused, then moved, came back as the whole ball and was taken as OCCT's answer. In the harness used here
+  (`new-seeds/harness.diff`) a refusal of the measured step or of any step it rests on is now the oracle saying nothing. The rig's other
+  harness copies do not have this yet.
+
+Tests: `packages/brep-adapter/test/occt-sweep-options.test.mjs`, now 23 (11 more: a counterbore on each axis and on a blind hole, a countersink
+at 90 and 60 degrees, four holes with a recess each, the refusals; a whole-body draft of a box, moved, turned, off its neutral plane, of a
+cylinder; one face with the pull along y). The two frozen gates run against the changed referee as they did before: parity 78 of 78 with the
+same output but for one last digit, mesh 78 of 78.
+
+**The 2740 final solids, at each stage** (`old-seeds/rescored.jsonl`, `new-seeds/rescored.jsonl`):
+
+| | the referee as it was | with the pull and pocket options | with the hole recess, the draft and the harness fix |
+|---|---|---|---|
+| RIGHT: every oracle that built agrees | 2564 | 2695 | 2715 |
+| one oracle agrees and the other does not | 130 | 27 | 9 |
+| flagged WRONG | 41 | 13 | 9 |
+| both oracles refuse | 5 | 5 | 7 |
+
+No verdict moved away from RIGHT at either stage. The 25 that are not a plain RIGHT now:
+
+- 9 split, and in all nine it is OCCT that agrees and brep-rs that does not (a hole after a draft or a move of a cylinder or box, a pocket in a
+  drafted cylinder, reversed pulls of an outline with a round or a bulge). brep-rs is archived and is not changed.
+- 8 flagged WRONG that are the cylinder wall's accuracy: both oracles agree with each other, the volume is within 1.9e-4 and the box is not
+  within 3e-4 (up to 8.5e-4 mm).
+- 1 flagged WRONG that is a difference of meaning, already on record: a hollow after a counterbore (`fc combined seed 476`). The page route's
+  1599.523 is the plane-offset hollow, the reference HALT-7.md fixed with its own oracle (closed form 1599.527); OCCT's 1593.760 rounds the
+  wall at the inside corner of the recess, 0.36% away, inside the 0.25 to 0.8% that report measured between the two.
+- 7 hollows that both oracles refuse and that equal their closed form (three walls of half the part's thickness, a box with a cross bore, a
+  mirrored pair, a join with a pocket in its wall, a counterbored box).
+
+So OCCT now agrees with the page route on 2724 of the 2740 (the 2715 and the 9 where brep-rs does not). The 16 others are the 8 cylinder
+walls, the hollow after a counterbore, and the 7 hollows it refuses. What the referee still does differently from the page route is a hollow at
+an inside corner: it rounds the wall there, where the plane offset is sharp.
+
+Checked: `npm test` 1132 tests, 1126 pass, 6 skipped, 0 fail.

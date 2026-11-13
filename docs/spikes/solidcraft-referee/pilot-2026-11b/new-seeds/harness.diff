@@ -21,3 +21,12 @@
 < const RUN1 = new URL('run1.mjs', import.meta.url).pathname;
 ---
 > const RUN1 = new URL('./run1.mjs', import.meta.url).pathname;
+323,328c318
+<     const built = buildDoc(C.oc, doc, C.arc);
+<     // The referee passes a refused step's part on unchanged ("shown without it"), so a later step is built on a part that is not the one the
+<     // document describes. A refusal of the measured step OR of any step it rests on is the oracle saying nothing (2026-11-13: a hollowed ball,
+<     // refused, then moved, came back as the whole ball and was scored as OCCT's answer).
+<     const by = new Map(doc.features.map((f) => [f.id, f])); const seen = new Set(); const todo = [id]; let rf = null;
+<     while (todo.length && !rf) { const x = todo.pop(); if (seen.has(x)) continue; seen.add(x); const r = refusalOf(built.refusals, x); if (r) { rf = x === id ? r : `${x}, which ${id} rests on: ${r}`; break; } const f = by.get(x); if (!f) continue; for (const k of ['target', 'into']) if (typeof f[k] === 'string') todo.push(f[k]); if (Array.isArray(f.targets)) todo.push(...f.targets); }
+---
+>     const built = buildDoc(C.oc, doc, C.arc); const rf = refusalOf(built.refusals, id);

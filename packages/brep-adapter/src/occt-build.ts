@@ -23,7 +23,7 @@
 import type { Feature, ModelDoc, RoundStyle, Vec3 } from '@shuff57/reshape-script/model-types';
 import { nameMap } from '@shuff57/reshape-script/model-types';
 import { whyNameLost } from '@shuff57/reshape-script/topo-name';
-import { chamfered, drafted, edgeThrough, filleted } from '@shuff57/reshape-script/topo-history';
+import { chamfered, edgeThrough, filleted } from '@shuff57/reshape-script/topo-history';
 import { facesOf, resolveName, resolveNameAsUsedBy, resolvePrimitiveFace } from './topo-resolve.js';
 
 /** The handful of OpenCascade entry points this adapter uses. Loose on
@@ -230,6 +230,28 @@ function taperedPrism(oc: Occt, op: any, dir: Vec3, origin: Vec3, angleRad: numb
       n++;
     }
     if (!n) return null;
+    dr.Build(new oc.Message_ProgressRange());
+    return dr.IsDone && !dr.IsDone() ? null : dr.Shape();
+  } catch { return null; }
+}
+
+/**
+ * Tilt `faces` of `shape` together, in ONE draft: each leans by `angleRad` about the plane across `pull` at `neutral` along it. null when the kernel
+ * will not take one of the faces or cannot build the result. One operation and not one per face, because after the first face is tilted its
+ * neighbours are new faces: tilting them one at a time from the list of the ORIGINAL solid's faces skipped them without a word (measured
+ * 2026-11-13: a whole-body draft of a 40 x 20 x 10 box came back with two of its four walls tilted and its volume unchanged, 8000 for 8023.932).
+ * The neutral plane is at `neutral` ALONG the pull, whichever axis that is.
+ */
+function draftedTogether(oc: Occt, shape: any, faces: any[], pull: Vec3, angleRad: number, neutral: number): any | null {
+  if (!shape || !faces.length) return null;
+  try {
+    const dr = new oc.BRepOffsetAPI_DraftAngle(shape);
+    const d = new oc.gp_Dir(pull[0], pull[1], pull[2]);
+    const plane = new oc.gp_Pln(new oc.gp_Pnt(pull[0] * neutral, pull[1] * neutral, pull[2] * neutral), d);
+    for (const face of faces) {
+      dr.Add(oc.TopoDS.Face(face), d, angleRad, plane);
+      if (dr.AddDone && !dr.AddDone()) return null;
+    }
     dr.Build(new oc.Message_ProgressRange());
     return dr.IsDone && !dr.IsDone() ? null : dr.Shape();
   } catch { return null; }
@@ -1540,17 +1562,18 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         // Applied one at a time rather than in a single DraftAngle so that a
         // face which refuses -- a curved wall, a face already at the angle --
         // costs that face and not the whole feature.
-        let cur = src;
         const caps = [
           resolvePrimitiveFace(oc, src, f.pull === 'x' ? '+x' : f.pull === 'y' ? '+y' : '+z'),
           resolvePrimitiveFace(oc, src, f.pull === 'x' ? '-x' : f.pull === 'y' ? '-y' : '-z'),
         ];
-        for (const face of facesOf(oc, src)) {
-          if (caps.some((c) => c && c.IsSame(face))) continue;
-          const next = drafted(oc, cur, face, axis, rad, f.neutral);
-          if (next) cur = next;
+        // Every side face in one draft (draftedTogether says why). This used to tilt the faces it could and say nothing about the rest; a part with
+        // some of its walls tilted is another solid, so when the kernel will not tilt them all the feature is refused and the part shown as it was.
+        const sides = facesOf(oc, src).filter((face) => !caps.some((c) => c && c.IsSame(face)));
+        shape = draftedTogether(oc, src, sides, axis, rad, f.neutral);
+        if (!shape) {
+          refusals.set(f.id, `Tilting every side of ${label(f.id)} at ${f.angle} degrees would not fit -- ${label(f.id)} is shown without it.`);
+          shape = src;
         }
-        shape = cur;
       } else if (src && f.face) {
         const partial: BuildResult = { shapes: built, ops, sweeps };
         // Same reason as the fillet branch above: f.face may be named
@@ -1571,7 +1594,7 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         // so a refused face just costs that face, which is already this
         // file's own documented design for it.
         if (face) {
-          shape = drafted(oc, src, face, axis, rad, f.neutral);
+          shape = draftedTogether(oc, src, [face], axis, rad, f.neutral);
           if (!shape) {
             refusals.set(
               f.id,
@@ -1754,12 +1777,25 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
           const perp = f.axis === 'x' ? [bbox[1][1] - bbox[0][1], bbox[1][2] - bbox[0][2]]
             : f.axis === 'y' ? [bbox[1][0] - bbox[0][0], bbox[1][2] - bbox[0][2]]
             : [bbox[1][0] - bbox[0][0], bbox[1][1] - bbox[0][1]];
+          // The recess at the mouth (HoleFeature.counterbore / countersink). Until 2026-11-13 this path read neither and drilled the plain bore, so
+          // on such a hole the referee answered with another solid (PILOT-2.md, "The referee's remaining gaps"). A recess it cannot make sense of
+          // is refused by name, never drilled plain.
+          const cb = f.counterbore, cs = f.countersink;
+          const csHalf = cs ? ((cs.angleDeg / 2) * Math.PI) / 180 : 0;
+          const recessNo = cb && cs ? 'a hole with both a counterbore and a countersink'
+            : cb && !(cb.diameter > f.diameter && cb.depth > 0 && cb.depth < f.depth) ? 'a counterbore that is not wider than its bore and shallower than it'
+            : cs && !(cs.diameter > f.diameter && cs.angleDeg > 0 && cs.angleDeg < 180) ? 'a countersink without a mouth wider than its bore and an angle between 0 and 180 degrees'
+            : cs && !((cs.diameter - f.diameter) / 2 / Math.tan(csHalf) < f.depth) ? 'a countersink whose cone is as deep as the hole'
+            : null;
           if (f.diameter > Math.min(...perp)) {
             refusals.set(
               f.id,
               `Boring ${label(f.id)} at diameter ${f.diameter} would not fit ${label(f.target)} -- `
                 + `${label(f.id)} is shown without it.`,
             );
+            shape = src;
+          } else if (recessNo) {
+            refusals.set(f.id, `${label(f.id)}: ${recessNo} is not built by this reference path -- ${label(f.id)} is shown without it.`);
             shape = src;
           } else {
             // One bore, built centred on its own axis -- matching JSCAD's
@@ -1782,6 +1818,37 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
               }
               return cyl;
             };
+            // The recess, about the same axis. The mouth is the face the drill enters by, on the +axis side: where the bore ends for a blind hole
+            // (its centre is placed so that it does), the part's own face for a hole that runs through (the bore sticks out past it). Built with
+            // local +z towards the mouth, from the recess floor up to the end of the bore, then turned so that +z is the drill axis.
+            const axisIndex = f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2;
+            const recess = (at: Vec3): any | null => {
+              if (!cb && !cs) return null;
+              const mouth = Math.min(f.depth / 2, bbox[1][axisIndex] - at[axisIndex]);
+              const R = (cb ? cb.diameter : cs!.diameter) / 2;
+              const deep = cb ? cb.depth : (R - f.diameter / 2) / Math.tan(csHalf);
+              const floor = mouth - deep, top = f.depth / 2;
+              // One spun outline, as coneOf() builds a cone (and for its reason: the bound overloads). A counterbore: the wide radius from the floor
+              // to the end of the bore. A countersink: from the bore's radius at the floor out to the mouth's width at the mouth, and that width on up.
+              const pts: Array<[number, number]> = cb
+                ? [[0, floor], [R, floor], [R, top], [0, top]]
+                : top - mouth > 1e-9 ? [[0, floor], [f.diameter / 2, floor], [R, mouth], [R, top], [0, top]] : [[0, floor], [f.diameter / 2, floor], [R, mouth], [0, mouth]];
+              const wire = new oc.BRepBuilderAPI_MakeWire();
+              for (let i = 0; i < pts.length; i++) {
+                const a = pts[i], b = pts[(i + 1) % pts.length];
+                wire.Add(new oc.BRepBuilderAPI_MakeEdge(new oc.gp_Pnt(a[0], 0, a[1]), new oc.gp_Pnt(b[0], 0, b[1])).Edge());
+              }
+              const outline = new oc.BRepBuilderAPI_MakeFace(wire.Wire(), false).Face();
+              let tool: any = new oc.BRepPrimAPI_MakeRevol(outline, new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(0, 0, 1)), 2 * Math.PI, true).Shape();
+              if (f.axis === 'x' || f.axis === 'y') {
+                const t = new oc.gp_Trsf();
+                // +z to +x is a quarter turn about y; +z to +y is a quarter turn about x the OTHER way (the bore above is the same either way up)
+                const about: Vec3 = f.axis === 'x' ? [0, 1, 0] : [1, 0, 0];
+                t.SetRotation(new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(about[0], about[1], about[2])), f.axis === 'x' ? Math.PI / 2 : -Math.PI / 2);
+                tool = new oc.BRepBuilderAPI_Transform(tool, t, false).Shape();
+              }
+              return moved(oc, tool, at);
+            };
             const centers: Vec3[] = f.corners
               ? [
                   [cx - f.corners.dx, cy - f.corners.dy, cz],
@@ -1797,12 +1864,13 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
             // target-history step, so it is NOT recorded into `ops`; only the
             // final cut below is.
             let tool = moved(oc, bore(), centers[0]);
-            for (let i = 1; i < centers.length; i++) {
-              const next = moved(oc, bore(), centers[i]);
+            const join = (next: any): void => {
               const op = new oc.BRepAlgoAPI_Fuse(tool, next);
               op.Build(new oc.Message_ProgressRange());
               tool = op.Shape();
-            }
+            };
+            for (let i = 1; i < centers.length; i++) join(moved(oc, bore(), centers[i]));
+            for (const at of centers) { const r = recess(at); if (r) join(r); }
             shape = boolean('BRepAlgoAPI_Cut', src, tool, f.id, [headOf(f.target)]);
           }
         }
