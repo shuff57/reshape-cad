@@ -339,11 +339,9 @@
   "id": "named-counterbore-round",
   "group": "3d",
   "pass": false,
-  "verdict": "FAIL: hole1 was refused with a different sentence (wanted it to contain \"counterbore\")",
-  "refusals": [
-   "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first."
-  ],
-  "volume": 14997.852574108654
+  "verdict": "FAIL: expected hole1 to be refused but it was built; built volume 14564.373 differs from the reference of what should build, 14997.854 (rel 2.89e-2)",
+  "refusals": [],
+  "volume": 14564.372849349813
  },
  {
   "id": "refuse-shell-closed",
