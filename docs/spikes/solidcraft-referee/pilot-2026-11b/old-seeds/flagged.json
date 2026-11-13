@@ -1,0 +1,6911 @@
+[
+ {
+  "id": "combined seed 0",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 2136,
+  "hostBox": [
+   0,
+   0,
+   -3,
+   24,
+   24,
+   3
+  ],
+  "occt": 2279.9999999999995,
+  "brep": 2136,
+  "occtOff": {
+   "dVol": 0.0632,
+   "dBox": 3
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 5
+   }
+  ]
+ },
+ {
+  "id": "combined seed 5",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4360.1603424311,
+  "hostBox": [
+   -0.8749,
+   -0.8749,
+   0,
+   20.8749,
+   20.8749,
+   10
+  ],
+  "occt": 3999.999999999999,
+  "brep": 4360.1603424311,
+  "occtOff": {
+   "dVol": 0.09,
+   "dBox": 0.875
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 7.77e-16
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      20,
+      0
+     ],
+     [
+      20,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "taper": 5
+   }
+  ]
+ },
+ {
+  "id": "combined seed 19",
+  "verdict": "WRONG",
+  "class": "cylinder accuracy",
+  "measure": "m4",
+  "host": 7463.676376127193,
+  "hostBox": [
+   1.0003,
+   -16.9998,
+   -10,
+   24.9997,
+   6.9998,
+   20
+  ],
+  "occt": 7464.424144929351,
+  "brep": 7464.424144929358,
+  "occtOff": {
+   "dVol": 0.0001,
+   "dBox": 0.000322
+  },
+  "brepOff": {
+   "dVol": 0.0001,
+   "dBox": 0.000322
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 12,
+    "height": 30,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "c1",
+    "thickness": 3
+   },
+   {
+    "id": "rt3",
+    "kind": "rotate",
+    "target": "s2",
+    "angles": [
+     0,
+     0,
+     90
+    ]
+   },
+   {
+    "id": "m4",
+    "kind": "move",
+    "target": "rt3",
+    "offset": [
+     5,
+     0,
+     2
+    ],
+    "copy": false
+   }
+  ]
+ },
+ {
+  "id": "combined seed 21",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk8",
+  "host": 709.25349979654,
+  "hostBox": [
+   -2,
+   -17,
+   -3,
+   18,
+   7,
+   9
+  ],
+  "occt": 5652.014317091085,
+  "brep": 709.250119551571,
+  "occtOff": {
+   "dVol": 0.875,
+   "dBox": 7.36e-15
+  },
+  "brepOff": {
+   "dVol": 0.00000477,
+   "dBox": 7.36e-15
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     24,
+     12
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "b2",
+    "kind": "box",
+    "size": [
+     12,
+     12,
+     10
+    ],
+    "center": [
+     6,
+     0,
+     4
+    ]
+   },
+   {
+    "id": "c3",
+    "kind": "combine",
+    "op": "union",
+    "targets": [
+     "b1",
+     "b2"
+    ]
+   },
+   {
+    "id": "s4",
+    "kind": "shell",
+    "target": "c3",
+    "thickness": 0.5,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "+z"
+    }
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "target": "sk5",
+    "into": "s4",
+    "depth": 40
+   },
+   {
+    "id": "sk7",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      3,
+      6
+     ],
+     [
+      9,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk8",
+    "kind": "pocket",
+    "target": "sk7",
+    "into": "pk6",
+    "depth": 40
+   }
+  ]
+ },
+ {
+  "id": "combined seed 24",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "h5",
+  "host": 3783.566594038228,
+  "hostBox": [
+   0,
+   0,
+   -14,
+   20,
+   20,
+   0
+  ],
+  "occt": 3839.178427459605,
+  "brep": "refused: hole h5: the cut reaches a rounded, chamfered or otherwise curved face",
+  "occtOff": {
+   "dVol": 0.0145,
+   "dBox": 14
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 2
+   },
+   {
+    "id": "h5",
+    "kind": "hole",
+    "target": "pk4",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     0,
+     -3,
+     0
+    ],
+    "axis": "y"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 34",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4797.852573046059,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   24,
+   20,
+   5
+  ],
+  "occt": 4797.853981636084,
+  "brep": 4797.853981633975,
+  "occtOff": {
+   "dVol": 2.94e-7,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 2.94e-7,
+   "dBox": 7.11e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 1
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 49",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h3",
+  "host": 2669.251510024095,
+  "hostBox": [
+   -20,
+   -12,
+   -5,
+   20,
+   12,
+   5
+  ],
+  "occt": 2679.451332235383,
+  "brep": 2669.2411561112162,
+  "occtOff": {
+   "dVol": 0.00381,
+   "dBox": 1.48e-15
+  },
+  "brepOff": {
+   "dVol": 0.00000388,
+   "dBox": 1.48e-15
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     24,
+     10
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 1,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    }
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "target": "s2",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     0,
+     -3,
+     0
+    ],
+    "axis": "y",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "combined seed 50",
+  "verdict": "WRONG",
+  "class": "reversed pull: OCCT builds the mirror image, the same volume",
+  "measure": "e6",
+  "host": 2868.4038993994786,
+  "hostBox": [
+   0,
+   0,
+   -6,
+   24,
+   20,
+   0
+  ],
+  "occt": 2868.4115008265007,
+  "brep": 2873.588499176538,
+  "occtOff": {
+   "dVol": 0.00000265,
+   "dBox": 6
+  },
+  "brepOff": {
+   "dVol": 0.0018,
+   "dBox": 4.44e-16
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 12,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     12
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "c1",
+    "thickness": 2
+   },
+   {
+    "id": "b3",
+    "kind": "box",
+    "size": [
+     12,
+     12,
+     10
+    ],
+    "center": [
+     10,
+     0,
+     4
+    ]
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e6",
+    "kind": "extrude",
+    "target": "sk5",
+    "height": 6,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 82",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e6",
+  "host": 3141.353128216409,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   20,
+   20,
+   5
+  ],
+  "occt": 3141.592653589794,
+  "brep": 3141.5926535897975,
+  "occtOff": {
+   "dVol": 0.0000762,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.0000762,
+   "dBox": 7.11e-15
+  },
+  "pullOptions": [
+   "midplane",
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e6",
+    "kind": "extrude",
+    "target": "sk5",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 84",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 9558.010288146046,
+  "hostBox": [
+   0,
+   0,
+   -20,
+   24,
+   20,
+   0
+  ],
+  "occt": 9595.707963272234,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.00393,
+   "dBox": 20
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 1
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      10,
+      8
+     ],
+     [
+      14,
+      8
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   }
+  ]
+ },
+ {
+  "id": "combined seed 110",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk6",
+  "host": 4560,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   24,
+   20,
+   0
+  ],
+  "occt": 4791.415926539022,
+  "brep": "refused: pocket pk6: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0483,
+   "dBox": 10
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     24,
+     24,
+     20
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 3
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 2
+    }
+   },
+   {
+    "id": "e4",
+    "kind": "extrude",
+    "target": "sk3",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "target": "sk5",
+    "into": "e4",
+    "depth": 40
+   }
+  ]
+ },
+ {
+  "id": "combined seed 120",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 5125.324418609312,
+  "hostBox": [
+   -1.2248,
+   -1.2248,
+   0,
+   21.2248,
+   17.2248,
+   14
+  ],
+  "occt": 4480,
+  "brep": 5125.324418609313,
+  "occtOff": {
+   "dVol": 0.144,
+   "dBox": 1.22
+  },
+  "brepOff": {
+   "dVol": 3.55e-16,
+   "dBox": 1.81e-16
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      20,
+      0
+     ],
+     [
+      20,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "taper": 5
+   }
+  ]
+ },
+ {
+  "id": "combined seed 137",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4032,
+  "hostBox": [
+   0,
+   0,
+   -7,
+   24,
+   12,
+   7
+  ],
+  "occt": 4032,
+  "brep": 4032,
+  "occtOff": {
+   "dVol": 0,
+   "dBox": 7
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      12
+     ],
+     [
+      0,
+      12
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 140",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h2",
+  "host": 5353.736815229152,
+  "hostBox": [
+   -10,
+   -10,
+   2,
+   10,
+   10,
+   22
+  ],
+  "occt": 5405.526837205197,
+  "brep": 5353.690558420966,
+  "occtOff": {
+   "dVol": 0.00958,
+   "dBox": 1.42e-15
+  },
+  "brepOff": {
+   "dVol": 0.00000864,
+   "dBox": 1.42e-15
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "p1",
+    "kind": "prism",
+    "sides": 8,
+    "radius": 10,
+    "height": 20,
+    "center": [
+     0,
+     0,
+     12
+    ]
+   },
+   {
+    "id": "h2",
+    "kind": "hole",
+    "target": "p1",
+    "diameter": 4,
+    "depth": 40,
+    "center": [
+     -4,
+     0,
+     0
+    ],
+    "axis": "z",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "combined seed 144",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk6",
+  "host": 1574.289176446455,
+  "hostBox": [
+   0,
+   0,
+   -3,
+   24,
+   12,
+   3
+  ],
+  "occt": 1727.9999999999993,
+  "brep": 1574.2744804331878,
+  "occtOff": {
+   "dVol": 0.089,
+   "dBox": 3
+  },
+  "brepOff": {
+   "dVol": 0.00000934,
+   "dBox": 5.92e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      12
+     ],
+     [
+      0,
+      12
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      3,
+      8
+     ],
+     [
+      9,
+      8
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "target": "sk5",
+    "into": "pk4",
+    "depth": 2
+   }
+  ]
+ },
+ {
+  "id": "combined seed 147",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: OCCT",
+  "measure": "h4",
+  "host": 5798.601374700539,
+  "hostBox": [
+   -2.9838,
+   -15.9838,
+   -7,
+   18.9838,
+   5.9838,
+   13
+  ],
+  "occt": 5798.620426306635,
+  "brep": 6279.343960547768,
+  "occtOff": {
+   "dVol": 0.00000329,
+   "dBox": 0.0000011
+  },
+  "brepOff": {
+   "dVol": 0.0766,
+   "dBox": 0.492
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 10,
+    "height": 20,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "m2",
+    "kind": "move",
+    "target": "c1",
+    "offset": [
+     0,
+     0,
+     0
+    ],
+    "copy": false
+   },
+   {
+    "id": "d3",
+    "kind": "draft",
+    "target": "m2",
+    "angle": 8,
+    "pull": "z",
+    "neutral": 0,
+    "whole": true
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "target": "d3",
+    "diameter": 2,
+    "depth": 40,
+    "center": [
+     -4,
+     10,
+     0
+    ],
+    "axis": "z"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 169",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h3",
+  "host": 4899.043764824849,
+  "hostBox": [
+   -15,
+   -15,
+   -6,
+   15,
+   15,
+   6
+  ],
+  "occt": 4919.451332235384,
+  "brep": 4899.03097998705,
+  "occtOff": {
+   "dVol": 0.00415,
+   "dBox": 4.74e-16
+  },
+  "brepOff": {
+   "dVol": 0.00000261,
+   "dBox": 4.74e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     30,
+     30,
+     12
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 2,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-y"
+    }
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "target": "s2",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     4,
+     0,
+     0
+    ],
+    "axis": "y",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "combined seed 171",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "d3",
+  "host": 8023.93225657483,
+  "hostBox": [
+   -25.3397,
+   -11.3397,
+   -5,
+   17.3397,
+   11.3397,
+   5
+  ],
+  "occt": 8000,
+  "brep": 8023.93225657483,
+  "occtOff": {
+   "dVol": 0.00299,
+   "dBox": 0.134
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 5.33e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     20,
+     10
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "m2",
+    "kind": "move",
+    "target": "b1",
+    "offset": [
+     -4,
+     0,
+     0
+    ],
+    "copy": false
+   },
+   {
+    "id": "d3",
+    "kind": "draft",
+    "target": "m2",
+    "angle": 15,
+    "pull": "z",
+    "neutral": 0,
+    "whole": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 173",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 4345.591032633264,
+  "hostBox": [
+   0,
+   0.0006,
+   -7,
+   20,
+   20,
+   7
+  ],
+  "occt": 4398.229715025711,
+  "brep": 4346.019404307533,
+  "occtOff": {
+   "dVol": 0.012,
+   "dBox": 7
+  },
+  "brepOff": {
+   "dVol": 0.0000986,
+   "dBox": 0.000577
+  },
+  "pullOptions": [
+   "midplane",
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 2,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 178",
+  "verdict": "WRONG",
+  "class": "reversed pull: OCCT builds the mirror image, the same volume",
+  "measure": "e10",
+  "host": 2610.1963000078645,
+  "hostBox": [
+   0,
+   0,
+   -6,
+   26,
+   18,
+   0
+  ],
+  "occt": 2610.1444927001307,
+  "brep": 481.46799783281546,
+  "occtOff": {
+   "dVol": 0.0000198,
+   "dBox": 6
+  },
+  "brepOff": {
+   "dVol": 4.42,
+   "dBox": 1
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      20,
+      0
+     ],
+     [
+      20,
+      12
+     ],
+     [
+      0,
+      12
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6
+   },
+   {
+    "id": "sk9",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      26,
+      0
+     ],
+     [
+      26,
+      18
+     ],
+     [
+      0,
+      18
+     ]
+    ],
+    "bulges": {
+     "1": -0.3
+    }
+   },
+   {
+    "id": "e10",
+    "kind": "extrude",
+    "target": "sk9",
+    "height": 6,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 180",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 2268.4709085483573,
+  "hostBox": [
+   -7.9999,
+   -7.9998,
+   -6,
+   7.9999,
+   7.9998,
+   6
+  ],
+  "occt": 2364.7431579569607,
+  "brep": 2268.7431579569625,
+  "occtOff": {
+   "dVol": 0.0407,
+   "dBox": 0.0000269
+  },
+  "brepOff": {
+   "dVol": 0.00012,
+   "dBox": 0.0000269
+  },
+  "pullOptions": [
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 8,
+    "height": 12,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "c1",
+    "depth": 2,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 214",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e8",
+  "host": 3800,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   24,
+   24,
+   0
+  ],
+  "occt": 3799.999999999999,
+  "brep": 3800,
+  "occtOff": {
+   "dVol": 2.39e-16,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6
+   },
+   {
+    "id": "f3",
+    "kind": "fillet",
+    "target": "e2",
+    "edge": {
+     "cause": "between",
+     "feature": "e2",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 1,
+    "style": "fillet"
+   },
+   {
+    "id": "b4",
+    "kind": "box",
+    "size": [
+     12,
+     8,
+     6
+    ],
+    "center": [
+     6,
+     5,
+     0
+    ]
+   },
+   {
+    "id": "c5",
+    "kind": "combine",
+    "op": "subtract",
+    "targets": [
+     "f3",
+     "b4"
+    ]
+   },
+   {
+    "id": "sk7",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e8",
+    "kind": "extrude",
+    "target": "sk7",
+    "height": 10,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 226",
+  "verdict": "WRONG",
+  "class": "cylinder accuracy",
+  "measure": "rt7",
+  "host": 1884.829856912443,
+  "hostBox": [
+   0.0009,
+   0.0009,
+   0,
+   19.9991,
+   19.9991,
+   6
+  ],
+  "occt": 1884.9555921538758,
+  "brep": 1884.9555921538758,
+  "occtOff": {
+   "dVol": 0.0000667,
+   "dBox": 0.000851
+  },
+  "brepOff": {
+   "dVol": 0.0000667,
+   "dBox": 0.000851
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 12,
+    "height": 20,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "c1",
+    "thickness": 5,
+    "open": {
+     "cause": "primitive",
+     "feature": "c1",
+     "kind": "face",
+     "part": "+z"
+    }
+   },
+   {
+    "id": "rt3",
+    "kind": "rotate",
+    "target": "s2",
+    "angles": [
+     0,
+     90,
+     0
+    ]
+   },
+   {
+    "id": "sk4",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e5",
+    "kind": "extrude",
+    "target": "sk4",
+    "height": 6
+   },
+   {
+    "id": "rt6",
+    "kind": "rotate",
+    "target": "e5",
+    "angles": [
+     90,
+     90,
+     90
+    ]
+   },
+   {
+    "id": "rt7",
+    "kind": "rotate",
+    "target": "rt6",
+    "angles": [
+     90,
+     90,
+     45
+    ]
+   }
+  ]
+ },
+ {
+  "id": "combined seed 250",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e3",
+  "host": 2880,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   24,
+   12,
+   5
+  ],
+  "occt": 2880,
+  "brep": 2880,
+  "occtOff": {
+   "dVol": 0,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 12,
+    "height": 20,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      12
+     ],
+     [
+      0,
+      12
+     ]
+    ]
+   },
+   {
+    "id": "e3",
+    "kind": "extrude",
+    "target": "sk2",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 265",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h3",
+  "host": 3181.9689247550978,
+  "hostBox": [
+   -2,
+   -15,
+   -3,
+   18,
+   5,
+   9
+  ],
+  "occt": 3202.3539967061515,
+  "brep": 3181.9336444578166,
+  "occtOff": {
+   "dVol": 0.00637,
+   "dBox": 5.33e-16
+  },
+  "brepOff": {
+   "dVol": 0.0000111,
+   "dBox": 5.33e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     20,
+     12
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 3,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    }
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "target": "s2",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     0,
+     3,
+     0
+    ],
+    "axis": "y",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "combined seed 281",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "e2",
+  "host": 10497.957738055355,
+  "hostBox": [
+   -1.0482,
+   -1.0482,
+   0,
+   25.0482,
+   21.0482,
+   20
+  ],
+  "occt": 9561.37166942167,
+  "brep": "refused: extrude e2: a taper or a custom direction is built for a straight-side",
+  "occtOff": {
+   "dVol": 0.098,
+   "dBox": 1.05
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "combined seed 324",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 6004.337064582465,
+  "hostBox": [
+   0,
+   0,
+   -14,
+   24,
+   20,
+   0
+  ],
+  "occt": 6707.982297155519,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.105,
+   "dBox": 14
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 2
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      6
+     ],
+     [
+      10,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 40
+   }
+  ]
+ },
+ {
+  "id": "combined seed 341",
+  "verdict": "WRONG",
+  "class": "reversed pull: OCCT builds the mirror image, the same volume",
+  "measure": "e2",
+  "host": 2874.8461769607834,
+  "hostBox": [
+   0,
+   0,
+   -6,
+   24,
+   20,
+   0
+  ],
+  "occt": 2874.8495559238177,
+  "brep": 2877.1504440784615,
+  "occtOff": {
+   "dVol": 0.00000118,
+   "dBox": 6
+  },
+  "brepOff": {
+   "dVol": 0.000801,
+   "dBox": 4.44e-16
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 2
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 350",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e4",
+  "host": 1206.2889230377482,
+  "hostBox": [
+   2,
+   2,
+   -6,
+   18,
+   18,
+   0
+  ],
+  "occt": 1206.371578978481,
+  "brep": 1206.3715789784808,
+  "occtOff": {
+   "dVol": 0.0000685,
+   "dBox": 6
+  },
+  "brepOff": {
+   "dVol": 0.0000685,
+   "dBox": 1.33e-15
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     30,
+     24,
+     10
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 2
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      10
+     ],
+     [
+      18,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e4",
+    "kind": "extrude",
+    "target": "sk3",
+    "height": 6,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 377",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 7449.229586091998,
+  "hostBox": [
+   0,
+   0,
+   -20,
+   24,
+   24,
+   0
+  ],
+  "occt": 7599.999999999998,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0198,
+   "dBox": 20
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      6,
+      6
+     ],
+     [
+      14,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   }
+  ]
+ },
+ {
+  "id": "combined seed 388",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h4",
+  "host": 19091.630426319978,
+  "hostBox": [
+   -30,
+   -10,
+   -6,
+   50,
+   10,
+   6
+  ],
+  "occt": 19162.300888156922,
+  "brep": 19091.61505345115,
+  "occtOff": {
+   "dVol": 0.00369,
+   "dBox": 4.44e-16
+  },
+  "brepOff": {
+   "dVol": 8.05e-7,
+   "dBox": 4.44e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     20,
+     12
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "x2",
+    "kind": "mirror",
+    "target": "b1",
+    "plane": "yz"
+   },
+   {
+    "id": "x3",
+    "kind": "mirror",
+    "target": "x2",
+    "plane": "yz"
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "target": "x3",
+    "diameter": 2,
+    "depth": 40,
+    "center": [
+     0,
+     -3,
+     0
+    ],
+    "axis": "z",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "combined seed 401",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 9595.705146092118,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   24,
+   20,
+   10
+  ],
+  "occt": 9595.707963272169,
+  "brep": 9595.70796326795,
+  "occtOff": {
+   "dVol": 2.94e-7,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 2.94e-7,
+   "dBox": 7.11e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 1
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 418",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pt8",
+  "host": 9216,
+  "hostBox": [
+   -16,
+   -16,
+   -15,
+   16,
+   16,
+   9
+  ],
+  "occt": 9216,
+  "brep": 9216,
+  "occtOff": {
+   "dVol": 0,
+   "dBox": 0.667
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e6",
+    "kind": "extrude",
+    "target": "sk5",
+    "height": 6,
+    "reversed": true
+   },
+   {
+    "id": "rt7",
+    "kind": "rotate",
+    "target": "e6",
+    "angles": [
+     0,
+     90,
+     0
+    ]
+   },
+   {
+    "id": "pt8",
+    "kind": "pattern",
+    "target": "rt7",
+    "mode": "circular",
+    "count": 4,
+    "step": [
+     25,
+     0,
+     0
+    ],
+    "axis": "z"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 430",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "c9",
+  "host": 3545,
+  "hostBox": [
+   -6,
+   -1,
+   -6,
+   24,
+   24,
+   5
+  ],
+  "occt": 3545.000000000001,
+  "brep": 3545,
+  "occtOff": {
+   "dVol": 2.57e-16,
+   "dBox": 0.2
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 5.92e-16
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 2
+   },
+   {
+    "id": "f5",
+    "kind": "fillet",
+    "target": "pk4",
+    "edge": {
+     "cause": "between",
+     "feature": "e2",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 1,
+    "style": "chamfer"
+   },
+   {
+    "id": "b6",
+    "kind": "box",
+    "size": [
+     12,
+     12,
+     10
+    ],
+    "center": [
+     6,
+     5,
+     0
+    ]
+   },
+   {
+    "id": "c7",
+    "kind": "combine",
+    "op": "union",
+    "targets": [
+     "f5",
+     "b6"
+    ]
+   },
+   {
+    "id": "b8",
+    "kind": "box",
+    "size": [
+     12,
+     8,
+     10
+    ],
+    "center": [
+     0,
+     5,
+     0
+    ]
+   },
+   {
+    "id": "c9",
+    "kind": "combine",
+    "op": "union",
+    "targets": [
+     "c7",
+     "b8"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "combined seed 444",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 10019.34566593937,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   28.7,
+   18,
+   10
+  ],
+  "occt": 10019.518357672236,
+  "brep": 10019.518357672387,
+  "occtOff": {
+   "dVol": 0.0000172,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0.0000172,
+   "dBox": 3.55e-15
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      26,
+      0
+     ],
+     [
+      26,
+      18
+     ],
+     [
+      0,
+      18
+     ]
+    ],
+    "bulges": {
+     "1": 0.3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 454",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e4",
+  "host": 3141.353128216409,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   20,
+   20,
+   5
+  ],
+  "occt": 3141.592653589794,
+  "brep": 3141.5926535897975,
+  "occtOff": {
+   "dVol": 0.0000762,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.0000762,
+   "dBox": 7.11e-15
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e4",
+    "kind": "extrude",
+    "target": "sk3",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 455",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk3",
+  "host": 3803.0819099883392,
+  "hostBox": [
+   -10,
+   -10,
+   -10,
+   10,
+   10,
+   10
+  ],
+  "occt": 4140.790728331942,
+  "brep": "refused: pocket pk3: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0816,
+   "dBox": 6.24e-11
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "s1",
+    "kind": "sphere",
+    "radius": 10,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk3",
+    "kind": "pocket",
+    "target": "sk2",
+    "into": "s1",
+    "depth": 1,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 482",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "m3",
+  "host": 2751.9063896060948,
+  "hostBox": [
+   -14,
+   -7,
+   4,
+   6,
+   13,
+   24
+  ],
+  "occt": 4188.790204786391,
+  "brep": 2752.0351645446567,
+  "occtOff": {
+   "dVol": 0.343,
+   "dBox": 0
+  },
+  "brepOff": {
+   "dVol": 0.0000468,
+   "dBox": 0
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "s1",
+    "kind": "sphere",
+    "radius": 10,
+    "center": [
+     0,
+     0,
+     12
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "s1",
+    "thickness": 3
+   },
+   {
+    "id": "m3",
+    "kind": "move",
+    "target": "s2",
+    "offset": [
+     -4,
+     3,
+     2
+    ],
+    "copy": false
+   }
+  ]
+ },
+ {
+  "id": "combined seed 504",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h7",
+  "host": 4569.325908314029,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   24,
+   20,
+   5
+  ],
+  "occt": 4729.3141652942295,
+  "brep": 4569.3141652942295,
+  "occtOff": {
+   "dVol": 0.0338,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.00000257,
+   "dBox": 7.11e-16
+  },
+  "pullOptions": [
+   "midplane",
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 40,
+    "through": true
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "target": "sk5",
+    "into": "pk4",
+    "depth": 40
+   },
+   {
+    "id": "h7",
+    "kind": "hole",
+    "target": "pk6",
+    "diameter": 3,
+    "depth": 40,
+    "center": [
+     -4,
+     3,
+     0
+    ],
+    "axis": "z"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 513",
+  "verdict": "WRONG",
+  "class": "cylinder accuracy",
+  "measure": "c3",
+  "host": 3859.6497234259455,
+  "hostBox": [
+   0.0001,
+   -12.9998,
+   -7,
+   15.9999,
+   2.9988,
+   13
+  ],
+  "occt": 3860.173221114704,
+  "brep": 3860.1732210903992,
+  "occtOff": {
+   "dVol": 0.000136,
+   "dBox": 0.000394
+  },
+  "brepOff": {
+   "dVol": 0.000136,
+   "dBox": 0.000394
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 8,
+    "height": 20,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "b2",
+    "kind": "box",
+    "size": [
+     8,
+     12,
+     6
+    ],
+    "center": [
+     10,
+     5,
+     4
+    ]
+   },
+   {
+    "id": "c3",
+    "kind": "combine",
+    "op": "subtract",
+    "targets": [
+     "c1",
+     "b2"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "combined seed 516",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4350.327166679835,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   26,
+   18,
+   5
+  ],
+  "occt": 4350.240821166884,
+  "brep": 4350.240821163808,
+  "occtOff": {
+   "dVol": 0.0000198,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.0000198,
+   "dBox": 9.87e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      26,
+      0
+     ],
+     [
+      26,
+      18
+     ],
+     [
+      0,
+      18
+     ]
+    ],
+    "bulges": {
+     "1": -0.3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "combined seed 521",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 6522.60584909917,
+  "hostBox": [
+   0,
+   0,
+   -14,
+   24,
+   20,
+   0
+  ],
+  "occt": 6692.960168593851,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0255,
+   "dBox": 14
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 5
+   }
+  ]
+ },
+ {
+  "id": "combined seed 562",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h7",
+  "host": 5833.97772494209,
+  "hostBox": [
+   5,
+   3,
+   -14,
+   35,
+   19,
+   0
+  ],
+  "occt": 6505.9424958826885,
+  "brep": 5833.9424958826885,
+  "occtOff": {
+   "dVol": 0.103,
+   "dBox": 14
+  },
+  "brepOff": {
+   "dVol": 0.00000604,
+   "dBox": 1.24e-15
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "reversed": true
+   },
+   {
+    "id": "f3",
+    "kind": "fillet",
+    "target": "e2",
+    "edge": {
+     "cause": "between",
+     "feature": "e2",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "e2",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 0.5,
+    "style": "chamfer"
+   },
+   {
+    "id": "sk4",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk5",
+    "kind": "pocket",
+    "target": "sk4",
+    "into": "f3",
+    "depth": 40
+   },
+   {
+    "id": "m6",
+    "kind": "move",
+    "target": "pk5",
+    "offset": [
+     5,
+     3,
+     0
+    ],
+    "copy": false
+   },
+   {
+    "id": "h7",
+    "kind": "hole",
+    "target": "m6",
+    "diameter": 3,
+    "depth": 40,
+    "center": [
+     0,
+     3,
+     0
+    ],
+    "axis": "x"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 569",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 2802.201949699834,
+  "hostBox": [
+   0,
+   0,
+   -3,
+   24,
+   20,
+   3
+  ],
+  "occt": 2868.411500825873,
+  "brep": 2802.205750411731,
+  "occtOff": {
+   "dVol": 0.0231,
+   "dBox": 3
+  },
+  "brepOff": {
+   "dVol": 0.00000136,
+   "dBox": 2.22e-15
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 40
+   }
+  ]
+ },
+ {
+  "id": "combined seed 581",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 4758.605849099283,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   24,
+   20,
+   5
+  ],
+  "occt": 4780.685834709789,
+  "brep": 4758.617251235194,
+  "occtOff": {
+   "dVol": 0.00462,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.0000024,
+   "dBox": 3.55e-15
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 1
+   }
+  ]
+ },
+ {
+  "id": "combined seed 593",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "e2",
+  "host": 7176.263473749059,
+  "hostBox": [
+   -0.7337,
+   -0.7337,
+   0,
+   24.7337,
+   20.7337,
+   14
+  ],
+  "occt": 6716.995574290518,
+  "brep": "refused: extrude e2: a taper or a custom direction is built for a straight-side",
+  "occtOff": {
+   "dVol": 0.0684,
+   "dBox": 0.734
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 1
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 57",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 2010.4400907831944,
+  "hostBox": [
+   2,
+   2,
+   -10,
+   18,
+   18,
+   0
+  ],
+  "occt": 2010.619298297468,
+  "brep": 2010.6192982974662,
+  "occtOff": {
+   "dVol": 0.0000891,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0.0000891,
+   "dBox": 2.22e-15
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      10
+     ],
+     [
+      18,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 147",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "m4",
+  "host": 1899.4320783727105,
+  "hostBox": [
+   -12,
+   -5,
+   -8,
+   4,
+   11,
+   8
+  ],
+  "occt": 2101.7898806362937,
+  "brep": "refused: move m4 cannot find pk3",
+  "occtOff": {
+   "dVol": 0.0963,
+   "dBox": 0
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "s1",
+    "kind": "sphere",
+    "radius": 8,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "plane": "xz",
+    "offset": -3.25,
+    "points": [
+     [
+      5,
+      4
+     ],
+     [
+      13.75,
+      4
+     ],
+     [
+      13.75,
+      7.75
+     ],
+     [
+      5,
+      7.75
+     ]
+    ]
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "target": "skz1",
+    "angle": 90
+   },
+   {
+    "id": "pk3",
+    "kind": "pocket",
+    "target": "sk2",
+    "into": "s1",
+    "depth": 1,
+    "through": true
+   },
+   {
+    "id": "m4",
+    "kind": "move",
+    "target": "pk3",
+    "offset": [
+     -4,
+     3,
+     0
+    ],
+    "copy": false
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 153",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 2184,
+  "hostBox": [
+   0,
+   0,
+   -3,
+   24,
+   24,
+   3
+  ],
+  "occt": 2279.9999999999995,
+  "brep": 2184,
+  "occtOff": {
+   "dVol": 0.0421,
+   "dBox": 3
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 2
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 160",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk6",
+  "host": 7510.141713992688,
+  "hostBox": [
+   0,
+   0,
+   -20,
+   24,
+   16,
+   0
+  ],
+  "occt": 7680,
+  "brep": 7510.117031422124,
+  "occtOff": {
+   "dVol": 0.0221,
+   "dBox": 20
+  },
+  "brepOff": {
+   "dVol": 0.00000329,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      6
+     ],
+     [
+      10,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "target": "sk5",
+    "into": "pk4",
+    "depth": 1
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 182",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e7",
+  "host": 4780.673165665744,
+  "hostBox": [
+   0,
+   0,
+   -5,
+   24,
+   20,
+   5
+  ],
+  "occt": 4780.685834710835,
+  "brep": 4780.6858347057705,
+  "occtOff": {
+   "dVol": 0.00000265,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 0.00000265,
+   "dBox": 5.33e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     24,
+     24,
+     20
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "m2",
+    "kind": "move",
+    "target": "b1",
+    "offset": [
+     0,
+     0,
+     2
+    ],
+    "copy": false
+   },
+   {
+    "id": "b3",
+    "kind": "box",
+    "size": [
+     8,
+     8,
+     6
+    ],
+    "center": [
+     10,
+     0,
+     4
+    ]
+   },
+   {
+    "id": "c4",
+    "kind": "combine",
+    "op": "subtract",
+    "targets": [
+     "m2",
+     "b3"
+    ]
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "plane": "xz",
+    "offset": 0,
+    "points": [
+     [
+      3.75,
+      2.75
+     ],
+     [
+      10.5,
+      2.75
+     ],
+     [
+      10.5,
+      10.75
+     ],
+     [
+      3.75,
+      10.75
+     ]
+    ]
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "target": "skz1",
+    "angle": 360
+   },
+   {
+    "id": "sk6",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e7",
+    "kind": "extrude",
+    "target": "sk6",
+    "height": 10,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 220",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk5",
+  "host": 5066.277897941565,
+  "hostBox": [
+   -2,
+   -13.6603,
+   -7,
+   18,
+   3.6603,
+   13
+  ],
+  "occt": 5083.710267246958,
+  "brep": 5066.2677841392815,
+  "occtOff": {
+   "dVol": 0.00343,
+   "dBox": 3.52e-15
+  },
+  "brepOff": {
+   "dVol": 0.000002,
+   "dBox": 3.64e-15
+  },
+  "pullOptions": [
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "p1",
+    "kind": "prism",
+    "sides": 6,
+    "radius": 10,
+    "height": 20,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      6
+     ],
+     [
+      10,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk3",
+    "kind": "pocket",
+    "target": "sk2",
+    "into": "p1",
+    "depth": 2,
+    "through": true
+   },
+   {
+    "id": "sk4",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk5",
+    "kind": "pocket",
+    "target": "sk4",
+    "into": "pk3",
+    "depth": 5
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 245",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "d4",
+  "host": 2005.7843078565193,
+  "hostBox": [
+   -4,
+   -15.3669,
+   -7,
+   20,
+   5,
+   13
+  ],
+  "occt": 2015.9841300678056,
+  "brep": "refused: brep-rs can only tilt a side wall of an axis-aligned box yet -- d4 is ",
+  "occtOff": {
+   "dVol": 0.00506,
+   "dBox": 5.08e-16
+  },
+  "brepOff": null,
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     24,
+     20,
+     20
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "plane": "xz",
+    "offset": 0,
+    "points": [
+     [
+      7.75,
+      1.5
+     ],
+     [
+      11,
+      1.5
+     ],
+     [
+      11,
+      11.5
+     ],
+     [
+      7.75,
+      11.5
+     ]
+    ]
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "target": "skz1",
+    "angle": 180
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 1,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-x"
+    }
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "target": "s2",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "axis": "z",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   },
+   {
+    "id": "d4",
+    "kind": "draft",
+    "target": "h3",
+    "face": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "-y"
+    },
+    "angle": 3,
+    "pull": "z",
+    "neutral": 0
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 266",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "x7",
+  "host": 7680,
+  "hostBox": [
+   -24,
+   0,
+   -5,
+   24,
+   16,
+   5
+  ],
+  "occt": 7680,
+  "brep": 7679.999999999999,
+  "occtOff": {
+   "dVol": 0,
+   "dBox": 5
+  },
+  "brepOff": {
+   "dVol": 1.18e-16,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "p1",
+    "kind": "prism",
+    "sides": 3,
+    "radius": 10,
+    "height": 20,
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "p1",
+    "thickness": 2
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e6",
+    "kind": "extrude",
+    "target": "sk5",
+    "height": 10,
+    "midplane": true
+   },
+   {
+    "id": "x7",
+    "kind": "mirror",
+    "target": "e6",
+    "plane": "yz"
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 276",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees",
+  "measure": "s3",
+  "host": 4780,
+  "hostBox": [
+   -4,
+   -17,
+   -2,
+   20,
+   7,
+   8
+  ],
+  "occt": "refused",
+  "brep": "refused: Hollowing s3 to 5 thick would collapse it -- the wall has to be under ",
+  "occtOff": null,
+  "brepOff": null,
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     24,
+     24,
+     10
+    ],
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s3",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 5,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "+z"
+    }
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 285",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 2963.804936079198,
+  "hostBox": [
+   -0.3144,
+   -0.3144,
+   0,
+   24.3144,
+   20.3144,
+   6
+  ],
+  "occt": 2880,
+  "brep": 2963.804936079199,
+  "occtOff": {
+   "dVol": 0.0291,
+   "dBox": 0.314
+  },
+  "brepOff": {
+   "dVol": 3.07e-16,
+   "dBox": 7.4e-16
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 294",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "m3",
+  "host": 2751.9063896060875,
+  "hostBox": [
+   -2,
+   -15,
+   -5,
+   18,
+   5,
+   15
+  ],
+  "occt": 4188.790204786391,
+  "brep": 2752.0351645446585,
+  "occtOff": {
+   "dVol": 0.343,
+   "dBox": 3.55e-16
+  },
+  "brepOff": {
+   "dVol": 0.0000468,
+   "dBox": 3.55e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "s1",
+    "kind": "sphere",
+    "radius": 10,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "plane": "xz",
+    "offset": 1,
+    "points": [
+     [
+      4.25,
+      4
+     ],
+     [
+      13.5,
+      4
+     ],
+     [
+      13.5,
+      13.5
+     ],
+     [
+      4.25,
+      13.5
+     ]
+    ]
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "target": "skz1",
+    "angle": 360
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "s1",
+    "thickness": 3
+   },
+   {
+    "id": "m3",
+    "kind": "move",
+    "target": "s2",
+    "offset": [
+     0,
+     0,
+     2
+    ],
+    "copy": false
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 309",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 7568,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   24,
+   24,
+   10
+  ],
+  "occt": 7600.000000000001,
+  "brep": 7568,
+  "occtOff": {
+   "dVol": 0.00421,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 0
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 2
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 345",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4020.784847577326,
+  "hostBox": [
+   2,
+   2,
+   -20,
+   18,
+   18,
+   0
+  ],
+  "occt": 4021.238596594936,
+  "brep": 4021.2385965949325,
+  "occtOff": {
+   "dVol": 0.000113,
+   "dBox": 20
+  },
+  "brepOff": {
+   "dVol": 0.000113,
+   "dBox": 4.44e-15
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "plane": "xz",
+    "offset": 0,
+    "points": [
+     [
+      7.75,
+      3
+     ],
+     [
+      14.25,
+      3
+     ],
+     [
+      14.25,
+      8.75
+     ],
+     [
+      7.75,
+      8.75
+     ]
+    ]
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "target": "skz1",
+    "angle": 90
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      2,
+      10
+     ],
+     [
+      18,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 20,
+    "reversed": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 29",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 2433.384839251515,
+  "hostBox": [
+   -0.5249,
+   -0.5249,
+   0,
+   24.5249,
+   24.5249,
+   6
+  ],
+  "occt": 2280,
+  "brep": 2433.3848392515165,
+  "occtOff": {
+   "dVol": 0.0673,
+   "dBox": 0.525
+  },
+  "brepOff": {
+   "dVol": 5.61e-16,
+   "dBox": 6.11e-15
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "taper": 5
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 53",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 1093.2108722226292,
+  "hostBox": [
+   4,
+   4,
+   -10,
+   16,
+   16,
+   0
+  ],
+  "occt": 1130.9733552923253,
+  "brep": 1093.2742434492493,
+  "occtOff": {
+   "dVol": 0.0334,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0.000058,
+   "dBox": 5.33e-16
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      4,
+      10
+     ],
+     [
+      16,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      10,
+      10
+     ],
+     [
+      14,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 3
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 77",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h5",
+  "host": 4672.1378062986905,
+  "hostBox": [
+   0,
+   0,
+   -7,
+   30,
+   12,
+   7
+  ],
+  "occt": 4955.176998353075,
+  "brep": 4672.10732427311,
+  "occtOff": {
+   "dVol": 0.0571,
+   "dBox": 7
+  },
+  "brepOff": {
+   "dVol": 0.00000652,
+   "dBox": 5.65e-15
+  },
+  "pullOptions": [
+   "midplane",
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      12
+     ],
+     [
+      0,
+      12
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      6,
+      10
+     ],
+     [
+      14,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 1,
+    "through": true
+   },
+   {
+    "id": "h5",
+    "kind": "hole",
+    "target": "pk4",
+    "diameter": 3,
+    "depth": 40,
+    "center": [
+     10,
+     3,
+     5
+    ],
+    "axis": "y"
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 94",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e9",
+  "host": 10551.673718894905,
+  "hostBox": [
+   -1.0482,
+   -1.0482,
+   0,
+   25.0482,
+   21.0482,
+   20
+  ],
+  "occt": 9600,
+  "brep": 10551.67371889491,
+  "occtOff": {
+   "dVol": 0.0991,
+   "dBox": 1.05
+  },
+  "brepOff": {
+   "dVol": 5.17e-16,
+   "dBox": 1.86e-16
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10
+   },
+   {
+    "id": "sk8",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e9",
+    "kind": "extrude",
+    "target": "sk8",
+    "height": 20,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 100",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h4",
+  "host": 28653.9317982182,
+  "hostBox": [
+   -20,
+   -20,
+   -18,
+   20,
+   20,
+   6
+  ],
+  "occt": 28724.601776313844,
+  "brep": 28653.915941608077,
+  "occtOff": {
+   "dVol": 0.00246,
+   "dBox": 1.58e-15
+  },
+  "brepOff": {
+   "dVol": 5.53e-7,
+   "dBox": 1.58e-15
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     40,
+     20,
+     12
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "pt2",
+    "kind": "pattern",
+    "target": "b1",
+    "mode": "circular",
+    "count": 4,
+    "step": [
+     25,
+     0,
+     0
+    ],
+    "axis": "z"
+   },
+   {
+    "id": "x3",
+    "kind": "mirror",
+    "target": "pt2",
+    "plane": "xy"
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "target": "x3",
+    "diameter": 2,
+    "depth": 40,
+    "center": [
+     4,
+     0,
+     0
+    ],
+    "axis": "z",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 114",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 3838.392877890627,
+  "hostBox": [
+   -5,
+   -10,
+   -5,
+   15,
+   10,
+   5
+  ],
+  "occt": 3934.4188669964205,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0244,
+   "dBox": 1.42e-15
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     20,
+     10
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ],
+    "round": 1,
+    "roundStyle": "fillet"
+   },
+   {
+    "id": "m2",
+    "kind": "move",
+    "target": "b1",
+    "offset": [
+     5,
+     0,
+     0
+    ],
+    "copy": false
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      6,
+      0
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "m2",
+    "depth": 1,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 120",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "pk4",
+  "host": 4030.327166679836,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   26,
+   18,
+   0
+  ],
+  "occt": 4350.240821167115,
+  "brep": "refused: pocket pk4: brep-rs cannot cut this pocket yet (the tool is not fully ",
+  "occtOff": {
+   "dVol": 0.0735,
+   "dBox": 10
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed",
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      26,
+      0
+     ],
+     [
+      26,
+      18
+     ],
+     [
+      0,
+      18
+     ]
+    ],
+    "bulges": {
+     "1": -0.3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      0,
+      4
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 40,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 137",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 7182.013492142035,
+  "hostBox": [
+   -0.7337,
+   -0.7337,
+   0,
+   24.7337,
+   20.7337,
+   14
+  ],
+  "occt": 6720,
+  "brep": 7182.0134921420395,
+  "occtOff": {
+   "dVol": 0.0688,
+   "dBox": 0.734
+  },
+  "brepOff": {
+   "dVol": 6.33e-16,
+   "dBox": 6.55e-15
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 156",
+  "verdict": "WRONG",
+  "class": "closed form agrees",
+  "measure": "h5",
+  "host": 3887.1135500355285,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   26,
+   18,
+   0
+  ],
+  "occt": 4067.4974823438547,
+  "brep": "refused: no shape",
+  "occtOff": {
+   "dVol": 0.0443,
+   "dBox": 10
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      26,
+      0
+     ],
+     [
+      26,
+      18
+     ],
+     [
+      0,
+      18
+     ]
+    ],
+    "bulges": {
+     "1": -0.3
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      9,
+      8
+     ],
+     [
+      15,
+      8
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 40
+   },
+   {
+    "id": "h5",
+    "kind": "hole",
+    "target": "pk4",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     -4,
+     0,
+     0
+    ],
+    "axis": "z"
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 161",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4055.2194409977656,
+  "hostBox": [
+   -0.5241,
+   -0.5241,
+   0,
+   24.5241,
+   24.5241,
+   10
+  ],
+  "occt": 3799.999999999999,
+  "brep": 4055.219440997771,
+  "occtOff": {
+   "dVol": 0.0672,
+   "dBox": 0.524
+  },
+  "brepOff": {
+   "dVol": 1.35e-15,
+   "dBox": 1.78e-16
+  },
+  "pullOptions": [
+   "taper"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "taper": 3
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 209",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 4397.733427042028,
+  "hostBox": [
+   0,
+   0,
+   -7,
+   20,
+   20,
+   7
+  ],
+  "occt": 4398.229715025711,
+  "brep": 4398.2297150257145,
+  "occtOff": {
+   "dVol": 0.000113,
+   "dBox": 7
+  },
+  "brepOff": {
+   "dVol": 0.000113,
+   "dBox": 7.11e-15
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      0,
+      10
+     ],
+     [
+      20,
+      10
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 215",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: OCCT",
+  "measure": "pk4",
+  "host": 13313.79584555072,
+  "hostBox": [
+   -4.4188,
+   -17.4188,
+   -12,
+   20.4189,
+   7.4187,
+   18
+  ],
+  "occt": 13314.109919747929,
+  "brep": 13549.742043013204,
+  "occtOff": {
+   "dVol": 0.0000236,
+   "dBox": 0.0000551
+  },
+  "brepOff": {
+   "dVol": 0.0174,
+   "dBox": 0.105
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 12,
+    "height": 30,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "d2",
+    "kind": "draft",
+    "target": "c1",
+    "angle": 2,
+    "pull": "z",
+    "neutral": 0,
+    "whole": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "shape": "circle",
+    "points": [
+     [
+      8,
+      8
+     ],
+     [
+      12,
+      8
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "d2",
+    "depth": 40
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 217",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees",
+  "measure": "s2",
+  "host": 5000,
+  "hostBox": [
+   -10,
+   -15,
+   -5,
+   10,
+   15,
+   5
+  ],
+  "occt": "refused",
+  "brep": "refused: Hollowing s2 to 5 thick would collapse it -- the wall has to be under ",
+  "occtOff": null,
+  "brepOff": null,
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     20,
+     30,
+     10
+    ],
+    "center": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "b1",
+    "thickness": 5,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "+z"
+    }
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 264",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk5",
+  "host": 4680,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   30,
+   16,
+   0
+  ],
+  "occt": 4800,
+  "brep": 4679.999999999999,
+  "occtOff": {
+   "dVol": 0.025,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 1.94e-16,
+   "dBox": 8.88e-16
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      30,
+      0
+     ],
+     [
+      30,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "sk4",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      4,
+      0
+     ],
+     [
+      4,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk5",
+    "kind": "pocket",
+    "target": "sk4",
+    "into": "e2",
+    "depth": 5
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 276",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "pk4",
+  "host": 5040,
+  "hostBox": [
+   0,
+   0,
+   -7,
+   24,
+   16,
+   7
+  ],
+  "occt": 5376,
+  "brep": 5040.000000000001,
+  "occtOff": {
+   "dVol": 0.0625,
+   "dBox": 7
+  },
+  "brepOff": {
+   "dVol": 1.8e-16,
+   "dBox": 1.27e-16
+  },
+  "pullOptions": [
+   "midplane",
+   "through"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14,
+    "midplane": true
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      8,
+      0
+     ],
+     [
+      8,
+      6
+     ],
+     [
+      0,
+      6
+     ]
+    ]
+   },
+   {
+    "id": "pk4",
+    "kind": "pocket",
+    "target": "sk3",
+    "into": "e2",
+    "depth": 5,
+    "through": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 290",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "m3",
+  "host": 1135.0953571996065,
+  "hostBox": [
+   -6,
+   -15,
+   -7,
+   14,
+   5,
+   13
+  ],
+  "occt": 4188.790204786391,
+  "brep": 1135.1621454971137,
+  "occtOff": {
+   "dVol": 0.729,
+   "dBox": 3.55e-16
+  },
+  "brepOff": {
+   "dVol": 0.0000588,
+   "dBox": 3.55e-16
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "s1",
+    "kind": "sphere",
+    "radius": 10,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "target": "s1",
+    "thickness": 1
+   },
+   {
+    "id": "m3",
+    "kind": "move",
+    "target": "s2",
+    "offset": [
+     -4,
+     0,
+     0
+    ],
+    "copy": false
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 310",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees",
+  "measure": "s3",
+  "host": 1860,
+  "hostBox": [
+   0,
+   0,
+   0,
+   20,
+   16,
+   6
+  ],
+  "occt": "refused",
+  "brep": "refused: Hollowing s3 to 5 thick would collapse it -- the wall has to be under ",
+  "occtOff": null,
+  "brepOff": null,
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      20,
+      0
+     ],
+     [
+      20,
+      16
+     ],
+     [
+      0,
+      16
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6
+   },
+   {
+    "id": "s3",
+    "kind": "shell",
+    "target": "e2",
+    "thickness": 5,
+    "open": {
+     "cause": "cap",
+     "feature": "e2",
+     "kind": "face",
+     "end": "bottom"
+    }
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 322",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "f11",
+  "host": 3798.75,
+  "hostBox": [
+   0,
+   0,
+   -10,
+   24,
+   24,
+   0
+  ],
+  "occt": 3798.7499999999995,
+  "brep": 3798.75,
+  "occtOff": {
+   "dVol": 1.2e-16,
+   "dBox": 10
+  },
+  "brepOff": {
+   "dVol": 0,
+   "dBox": 2e-15
+  },
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 14
+   },
+   {
+    "id": "sk9",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      10
+     ],
+     [
+      10,
+      10
+     ],
+     [
+      10,
+      24
+     ],
+     [
+      0,
+      24
+     ]
+    ]
+   },
+   {
+    "id": "e10",
+    "kind": "extrude",
+    "target": "sk9",
+    "height": 10,
+    "reversed": true
+   },
+   {
+    "id": "f11",
+    "kind": "fillet",
+    "target": "e10",
+    "edge": {
+     "cause": "between",
+     "feature": "e10",
+     "kind": "edge",
+     "of": [
+      {
+       "cause": "primitive",
+       "feature": "e10",
+       "kind": "face",
+       "part": "+z"
+      },
+      {
+       "cause": "primitive",
+       "feature": "e10",
+       "kind": "face",
+       "part": "+x"
+      }
+     ]
+    },
+    "size": 0.5,
+    "style": "chamfer"
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 353",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "e2",
+  "host": 2874.846176960784,
+  "hostBox": [
+   0,
+   0,
+   -3,
+   24,
+   20,
+   3
+  ],
+  "occt": 2874.8495559238177,
+  "brep": 2874.849555921539,
+  "occtOff": {
+   "dVol": 0.00000118,
+   "dBox": 3
+  },
+  "brepOff": {
+   "dVol": 0.00000118,
+   "dBox": 4.44e-16
+  },
+  "pullOptions": [
+   "midplane"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 2
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "midplane": true
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 380",
+  "verdict": "ORACLES-SPLIT",
+  "class": "one oracle agrees: brep-rs",
+  "measure": "h2",
+  "host": 3661.4446982940085,
+  "hostBox": [
+   -1.9998,
+   -14.9998,
+   -3,
+   17.9998,
+   4.9998,
+   9
+  ],
+  "occt": 3732.2120724646747,
+  "brep": 3661.526237758904,
+  "occtOff": {
+   "dVol": 0.019,
+   "dBox": 0.0000772
+  },
+  "brepOff": {
+   "dVol": 0.0000223,
+   "dBox": 0.0000772
+  },
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "radius": 10,
+    "height": 12,
+    "center": [
+     8,
+     -5,
+     3
+    ]
+   },
+   {
+    "id": "h2",
+    "kind": "hole",
+    "target": "c1",
+    "diameter": 2,
+    "depth": 40,
+    "center": [
+     0,
+     -3,
+     5
+    ],
+    "axis": "z",
+    "counterbore": {
+     "diameter": 7,
+     "depth": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 392",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees",
+  "measure": "s3",
+  "host": 2705.4169176505584,
+  "hostBox": [
+   -15,
+   -12,
+   7,
+   15,
+   12,
+   17
+  ],
+  "occt": "refused",
+  "brep": "refused: brep-rs cannot hollow s3 at 1 thick: the wall that runs round each hol",
+  "occtOff": null,
+  "brepOff": null,
+  "pullOptions": [],
+  "doc": [
+   {
+    "id": "b1",
+    "kind": "box",
+    "size": [
+     30,
+     24,
+     10
+    ],
+    "center": [
+     0,
+     0,
+     12
+    ]
+   },
+   {
+    "id": "h2",
+    "kind": "hole",
+    "target": "b1",
+    "diameter": 6,
+    "depth": 40,
+    "center": [
+     -4,
+     3,
+     0
+    ],
+    "axis": "x"
+   },
+   {
+    "id": "s3",
+    "kind": "shell",
+    "target": "h2",
+    "thickness": 1,
+    "open": {
+     "cause": "primitive",
+     "feature": "b1",
+     "kind": "face",
+     "part": "+x"
+    }
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 394",
+  "verdict": "WRONG",
+  "class": "reversed pull: OCCT builds the mirror image, the same volume",
+  "measure": "pt6",
+  "host": 16889.799616292228,
+  "hostBox": [
+   -24.8564,
+   -27.0526,
+   -15,
+   47.0001,
+   16,
+   9.0001
+  ],
+  "occt": 16889.80689711383,
+  "brep": "refused: pattern pt6: its copies overlap, and brep-rs cannot join them into one",
+  "occtOff": {
+   "dVol": 4.31e-7,
+   "dBox": 0.667
+  },
+  "brepOff": null,
+  "pullOptions": [
+   "reversed"
+  ],
+  "doc": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "plane": "xy",
+    "offset": 0,
+    "points": [
+     [
+      0,
+      0
+     ],
+     [
+      24,
+      0
+     ],
+     [
+      24,
+      20
+     ],
+     [
+      0,
+      20
+     ]
+    ],
+    "rounds": {
+     "0": 2
+    }
+   },
+   {
+    "id": "e2",
+    "kind": "extrude",
+    "target": "sk1",
+    "height": 6,
+    "reversed": true
+   },
+   {
+    "id": "m3",
+    "kind": "move",
+    "target": "e2",
+    "offset": [
+     0,
+     3,
+     0
+    ],
+    "copy": false
+   },
+   {
+    "id": "rt4",
+    "kind": "rotate",
+    "target": "m3",
+    "angles": [
+     90,
+     90,
+     0
+    ]
+   },
+   {
+    "id": "pt5",
+    "kind": "pattern",
+    "target": "rt4",
+    "mode": "circular",
+    "count": 3,
+    "step": [
+     25,
+     0,
+     0
+    ],
+    "axis": "z"
+   },
+   {
+    "id": "pt6",
+    "kind": "pattern",
+    "target": "pt5",
+    "mode": "linear",
+    "count": 2,
+    "step": [
+     25,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]

@@ -444,3 +444,39 @@ No wrong solid. The 95 that are not a plain RIGHT, each looked at (`new-seeds/fl
 39 final solids judged before the cut, 1411 after. The 1400 documents of the three generators already in the corpora have been scored the first way
 only.
 
+## The corpora's own generated documents, judged on what they build (owner chose it, 2026-11-13)
+
+The same cut applied to the 1400 generated documents already in the corpora (`combinedDoc` 0 to 599, `rgCombinedDoc` and `fcCombinedDoc` 0 to
+399): each cut down to the steps the host route builds, and scored against OCCT and brep-rs (`old-seeds/`). Scored as they were, most of these
+rows end in a refused step; cut down, 1329 final solids are judged and 71 documents build nothing. No step is refused in a cut-down document.
+
+| 1329 final solids | count |
+|---|---|
+| RIGHT: every oracle that built agrees | 1248 |
+| one oracle agrees and the other does not: brep-rs agrees 53, OCCT agrees 2 | 55 |
+| flagged WRONG, and a volume worked out by hand agrees (`old-seeds/closed-forms.mjs`, largest difference 9.9e-5) | 15 |
+| flagged WRONG: a reversed pull; OCCT's solid sits the other way and its volume agrees to 2e-5 or better | 4 |
+| flagged WRONG: a cylinder wall, within 1.4e-4 of the volume and 9e-4 mm of the box of both oracles | 3 |
+| both oracles refuse the hollow, and it equals its closed form | 4 |
+
+No wrong solid. The classes are the ones of the new documents (`old-seeds/flagged.json`):
+
+- Of the 53 where only brep-rs agrees, 41 have a pull or pocket option the OCCT referee does not read (`midplane` 21, `reversed` 12, `taper` 7,
+  `through` 5). In the other 12 (a hole after a hollow, a mirror or a pattern, a hole in a prism or cylinder, a hollowed ball, a draft after
+  a move, a pocket in a hollowed join) OCCT is 2.5e-3 to 0.88 off and brep-rs agrees to 6e-5 or better.
+- The nineteen worked out by hand: seven reversed pulls with pockets and holes, a pull about its mid plane with a through pocket, two tapered
+  pulls, through pockets from the mid plane of a ball (two) and of a rounded box, a hollow with a hole and a drafted wall, and four hollows
+  that both oracles refuse: three boxes hollowed to half their thickness ("would collapse"; 4780, 5000 and 1860 exactly) and a box with a cross
+  bore.
+- The four reversed pulls are `combined seed 50` (on record) and three more of the same kind.
+
+**The page.** The page's final volume for the whole document equals the judged solid in 1327 of the 1329. One is `fc combined seed 246`, where the
+page stops a hole at the 45 s budget that the Node harness does not enforce. The other is `combined seed 452` (a cross bore into a hollowed
+prism): the page gives 324.9935417644 and Node 324.9935425924, 2.5e-9 apart, the same in two page runs; both are RIGHT (OCCT 324.99248). So the web
+build and the Node build of the same engine source are not the same to the last digit on every solid, which the 1e-9 comparison of this report
+would otherwise hide.
+
+**Together**, the 2900 generated documents (1400 old, 1500 new): 2740 final solids judged; 2564 RIGHT by every oracle that built; 130 with one
+oracle agreeing; 35 that agree with a volume worked out by hand; 4 where OCCT's volume agrees and its solid sits the other way; 7 cylinder walls
+within tolerance of the volume and not of the box. Nothing built wrong was found.
+
