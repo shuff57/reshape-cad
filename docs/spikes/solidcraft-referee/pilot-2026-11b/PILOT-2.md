@@ -418,7 +418,7 @@ solid in all 1411 (1e-9); 89 documents build nothing.
 | RIGHT: every oracle that built agrees | 1316 |
 | one oracle agrees and the other does not: brep-rs agrees 73, OCCT agrees 2 | 75 |
 | flagged WRONG (no oracle that built agrees), and a volume worked out by hand agrees | 15 |
-| flagged WRONG: a part with a cylinder wall, the same solid within 2e-4 of the volume and 5e-4 mm of the box | 4 |
+| flagged WRONG: a part with a cylinder wall, the same solid within 2e-4 of the volume and 1.3e-3 mm of the box | 4 |
 | both oracles refuse the hollow; the step before it is RIGHT by both and the hollow equals its closed form | 1 |
 
 No wrong solid. The 95 that are not a plain RIGHT, each looked at (`new-seeds/flagged.json`: the class, both oracles' numbers and the document):
@@ -456,7 +456,7 @@ rows end in a refused step; cut down, 1329 final solids are judged and 71 docume
 | one oracle agrees and the other does not: brep-rs agrees 53, OCCT agrees 2 | 55 |
 | flagged WRONG, and a volume worked out by hand agrees (`old-seeds/closed-forms.mjs`, largest difference 9.9e-5) | 15 |
 | flagged WRONG: a reversed pull; OCCT's solid sits the other way and its volume agrees to 2e-5 or better | 4 |
-| flagged WRONG: a cylinder wall, within 1.4e-4 of the volume and 9e-4 mm of the box of both oracles | 3 |
+| flagged WRONG: a cylinder wall, within 1.4e-4 of the volume and 1.2e-3 mm of the box of both oracles | 3 |
 | both oracles refuse the hollow, and it equals its closed form | 4 |
 
 No wrong solid. The classes are the ones of the new documents (`old-seeds/flagged.json`):
@@ -563,7 +563,7 @@ No verdict moved away from RIGHT at either stage. The 25 that are not a plain RI
 - 9 split, and in all nine it is OCCT that agrees and brep-rs that does not (a hole after a draft or a move of a cylinder or box, a pocket in a
   drafted cylinder, reversed pulls of an outline with a round or a bulge). brep-rs is archived and is not changed.
 - 8 flagged WRONG that are the cylinder wall's accuracy: both oracles agree with each other, the volume is within 1.9e-4 and the box is not
-  within 3e-4 (up to 8.5e-4 mm).
+  within the harness's 3e-4 (which is relative to the coordinate: up to 8.5e-4; in millimetres up to 1.3e-3).
 - 1 flagged WRONG that is a difference of meaning, already on record: a hollow after a counterbore (`fc combined seed 476`). The page route's
   1599.523 is the plane-offset hollow, the reference HALT-7.md fixed with its own oracle (closed form 1599.527); OCCT's 1593.760 rounds the
   wall at the inside corner of the recess, 0.36% away, inside the 0.25 to 0.8% that report measured between the two.
@@ -596,7 +596,8 @@ could not move them.)
 | not RIGHT | 1 | 0 | 3 |
 
 - The three in `mt` are a cone moved twice and moved or turned again (two rows are the same script): 1.8e-4 low in volume against both oracles,
-  which is inside the tolerance, and 3.4e-4 to 3.7e-4 off in the box, which is just outside 3e-4. The cone's wall, like the cylinder's.
+  which is inside the tolerance, and 3.4e-4 to 3.7e-4 off in the box (the harness's relative measure; the same in millimetres here), which is
+  just outside 3e-4. The cone's wall, like the cylinder's.
 - The one in holes is `cb-seq-apart`, flagged in the last sweep too: two counterbored holes, built 30693.220; OCCT and brep-rs both give
   30693.097 (4e-6 apart), and the form for two such holes is 32000 - 2 x 653.451 = 30693.097. It is flagged because the closed form stored
   with the case, 31346.610, is the part after the FIRST hole. A fault of the case table, not of the build.
@@ -608,4 +609,8 @@ refuses for a dimension over 1,000,000 mm.
 that built, 9 with OCCT agreeing and brep-rs not, 11 curved walls (8 cylinders, 3 cones) inside the tolerance on the volume and outside it on
 the box, 1 hollow after a counterbore where OCCT rounds the inside corner, 7 hollows both oracles refuse that equal their closed form, and 1
 case with the wrong closed form stored. Nothing built wrong.
+
+**Correction, 2026-11-13.** Three places above gave the box difference of the cylinder rows in millimetres from the harness's own figure, which is
+relative to the coordinate (`|a - b| / max(|b|, 1)`), not a length. Measured in millimetres the eleven curved-wall rows are 3.2e-4 to 1.3e-3 off
+in the box; the three places now say so. The verdicts and the classes are unchanged.
 
