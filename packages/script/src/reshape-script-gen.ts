@@ -682,6 +682,10 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
     }
     if (f.kind === 'pattern') {
       const countText = numText(bindings, f.id, 'count', lit(f.count));
+      // A pattern FEATURE is always a repeat of the whole part. The script's repeat() of a shape whose last step is a hole, a pocket or a pad repeats that step
+      // instead, unless it is told `whole: true`; so a pattern that targets such a step is written with it, or it would come back as extra holes.
+      const tk = doc.features.find((x) => x.id === f.target)?.kind;
+      const wholeOpt = tk === 'hole' || tk === 'pocket' || tk === 'combine' ? ', whole: true' : '';
       if (f.mode === 'linear') {
         const step = f.step ?? [0, 0, 0];
         // Only the bare-number shorthand (`step: N`, meaning [N, 0, 0]) is
@@ -692,13 +696,13 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
           step[1] === 0 && step[2] === 0
             ? numText(bindings, f.id, 'stepx', lit(step[0]))
             : litVec(step);
-        lines.push(`linearPattern(${v(f.target)}, { count: ${countText}, step: ${stepArg} })`);
+        lines.push(`linearPattern(${v(f.target)}, { count: ${countText}, step: ${stepArg}${wholeOpt} })`);
       } else {
         const angle =
           f.totalAngle !== undefined && f.totalAngle !== 360
             ? `, angle: ${numText(bindings, f.id, 'totalangle', lit(f.totalAngle))}`
             : '';
-        lines.push(`polarPattern(${v(f.target)}, { count: ${countText}, axis: '${f.axis ?? 'z'}'${angle} })`);
+        lines.push(`polarPattern(${v(f.target)}, { count: ${countText}, axis: '${f.axis ?? 'z'}'${angle}${wholeOpt} })`);
       }
       return;
     }

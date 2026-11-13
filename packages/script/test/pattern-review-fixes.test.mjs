@@ -73,7 +73,7 @@ test('B2: mirror, repeat and repeatAround of a hole on a slanted or tapered pull
     for (const tail of ["mirror(h, 'left-right', { at: 0 })", 'repeat(h, { count: 2, step: 10 })', "repeatAround(h, { count: 2, axis: 'z' })"]) {
       const r = runScript(head + tail);
       assert.equal(r.errors.length, 1, `${opts} ${tail}`);
-      assert.match(msg(r), new RegExp(`the part it drills was pulled ${how}, so brep-rs cannot yet tell where the middle of the part is`), `${opts} ${tail}`);
+      assert.match(msg(r), new RegExp(`the part it drills was pulled ${how}, so the middle of the part is not known`), `${opts} ${tail}`);
       assert.equal(kinds(r, 'hole').length, 1, 'the original hole stays; no copy is added');
     }
   }

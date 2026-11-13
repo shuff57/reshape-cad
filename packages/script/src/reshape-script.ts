@@ -2518,7 +2518,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       const pinched = 'c' in a && 'c' in b
         && Math.hypot(a.c[0] - b.c[0], a.c[1] - b.c[1]) >= (a.r + b.r) * (1 - 1e-3);
       if (flatsTouch(a, b) && (!circlesOverlapCleanly || pinched)) {
-        refuse(`copy ${i + 1} and copy ${j + 1} of the cut overlap each other, so brep-rs cannot yet join overlapping cuts into the same single part FreeCAD gives`);
+        refuse(`copy ${i + 1} and copy ${j + 1} of the cut overlap each other, which is not supported yet`);
       }
     }
     // ---- does each copy land on the part? ----
@@ -2610,11 +2610,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         lo = Math.min(lo, r.lo); hi = Math.max(hi, r.hi);
       }
       if (!exactAll || !(hi > lo)) {
-        refuse('brep-rs cannot yet tell exactly where the part ends along the mirror direction, so it cannot tell where the copy would land');
+        refuse('the size of the part along the mirror direction is not known exactly, so where the copy would land is not known either');
       }
       const src = pk as PocketFeature;
       if (src.direction || src.taper || src.midplane || src.length2 !== undefined) {
-        refuse('the cut is slanted, tapered, symmetric or two-sided, and a reflection through a parallel plane has not been matched against FreeCAD for those yet');
+        refuse('the cut is slanted, tapered, symmetric or two-sided, and mirroring such a cut to the other side of the part is not supported yet');
       }
       const sweep = sk.frame ? 1 : (SWEEP_DIR[sk.plane ?? 'xy'] ?? 1);
       const cutDir = -fr.n[flipAxis] * sweep * (src.reversed ? -1 : 1);
@@ -2634,7 +2634,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       if (a1 <= b0 + E && a0 <= b1 + E) {
         const covers = a0 <= lo + E && b0 >= hi - E;
         if (src.through && covers) dropped.add(1);
-        else refuse('the copy meets the original cut along the part, so brep-rs cannot yet join them into the one cut FreeCAD gives');
+        else refuse('the copy meets the original cut, and joining the two into one cut is not supported yet');
       }
     }
     const known = members.filter((m): m is Member & { flat: Flat } => m.flat !== null);
@@ -2650,10 +2650,10 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       && members.every((m) => m.kind === 'extrude');
     const what = isPad ? 'pad' : 'cut';
     const reach = (n: number) => members.length > 1
-      ? `copy ${n} of the ${what} runs across where two shapes of the part are joined, or reaches the part's edge, so brep-rs cannot yet match the faces FreeCAD gives there`
+      ? `copy ${n} of the ${what} runs across where two shapes of the part are joined, or reaches the part's edge, which is not supported yet`
       : isPad
-        ? `copy ${n} of the pad reaches the edge of the part, so brep-rs cannot yet join it over an edge and match the face count FreeCAD gives`
-        : `copy ${n} of the cut reaches the edge of the part, so brep-rs cannot yet cut through an edge and match the face count FreeCAD gives`;
+        ? `copy ${n} of the pad reaches the edge of the part, which is not supported yet`
+        : `copy ${n} of the cut reaches the edge of the part, which is not supported yet`;
     const off = (n: number) => isPad
       ? `copy ${n} of the pad lies wholly off the part, so it would stand apart from it`
       : `copy ${n} of the cut lies wholly off the part, so it would cut nothing`;
@@ -2773,7 +2773,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
   ): SolidHandle | null {
     const hf = findFeature(target.id) as HoleFeature;
     const refuse = (why: string): never => {
-      throw new Error(`${fn}() of a hole drills a copy of the hole at each place, and ${why}. Drill the extra holes yourself, one hole(...) each.`);
+      throw new Error(`${fn}() of a hole drills a copy of the hole at each place, and ${why}. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.`);
     };
     if (hf.corners) refuse('a hole made by holes() already drills four at once, which cannot be repeated as a unit');
     const ax = hf.axis;
@@ -2803,7 +2803,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         // the sketch outline, so the middle of the outline is not the middle of the part (a slant shifts it by half the slide),
         // and the outline does not bound where the walls are: a copy placed from it would land in the wrong place.
         if (cur.taper || cur.direction) {
-          refuse(`the part it drills was pulled ${cur.taper && cur.direction ? 'with a taper and along a slant' : cur.taper ? 'with a taper' : 'along a slant'}, so brep-rs cannot yet tell where the middle of the part is, and a hole is placed from the middle`);
+          refuse(`the part it drills was pulled ${cur.taper && cur.direction ? 'with a taper and along a slant' : cur.taper ? 'with a taper' : 'along a slant'}, so the middle of the part is not known, and a hole is placed from the middle`);
         }
         const hs = findFeature(cur.target);
         if (hs.kind === 'sketch' && !(hs.geoms && hs.geoms.length) && !(hs.geom && hs.geom.length)) {
@@ -2815,7 +2815,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       break;
     }
     // a host this lowering cannot measure (a cylinder, a revolve, ...): hand back to the whole-shape pattern, which built these before
-    if (!hostSk && !hostBox && !hostCyl) return refuse('brep-rs cannot yet find where the middle of the part is, and a hole is placed from the middle');
+    if (!hostSk && !hostBox && !hostCyl) return refuse('the middle of this kind of part is not known here, and a hole is placed from the middle');
     let hostFlat: Flat;
     if (hostCyl) {
       hostFlat = { c: [hostCyl.center[ix[0]], hostCyl.center[ix[1]]], r: hostCyl.radius };
@@ -2843,10 +2843,10 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     for (let k = 0; k < count; k++) places.push(k === 0 ? o0 : shift(ax, c2, o0, k));
     const flats: Flat[] = places.map((o) => ({ c: [c2[0] + o[0], c2[1] + o[1]] as [number, number], r }));
     for (let i = 0; i < flats.length; i++) for (let j = i + 1; j < flats.length; j++) {
-      if (flatsTouch(flats[i], flats[j])) refuse(`copy ${i + 1} and copy ${j + 1} of the hole overlap each other, so brep-rs cannot yet join overlapping holes into the same single part FreeCAD gives`);
+      if (flatsTouch(flats[i], flats[j])) refuse(`copy ${i + 1} and copy ${j + 1} of the hole overlap each other, which is not supported yet`);
     }
     flats.forEach((fl, i) => {
-      if (!flatInside(fl, hostFlat)) refuse(`copy ${i + 1} of the hole reaches the edge of the part, so brep-rs cannot yet cut through an edge and match the face count FreeCAD gives`);
+      if (!flatInside(fl, hostFlat)) refuse(`copy ${i + 1} of the hole reaches the edge of the part, which is not supported yet`);
     });
     // a hole is placed from the middle of the part it drills, so only later cuts (which leave the middle where it was) may sit
     // between this hole and its copies; a later pad could move the middle
@@ -2867,10 +2867,12 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function repeat(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('repeat() needs a shape: repeat(shape, { count: 3, step: 60 }).');
-    const extra = readOptions('repeat', ['count', 'step'], opts);
+    const extra = readOptions('repeat', ['count', 'step', 'whole'], opts);
+    // whole: true (owner decision 2026-11-12, as draft() has it): repeat the PART with its holes and pockets, not the last hole or pocket
+    const whole = extra.whole === true;
     if (extra.count === undefined) throw new Error('repeat() needs { count: <number> }.');
     const count = wholeNumberAtLeastOne('repeat', 'count', extra.count);
-    if (isPocketTarget(target)) {
+    if (!whole && isPocketTarget(target)) {
       let st: Vec3 = [0, 0, 0];
       if (extra.step !== undefined) {
         st = typeof extra.step === 'number' || extra.step instanceof Number
@@ -2879,7 +2881,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       }
       return patternOfCut('repeat', target, count, (k) => (p) => [p[0] + st[0] * k, p[1] + st[1] * k, p[2] + st[2] * k], () => true, false, true);
     }
-    if (isHoleTarget(target)) {
+    if (!whole && isHoleTarget(target)) {
       let st: Vec3 = [0, 0, 0];
       if (extra.step !== undefined) {
         st = typeof extra.step === 'number' || extra.step instanceof Number
@@ -2911,10 +2913,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function repeatAround(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('repeatAround() needs a shape: repeatAround(shape, { count: 6, axis: "z" }).');
-    const extra = readOptions('repeatAround', ['count', 'axis', 'angle'], opts);
+    const extra = readOptions('repeatAround', ['count', 'axis', 'angle', 'whole'], opts);
+    const whole = extra.whole === true; // repeat the part with its holes and pockets, not the last hole or pocket (see repeat())
     if (extra.count === undefined) throw new Error('repeatAround() needs { count: <number> }.');
     const count = wholeNumberAtLeastOne('repeatAround', 'count', extra.count);
-    if (isPocketTarget(target)) {
+    if (!whole && isPocketTarget(target)) {
       const ax = extra.axis === undefined ? 'z' : extra.axis;
       if (ax !== 'x' && ax !== 'y' && ax !== 'z') {
         throw new Error(`repeatAround()'s "axis" has to be 'x', 'y' or 'z'. You gave it ${describe(extra.axis)}.`);
@@ -2930,7 +2933,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
         false, false, true,
       );
     }
-    if (isHoleTarget(target)) {
+    if (!whole && isHoleTarget(target)) {
       const ax = extra.axis === undefined ? 'z' : extra.axis;
       if (ax !== 'x' && ax !== 'y' && ax !== 'z') {
         throw new Error(`repeatAround()'s "axis" has to be 'x', 'y' or 'z'. You gave it ${describe(extra.axis)}.`);
