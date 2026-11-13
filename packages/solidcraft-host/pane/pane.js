@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -326,7 +326,7 @@ async function runSC(cmds, opts) {
 const runLog = [];
 
 // ---- render --------------------------------------------------------------------------------------------------
-function showFeatures(tr) {
+function showFeatures(tr, notes = new Map()) {
   const evid = [];
   const rows = tr.features.map((f) => {
     const fmtP = (p) => (Array.isArray(p) ? `(${p.map((v) => (Math.abs(v) < 1e-9 ? 0 : +v.toFixed(4))).join(', ')})` : '-');
@@ -342,7 +342,8 @@ function showFeatures(tr) {
     // what a student reads: the step's own name for its kind, built or not built, and the sentence when it was not built
     const kind = f.kind === 'fillet' ? (/^bevel/.test(f.id) ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind;
     const result = f.status === 'refused' ? 'not built' : f.status === 'built' ? 'built' : '';
-    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? '' : f.kind === 'sketch' ? 'drawn; it is built by the step that uses it' : '';
+    // a built step says nothing, except where the page has something the student should know (notes: a shape placed by default, a join that joins nothing)
+    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? esc(notes.get(f.id) ?? '') : f.kind === 'sketch' ? 'drawn; it is built by the step that uses it' : '';
     return `<tr><td>${esc(f.id)}</td><td>${esc(kind)}</td><td class="${esc(f.status)}" style="white-space:nowrap">${esc(result)}</td><td>${note}</td></tr>`;
   }).join('');
   $('features').innerHTML = `<table><tr><th>step</th><th>kind</th><th>result</th><th>what happened</th></tr>${rows}</table>`;
@@ -362,7 +363,7 @@ function showResult(r, steps, extra) {
   // upstream's measure reply has no total (it showed "undefined mm3"): the total is the sum over the bodies it does report
   const vol = bodies.length ? `${fmt(m?.volume_mm3 ?? m?.volume ?? bodies.reduce((t, b) => t + b.volume_mm3, 0), 3)} mm3` : '-';
   const rows = [
-    ['pieces', String(bodies.length)],
+    ['pieces', String(pieceCount(bodies))], // lumps, not bodies: a join of shapes that do not touch is one body in several pieces
     ['volume', vol],
     ['size', bb ? `${num(bb[3] - bb[0])} x ${num(bb[4] - bb[1])} x ${num(bb[5] - bb[2])} mm` : '-'],
     ['faces', String(bodies.reduce((s, b) => s + b.faces, 0))],
@@ -613,7 +614,17 @@ async function run({ confirmed = false } = {}) {
     const fin = await runSC(tr.commands);
     keepNext = false;
     $('cmds').textContent = JSON.stringify(tr.commands, null, 1);
-    showFeatures(tr);
+    // where a shape without at: went (placement.mjs): a hint on a pocket, keep() or groove that missed such a part, a note on the shape's own step, and a note on a
+    // join of two shapes that do not touch
+    const placed = placedMap(fromExample ? [] : r.placed);
+    for (const f of tr.features) { const h = placementHint(f, doc, placed); if (h) f.refusal = h; }
+    const notes = new Map();
+    for (const f of tr.features) {
+      if (f.status !== 'built') continue;
+      const n = shapeNote(doc.features.find((x) => x.id === f.id), placed) ?? joinApartNote(f, doc, tr.features, fin?.measure?.bodies ?? []);
+      if (n) notes.set(f.id, n);
+    }
+    showFeatures(tr, notes);
     const refused = tr.features.filter((f) => f.status === 'refused');
     // solver reports: the accepted sketches (from the final run) and, for a refused feature, the sketch as it stood at the failure
     const rows = [];
@@ -642,7 +653,7 @@ async function run({ confirmed = false } = {}) {
     summary = {
       id: ex?.id ?? null, ok: fin.ok, verdict: v.text, pass: v.pass, dofMatch: v.dofMatch ?? null, detail: v.detail ?? '',
       volume: bodies.reduce((s, b) => s + b.volume_mm3, 0), bodies: bodies.map((b) => ({ name: b.name, volume: b.volume_mm3, faces: b.faces, bbox: b.bbox, com: b.center_of_mass ?? b.com ?? null })), bbox: bboxOf(bodies),
-      features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, pickedFrom: f.pickedFrom ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
+      features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, note: notes.get(f.id) ?? null, pickedFrom: f.pickedFrom ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
       refusals: refused.map((f) => f.refusal), sketches: rows.map((x) => ({ sketch: x.id, state: x.label, status: x.status, dof: x.dof, failing: x.failing, redundant: x.redundant, resid: x.resid, worstRes: x.worstRes, profiles: x.profiles, rule: x.rule, ownDof: x.ownDof })),
       sketchCheck: checks,
       refusedCommand: failedCmd ?? null, commands: tr.commands.length,

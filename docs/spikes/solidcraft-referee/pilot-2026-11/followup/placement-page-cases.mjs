@@ -1,0 +1,18 @@
+export const CASES = [
+  { id: 'join-plate-peg', script: `const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nunion(plate, peg)` },
+  { id: 'cut-block-cutter', script: `const b = box(40, 40, 20)\nconst c = cylinder(10, 30)\nsubtract(b, c)` },
+  { id: 'pocket-second-box', script: `const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10)\npocket(sk, b, 5)` },
+  { id: 'two-boxes-only', script: `const a = box(40, 40, 20)\nconst b = box(10, 10, 10)` },
+  { id: 'pull-then-box', script: `const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)` },
+  { id: 'box-then-pull', script: `const b = box(10, 10, 10)\nconst sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)` },
+  { id: 'join-with-at', script: `const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 10] })\nunion(plate, peg)` },
+  { id: 'intersect-two', script: `const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)` },
+  { id: 'groove-second-box', script: `const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sg = sketch('front')\nsg.polygon([[10, 2], [16, 2], [16, 8], [10, 8]])\ngroove(sg, b, 360)` },
+  { id: 'three-shapes', script: `const a = box(40, 40, 20)\nconst b = cylinder(10, 30)\nconst c = sphere(20)` },
+  { id: 'join-plate-peg-then-hole', script: `const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nconst j = union(plate, peg)\nhole(j, { across: 4 })` },
+  { id: 'keep-second-box', script: `const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)` },
+  { id: 'pocket-with-at', script: `const o = box(20, 20, 5)\nconst b = box(40, 40, 20, { at: [0, 0, 0] })\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)` },
+  { id: 'pocket-first-shape', script: `const b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)` },
+  { id: 'join-three-apart', script: `const a = box(10, 10, 10)\nconst b = box(10, 10, 10)\nconst c = box(10, 10, 10)\nunion(a, b, c)` },
+  { id: 'join-touching', script: `const a = box(20, 20, 10)\nconst b = box(20, 20, 10, { at: [15, 0, 0] })\nunion(a, b)` },
+];

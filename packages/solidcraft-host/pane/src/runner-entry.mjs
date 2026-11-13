@@ -20,6 +20,8 @@ window.addEventListener('message', (e) => {
     // replays what was WRITTEN from it, docs/spikes/solidcraft-referee/GUARD-SD5-DOF1.md)
     warnings: (r.warnings ?? []).map(String),
     ruleLog: r.errors.length ? [] : (r.ruleLog ?? []),
+    // the shapes that had no at: and were placed beside an earlier one (RunResult.placed), for the page's note on where a shape went
+    placed: r.errors.length ? [] : (r.placed ?? []),
   }, '*');
 });
 window.parent.postMessage({ source: 'reshape-runner-ready' }, '*');

@@ -1,0 +1,288 @@
+[
+ {
+  "id": "join-plate-peg",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nunion(plate, peg)",
+  "ms": 2022,
+  "status": "built",
+  "volume": 13570.53541173428,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\t\nop1\tcombine\tbuilt\t"
+ },
+ {
+  "id": "cut-block-cutter",
+  "script": "const b = box(40, 40, 20)\nconst c = cylinder(10, 30)\nsubtract(b, c)",
+  "ms": 1303,
+  "status": "built with 1 step not built",
+  "volume": 34355.80311760145,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\t\nop1\tcombine\tnot built\tThe cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap."
+ },
+ {
+  "id": "pocket-second-box",
+  "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10)\npocket(sk, b, 5)",
+  "ms": 1236,
+  "status": "built with 1 step not built",
+  "volume": 34000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npocket1\tpocket\tnot built\tpocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction"
+ },
+ {
+  "id": "two-boxes-only",
+  "script": "const a = box(40, 40, 20)\nconst b = box(10, 10, 10)",
+  "ms": 1116,
+  "status": "built",
+  "volume": 33000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t"
+ },
+ {
+  "id": "pull-then-box",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)",
+  "ms": 1261,
+  "status": "built",
+  "volume": 13000,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\t"
+ },
+ {
+  "id": "box-then-pull",
+  "script": "const b = box(10, 10, 10)\nconst sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)",
+  "ms": 1239,
+  "status": "built",
+  "volume": 13000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t"
+ },
+ {
+  "id": "join-with-at",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 10] })\nunion(plate, peg)",
+  "ms": 2027,
+  "status": "built",
+  "volume": 13374.218485267489,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\t\nop1\tcombine\tbuilt\t"
+ },
+ {
+  "id": "intersect-two",
+  "script": "const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)",
+  "ms": 1115,
+  "status": "built with 1 step not built",
+  "volume": 44000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The two shapes do not overlap, so keeping their overlap leaves nothing."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nop1\tcombine\tnot built\tThe two shapes do not overlap, so keeping their overlap leaves nothing."
+ },
+ {
+  "id": "groove-second-box",
+  "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sg = sketch('front')\nsg.polygon([[10, 2], [16, 2], [16, 8], [10, 8]])\ngroove(sg, b, 360)",
+  "ms": 1566,
+  "status": "built with 1 step not built",
+  "volume": 34000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "groove1",
+    "kind": "groove",
+    "status": "refused",
+    "refusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove."
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\ngroove1\tgroove\tnot built\tgroove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove."
+ },
+ {
+  "id": "three-shapes",
+  "script": "const a = box(40, 40, 20)\nconst b = cylinder(10, 30)\nconst c = sphere(20)",
+  "ms": 2699,
+  "status": "built",
+  "volume": 38544.29620326245,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "refusal": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\t\nball1\tsphere\tbuilt\t"
+ }
+]

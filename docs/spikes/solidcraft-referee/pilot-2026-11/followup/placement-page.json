@@ -1,0 +1,1049 @@
+[
+ {
+  "id": "join-plate-peg",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nunion(plate, peg)",
+  "ms": 1906,
+  "status": "built",
+  "volume": 13570.53541173428,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "box1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\tno at: given, so it was placed beside box1; its centre is at [50, 0, 0]\nop1\tcombine\tbuilt\tbox1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap",
+  "card": "pieces\n2\nvolume\n13570.535 mm3\nsize\n85 x 40 x 20 mm\nfaces\n9\nsteps built\n3 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    13570.53541173428,
+    9,
+    {
+     "max": [
+      54.99992278106621,
+      20,
+      10.000000000000007
+     ],
+     "min": [
+      -30,
+      -20,
+      -10.000000000000012
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "cut-block-cutter",
+  "script": "const b = box(40, 40, 20)\nconst c = cylinder(10, 30)\nsubtract(b, c)",
+  "ms": 1304,
+  "status": "built with 1 step not built",
+  "volume": 34355.80311760145,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap.",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\tno at: given, so it was placed beside box1; its centre is at [40, 0, 0]\nop1\tcombine\tnot built\tThe cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap.",
+  "card": "pieces\n2\nvolume\n34355.803 mm3\nsize\n65 x 40 x 30 mm\nfaces\n9\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ],
+   [
+    "b_cyl1",
+    2355.8031176014483,
+    3,
+    {
+     "max": [
+      44.9999227810662,
+      4.9998656687032135,
+      15.000000000000009
+     ],
+     "min": [
+      35.000077218933804,
+      -4.9998656687032135,
+      -15.00000000000003
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pocket-second-box",
+  "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10)\npocket(sk, b, 5)",
+  "ms": 1228,
+  "status": "built with 1 step not built",
+  "volume": 34000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction (box2 has no at:, so it was placed beside box1 with its centre at [40, 0, 0]).",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [40, 0, 0]\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npocket1\tpocket\tnot built\tpocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction (box2 has no at:, so it was placed beside box1 with its centre at [40, 0, 0]).",
+  "card": "pieces\n2\nvolume\n34000.000 mm3\nsize\n70 x 40 x 20 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    2000,
+    6,
+    {
+     "max": [
+      10,
+      10,
+      2.5
+     ],
+     "min": [
+      -10,
+      -10,
+      -2.5
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    32000,
+    6,
+    {
+     "max": [
+      60,
+      20,
+      10
+     ],
+     "min": [
+      20,
+      -20,
+      -10
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "two-boxes-only",
+  "script": "const a = box(40, 40, 20)\nconst b = box(10, 10, 10)",
+  "ms": 1188,
+  "status": "built",
+  "volume": 33000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [50, 0, 0]",
+  "card": "pieces\n2\nvolume\n33000.000 mm3\nsize\n75 x 40 x 20 mm\nfaces\n12\nsteps built\n2 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    1000,
+    6,
+    {
+     "max": [
+      55,
+      5,
+      5
+     ],
+     "min": [
+      45,
+      -5,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pull-then-box",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)",
+  "ms": 1254,
+  "status": "built",
+  "volume": 13000,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\t",
+  "card": "pieces\n2\nvolume\n13000.000 mm3\nsize\n40 x 30 x 15 mm\nfaces\n12\nsteps built\n2 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_pull1",
+    12000,
+    6,
+    {
+     "max": [
+      20,
+      15,
+      10
+     ],
+     "min": [
+      -20,
+      -15,
+      0
+     ]
+    }
+   ],
+   [
+    "b_box1",
+    1000,
+    6,
+    {
+     "max": [
+      5,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "box-then-pull",
+  "script": "const b = box(10, 10, 10)\nconst sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)",
+  "ms": 1210,
+  "status": "built",
+  "volume": 13000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t",
+  "card": "pieces\n2\nvolume\n13000.000 mm3\nsize\n40 x 30 x 15 mm\nfaces\n12\nsteps built\n2 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    1000,
+    6,
+    {
+     "max": [
+      5,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    }
+   ],
+   [
+    "b_pull1",
+    12000,
+    6,
+    {
+     "max": [
+      20,
+      15,
+      10
+     ],
+     "min": [
+      -20,
+      -15,
+      0
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "join-with-at",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 10] })\nunion(plate, peg)",
+  "ms": 2064,
+  "status": "built",
+  "volume": 13374.218485267489,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\t\nop1\tcombine\tbuilt\t",
+  "card": "pieces\n1\nvolume\n13374.218 mm3\nsize\n60 x 40 x 22.5 mm\nfaces\n8\nsteps built\n3 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    13374.218485267489,
+    8,
+    {
+     "max": [
+      30,
+      20,
+      20.00000000000001
+     ],
+     "min": [
+      -30,
+      -20.000000000000004,
+      -2.5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "intersect-two",
+  "script": "const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)",
+  "ms": 1167,
+  "status": "built with 1 step not built",
+  "volume": 44000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The two shapes do not overlap, so keeping their overlap leaves nothing (box2 has no at:, so it was placed beside box1 with its centre at [50, 0, 0]).",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [50, 0, 0]\nop1\tcombine\tnot built\tThe two shapes do not overlap, so keeping their overlap leaves nothing (box2 has no at:, so it was placed beside box1 with its centre at [50, 0, 0]).",
+  "card": "pieces\n2\nvolume\n44000.000 mm3\nsize\n80 x 40 x 30 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    12000,
+    6,
+    {
+     "max": [
+      60,
+      10,
+      15
+     ],
+     "min": [
+      40,
+      -10,
+      -15
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "groove-second-box",
+  "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sg = sketch('front')\nsg.polygon([[10, 2], [16, 2], [16, 8], [10, 8]])\ngroove(sg, b, 360)",
+  "ms": 1604,
+  "status": "built with 1 step not built",
+  "volume": 34000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "groove1",
+    "kind": "groove",
+    "status": "refused",
+    "refusal": "groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove (box2 has no at:, so it was placed beside box1 with its centre at [40, 0, 0]).",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [40, 0, 0]\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\ngroove1\tgroove\tnot built\tgroove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove (box2 has no at:, so it was placed beside box1 with its centre at [40, 0, 0]).",
+  "card": "pieces\n2\nvolume\n34000.000 mm3\nsize\n70 x 40 x 20 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    2000,
+    6,
+    {
+     "max": [
+      10,
+      10,
+      2.5
+     ],
+     "min": [
+      -10,
+      -10,
+      -2.5
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    32000,
+    6,
+    {
+     "max": [
+      60,
+      20,
+      10
+     ],
+     "min": [
+      20,
+      -20,
+      -10
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "three-shapes",
+  "script": "const a = box(40, 40, 20)\nconst b = cylinder(10, 30)\nconst c = sphere(20)",
+  "ms": 2638,
+  "status": "built",
+  "volume": 38544.29620326245,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "ball1",
+    "kind": "sphere",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside cyl1; its centre is at [70, 0, 0]"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\tno at: given, so it was placed beside box1; its centre is at [40, 0, 0]\nball1\tsphere\tbuilt\tno at: given, so it was placed beside cyl1; its centre is at [70, 0, 0]",
+  "card": "pieces\n3\nvolume\n38544.296 mm3\nsize\n100 x 40 x 30 mm\nfaces\n10\nsteps built\n3 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ],
+   [
+    "b_cyl1",
+    2355.8031176014483,
+    3,
+    {
+     "max": [
+      44.9999227810662,
+      4.9998656687032135,
+      15.000000000000009
+     ],
+     "min": [
+      35.000077218933804,
+      -4.9998656687032135,
+      -15.00000000000003
+     ]
+    }
+   ],
+   [
+    "b_ball1",
+    4188.493085660997,
+    1,
+    {
+     "max": [
+      80,
+      10,
+      10
+     ],
+     "min": [
+      60,
+      -10,
+      -10
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "join-plate-peg-then-hole",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nconst j = union(plate, peg)\nhole(j, { across: 4 })",
+  "ms": 2176,
+  "status": "built with 1 step not built",
+  "volume": 13570.53541173428,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "box1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\ncyl1\tcylinder\tbuilt\tno at: given, so it was placed beside box1; its centre is at [50, 0, 0]\nop1\tcombine\tbuilt\tbox1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap\nhole1\thole\tnot built\thole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first.",
+  "card": "pieces\n2\nvolume\n13570.535 mm3\nsize\n85 x 40 x 20 mm\nfaces\n9\nsteps built\n3 of 4",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    13570.53541173428,
+    9,
+    {
+     "max": [
+      54.99992278106621,
+      20,
+      10.000000000000007
+     ],
+     "min": [
+      -30,
+      -20,
+      -10.000000000000012
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "keep-second-box",
+  "script": "const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)",
+  "ms": 1143,
+  "status": "built with 1 step not built",
+  "volume": 44000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The two shapes do not overlap, so keeping their overlap leaves nothing (box2 has no at:, so it was placed beside box1 with its centre at [50, 0, 0]).",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [50, 0, 0]\nop1\tcombine\tnot built\tThe two shapes do not overlap, so keeping their overlap leaves nothing (box2 has no at:, so it was placed beside box1 with its centre at [50, 0, 0]).",
+  "card": "pieces\n2\nvolume\n44000.000 mm3\nsize\n80 x 40 x 30 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    12000,
+    6,
+    {
+     "max": [
+      60,
+      10,
+      15
+     ],
+     "min": [
+      40,
+      -10,
+      -15
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pocket-with-at",
+  "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20, { at: [0, 0, 0] })\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)",
+  "ms": 1253,
+  "status": "built with 1 step not built",
+  "volume": 34000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npocket1\tpocket\tnot built\tpocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction",
+  "card": "pieces\n2\nvolume\n34000.000 mm3\nsize\n40 x 40 x 20 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    2000,
+    6,
+    {
+     "max": [
+      10,
+      10,
+      2.5
+     ],
+     "min": [
+      -10,
+      -10,
+      -2.5
+     ]
+    }
+   ],
+   [
+    "b_box2",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pocket-first-shape",
+  "script": "const b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)",
+  "ms": 1165,
+  "status": "built with 1 step not built",
+  "volume": 32000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npocket1\tpocket\tnot built\tpocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction",
+  "card": "pieces\n1\nvolume\n32000.000 mm3\nsize\n40 x 40 x 20 mm\nfaces\n6\nsteps built\n1 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    32000,
+    6,
+    {
+     "max": [
+      20,
+      20,
+      10
+     ],
+     "min": [
+      -20,
+      -20,
+      -10
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "join-three-apart",
+  "script": "const a = box(10, 10, 10)\nconst b = box(10, 10, 10)\nconst c = box(10, 10, 10)\nunion(a, b, c)",
+  "ms": 1674,
+  "status": "built",
+  "volume": 3000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [35, 0, 0]"
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box2; its centre is at [70, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\tno at: given, so it was placed beside box1; its centre is at [35, 0, 0]\nbox3\tbox\tbuilt\tno at: given, so it was placed beside box2; its centre is at [70, 0, 0]\nop1\tcombine\tbuilt\t",
+  "card": "pieces\n3\nvolume\n3000.000 mm3\nsize\n80 x 10 x 10 mm\nfaces\n18\nsteps built\n4 of 4",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    3000,
+    18,
+    {
+     "max": [
+      75,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "join-touching",
+  "script": "const a = box(20, 20, 10)\nconst b = box(20, 20, 10, { at: [15, 0, 0] })\nunion(a, b)",
+  "ms": 1591,
+  "status": "built",
+  "volume": 7000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nbox1\tbox\tbuilt\t\nbox2\tbox\tbuilt\t\nop1\tcombine\tbuilt\t",
+  "card": "pieces\n1\nvolume\n7000.000 mm3\nsize\n35 x 20 x 10 mm\nfaces\n6\nsteps built\n3 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_box1",
+    7000,
+    6,
+    {
+     "max": [
+      25,
+      10,
+      5
+     ],
+     "min": [
+      -10,
+      -10,
+      -5
+     ]
+    }
+   ]
+  ]
+ }
+]

@@ -610,3 +610,27 @@ GUARD-TWO-PARTS.md carries the correction; the AGENTS.md note was corrected with
 
 Also done: the number in "the part it drills is N separate pieces" counts the drilled part's own pieces and its copies, not every body in the
 script (owner decision).
+
+### A shape without `at:` (owner chose "both"), and a join that joins nothing (owner chose "build it, but say so")
+
+A shape written without `at:` is not put at the origin unless it is the first: it is placed beside the rightmost shape already there, 10 apart
+(`packages/script` `newShape`; deliberate, so a second box is not hidden inside the first). The page said nothing about it. Measured in the page
+before the change (`followup/placement-page-before.json`): a pocket on the second box says "pocket1 does not touch the part ...", `keep()` says "The
+two shapes do not overlap ...", a groove says "the ring does not cut the part ...", none with a word about where the box is; only the cut sentence
+mentions `at:`. And `union()` of a plate and a peg that ended up 10 apart is built, one part in two lumps, with the card saying "pieces 1" and a
+later hole saying "the part it drills is 2 separate pieces ... or join the pieces first".
+
+Now (`followup/placement-page.json`, the same scripts):
+
+- The script result records which shapes it placed by default (`RunResult.placed`, beside the doc, like the record of rule calls; the doc is
+  unchanged). The page shows on that shape's step: "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]".
+- A pocket, `keep()` or groove that missed such a part gets a clause on its sentence: "... (box2 has no at:, so it was placed beside box1 with its
+  centre at [40, 0, 0])." The layer's sentences are unchanged; the page adds the clause (`pane/src/placement.mjs`). Nothing is added when the
+  part had an `at:` or is the first shape.
+- A built join of two shapes whose boxes are apart shows: "box1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position
+  so they overlap". It is still built. The part card counts pieces as lumps, so it says 2.
+
+Tests: `packages/solidcraft-host/test/placement.test.mjs` (6).
+
+Not changed: a shape after a **pulled sketch** goes to the origin, because only plain shapes are measured for the placement (a box after a
+pulled plate lands inside the plate, with no note). A join of three shapes that do not touch gets no note (the card still counts 3 pieces).

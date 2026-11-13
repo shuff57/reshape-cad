@@ -1849,6 +1849,14 @@ function shapeRightEdgeX(f: Feature): number | null {
  * already exist, with a 10-unit gap so the two are visibly separate rather
  * than touching.
  */
+/** The shape a new one without a position is placed beside: the primitive whose right edge reaches furthest along +x (the edge newShape() measures from).
+ *  null in a doc with no primitive yet (the new shape then goes to the origin). */
+export function rightmostShapeId(doc: ModelDoc): string | null {
+  let best: string | null = null; let x = -Infinity;
+  for (const f of doc.features) { const e = shapeRightEdgeX(f); if (e !== null && e > x) { x = e; best = f.id; } }
+  return best;
+}
+
 export function newShape(doc: ModelDoc, kind: ShapeKind): Feature {
   const edges = doc.features
     .map(shapeRightEdgeX)

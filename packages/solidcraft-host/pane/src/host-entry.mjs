@@ -10,6 +10,8 @@ export { hostPreflight, soupSolveVerdict, staleConsumers } from './host-guards.m
 // the student-facing sketch check (sketch-check.mjs) and what it reads: the independent soup solver's count of free ways
 export { soupSolve, isSoup } from './host-guards.mjs';
 export { sketchCheck, refusedRule, ruleWords } from './sketch-check.mjs';
+// where a shape without at: went, and a join that joins nothing (placement.mjs)
+export { placedMap, shapeNote, placementHint, joinApartNote, pieceCount } from './placement.mjs';
 export { docProfileIndices, draftFromUsage, preflightScript } from '../../../layer/dist/index.js';
 import { fromUsageOfDoc } from '../../../layer/dist/index.js';
 import { extentAlong, featureRangeAlong } from '../../../script/dist/model-types.js';
