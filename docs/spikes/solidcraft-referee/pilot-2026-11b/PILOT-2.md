@@ -575,3 +575,37 @@ walls, the hollow after a counterbore, and the 7 hollows it refuses. What the re
 an inside corner: it rounds the wall there, where the plane offset is sharp.
 
 Checked: `npm test` 1132 tests, 1126 pass, 6 skipped, 0 fail.
+
+## The other corpora with the fixed referee, judged on what they build (owner chose it, 2026-11-13)
+
+The three corpora that are not generated documents: holes (357 rows), hollows and drafts (`sd`, 1097) and moves and turns (`mt`, 1930), 3384 rows,
+through the Node host route with the fixed referee and harness (`other-corpora/`).
+
+**As written.** No verdict differs from the last recorded sweep: 1357 RIGHT, 2026 REFUSED and one known PIPELINE-DIFF, row for row. (Many of
+these rows are judged by a reference stored with the case, not by the live referee: all 623 RIGHT rows of `sd` are, so the referee's fixes
+could not move them.)
+
+**Cut down to the built steps.** 1952 of the 2026 REFUSED rows build something before the refused step; that had never been judged. Cut down,
+3310 final solids are judged (74 rows build nothing):
+
+| 3310 final solids | holes | sd | mt |
+|---|---|---|---|
+| judged | 357 | 1089 | 1864 |
+| RIGHT | 356 | 1089 | 1861 |
+| of the 1952 judged for the first time, RIGHT | 155 of 155 | 466 of 466 | 1328 of 1331 |
+| not RIGHT | 1 | 0 | 3 |
+
+- The three in `mt` are a cone moved twice and moved or turned again (two rows are the same script): 1.8e-4 low in volume against both oracles,
+  which is inside the tolerance, and 3.4e-4 to 3.7e-4 off in the box, which is just outside 3e-4. The cone's wall, like the cylinder's.
+- The one in holes is `cb-seq-apart`, flagged in the last sweep too: two counterbored holes, built 30693.220; OCCT and brep-rs both give
+  30693.097 (4e-6 apart), and the form for two such holes is 32000 - 2 x 653.451 = 30693.097. It is flagged because the closed form stored
+  with the case, 31346.610, is the part after the FIRST hole. A fault of the case table, not of the build.
+
+The page's final volume for the whole row (the page run above) equals the judged solid in 3309 of the 3310; the other is the row the page
+refuses for a dimension over 1,000,000 mm.
+
+**All corpora together.** 6050 final solids judged on what they build (2740 from generated documents, 3310 here): 6021 RIGHT by every oracle
+that built, 9 with OCCT agreeing and brep-rs not, 11 curved walls (8 cylinders, 3 cones) inside the tolerance on the volume and outside it on
+the box, 1 hollow after a counterbore where OCCT rounds the inside corner, 7 hollows both oracles refuse that equal their closed form, and 1
+case with the wrong closed form stored. Nothing built wrong.
+
