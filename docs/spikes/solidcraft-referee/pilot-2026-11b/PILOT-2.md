@@ -150,3 +150,79 @@ Checked on 0.30.1: `npm test` 1059 tests, 1053 pass, 6 skipped, 0 fail; the brow
 56, the 44 sketch scripts, the 14 blocked-step scripts and the 13 two-part scripts unchanged); the host-route sweep of the six corpora (4784
 rows, 24717 steps) has 0 changes in built / not built, guard or volume, and 15 sentences changed: 11 the `at:` sentence, 3 the two join
 sentences, and 1 that now names the other part (the G-OTHERS sentence, newer than the sweep it is compared with).
+
+## Q7, where the time goes (owner chose "slow joins and extra passes")
+
+Every engine call the page makes was timed for a set of scripts in the real page (`timing/time.mjs`; `timing/before.json`).
+
+**One operation is computed several times.** The knob through the base (`p9b`, 15.6 s): the join takes 4.1 s of engine time. The page computes
+
+1. the join in the time-budget worker (4.3 s), so that a hang can be stopped;
+2. the same join in SolidCraft itself (3.2 s), whose reply the guards read;
+3. the cut the join's volume check needs (3.2 s);
+4. the join once more at the end (3.4 s), because after the check SolidCraft holds the cut, not the result.
+
+**Every later step replays everything before it, twice** (worker and SolidCraft), because each run starts from an empty design. So one slow step
+early in a script makes every step after it slow. The same steps with a 4 s join first or last (`timing/slow-memory-off.json`, the last two rows):
+
+| script | time | engine runs |
+|---|---|---|
+| the slow join alone | 15.7 s | 5 |
+| the slow join, then a part with a step the page leaves out (second translation) | 67.9 s | 21 |
+| the slow join, then a part with a blocked hollow (test build) | 46.3 s | 12 |
+| the slow join, then both | 163.5 s | 33 |
+| both first, the slow join last | 46.4 s | 33 |
+
+**Done: the engine's replies are remembered within one run of the script** (`packages/solidcraft-host/src/reply-memory.mjs`, used by `pane.js`). A
+run starts from an empty design, so the reply to a command list depends on that list alone; a list that was already run is answered from memory,
+with the time it took, so that the layer's time accounting and every result stay what they are. A run stopped by the time budget is not
+remembered, and a remembered reply is not used under a smaller budget than the time it took. `?memo=off` switches it off.
+
+The final replay, which puts SolidCraft on the accepted commands for the 3D view, is skipped only when SolidCraft already holds exactly that list
+**and a fresh reading of SolidCraft shows the bodies of that reply** (names, face counts and volumes, exactly). Otherwise the list is really run,
+never answered from memory.
+
+| script | before | after | |
+|---|---|---|---|
+| ordinary scripts (eleven, `timing/before.json`, `after.json`) | 1.2 to 15.6 s | 1.2 to 15.6 s | 0 to 11% less (the join alone: no change) |
+| the slow join, then a second translation | 67.9 s | 48.0 s | 29% less |
+| the slow join, then a blocked hollow | 46.3 s | 36.1 s | 22% less |
+| the slow join, then both | 163.5 s | 119.4 s | 27% less |
+| both first, the slow join last | 46.4 s | 37.9 s | 18% less |
+
+(`timing/slow-memory-off.json`, `slow-memory-on.json`. Single runs on a machine that was not idle: the percentages are good to a few points.)
+
+**A fault in the first version of this change, found before it was committed.** The first version also answered the final replay from memory.
+SolidCraft was then left on the last list it had really run, which can be a variant a guard tried and threw away, so the 3D view showed a solid
+the report did not describe. The reports themselves were right, and so every comparison of reports passed (examples, sketch scripts,
+blocked-step scripts, two-part scripts, both pilot runs: all unchanged). It was found by reading SolidCraft itself after each run and comparing
+its bodies with the report (`timing/held.mjs`):
+
+| | scripts | SolidCraft holds what the report says | final replay skipped |
+|---|---|---|---|
+| first version, memory on (`timing/held-first-attempt.json`) | 55 | **53** | 26 |
+| memory off | 50 | 50 | 0 |
+| fixed, memory on (`timing/held.json`) | 55 | 55 | 26 |
+| fixed, memory on, every reading of SolidCraft during the run given a wrong volume | 15 | 15 | 0 |
+
+The two were `p4b-cup-from-top` (report 62187.217, the closed form; SolidCraft held 61468.608, a list a guard had tried) and the slow
+join with a left-out draft (the pulled part: report 11600, SolidCraft 11555). With the memory off the page never had this fault; it existed only
+in the uncommitted change. The scripts are the 30 of the pilot, the 15 after the fixes, and the timing cases; with the memory on and off the 50
+scripts compared give the same steps, sentences, notes, volumes and bodies, and so do the 15 with the tampered readings.
+
+Tests: `packages/solidcraft-host/test/reply-memory.test.mjs` (15, a fake bridge that keeps "what SolidCraft holds"; each rule of the memory was
+removed in turn and a test failed each time, the fault above included).
+
+Checked on the fixed page: `npm test` 1074 tests, 1068 pass, 6 skipped, 0 fail; the six browser checks, the 44 sketch scripts, the 14
+blocked-step scripts, the 13 two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).
+
+**Not done, and the larger part.** The memory only removes repeats of the *same* list. What is left is the double run of every step (worker, then
+SolidCraft) and the replay of the whole history for each step. Two ways to cut that, neither attempted:
+
+- *Continue where SolidCraft is*: when the list to run only adds commands to what SolidCraft already holds, run just the added ones. That would
+  make SolidCraft's half grow with the script, not with its square. It rests on the engine giving the same result as from an empty design, which
+  would have to be measured on the corpora first.
+- *Read the guards' numbers from the worker and run SolidCraft once at the end*: the worker is our build of the same engine source, not the build
+  the student sees, so the final result would have to be compared with the worker's before it is shown.
+
+Nothing tells the student that a long run is still working beyond the status line "translating and building in solidcraft...".

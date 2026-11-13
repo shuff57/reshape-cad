@@ -1,0 +1,418 @@
+[
+ {
+  "id": "p6b-standoffs-drilled-first",
+  "script": "const b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nhole(post1, { across: 3, deep: 8 })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nhole(post2, { across: 3, deep: 8 })\nconst body = union(b, post1, post2)",
+  "wallMs": 11505,
+  "status": "built",
+  "volume": 17964.133962155545,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "cyl2",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole2",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 327,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 48
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 72,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[22.169905660283018,-7.169905660283019,10]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "179:solid.box,solid.shell",
+    "budgetS": 45.072,
+    "ms": 387,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 139
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[-25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "268:solid.box,solid.shell,solid.cylinder",
+    "budgetS": 45.072,
+    "ms": 252,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 100
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[-25,-1.1102230246251565e-15,1.9499999999999982],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "419:solid.box,solid.shell,solid.cylinder,solid.cylinder",
+    "budgetS": 45,
+    "ms": 567,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 351
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":1.5,\"height\":8,\"base\":[-25,-1.1102230246251565e-15,-6.000000000000002],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "414:solid.box,solid.shell,solid.cylinder,solid.cylinder",
+    "budgetS": 45.15,
+    "ms": 417,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 231
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl2\"}",
+    "hash": "502:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45.3465,
+    "ms": 414,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 195
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[25,-2.220446049250313e-16,1.949999999999999],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl2\"]}",
+    "hash": "650:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45,
+    "ms": 638,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 326
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":1.5,\"height\":8,\"base\":[25,-2.220446049250313e-16,-6.000000000000001],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl2\"]}",
+    "hash": "646:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45.2925,
+    "ms": 546,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 260
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "726:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.39,
+    "ms": 3997,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 2045
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl1\",\"tools\":[\"b_box1\"],\"operation\":\"cut\"}",
+    "hash": "716:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.39,
+    "ms": 578,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 288
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl2\",\"tools\":[\"b_box1\",\"b_cyl1\"],\"operation\":\"cut\"}",
+    "hash": "725:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.39,
+    "ms": 459,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 224
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "726:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 1908,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 226,
+    "cpuMs": 48,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.072,
+    "status": "done",
+    "wallMs": 151,
+    "cpuMs": 139,
+    "loadMs": 3
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.072,
+    "status": "done",
+    "wallMs": 115,
+    "cpuMs": 100,
+    "loadMs": 5
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 365,
+    "cpuMs": 351,
+    "loadMs": 6
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.15,
+    "status": "done",
+    "wallMs": 241,
+    "cpuMs": 231,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45.3465,
+    "status": "done",
+    "wallMs": 208,
+    "cpuMs": 195,
+    "loadMs": 5
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 337,
+    "cpuMs": 326,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45.2925,
+    "status": "done",
+    "wallMs": 273,
+    "cpuMs": 260,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.39,
+    "status": "done",
+    "wallMs": 2065,
+    "cpuMs": 2045,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.39,
+    "status": "done",
+    "wallMs": 300,
+    "cpuMs": 288,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.39,
+    "status": "done",
+    "wallMs": 236,
+    "cpuMs": 224,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "p9b-knob-base-at",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "wallMs": 15351,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 238,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 112,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 7451,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3948
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3185,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3356,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 4137,
+    "cpuMs": 3948,
+    "loadMs": 6
+   }
+  ]
+ }
+]

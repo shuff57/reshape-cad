@@ -1,0 +1,1693 @@
+[
+ {
+  "id": "slow-join-alone",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)\n",
+  "wallMs": 15427,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 278,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 123,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 7389,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3815
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3290,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3362,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3997,
+    "cpuMs": 3815,
+    "loadMs": 3
+   }
+  ]
+ },
+ {
+  "id": "slow-join-then-stale",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)\nconst s1 = sketch('top'); s1.rect(40, 30, { at: [520, 515] }); const p = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(10, 10, { at: [520, 515] }); pocket(s2, p, 4); draft(p.face('right'), 5)\n",
+  "wallMs": 47988,
+  "status": "built with 1 step not built",
+  "volume": 18904.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk3",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 250,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 128,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 7522,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3974
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3202,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "694:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3375,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3398,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "1088:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": null,
+    "ms": 3361,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "694:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3848,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3849,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":5,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1144:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": null,
+    "ms": 3666,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":0.5729386976834859,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": null,
+    "ms": 3716,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.1457628381751035,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": null,
+    "ms": 3683,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.7183580016554572,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": null,
+    "ms": 3666,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3298,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 4210,
+    "cpuMs": 3974,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "slow-join-then-blocked",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)\nconst b = box(30, 20, 10, { at: [200, 0, 0] })\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\n",
+  "wallMs": 36135,
+  "status": "built with 2 steps not built",
+  "volume": 13304.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ],
+   [
+    "box2",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": 45,
+    "ms": 714,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 294
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": 45,
+    "ms": 338,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 174
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.261,
+    "ms": 7149,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3812
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.261,
+    "ms": 6525,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3369
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box2\"}",
+    "hash": "505:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,solid.box",
+    "budgetS": 45.261,
+    "ms": 6742,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3524
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[200,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box2\"]}",
+    "hash": "615:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,solid.box,solid.cylinder",
+    "budgetS": 50.286,
+    "ms": 6874,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3560
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 121,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 120,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3209,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box2\"}",
+    "hash": "505:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,solid.box",
+    "budgetS": null,
+    "ms": 3342,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.revolve",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 494,
+    "cpuMs": 294,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 187,
+    "cpuMs": 174,
+    "loadMs": 5
+   },
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45.261,
+    "status": "done",
+    "wallMs": 3830,
+    "cpuMs": 3812,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45.261,
+    "status": "done",
+    "wallMs": 3385,
+    "cpuMs": 3369,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.box",
+    "budgetS": 45.261,
+    "status": "done",
+    "wallMs": 3533,
+    "cpuMs": 3524,
+    "loadMs": 3
+   },
+   {
+    "cmds": 8,
+    "last": "solid.cylinder",
+    "budgetS": 50.286,
+    "status": "done",
+    "wallMs": 3573,
+    "cpuMs": 3560,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "slow-join-stale-blocked",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)\nconst s1 = sketch('top'); s1.rect(40, 30, { at: [520, 515] }); const p = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(10, 10, { at: [520, 515] }); pocket(s2, p, 4); draft(p.face('right'), 5)\nconst b = box(30, 20, 10, { at: [200, 0, 0] })\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\n",
+  "wallMs": 119430,
+  "status": "built with 3 steps not built",
+  "volume": 24904.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk3",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "box2",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": 45,
+    "ms": 592,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 171
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": 45,
+    "ms": 267,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 113
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.1695,
+    "ms": 7166,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3772
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 6618,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3418
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "694:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 6927,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3630
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 6883,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3557
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "1088:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": 45,
+    "ms": 6848,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3569
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "694:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3915,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3883,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":5,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1144:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 7415,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3842
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":0.5729386976834859,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 7570,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3916
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.1457628381751035,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 7429,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3813
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.7183580016554572,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "1161:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 7399,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3834
+   },
+   {
+    "name": "execute",
+    "n": 16,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box2\"}",
+    "hash": "1230:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box",
+    "budgetS": 45,
+    "ms": 7466,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3848
+   },
+   {
+    "name": "execute",
+    "n": 17,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[200,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box2\"]}",
+    "hash": "1340:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 7531,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3888
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box2\"}",
+    "hash": "1078:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": 45,
+    "ms": 6796,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3552
+   },
+   {
+    "name": "execute",
+    "n": 16,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[200,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box2\"]}",
+    "hash": "1188:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 6963,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3558
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 132,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 112,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3268,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "694:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3286,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk3_2\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "992:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 3283,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "1088:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": null,
+    "ms": 3316,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box2\"}",
+    "hash": "1078:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine,sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": null,
+    "ms": 3283,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.revolve",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 361,
+    "cpuMs": 171,
+    "loadMs": 3
+   },
+   {
+    "cmds": 5,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 123,
+    "cpuMs": 113,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45.1695,
+    "status": "done",
+    "wallMs": 3783,
+    "cpuMs": 3772,
+    "loadMs": 4
+   },
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3433,
+    "cpuMs": 3418,
+    "loadMs": 6
+   },
+   {
+    "cmds": 10,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3640,
+    "cpuMs": 3630,
+    "loadMs": 3
+   },
+   {
+    "cmds": 14,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3570,
+    "cpuMs": 3557,
+    "loadMs": 5
+   },
+   {
+    "cmds": 15,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3578,
+    "cpuMs": 3569,
+    "loadMs": 3
+   },
+   {
+    "cmds": 15,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3852,
+    "cpuMs": 3842,
+    "loadMs": 4
+   },
+   {
+    "cmds": 15,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3929,
+    "cpuMs": 3916,
+    "loadMs": 5
+   },
+   {
+    "cmds": 15,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3829,
+    "cpuMs": 3813,
+    "loadMs": 5
+   },
+   {
+    "cmds": 15,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3843,
+    "cpuMs": 3834,
+    "loadMs": 4
+   },
+   {
+    "cmds": 16,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3859,
+    "cpuMs": 3848,
+    "loadMs": 4
+   },
+   {
+    "cmds": 17,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3903,
+    "cpuMs": 3888,
+    "loadMs": 4
+   },
+   {
+    "cmds": 15,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3565,
+    "cpuMs": 3552,
+    "loadMs": 4
+   },
+   {
+    "cmds": 16,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 3572,
+    "cpuMs": 3558,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "stale-blocked-then-slow-join",
+  "script": "const s1 = sketch('top'); s1.rect(40, 30, { at: [520, 515] }); const p = extrude(s1, 10); const s2 = sketch('top', 10); s2.rect(10, 10, { at: [520, 515] }); pocket(s2, p, 4); draft(p.face('right'), 5)\nconst b = box(30, 20, 10, { at: [200, 0, 0] })\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\nconst sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)\n",
+  "wallMs": 37899,
+  "status": "built with 3 steps not built",
+  "volume": 24904.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ],
+   [
+    "sk3",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box2",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "274:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 372,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 51
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "572:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 155,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 30
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "668:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": 45,
+    "ms": 98,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 13
+   },
+   {
+    "name": "topologyOf",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "274:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 102,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 8,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "572:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 91,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":5,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "724:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 125,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 27
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":0.5729386976834859,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "741:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 126,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 13
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.1457628381751035,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "741:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 144,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 10
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[540,504.188611699158,5.811388300841896]],\"angle\":1.7183580016554572,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "741:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 117,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 9
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "810:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box",
+    "budgetS": 45,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 15
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[200,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "920:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 186,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 74
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk3_2\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "1075:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": 45.111,
+    "ms": 348,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 181
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box2\"}",
+    "hash": "1159:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": 45.111,
+    "ms": 350,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 170
+   },
+   {
+    "name": "execute",
+    "n": 16,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box2\"],\"operation\":\"join\"}",
+    "hash": "1230:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.255,
+    "ms": 6763,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3442
+   },
+   {
+    "name": "execute",
+    "n": 16,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box2\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "1229:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.111,
+    "ms": 6683,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3466
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "658:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": 45,
+    "ms": 99,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 9
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[200,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "768:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 133,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 36
+   },
+   {
+    "name": "execute",
+    "n": 13,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk3_2\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "923:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": 45.054,
+    "ms": 250,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 101
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box2\"}",
+    "hash": "1007:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": 45.054,
+    "ms": 266,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 104
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box2\"],\"operation\":\"join\"}",
+    "hash": "1078:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.156,
+    "ms": 6599,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3371
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box2\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "1077:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45.054,
+    "ms": 6599,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 3401
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "274:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 66,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "572:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 83,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "668:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": null,
+    "ms": 83,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[200,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "658:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": null,
+    "ms": 83,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 13,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk3_2\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "923:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 150,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 14,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box2\"}",
+    "hash": "1007:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 150,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box2\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "1077:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3251,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 15,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box2\"],\"operation\":\"join\"}",
+    "hash": "1078:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3297,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 238,
+    "cpuMs": 51,
+    "loadMs": 5
+   },
+   {
+    "cmds": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 42,
+    "cpuMs": 30,
+    "loadMs": 5
+   },
+   {
+    "cmds": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 25,
+    "cpuMs": 13,
+    "loadMs": 5
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 42,
+    "cpuMs": 27,
+    "loadMs": 5
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 28,
+    "cpuMs": 13,
+    "loadMs": 6
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 23,
+    "cpuMs": 10,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 20,
+    "cpuMs": 9,
+    "loadMs": 4
+   },
+   {
+    "cmds": 10,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 28,
+    "cpuMs": 15,
+    "loadMs": 5
+   },
+   {
+    "cmds": 11,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 86,
+    "cpuMs": 74,
+    "loadMs": 4
+   },
+   {
+    "cmds": 14,
+    "last": "solid.revolve",
+    "budgetS": 45.111,
+    "status": "done",
+    "wallMs": 194,
+    "cpuMs": 181,
+    "loadMs": 5
+   },
+   {
+    "cmds": 15,
+    "last": "solid.box",
+    "budgetS": 45.111,
+    "status": "done",
+    "wallMs": 182,
+    "cpuMs": 170,
+    "loadMs": 5
+   },
+   {
+    "cmds": 16,
+    "last": "solid.combine",
+    "budgetS": 45.255,
+    "status": "done",
+    "wallMs": 3454,
+    "cpuMs": 3442,
+    "loadMs": 4
+   },
+   {
+    "cmds": 16,
+    "last": "solid.combine",
+    "budgetS": 45.111,
+    "status": "done",
+    "wallMs": 3475,
+    "cpuMs": 3466,
+    "loadMs": 3
+   },
+   {
+    "cmds": 9,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 22,
+    "cpuMs": 9,
+    "loadMs": 5
+   },
+   {
+    "cmds": 10,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 51,
+    "cpuMs": 36,
+    "loadMs": 5
+   },
+   {
+    "cmds": 13,
+    "last": "solid.revolve",
+    "budgetS": 45.054,
+    "status": "done",
+    "wallMs": 111,
+    "cpuMs": 101,
+    "loadMs": 3
+   },
+   {
+    "cmds": 14,
+    "last": "solid.box",
+    "budgetS": 45.054,
+    "status": "done",
+    "wallMs": 116,
+    "cpuMs": 104,
+    "loadMs": 5
+   },
+   {
+    "cmds": 15,
+    "last": "solid.combine",
+    "budgetS": 45.156,
+    "status": "done",
+    "wallMs": 3385,
+    "cpuMs": 3371,
+    "loadMs": 4
+   },
+   {
+    "cmds": 15,
+    "last": "solid.combine",
+    "budgetS": 45.054,
+    "status": "done",
+    "wallMs": 3413,
+    "cpuMs": 3401,
+    "loadMs": 4
+   }
+  ]
+ }
+]

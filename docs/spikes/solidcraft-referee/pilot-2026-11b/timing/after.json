@@ -1,0 +1,1782 @@
+[
+ {
+  "id": "one-box",
+  "script": "const b = box(30, 20, 10)",
+  "wallMs": 1197,
+  "status": "built",
+  "volume": 6000,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 551,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": []
+ },
+ {
+  "id": "box-hole",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })",
+  "wallMs": 1582,
+  "status": "built",
+  "volume": 5717.30362588783,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 324,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 42
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[0,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "188:solid.box,solid.cylinder",
+    "budgetS": 45.063,
+    "ms": 299,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 146
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 223,
+    "cpuMs": 42,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.063,
+    "status": "done",
+    "wallMs": 158,
+    "cpuMs": 146,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "box-hole-hollow",
+  "script": "const b = box(40, 30, 10)\nhole(b, { across: 6 })\nhollow(b, { wall: 2, open: 'top' })",
+  "wallMs": 2274,
+  "status": "built",
+  "volume": 4857.549660233167,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":40,\"width\":30,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 342,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 40
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[0,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "188:solid.box,solid.cylinder",
+    "budgetS": 45.06,
+    "ms": 285,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 111
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":40,\"width\":30,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 59,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 2,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[0,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "188:solid.box,solid.cylinder",
+    "budgetS": null,
+    "ms": 127,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[-13.230622673683369,0.06032975911223412,5]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "285:solid.box,solid.cylinder,solid.shell",
+    "budgetS": 45.1665,
+    "ms": 485,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 286
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 237,
+    "cpuMs": 40,
+    "loadMs": 4
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.06,
+    "status": "done",
+    "wallMs": 125,
+    "cpuMs": 111,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.shell",
+    "budgetS": 45.1665,
+    "status": "done",
+    "wallMs": 301,
+    "cpuMs": 286,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "p2b-peg-at",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 12.5] })\nconst part = union(plate, peg)",
+  "wallMs": 1988,
+  "status": "built",
+  "volume": 13570.535411734267,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":60,\"width\":40,\"height\":5,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "82:solid.box",
+    "budgetS": null,
+    "ms": 97,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":5,\"height\":20,\"base\":[0,0,2.5],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "170:solid.box,solid.cylinder",
+    "budgetS": null,
+    "ms": 117,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\"],\"operation\":\"join\"}",
+    "hash": "241:solid.box,solid.cylinder,solid.combine",
+    "budgetS": 45,
+    "ms": 561,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 200
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl1\",\"tools\":[\"b_box1\"],\"operation\":\"cut\"}",
+    "hash": "240:solid.box,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 88,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\"],\"operation\":\"join\"}",
+    "hash": "241:solid.box,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 162,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 3,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 425,
+    "cpuMs": 200,
+    "loadMs": 6
+   }
+  ]
+ },
+ {
+  "id": "p3c-boss-hole-first",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nhole(boss, { across: 4 })\nconst both = union(part, boss)",
+  "wallMs": 3051,
+  "status": "built",
+  "volume": 27301.56421840652,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":30}",
+    "hash": "278:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 397,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 72
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":8,\"base\":[35,5,30],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "365:sketch.create,sketch.line,sketch.finish,solid.extrude,solid.cylinder",
+    "budgetS": 45,
+    "ms": 227,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 79
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":2,\"height\":10,\"base\":[35,5.000000000000001,29],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "487:sketch.create,sketch.line,sketch.finish,solid.extrude,solid.cylinder,solid.cylinder",
+    "budgetS": 45,
+    "ms": 476,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 266
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"b_cyl1\"],\"operation\":\"join\"}",
+    "hash": "559:sketch.create,sketch.line,sketch.finish,solid.extrude,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.399,
+    "ms": 395,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 189
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl1\",\"tools\":[\"b_pull1\"],\"operation\":\"cut\"}",
+    "hash": "558:sketch.create,sketch.line,sketch.finish,solid.extrude,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.399,
+    "ms": 381,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 194
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"b_cyl1\"],\"operation\":\"join\"}",
+    "hash": "559:sketch.create,sketch.line,sketch.finish,solid.extrude,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 175,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 259,
+    "cpuMs": 72,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 91,
+    "cpuMs": 79,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 280,
+    "cpuMs": 266,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.399,
+    "status": "done",
+    "wallMs": 201,
+    "cpuMs": 189,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.399,
+    "status": "done",
+    "wallMs": 206,
+    "cpuMs": 194,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p6a-standoffs",
+  "script": "// an open box with two posts inside for a circuit board\nconst b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nconst body = union(b, post1, post2)\nhole(body, { across: 3, at: [-25, 0], deep: 8 })\nhole(body, { across: 3, at: [25, 0], deep: 8 })",
+  "wallMs": 8816,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "cyl2",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "hole2",
+    "hole",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 322,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 37
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 65,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[22.169905660283018,-7.169905660283019,10]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "179:solid.box,solid.shell",
+    "budgetS": 45.0555,
+    "ms": 159,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 55
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[-25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "268:solid.box,solid.shell,solid.cylinder",
+    "budgetS": 45.0555,
+    "ms": 261,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 97
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl2\"}",
+    "hash": "356:solid.box,solid.shell,solid.cylinder,solid.cylinder",
+    "budgetS": 45.1455,
+    "ms": 404,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 211
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "436:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.3165,
+    "ms": 1942,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 1093
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl1\",\"tools\":[\"b_box1\"],\"operation\":\"cut\"}",
+    "hash": "426:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.3165,
+    "ms": 283,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 131
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl2\",\"tools\":[\"b_box1\",\"b_cyl1\"],\"operation\":\"cut\"}",
+    "hash": "435:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.3165,
+    "ms": 208,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 98
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[-25,0,9.95],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "551:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine,solid.cylinder",
+    "budgetS": 45,
+    "ms": 1707,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 882
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[25,0,9.95],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "550:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine,solid.cylinder",
+    "budgetS": 45,
+    "ms": 1742,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 896
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "436:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 720,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 232,
+    "cpuMs": 37,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.0555,
+    "status": "done",
+    "wallMs": 73,
+    "cpuMs": 55,
+    "loadMs": 4
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.0555,
+    "status": "done",
+    "wallMs": 109,
+    "cpuMs": 97,
+    "loadMs": 4
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.1455,
+    "status": "done",
+    "wallMs": 224,
+    "cpuMs": 211,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.3165,
+    "status": "done",
+    "wallMs": 1106,
+    "cpuMs": 1093,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.3165,
+    "status": "done",
+    "wallMs": 142,
+    "cpuMs": 131,
+    "loadMs": 4
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.3165,
+    "status": "done",
+    "wallMs": 107,
+    "cpuMs": 98,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 894,
+    "cpuMs": 882,
+    "loadMs": 4
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 915,
+    "cpuMs": 896,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p6b-standoffs-drilled-first",
+  "script": "const b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nhole(post1, { across: 3, deep: 8 })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nhole(post2, { across: 3, deep: 8 })\nconst body = union(b, post1, post2)",
+  "wallMs": 11230,
+  "status": "built",
+  "volume": 17964.133962155545,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "cyl2",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole2",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 329,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 41
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":80,\"width\":50,\"height\":20,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 71,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[22.169905660283018,-7.169905660283019,10]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "179:solid.box,solid.shell",
+    "budgetS": 45.0615,
+    "ms": 166,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 54
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[-25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "268:solid.box,solid.shell,solid.cylinder",
+    "budgetS": 45.0615,
+    "ms": 339,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 108
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[-25,-1.1102230246251565e-15,1.9499999999999982],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "419:solid.box,solid.shell,solid.cylinder,solid.cylinder",
+    "budgetS": 45,
+    "ms": 470,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 250
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":1.5,\"height\":8,\"base\":[-25,-1.1102230246251565e-15,-6.000000000000002],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "414:solid.box,solid.shell,solid.cylinder,solid.cylinder",
+    "budgetS": 45.162,
+    "ms": 365,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 187
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":4,\"height\":10,\"base\":[25,0,-8],\"axis\":\"Z\",\"body_name\":\"b_cyl2\"}",
+    "hash": "502:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45.2805,
+    "ms": 466,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 226
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":0.375,\"height\":1.05,\"base\":[25,-2.220446049250313e-16,1.949999999999999],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl2\"]}",
+    "hash": "650:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45,
+    "ms": 648,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 330
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":1.5,\"height\":8,\"base\":[25,-2.220446049250313e-16,-6.000000000000001],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl2\"]}",
+    "hash": "646:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder",
+    "budgetS": 45.339,
+    "ms": 531,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 254
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "726:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.381,
+    "ms": 3961,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 2037
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl1\",\"tools\":[\"b_box1\"],\"operation\":\"cut\"}",
+    "hash": "716:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.381,
+    "ms": 583,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 284
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_cyl2\",\"tools\":[\"b_box1\",\"b_cyl1\"],\"operation\":\"cut\"}",
+    "hash": "725:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": 45.381,
+    "ms": 455,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 222
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_cyl1\",\"b_cyl2\"],\"operation\":\"join\"}",
+    "hash": "726:solid.box,solid.shell,solid.cylinder,solid.cylinder,solid.cylinder,solid.cylinder,solid.combine",
+    "budgetS": null,
+    "ms": 1874,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 240,
+    "cpuMs": 41,
+    "loadMs": 3
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.0615,
+    "status": "done",
+    "wallMs": 71,
+    "cpuMs": 54,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.0615,
+    "status": "done",
+    "wallMs": 119,
+    "cpuMs": 108,
+    "loadMs": 4
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 266,
+    "cpuMs": 250,
+    "loadMs": 4
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.162,
+    "status": "done",
+    "wallMs": 198,
+    "cpuMs": 187,
+    "loadMs": 3
+   },
+   {
+    "cmds": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45.2805,
+    "status": "done",
+    "wallMs": 237,
+    "cpuMs": 226,
+    "loadMs": 4
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 342,
+    "cpuMs": 330,
+    "loadMs": 5
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45.339,
+    "status": "done",
+    "wallMs": 263,
+    "cpuMs": 254,
+    "loadMs": 3
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.381,
+    "status": "done",
+    "wallMs": 2049,
+    "cpuMs": 2037,
+    "loadMs": 4
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.381,
+    "status": "done",
+    "wallMs": 303,
+    "cpuMs": 284,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.381,
+    "status": "done",
+    "wallMs": 235,
+    "cpuMs": 222,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p9b-knob-base-at",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "wallMs": 15648,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 235,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 123,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 7683,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 4044
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3251,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 3355,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 4244,
+    "cpuMs": 4044,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p9c-knob-top-plane",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "wallMs": 2291,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "params": "{\"axis\":\"y\",\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_rev1\"}",
+    "hash": "264:sketch.create,sketch.line,sketch.finish,solid.revolve",
+    "budgetS": null,
+    "ms": 214,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":30,\"height\":4,\"center\":[0,0,-2],\"body_name\":\"b_box1\"}",
+    "hash": "348:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box",
+    "budgetS": null,
+    "ms": 120,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": 45,
+    "ms": 701,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 316
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_box1\",\"tools\":[\"b_rev1\"],\"operation\":\"cut\"}",
+    "hash": "418:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 78,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_rev1\",\"tools\":[\"b_box1\"],\"operation\":\"join\"}",
+    "hash": "419:sketch.create,sketch.line,sketch.finish,solid.revolve,solid.box,solid.combine",
+    "budgetS": null,
+    "ms": 209,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 499,
+    "cpuMs": 316,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "blocked-chain",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\ndraft(b.face('right'), 5)\nround(b.edge('top', 'front'), 2)",
+  "wallMs": 1648,
+  "status": "built with 4 steps not built",
+  "volume": 6000,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "round1",
+    "fillet",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 321,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 38
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":17.5,\"height\":12,\"base\":[0,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "191:solid.box,solid.cylinder",
+    "budgetS": 45.057,
+    "ms": 217,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 91
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 75,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 45,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 225,
+    "cpuMs": 38,
+    "loadMs": 4
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.057,
+    "status": "done",
+    "wallMs": 120,
+    "cpuMs": 91,
+    "loadMs": 6
+   }
+  ]
+ },
+ {
+  "id": "second-pass",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5);\nconst c = box(30, 20, 10, { at: [100, 0, 0] })\nhole(c, { across: 6 })\nhollow(c, { wall: 2, open: 'top' })",
+  "wallMs": 4243,
+  "status": "built with 1 step not built",
+  "volume": 14617.549660233168,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "262:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 380,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 54
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "552:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": 45,
+    "ms": 156,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 28
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.combine",
+    "params": "{\"target\":\"b_pull1\",\"tools\":[\"tmp_tool_pocket1\"],\"operation\":\"intersect\"}",
+    "hash": "648:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.combine",
+    "budgetS": 45,
+    "ms": 103,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 8
+   },
+   {
+    "name": "topologyOf",
+    "n": 4,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk1_0\",\"operation\":\"new\",\"body_name\":\"b_pull1\",\"distance\":10}",
+    "hash": "262:sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 103,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 8,
+    "last": "solid.extrude",
+    "params": "{\"sketch\":\"sk_sk2_1\",\"operation\":\"cut\",\"targets\":[\"b_pull1\"],\"distance\":4,\"direction\":\"negative\"}",
+    "hash": "552:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude",
+    "budgetS": null,
+    "ms": 106,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[40,4.188611699158103,5.811388300841896]],\"angle\":5,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "704:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 115,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 27
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[40,4.188611699158103,5.811388300841896]],\"angle\":0.5729386976834859,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "721:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 118,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 13
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[40,4.188611699158103,5.811388300841896]],\"angle\":1.1457628381751035,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "721:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 138,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 9
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "params": "{\"faces\":[[40,4.188611699158103,5.811388300841896]],\"angle\":1.7183580016554572,\"neutral\":{\"origin\":[0,0,0],\"normal\":[0,0,1]},\"pull\":[0,0,1],\"body\":\"b_pull1\"}",
+    "hash": "721:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft",
+    "budgetS": 45,
+    "ms": 117,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 14
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[100,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "790:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box",
+    "budgetS": 45,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 13
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[100,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "897:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 255,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 110
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[100,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "790:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 11,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[100,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "897:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,solid.cylinder",
+    "budgetS": null,
+    "ms": 134,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 12,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[89.68406710298814,0.05837338658796134,4.999999999999999]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "1008:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.draft,solid.box,solid.cylinder,solid.shell",
+    "budgetS": 45.165,
+    "ms": 381,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 175
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[100,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "638:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": 45,
+    "ms": 98,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 9
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[100,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "745:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,solid.cylinder",
+    "budgetS": 45,
+    "ms": 167,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 67
+   },
+   {
+    "name": "topologyOf",
+    "n": 9,
+    "last": "solid.box",
+    "params": "{\"length\":30,\"width\":20,\"height\":10,\"center\":[100,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "638:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":12,\"base\":[100,0,-6],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "745:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,solid.cylinder",
+    "budgetS": null,
+    "ms": 136,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[89.68406710298814,0.05837338658796134,4.999999999999999]],\"thickness\":2,\"body\":\"b_box1\"}",
+    "hash": "856:sketch.create,sketch.line,sketch.finish,solid.extrude,sketch.create,sketch.line,sketch.finish,solid.extrude,solid.box,solid.cylinder,solid.shell",
+    "budgetS": 45.1005,
+    "ms": 313,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 143
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 251,
+    "cpuMs": 54,
+    "loadMs": 4
+   },
+   {
+    "cmds": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 40,
+    "cpuMs": 28,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 20,
+    "cpuMs": 8,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 42,
+    "cpuMs": 27,
+    "loadMs": 6
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 24,
+    "cpuMs": 13,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 28,
+    "cpuMs": 9,
+    "loadMs": 5
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 30,
+    "cpuMs": 14,
+    "loadMs": 5
+   },
+   {
+    "cmds": 10,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 27,
+    "cpuMs": 13,
+    "loadMs": 5
+   },
+   {
+    "cmds": 11,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 120,
+    "cpuMs": 110,
+    "loadMs": 3
+   },
+   {
+    "cmds": 12,
+    "last": "solid.shell",
+    "budgetS": 45.165,
+    "status": "done",
+    "wallMs": 185,
+    "cpuMs": 175,
+    "loadMs": 3
+   },
+   {
+    "cmds": 9,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 19,
+    "cpuMs": 9,
+    "loadMs": 4
+   },
+   {
+    "cmds": 10,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 78,
+    "cpuMs": 67,
+    "loadMs": 4
+   },
+   {
+    "cmds": 11,
+    "last": "solid.shell",
+    "budgetS": 45.1005,
+    "status": "done",
+    "wallMs": 153,
+    "cpuMs": 143,
+    "loadMs": 3
+   }
+  ]
+ }
+]

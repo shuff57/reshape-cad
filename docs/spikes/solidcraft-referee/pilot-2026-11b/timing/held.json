@@ -1,0 +1,7248 @@
+[
+ {
+  "id": "p8a-row-after",
+  "mode": "tamper",
+  "wallMs": 60,
+  "threw": null,
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "status": "script error",
+  "volume": null,
+  "steps": [],
+  "bodies": [],
+  "pageBodies": [],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 1
+ },
+ {
+  "id": "p3a-bracket-boss-after",
+  "mode": "tamper",
+  "wallMs": 2465,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 28608.22826161774,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 4
+ },
+ {
+  "id": "p3b-boss-at-after",
+  "mode": "tamper",
+  "wallMs": 2855,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 27402.057065404093,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "p5a-plate-forgot-after",
+  "mode": "tamper",
+  "wallMs": 3341,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 560.7405556517649,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 7,
+   "fromMemory": 2,
+   "finalReplaySkipped": false
+  },
+  "tampered": 6
+ },
+ {
+  "id": "p6a-standoffs-after",
+  "mode": "tamper",
+  "wallMs": 10163,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 11,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "p9d-knob-alone-front-after",
+  "mode": "tamper",
+  "wallMs": 1528,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807604,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 2,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 6
+ },
+ {
+  "id": "p9c-knob-top-plane-after",
+  "mode": "tamper",
+  "wallMs": 2768,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w1-row-whole",
+  "mode": "tamper",
+  "wallMs": 3354,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w2-row-counterbore",
+  "mode": "tamper",
+  "wallMs": 3927,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 16699.560825723496,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 4
+ },
+ {
+  "id": "w3-row-pocket",
+  "mode": "tamper",
+  "wallMs": 2192,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 23784,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w4-ring-whole",
+  "mode": "tamper",
+  "wallMs": 3657,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 22869.22302234767,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w5-row-touching",
+  "mode": "tamper",
+  "wallMs": 3251,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.910877663468,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w6-row-two-holes",
+  "mode": "tamper",
+  "wallMs": 4066,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 11183.296219283058,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w7-row-then-hole",
+  "mode": "tamper",
+  "wallMs": 3288,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole2 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 5
+ },
+ {
+  "id": "w8-spin-side",
+  "mode": "tamper",
+  "wallMs": 1620,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807602,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs left to right (x); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 2,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 6
+ },
+ {
+  "id": "p8a-row-after",
+  "mode": "on",
+  "wallMs": 1234,
+  "threw": null,
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "status": "script error",
+  "volume": null,
+  "steps": [],
+  "bodies": [],
+  "pageBodies": [],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3a-bracket-boss-after",
+  "mode": "on",
+  "wallMs": 2420,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 28608.22826161774,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p3b-boss-at-after",
+  "mode": "on",
+  "wallMs": 2816,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 27402.057065404093,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p5a-plate-forgot-after",
+  "mode": "on",
+  "wallMs": 3242,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 560.7405556517649,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 2,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p6a-standoffs-after",
+  "mode": "on",
+  "wallMs": 10042,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 11,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p9d-knob-alone-front-after",
+  "mode": "on",
+  "wallMs": 1377,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807604,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 1,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p9c-knob-top-plane-after",
+  "mode": "on",
+  "wallMs": 2627,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w1-row-whole",
+  "mode": "on",
+  "wallMs": 3050,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w2-row-counterbore",
+  "mode": "on",
+  "wallMs": 3759,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 16699.560825723496,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w3-row-pocket",
+  "mode": "on",
+  "wallMs": 2094,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 23784,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w4-ring-whole",
+  "mode": "on",
+  "wallMs": 3383,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 22869.22302234767,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w5-row-touching",
+  "mode": "on",
+  "wallMs": 3125,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.910877663468,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w6-row-two-holes",
+  "mode": "on",
+  "wallMs": 3815,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 11183.296219283058,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w7-row-then-hole",
+  "mode": "on",
+  "wallMs": 3171,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole2 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "w8-spin-side",
+  "mode": "on",
+  "wallMs": 1365,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807602,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs left to right (x); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 1,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p1a-box-lid",
+  "mode": "on",
+  "wallMs": 2040,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18874.307150118355,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [60, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118356,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118356,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p2a-plate-peg",
+  "mode": "on",
+  "wallMs": 1989,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13570.53541173428,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "box1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.53541173428,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.53541173428,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p3a-bracket-boss",
+  "mode": "on",
+  "wallMs": 2297,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 28608.22826161774,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p4a-cup-pulled",
+  "mode": "on",
+  "wallMs": 2633,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13413.331275580895,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft2",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 13413.331275580895,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 13413.331275580895,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 13,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p4b-cup-from-top",
+  "mode": "on",
+  "wallMs": 2196,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 62187.21658814809,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft2",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 62187.21658814809,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 62187.21658814809,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 12,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p5a-plate-forgot",
+  "mode": "on",
+  "wallMs": 2972,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 560.7405556517649,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 2,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p6a-standoffs",
+  "mode": "on",
+  "wallMs": 9675,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 11,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p7a-cut-tool",
+  "mode": "on",
+  "wallMs": 1284,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 34355.80311760145,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 2355.8031176014483,
+    "faces": 3
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 2355.8031176014483,
+    "faces": 3
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 2,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8a-row",
+  "mode": "on",
+  "wallMs": 1069,
+  "threw": null,
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "status": "script error",
+  "volume": null,
+  "steps": [],
+  "bodies": [],
+  "pageBodies": [],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9a-knob",
+  "mode": "on",
+  "wallMs": 2369,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686526,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside rev1; its centre is at [42, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "rev1 and box1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686526,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686526,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p1b-lid-on-top",
+  "mode": "on",
+  "wallMs": 1977,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18874.307150118355,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118354,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118354,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p1c-lid-counterbore",
+  "mode": "on",
+  "wallMs": 2380,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 18912,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): cutting it would also cut box1, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box1.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7200,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7200,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 7,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p1d-lid-first",
+  "mode": "on",
+  "wallMs": 2740,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18817.76385916656,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 7105.763859166559,
+    "faces": 9
+   },
+   {
+    "name": "b_box2",
+    "volume": 11712,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 7105.763859166559,
+    "faces": 9
+   },
+   {
+    "name": "b_box2",
+    "volume": 11712,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p2b-peg-at",
+  "mode": "on",
+  "wallMs": 2056,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13570.535411734267,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.535411734267,
+    "faces": 8
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.535411734267,
+    "faces": 8
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p2c-peg-hole",
+  "mode": "on",
+  "wallMs": 2918,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13256.538385067382,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13256.538385067382,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13256.538385067382,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p3b-boss-at",
+  "mode": "on",
+  "wallMs": 2630,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 27402.057065404093,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p3c-boss-hole-first",
+  "mode": "on",
+  "wallMs": 3364,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 27301.56421840652,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27301.56421840652,
+    "faces": 12
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27301.56421840652,
+    "faces": 12
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p5b-plate-fixed",
+  "mode": "on",
+  "wallMs": 2483,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 9560.740555745851,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]; it may overlap pull1"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 2,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p5c-plate-spacer-at",
+  "mode": "on",
+  "wallMs": 2481,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 9560.74055574585,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517625,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517625,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 2,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p6b-standoffs-drilled-first",
+  "mode": "on",
+  "wallMs": 12649,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17964.133962155545,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17964.133962155545,
+    "faces": 19
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17964.133962155545,
+    "faces": 19
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 13,
+   "fromMemory": 1,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p7b-cut-at",
+  "mode": "on",
+  "wallMs": 1828,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 30429.464588265724,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 30429.464588265724,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 30429.464588265724,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 3,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8b-row-then-drill",
+  "mode": "on",
+  "wallMs": 1648,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 18000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18000,
+    "faces": 18
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18000,
+    "faces": 18
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8c-row-touching",
+  "mode": "on",
+  "wallMs": 1909,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17717.30362588783,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8d-three-by-hand",
+  "mode": "on",
+  "wallMs": 3333,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.910877663493,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole3",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box2",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box3",
+    "volume": 5717.303625887832,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box2",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box3",
+    "volume": 5717.303625887832,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 6,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p9b-knob-base-at",
+  "mode": "on",
+  "wallMs": 17051,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p9c-knob-top-plane",
+  "mode": "on",
+  "wallMs": 2555,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p9d-knob-alone-front",
+  "mode": "on",
+  "wallMs": 1366,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807604,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 1,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8e-holes-in-a-row",
+  "mode": "on",
+  "wallMs": 2552,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 11151.910877663477,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole3",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11151.910877663477,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11151.910877663477,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p6c-standoff-through",
+  "mode": "on",
+  "wallMs": 8936,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17907.595577215445,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17907.595577215445,
+    "faces": 17
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17907.595577215445,
+    "faces": 17
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 10,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p3d-boss-hole-centre",
+  "mode": "on",
+  "wallMs": 2771,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 26924.635719590617,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26924.635719590617,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26924.635719590617,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "one-box",
+  "mode": "on",
+  "wallMs": 1109,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 1,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "box-hole",
+  "mode": "on",
+  "wallMs": 1643,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 5717.30362588783,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 2,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "box-hole-hollow",
+  "mode": "on",
+  "wallMs": 2320,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4857.549660233167,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 4857.549660233167,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 4857.549660233167,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "blocked-chain",
+  "mode": "on",
+  "wallMs": 1719,
+  "threw": null,
+  "error": null,
+  "status": "built with 4 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.",
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.",
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): it needs shell1, which could not be built, so draft1 is shown without it.",
+    "note": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 builds on draft1, which could not be built, so round1 is shown without it too -- fix draft1 first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 4,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "second-pass",
+  "mode": "on",
+  "wallMs": 4337,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 14617.549660233168,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 3017.5496602331673,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 3017.5496602331673,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 19,
+   "fromMemory": 3,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "slow-join-alone",
+  "mode": "on",
+  "wallMs": 15673,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 5,
+   "fromMemory": 0,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "slow-join-then-stale",
+  "mode": "on",
+  "wallMs": 47948,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 18904.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 14,
+   "fromMemory": 7,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "slow-join-then-blocked",
+  "mode": "on",
+  "wallMs": 36087,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 13304.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 5 separate pieces where there are 2 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.",
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box2 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_box2",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_box2",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 10,
+   "fromMemory": 1,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "slow-join-stale-blocked",
+  "mode": "on",
+  "wallMs": 119256,
+  "threw": null,
+  "error": null,
+  "status": "built with 3 steps not built",
+  "volume": 24904.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 6 separate pieces where there are 3 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.",
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box2 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   },
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 24,
+   "fromMemory": 8,
+   "finalReplaySkipped": true
+  },
+  "tampered": 0
+ },
+ {
+  "id": "stale-blocked-then-slow-join",
+  "mode": "on",
+  "wallMs": 38043,
+  "threw": null,
+  "error": null,
+  "status": "built with 3 steps not built",
+  "volume": 24904.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 5 separate pieces where there are 2 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.",
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.",
+    "note": null
+   },
+   {
+    "id": "sk3",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   },
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   },
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": {
+   "runs": 29,
+   "fromMemory": 4,
+   "finalReplaySkipped": false
+  },
+  "tampered": 0
+ },
+ {
+  "id": "p8a-row-after",
+  "mode": "off",
+  "wallMs": 645,
+  "threw": null,
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "status": "script error",
+  "volume": null,
+  "steps": [],
+  "bodies": [],
+  "pageBodies": [],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3a-bracket-boss-after",
+  "mode": "off",
+  "wallMs": 2104,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 28608.22826161774,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3b-boss-at-after",
+  "mode": "off",
+  "wallMs": 2383,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 27402.057065404093,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p5a-plate-forgot-after",
+  "mode": "off",
+  "wallMs": 2974,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 560.7405556517649,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p6a-standoffs-after",
+  "mode": "off",
+  "wallMs": 8952,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9d-knob-alone-front-after",
+  "mode": "off",
+  "wallMs": 1321,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807604,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9c-knob-top-plane-after",
+  "mode": "off",
+  "wallMs": 2445,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w1-row-whole",
+  "mode": "off",
+  "wallMs": 2758,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w2-row-counterbore",
+  "mode": "off",
+  "wallMs": 3423,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 16699.560825723496,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w3-row-pocket",
+  "mode": "off",
+  "wallMs": 1959,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 23784,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w4-ring-whole",
+  "mode": "off",
+  "wallMs": 2993,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 22869.22302234767,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w5-row-touching",
+  "mode": "off",
+  "wallMs": 2939,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.910877663468,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w6-row-two-holes",
+  "mode": "off",
+  "wallMs": 3376,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 11183.296219283058,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w7-row-then-hole",
+  "mode": "off",
+  "wallMs": 2766,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 17151.91087766351,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole2 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "w8-spin-side",
+  "mode": "off",
+  "wallMs": 1342,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807602,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs left to right (x); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p1a-box-lid",
+  "mode": "off",
+  "wallMs": 2043,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18874.307150118355,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [60, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118356,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118356,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p2a-plate-peg",
+  "mode": "off",
+  "wallMs": 1873,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13570.53541173428,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "box1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.53541173428,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.53541173428,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3a-bracket-boss",
+  "mode": "off",
+  "wallMs": 2128,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 28608.22826161774,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p4a-cup-pulled",
+  "mode": "off",
+  "wallMs": 2626,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13413.331275580895,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft2",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 13413.331275580895,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 13413.331275580895,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p4b-cup-from-top",
+  "mode": "off",
+  "wallMs": 2231,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 62187.21658814809,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft2",
+    "kind": "draft",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 62187.21658814809,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 62187.21658814809,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p5a-plate-forgot",
+  "mode": "off",
+  "wallMs": 2951,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 560.7405556517649,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p6a-standoffs",
+  "mode": "off",
+  "wallMs": 8851,
+  "threw": null,
+  "error": null,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p7a-cut-tool",
+  "mode": "off",
+  "wallMs": 1249,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 34355.80311760145,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside box1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "refused",
+    "refusal": "The cutting shape does not overlap the shape being cut, so nothing would be removed; move it (give it an at: position) so the two overlap.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 2355.8031176014483,
+    "faces": 3
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 32000,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 2355.8031176014483,
+    "faces": 3
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p8a-row",
+  "mode": "off",
+  "wallMs": 52,
+  "threw": null,
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "status": "script error",
+  "volume": null,
+  "steps": [],
+  "bodies": [],
+  "pageBodies": [],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9a-knob",
+  "mode": "off",
+  "wallMs": 2237,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686526,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside rev1; its centre is at [42, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "rev1 and box1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686526,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686526,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p1b-lid-on-top",
+  "mode": "off",
+  "wallMs": 2000,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18874.307150118355,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118354,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7162.307150118354,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p1c-lid-counterbore",
+  "mode": "off",
+  "wallMs": 2339,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 18912,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): cutting it would also cut box1, which is in the way of this hole, so hole1 is shown without it -- drill this hole before you make box1.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7200,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11712,
+    "faces": 11
+   },
+   {
+    "name": "b_box2",
+    "volume": 7200,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p1d-lid-first",
+  "mode": "off",
+  "wallMs": 2709,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 18817.76385916656,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 7105.763859166559,
+    "faces": 9
+   },
+   {
+    "name": "b_box2",
+    "volume": 11712,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 7105.763859166559,
+    "faces": 9
+   },
+   {
+    "name": "b_box2",
+    "volume": 11712,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p2b-peg-at",
+  "mode": "off",
+  "wallMs": 1926,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13570.535411734267,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.535411734267,
+    "faces": 8
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13570.535411734267,
+    "faces": 8
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p2c-peg-hole",
+  "mode": "off",
+  "wallMs": 2847,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 13256.538385067382,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 13256.538385067382,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 13256.538385067382,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3b-boss-at",
+  "mode": "off",
+  "wallMs": 2492,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 27402.057065404093,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3c-boss-hole-first",
+  "mode": "off",
+  "wallMs": 3202,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 27301.56421840652,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27301.56421840652,
+    "faces": 12
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27301.56421840652,
+    "faces": 12
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p5b-plate-fixed",
+  "mode": "off",
+  "wallMs": 2498,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 9560.740555745851,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]; it may overlap pull1"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p5c-plate-spacer-at",
+  "mode": "off",
+  "wallMs": 2617,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 9560.74055574585,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517625,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 9000.000000094087,
+    "faces": 6
+   },
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517625,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p6b-standoffs-drilled-first",
+  "mode": "off",
+  "wallMs": 11548,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17964.133962155545,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17964.133962155545,
+    "faces": 19
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17964.133962155545,
+    "faces": 19
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p7b-cut-at",
+  "mode": "off",
+  "wallMs": 1761,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 30429.464588265724,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 30429.464588265724,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 30429.464588265724,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p8b-row-then-drill",
+  "mode": "off",
+  "wallMs": 1556,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 18000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18000,
+    "faces": 18
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 18000,
+    "faces": 18
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p8c-row-touching",
+  "mode": "off",
+  "wallMs": 2006,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17717.30362588783,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p8d-three-by-hand",
+  "mode": "off",
+  "wallMs": 3030,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17151.910877663493,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box2",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box3",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole3",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box2",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box3",
+    "volume": 5717.303625887832,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box2",
+    "volume": 5717.30362588783,
+    "faces": 7
+   },
+   {
+    "name": "b_box3",
+    "volume": 5717.303625887832,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9b-knob-base-at",
+  "mode": "off",
+  "wallMs": 15676,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 7304.39363142192,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9c-knob-top-plane",
+  "mode": "off",
+  "wallMs": 2339,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p9d-knob-alone-front",
+  "mode": "off",
+  "wallMs": 1324,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4825.200678807604,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p8e-holes-in-a-row",
+  "mode": "off",
+  "wallMs": 2500,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 11151.910877663477,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole3",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11151.910877663477,
+    "faces": 9
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 11151.910877663477,
+    "faces": 9
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p6c-standoff-through",
+  "mode": "off",
+  "wallMs": 9183,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 17907.595577215445,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17907.595577215445,
+    "faces": 17
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 17907.595577215445,
+    "faces": 17
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "p3d-boss-hole-centre",
+  "mode": "off",
+  "wallMs": 2874,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 26924.635719590617,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26924.635719590617,
+    "faces": 11
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 26924.635719590617,
+    "faces": 11
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "one-box",
+  "mode": "off",
+  "wallMs": 1072,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "box-hole",
+  "mode": "off",
+  "wallMs": 1710,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 5717.30362588783,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 5717.30362588783,
+    "faces": 7
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "box-hole-hollow",
+  "mode": "off",
+  "wallMs": 2440,
+  "threw": null,
+  "error": null,
+  "status": "built",
+  "volume": 4857.549660233167,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 4857.549660233167,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 4857.549660233167,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "blocked-chain",
+  "mode": "off",
+  "wallMs": 1853,
+  "threw": null,
+  "error": null,
+  "status": "built with 4 steps not built",
+  "volume": 6000,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it would leave 4 separate pieces where there is 1 now, so hole1 is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.",
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "refused",
+    "refusal": "Hollowing box1 to 12 thick would collapse it, so shell1 is shown without it -- the wall has to be under 10.",
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 (draft): it needs shell1, which could not be built, so draft1 is shown without it.",
+    "note": null
+   },
+   {
+    "id": "round1",
+    "kind": "fillet",
+    "status": "refused",
+    "refusal": "round1 builds on draft1, which could not be built, so round1 is shown without it too -- fix draft1 first.",
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_box1",
+    "volume": 6000,
+    "faces": 6
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ },
+ {
+  "id": "second-pass",
+  "mode": "off",
+  "wallMs": 4715,
+  "threw": null,
+  "error": null,
+  "status": "built with 1 step not built",
+  "volume": 14617.549660233168,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "draft1",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "draft1 is not built: pull1 was already cut by pocket1, so this draft would not include the cut -- keep the result of the cut under a name (for example part = pocket(...)) and pick on that instead.",
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 3017.5496602331673,
+    "faces": 14
+   }
+  ],
+  "pageBodies": [
+   {
+    "name": "b_pull1",
+    "volume": 11600,
+    "faces": 11
+   },
+   {
+    "name": "b_box1",
+    "volume": 3017.5496602331673,
+    "faces": 14
+   }
+  ],
+  "pageSame": true,
+  "engineUse": null,
+  "tampered": 0
+ }
+]

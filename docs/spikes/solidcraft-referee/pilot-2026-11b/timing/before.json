@@ -1,0 +1,1767 @@
+[
+ {
+  "id": "one-box",
+  "script": "const b = box(30, 20, 10)",
+  "wallMs": 1190,
+  "status": "built",
+  "volume": 6000,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 147,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 42,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": []
+ },
+ {
+  "id": "box-hole",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })",
+  "wallMs": 1621,
+  "status": "built",
+  "volume": 5717.30362588783,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 318,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 39
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.0585,
+    "ms": 274,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 100
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": null,
+    "ms": 75,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 227,
+    "cpuMs": 39,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.0585,
+    "status": "done",
+    "wallMs": 124,
+    "cpuMs": 100,
+    "loadMs": 3
+   }
+  ]
+ },
+ {
+  "id": "box-hole-hollow",
+  "script": "const b = box(40, 30, 10)\nhole(b, { across: 6 })\nhollow(b, { wall: 2, open: 'top' })",
+  "wallMs": 2411,
+  "status": "built",
+  "volume": 4857.549660233167,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 300,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 35
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.0525,
+    "ms": 402,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 239
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 56,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.shell",
+    "budgetS": 45.3585,
+    "ms": 439,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 196
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.shell",
+    "budgetS": null,
+    "ms": 128,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 224,
+    "cpuMs": 35,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.0525,
+    "status": "done",
+    "wallMs": 258,
+    "cpuMs": 239,
+    "loadMs": 7
+   },
+   {
+    "cmds": 3,
+    "last": "solid.shell",
+    "budgetS": 45.3585,
+    "status": "done",
+    "wallMs": 207,
+    "cpuMs": 196,
+    "loadMs": 3
+   }
+  ]
+ },
+ {
+  "id": "p2b-peg-at",
+  "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 12.5] })\nconst part = union(plate, peg)",
+  "wallMs": 1990,
+  "status": "built",
+  "volume": 13570.535411734267,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 92,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": null,
+    "ms": 101,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "ms": 648,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 172
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 83,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 96,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 3,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 497,
+    "cpuMs": 172,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "p3c-boss-hole-first",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nhole(boss, { across: 4 })\nconst both = union(part, boss)",
+  "wallMs": 3174,
+  "status": "built",
+  "volume": 27301.56421840652,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "ms": 373,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 61
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 350,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 203
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 420,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 181
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": 45.2715,
+    "ms": 491,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 283
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": 45.2715,
+    "ms": 415,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 231
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 167,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 251,
+    "cpuMs": 61,
+    "loadMs": 5
+   },
+   {
+    "cmds": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 228,
+    "cpuMs": 203,
+    "loadMs": 6
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 192,
+    "cpuMs": 181,
+    "loadMs": 4
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.2715,
+    "status": "done",
+    "wallMs": 294,
+    "cpuMs": 283,
+    "loadMs": 4
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.2715,
+    "status": "done",
+    "wallMs": 243,
+    "cpuMs": 231,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "p6a-standoffs",
+  "script": "// an open box with two posts inside for a circuit board\nconst b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nconst body = union(b, post1, post2)\nhole(body, { across: 3, at: [-25, 0], deep: 8 })\nhole(body, { across: 3, at: [25, 0], deep: 8 })",
+  "wallMs": 8838,
+  "status": "built with 2 steps not built",
+  "volume": 18077.142663510047,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "cyl2",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "hole2",
+    "hole",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 297,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 34
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 68,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 87,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "budgetS": 45.051,
+    "ms": 158,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 41
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.051,
+    "ms": 251,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 91
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.1365,
+    "ms": 300,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 131
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "ms": 2063,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 1282
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "ms": 273,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 127
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "ms": 229,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 99
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 1693,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 875
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 1725,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 887
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 723,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 215,
+    "cpuMs": 34,
+    "loadMs": 3
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.051,
+    "status": "done",
+    "wallMs": 55,
+    "cpuMs": 41,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.051,
+    "status": "done",
+    "wallMs": 103,
+    "cpuMs": 91,
+    "loadMs": 4
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.1365,
+    "status": "done",
+    "wallMs": 141,
+    "cpuMs": 131,
+    "loadMs": 3
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "status": "done",
+    "wallMs": 1294,
+    "cpuMs": 1282,
+    "loadMs": 5
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "status": "done",
+    "wallMs": 140,
+    "cpuMs": 127,
+    "loadMs": 5
+   },
+   {
+    "cmds": 5,
+    "last": "solid.combine",
+    "budgetS": 45.1965,
+    "status": "done",
+    "wallMs": 110,
+    "cpuMs": 99,
+    "loadMs": 4
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 887,
+    "cpuMs": 875,
+    "loadMs": 4
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 911,
+    "cpuMs": 887,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p6b-standoffs-drilled-first",
+  "script": "const b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nhole(post1, { across: 3, deep: 8 })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nhole(post2, { across: 3, deep: 8 })\nconst body = union(b, post1, post2)",
+  "wallMs": 11522,
+  "status": "built",
+  "volume": 17964.133962155545,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "cyl2",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole2",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 361,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 54
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 75,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 76,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "budgetS": 45.081,
+    "ms": 170,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 49
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.081,
+    "ms": 291,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 111
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 606,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 359
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.1665,
+    "ms": 365,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 194
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45.291,
+    "ms": 472,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 247
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 619,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 310
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45.3705,
+    "ms": 552,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 261
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "ms": 4068,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 2092
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "ms": 596,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 296
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "ms": 448,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 221
+   },
+   {
+    "name": "execute",
+    "n": 7,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 1871,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 271,
+    "cpuMs": 54,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.081,
+    "status": "done",
+    "wallMs": 65,
+    "cpuMs": 49,
+    "loadMs": 6
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.081,
+    "status": "done",
+    "wallMs": 125,
+    "cpuMs": 111,
+    "loadMs": 6
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 374,
+    "cpuMs": 359,
+    "loadMs": 6
+   },
+   {
+    "cmds": 4,
+    "last": "solid.cylinder",
+    "budgetS": 45.1665,
+    "status": "done",
+    "wallMs": 204,
+    "cpuMs": 194,
+    "loadMs": 3
+   },
+   {
+    "cmds": 5,
+    "last": "solid.cylinder",
+    "budgetS": 45.291,
+    "status": "done",
+    "wallMs": 262,
+    "cpuMs": 247,
+    "loadMs": 6
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 320,
+    "cpuMs": 310,
+    "loadMs": 3
+   },
+   {
+    "cmds": 6,
+    "last": "solid.cylinder",
+    "budgetS": 45.3705,
+    "status": "done",
+    "wallMs": 272,
+    "cpuMs": 261,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "status": "done",
+    "wallMs": 2108,
+    "cpuMs": 2092,
+    "loadMs": 4
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "status": "done",
+    "wallMs": 309,
+    "cpuMs": 296,
+    "loadMs": 5
+   },
+   {
+    "cmds": 7,
+    "last": "solid.combine",
+    "budgetS": 45.3915,
+    "status": "done",
+    "wallMs": 234,
+    "cpuMs": 221,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p9b-knob-base-at",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "wallMs": 15618,
+  "status": "built",
+  "volume": 7304.39363142192,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "budgetS": null,
+    "ms": 225,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "ms": 7685,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 4073
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 3307,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 3323,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 4283,
+    "cpuMs": 4073,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "p9c-knob-top-plane",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "wallMs": 2331,
+  "status": "built",
+  "volume": 8424.892965686522,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "rev1",
+    "revolve",
+    "built",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "op1",
+    "combine",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.revolve",
+    "budgetS": null,
+    "ms": 231,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 5,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 115,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "ms": 757,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 325
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 71,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 6,
+    "last": "solid.combine",
+    "budgetS": null,
+    "ms": 206,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 6,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 541,
+    "cpuMs": 325,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "blocked-chain",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 35 })\nhollow(b, { wall: 12, open: 'top' })\ndraft(b.face('right'), 5)\nround(b.edge('top', 'front'), 2)",
+  "wallMs": 1835,
+  "status": "built with 4 steps not built",
+  "volume": 6000,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "round1",
+    "fillet",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 327,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 40
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.06,
+    "ms": 286,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 99
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 59,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 47,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 106,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 60,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 223,
+    "cpuMs": 40,
+    "loadMs": 6
+   },
+   {
+    "cmds": 2,
+    "last": "solid.cylinder",
+    "budgetS": 45.06,
+    "status": "done",
+    "wallMs": 170,
+    "cpuMs": 99,
+    "loadMs": 11
+   }
+  ]
+ },
+ {
+  "id": "second-pass",
+  "script": "const sk1 = sketch('top'); sk1.rect(40, 30, { at: [20, 15] }); const p = extrude(sk1, 10); const sk2 = sketch('top', 10); sk2.rect(10, 10, { at: [20, 15] }); pocket(sk2, p, 4); draft(p.face('right'), 5);\nconst c = box(30, 20, 10, { at: [100, 0, 0] })\nhole(c, { across: 6 })\nhollow(c, { wall: 2, open: 'top' })",
+  "wallMs": 4777,
+  "status": "built with 1 step not built",
+  "volume": 14617.549660233168,
+  "steps": [
+   [
+    "sk1",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pull1",
+    "extrude",
+    "built",
+    null
+   ],
+   [
+    "sk2",
+    "sketch",
+    "noop",
+    null
+   ],
+   [
+    "pocket1",
+    "pocket",
+    "built",
+    null
+   ],
+   [
+    "draft1",
+    "draft",
+    "refused",
+    null
+   ],
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "ms": 381,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 63
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "ms": 179,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 48
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "ms": 109,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 12
+   },
+   {
+    "name": "topologyOf",
+    "n": 4,
+    "last": "solid.extrude",
+    "budgetS": null,
+    "ms": 132,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 8,
+    "last": "solid.extrude",
+    "budgetS": null,
+    "ms": 128,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "ms": 149,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 36
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "ms": 144,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 16
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "ms": 98,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 12
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "ms": 111,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 13
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 127,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 15
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 304,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 143
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 11,
+    "last": "solid.cylinder",
+    "budgetS": null,
+    "ms": 134,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 12,
+    "last": "solid.shell",
+    "budgetS": 45.2145,
+    "ms": 400,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 197
+   },
+   {
+    "name": "execute",
+    "n": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "ms": 81,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 2
+   },
+   {
+    "name": "execute",
+    "n": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "ms": 83,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 5
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "ms": 100,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 6
+   },
+   {
+    "name": "execute",
+    "n": 9,
+    "last": "solid.box",
+    "budgetS": 45,
+    "ms": 99,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 6
+   },
+   {
+    "name": "execute",
+    "n": 10,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "ms": 167,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 64
+   },
+   {
+    "name": "topologyOf",
+    "n": 9,
+    "last": "solid.box",
+    "budgetS": null,
+    "ms": 116,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 10,
+    "last": "solid.cylinder",
+    "budgetS": null,
+    "ms": 135,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.shell",
+    "budgetS": 45.096,
+    "ms": 299,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 136
+   },
+   {
+    "name": "execute",
+    "n": 11,
+    "last": "solid.shell",
+    "budgetS": null,
+    "ms": 165,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 252,
+    "cpuMs": 63,
+    "loadMs": 7
+   },
+   {
+    "cmds": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 64,
+    "cpuMs": 48,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 28,
+    "cpuMs": 12,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 50,
+    "cpuMs": 36,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 35,
+    "cpuMs": 16,
+    "loadMs": 5
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 24,
+    "cpuMs": 12,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.draft",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 27,
+    "cpuMs": 13,
+    "loadMs": 5
+   },
+   {
+    "cmds": 10,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 36,
+    "cpuMs": 15,
+    "loadMs": 5
+   },
+   {
+    "cmds": 11,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 153,
+    "cpuMs": 143,
+    "loadMs": 4
+   },
+   {
+    "cmds": 12,
+    "last": "solid.shell",
+    "budgetS": 45.2145,
+    "status": "done",
+    "wallMs": 212,
+    "cpuMs": 197,
+    "loadMs": 7
+   },
+   {
+    "cmds": 4,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 15,
+    "cpuMs": 2,
+    "loadMs": 5
+   },
+   {
+    "cmds": 8,
+    "last": "solid.extrude",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 14,
+    "cpuMs": 5,
+    "loadMs": 3
+   },
+   {
+    "cmds": 9,
+    "last": "solid.combine",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 17,
+    "cpuMs": 6,
+    "loadMs": 4
+   },
+   {
+    "cmds": 9,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 18,
+    "cpuMs": 6,
+    "loadMs": 5
+   },
+   {
+    "cmds": 10,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 73,
+    "cpuMs": 64,
+    "loadMs": 3
+   },
+   {
+    "cmds": 11,
+    "last": "solid.shell",
+    "budgetS": 45.096,
+    "status": "done",
+    "wallMs": 148,
+    "cpuMs": 136,
+    "loadMs": 4
+   }
+  ]
+ }
+]

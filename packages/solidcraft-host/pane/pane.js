@@ -3,6 +3,7 @@
 // -> solveDoc -> translator (+ phase 2 sketch mapper) -> window.solidcraft (same page, no postMessage relay) -> viewport.
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
+import { createReplyMemory } from '../src/reply-memory.mjs';
 import { createProber } from '../src/probe-client.mjs';
 import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
@@ -305,6 +306,15 @@ let soups = {}; // sketch command name -> { sketchId, geoms, rules, names, notes
  * sketch.finish, read solidcraft's profile list, and set `profiles` to the faces the doc means (even-odd fill of its
  * loops): solidcraft otherwise extrudes every face, which fills a hole (phase 2: washer 10000 vs 9214.6).
  */
+// ---- one run of the script: the engine's replies are remembered (src/reply-memory.mjs) --------------------------------------------------------------------------
+// `memo` lives during one run(); `?memo=off` makes none, and every list is then run every time, as before. Outside run() the bridge is called directly.
+let memo = null;
+const MEMO_ON = params.get('memo') !== 'off';
+const eng = {
+  execute: (cmds, opts = {}) => { if (memo) return memo.execute(cmds, opts); const { replay: _r, ...pass } = opts; return bridge.execute(cmds, pass); },
+  topologyOf: (cmds) => (memo ? memo.topologyOf(cmds) : bridge.topologyOf(cmds)),
+};
+/** `opts.replay`: this run is the one that puts SolidCraft on `cmds` for the view, so the list itself is really run (its sketch readings may come from memory). */
 async function runSC(cmds, opts) {
   for (const c of cmds) {
     const nm = c.params?.sketch;
@@ -312,14 +322,14 @@ async function runSC(cmds, opts) {
     const ci = cmds.findIndex((y) => y.command === 'sketch.create' && y.params?.name === nm);
     const fin = ci < 0 ? -1 : cmds.findIndex((x, i) => i > ci && x.command === 'sketch.finish');
     if (fin < 0) continue;
-    const probe = await bridge.execute(cmds.slice(0, fin + 1), { fresh: true });
+    const probe = await eng.execute(cmds.slice(0, fin + 1), { fresh: true });
     if (!probe.ok) return probe; // same refusal semantics: the failure is the sketch's own
     const snap = (probe.sketches ?? []).find((s) => s.name === nm);
     if (!snap) continue;
     const idx = docProfileIndices(snap.profile_list, truckGeoms(snap, soups[nm].names, soups[nm].geoms));
     if (idx.length && idx.length !== snap.profile_list.length) c.params.profiles = idx;
   }
-  const fin = await bridge.execute(cmds, { fresh: true, budgetS: opts && opts.budgetS });
+  const fin = await eng.execute(cmds, { fresh: true, budgetS: opts && opts.budgetS, replay: !!(opts && opts.replay) });
   if (fin && fin.probeVolume !== undefined && fin.measure) runLog.push({ probe: fin.probeVolume, page: fin.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) }); // verification: scratch run vs real run, same commands
   return fin;
 }
@@ -609,9 +619,14 @@ async function run({ confirmed = false } = {}) {
     soups = {};
     // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8);
     // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => bridge.topologyOf(cmds) });
-    // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant).
-    const fin = await runSC(tr.commands);
+    memo = MEMO_ON ? createReplyMemory(bridge) : null;
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds) });
+    // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
+    // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
+    const held = memo ? await memo.heldReply(tr.commands) : null;
+    const fin = held ?? await runSC(tr.commands, { replay: true });
+    const engineUse = memo ? { runs: memo.runs, fromMemory: memo.hits, finalReplaySkipped: !!held } : null;
+    memo = null;
     keepNext = false;
     $('cmds').textContent = JSON.stringify(tr.commands, null, 1);
     // where a shape without at: went (placement.mjs): a hint on a pocket, keep() or groove that missed such a part, a note on the shape's own step, and a note on a
@@ -657,11 +672,12 @@ async function run({ confirmed = false } = {}) {
       features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, note: notes.get(f.id) ?? null, pickedFrom: f.pickedFrom ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
       refusals: refused.map((f) => f.refusal), sketches: rows.map((x) => ({ sketch: x.id, state: x.label, status: x.status, dof: x.dof, failing: x.failing, redundant: x.redundant, resid: x.resid, worstRes: x.worstRes, profiles: x.profiles, rule: x.rule, ownDof: x.ownDof })),
       sketchCheck: checks,
-      refusedCommand: failedCmd ?? null, commands: tr.commands.length,
+      refusedCommand: failedCmd ?? null, commands: tr.commands.length, engineUse,
       warnings: prep.warnings, interpreterWarnings: r.warnings ?? [],
     };
     window.__lastRun = { tr, fin, doc, summary };
   } catch (e) {
+    memo = null;
     keepNext = false;
     failState(summary, 'error: ' + e.message, `ERROR: ${e.message}`, 'The run did not finish.');
   } finally {
