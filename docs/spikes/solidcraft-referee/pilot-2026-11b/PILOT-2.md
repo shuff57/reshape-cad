@@ -480,3 +480,47 @@ would otherwise hide.
 oracle agreeing; 35 that agree with a volume worked out by hand; 4 where OCCT's volume agrees and its solid sits the other way; 7 cylinder walls
 within tolerance of the volume and not of the box. Nothing built wrong was found.
 
+## The OCCT referee reads the options of a pull and a pocket (owner chose it, 2026-11-13)
+
+`packages/brep-adapter/src/occt-build.ts` built every pull as a plain prism above its sketch and every pocket as a plain prism below it. It now
+builds what the document says (ExtrudeFeature and PocketFeature in `packages/script/src/model-types.ts`):
+
+- a pull: `reversed` (the other side of the sketch plane), `midplane` (half either side; it wins over `length2`), `length2` (a second length the
+  opposite way), `taper` (the walls lean outward as the pad lengthens for a positive angle; a round wall becomes a cone);
+- a pocket: `reversed`, `midplane`, `length2`, `through` (to the far side of the solid in the direction it cuts, whatever `depth` says), `taper`.
+
+What it still does not build it now **refuses by name** instead of building the plain prism: a custom `direction`, a taper together with a
+two-sided or through sweep, and `through` together with a two-sided one. The harness counts a refusal as an oracle that says nothing, which is
+what it is. A document with none of these options builds as before (the same calls with the same arguments), so the frozen gates see no change.
+
+Tests: `packages/brep-adapter/test/occt-sweep-options.test.mjs` (12, on the real kernel, each option against a volume and a box worked out by
+hand: for example a 24 x 20 outline with one corner rounded r 3, pulled 20 at a taper of 5 degrees, 11155.907; a through pocket from the mid
+plane of a box in each direction, and which half is missing). Against the referee as it was, 11 of the 12 fail.
+
+**The 2740 final solids scored again** (`old-seeds/rescored.jsonl`, `new-seeds/rescored.jsonl`: the verdict before and after):
+
+| | before | after |
+|---|---|---|
+| RIGHT: every oracle that built agrees | 2564 | 2695 |
+| one oracle agrees and the other does not | 130 | 27 |
+| flagged WRONG | 41 | 13 |
+| both oracles refuse | 5 | 5 |
+
+Every solid that was RIGHT is still RIGHT (2564 of 2564), and no verdict moved away from RIGHT. 107 rows where only brep-rs agreed and 24 that
+had only a volume worked out by hand (23 flagged WRONG and one reversed pull) are now RIGHT by OCCT as well; 4 flagged WRONG are now split, with
+OCCT agreeing and brep-rs not (reversed pulls whose rounded or bulged outline brep-rs gets 8e-4 or more off). What is left:
+
+- 27 split: brep-rs agrees in 19 (none has a pull or pocket option: a hole after a hollow, a mirror or a pattern, a hole in a prism or
+  cylinder, a hollowed ball, a draft after a move), OCCT agrees in 8;
+- 13 flagged WRONG: 7 are the cylinder wall's accuracy (above); 6 agree with a volume worked out by hand and OCCT is 1e-4 to 0.54 off: two
+  hollows after a counterbore, a counterbore along y after a draft, a hollow with a hole and a drafted wall, a pocket into the wall of a
+  hollowed join (OCCT does not hollow the join at all), and a through pocket at the edge of a disc (OCCT agrees to 9.9e-5 in volume now and
+  misses the box by 5.8e-4, the cylinder's accuracy again);
+- 5 hollows that both oracles refuse and that equal their closed form.
+
+So the referee's remaining blind spots on these documents are a hollow after a counterbore, a counterbore after a draft and a hollow of a
+join; they are listed, not fixed. One limit of the change itself: after a reversed pull, a step that names the pull's "top" or "bottom" cap
+resolves on the referee by the sweep's own start and end, which may not be the end the script means. No row in the 2740 moved away from RIGHT,
+so none shows it; it is not excluded.
+
+Checked: `npm test` 1121 tests, 1115 pass, 6 skipped, 0 fail.

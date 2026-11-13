@@ -179,6 +179,72 @@ const DEG = Math.PI / 180;
 /** Move a shape by a vector. Every primitive OCCT builds sits at the origin or
  *  grows from it, and every shape in a ModelDoc is placed by its CENTRE, so
  *  almost everything here ends in one of these. */
+/**
+ * The options of a pull or pocket this reference path does NOT build. Until 2026-11-13 it read none of them: `reversed`, `midplane`, `length2`,
+ * `taper` and `through` were ignored and the plain one-sided prism was built instead, so on such a step the referee answered with ANOTHER solid
+ * (docs/spikes/solidcraft-referee/pilot-2026-11b/PILOT-2.md, "1500 new documents": 66 of 73 split verdicts). An oracle that builds something else
+ * is worse than one that says nothing, so whatever is still not built is refused by name here.
+ */
+function sweepOptionRefusal(f: any, what: 'pull' | 'pocket'): string | null {
+  const taper = typeof f.taper === 'number' && f.taper !== 0;
+  const twoSided = !!f.midplane || (typeof f.length2 === 'number' && f.length2 > 0);
+  if (Array.isArray(f.direction)) return `a ${what} along a custom direction is not built by this reference path`;
+  if (taper && twoSided) return `a tapered ${what} that runs both ways from its sketch is not built by this reference path`;
+  if (taper && f.through) return `a tapered ${what} that goes through all is not built by this reference path`;
+  if (f.through && twoSided) return `a ${what} that goes through all and runs both ways is not built by this reference path`;
+  return null;
+}
+
+/**
+ * A prism of `face` from `back` behind the sketch plane to `fwd` ahead of it along `dir` (a unit vector). Built as one prism of the whole length and then
+ * moved back, so the op's own history (FirstShape / LastShape / Generated) is whole; `after` is that move, to be recorded with the sweep (see placed()).
+ */
+function prismBothWays(oc: Occt, face: any, dir: Vec3, fwd: number, back: number): { op: any; shape: any; after: any | null } {
+  const len = fwd + back;
+  const op = new oc.BRepPrimAPI_MakePrism(face, new oc.gp_Vec(dir[0] * len, dir[1] * len, dir[2] * len), false, true);
+  if (!(back > 0)) return { op, shape: op.Shape(), after: null };
+  const after = new oc.gp_Trsf();
+  after.SetTranslation(new oc.gp_Vec(-dir[0] * back, -dir[1] * back, -dir[2] * back));
+  return { op, shape: new oc.BRepBuilderAPI_Transform(op.Shape(), after, false).Shape(), after };
+}
+
+/**
+ * Taper a one-sided prism: every side wall leans by `angleRad` about the sketch plane, outward as the prism gets longer when the angle is positive
+ * (ExtrudeFeature.taper, FreeCAD's sign). The walls are the faces the sweep did not start or end on; a flat wall stays flat, a round one becomes a cone.
+ * null when the kernel will not do it.
+ */
+function taperedPrism(oc: Occt, op: any, dir: Vec3, origin: Vec3, angleRad: number): any | null {
+  try {
+    const solid = op.Shape();
+    const first = op.FirstShape(), last = op.LastShape();
+    const dr = new oc.BRepOffsetAPI_DraftAngle(solid);
+    const d = new oc.gp_Dir(dir[0], dir[1], dir[2]);
+    const plane = new oc.gp_Pln(new oc.gp_Pnt(origin[0], origin[1], origin[2]), d);
+    let n = 0;
+    for (const face of facesOf(oc, solid)) {
+      if (face.IsSame(first) || face.IsSame(last)) continue;
+      // The minus: DraftAngle's own positive angle leans a wall the other way from the document's. Pinned by test/occt-sweep-options.test.mjs: a
+      // 24 x 20 pad of 10 at +5 degrees must come out at the volume and the box of the pad that widens (5195.156, 0.875 wider all round at the far end)
+      dr.Add(oc.TopoDS.Face(face), d, -angleRad, plane);
+      if (dr.AddDone && !dr.AddDone()) return null;
+      n++;
+    }
+    if (!n) return null;
+    dr.Build(new oc.Message_ProgressRange());
+    return dr.IsDone && !dr.IsDone() ? null : dr.Shape();
+  } catch { return null; }
+}
+
+/** How far a cut has to run to pass right through `shape` from anywhere near it: twice the diagonal of its box, plus how far the box is from `origin`. */
+function throughLength(oc: Occt, shape: any, origin: Vec3): number {
+  const box = new oc.Bnd_Box();
+  oc.BRepBndLib.Add(shape, box, true);
+  const lo = box.CornerMin(), hi = box.CornerMax();
+  const c: Vec3 = [(lo.X() + hi.X()) / 2, (lo.Y() + hi.Y()) / 2, (lo.Z() + hi.Z()) / 2];
+  const diag = Math.hypot(hi.X() - lo.X(), hi.Y() - lo.Y(), hi.Z() - lo.Z());
+  return 2 * diag + Math.hypot(c[0] - origin[0], c[1] - origin[1], c[2] - origin[2]) + 1;
+}
+
 function moved(oc: Occt, shape: any, [x, y, z]: Vec3): any {
   if (x === 0 && y === 0 && z === 0) return shape;
   const t = new oc.gp_Trsf();
@@ -1236,10 +1302,27 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         // of the plane, a pocket pushes it down into the material. `depth` is
         // documented positive so this sign lives here, once, rather than in
         // every student's head.
-        const h = -f.depth * a.dir;
-        const v = new oc.gp_Vec(a.n[0] * h, a.n[1] * h, a.n[2] * h);
-        const tool = new oc.BRepPrimAPI_MakePrism(face, v, false, true).Shape();
-        shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [headOf(f.into)]);
+        // The options (PocketFeature): `reversed` cuts the other way; `midplane` spans depth/2 either side of the sketch plane; `length2` is a second
+        // depth out of the mouth; `through` runs to the far side of the solid whatever `depth` says; `taper` widens the cut as it deepens.
+        const no = sweepOptionRefusal(f, 'pocket');
+        if (no) {
+          refusals.set(f.id, `${label(f.id)}: ${no} -- ${label(f.id)} is shown without it.`);
+          shape = base;
+        } else {
+          const sgn = -a.dir * (f.reversed ? -1 : 1);
+          const dir: Vec3 = [a.n[0] * sgn, a.n[1] * sgn, a.n[2] * sgn];
+          const fwd = f.midplane ? f.depth / 2 : f.through ? throughLength(oc, base, a.origin) : f.depth;
+          const back = f.midplane ? f.depth / 2 : (typeof f.length2 === 'number' && f.length2 > 0 ? f.length2 : 0);
+          const pr = prismBothWays(oc, face, dir, fwd, back);
+          let tool: any = pr.shape;
+          if (typeof f.taper === 'number' && f.taper !== 0) tool = taperedPrism(oc, pr.op, dir, a.origin, (f.taper * Math.PI) / 180);
+          if (!tool) {
+            refusals.set(f.id, `${label(f.id)}: the reference kernel could not taper this pocket at ${f.taper} degrees -- ${label(f.id)} is shown without it.`);
+            shape = base;
+          } else {
+            shape = boolean('BRepAlgoAPI_Cut', base, tool, f.id, [headOf(f.into)]);
+          }
+        }
       }
     } else if (f.kind === 'combine') {
       const live = f.targets.filter((id) => built.get(id));
@@ -1284,17 +1367,33 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
       const src = doc.features.find((x) => x.id === f.target);
       if (face && src && src.kind === 'sketch') {
         const a = sketchFrame(src);
-        const h = f.height * a.dir;
-        const v = new oc.gp_Vec(a.n[0] * h, a.n[1] * h, a.n[2] * h);
-        const op = new oc.BRepPrimAPI_MakePrism(face, v, false, true);
-        shape = op.Shape();
-        sweeps.set(f.id, {
-          op,
-          from: src.id,
-          segments: matchSegments(oc, face, sketchMarks.get(src.id) ?? []),
-          after: null,
-          closed: false,
-        });
+        // The options (ExtrudeFeature): `reversed` grows the other way; `midplane` spans height/2 either side of the sketch plane and wins over
+        // `length2`, a second length grown the opposite way; `taper` leans the walls outward as the pad lengthens.
+        const no = sweepOptionRefusal(f, 'pull');
+        if (no) {
+          refusals.set(f.id, `${label(f.id)}: ${no}.`);
+        } else {
+          const sgn = a.dir * (f.reversed ? -1 : 1);
+          const dir: Vec3 = [a.n[0] * sgn, a.n[1] * sgn, a.n[2] * sgn];
+          const fwd = f.midplane ? f.height / 2 : f.height;
+          const back = f.midplane ? f.height / 2 : (typeof f.length2 === 'number' && f.length2 > 0 ? f.length2 : 0);
+          const pr = prismBothWays(oc, face, dir, fwd, back);
+          if (typeof f.taper === 'number' && f.taper !== 0) {
+            // No sweep record for a tapered pull: its walls are the draft's faces, not the ones the prism generated, so a name written against the
+            // sweep ('swept', 'rounded', 'cap') finds nothing and the step that uses it is refused, which is the honest answer here.
+            shape = taperedPrism(oc, pr.op, dir, a.origin, (f.taper * Math.PI) / 180);
+            if (!shape) refusals.set(f.id, `${label(f.id)}: the reference kernel could not taper this pull at ${f.taper} degrees.`);
+          } else {
+            shape = pr.shape;
+            sweeps.set(f.id, {
+              op: pr.op,
+              from: src.id,
+              segments: matchSegments(oc, face, sketchMarks.get(src.id) ?? []),
+              after: pr.after,
+              closed: false,
+            });
+          }
+        }
       }
     } else if (f.kind === 'revolve') {
       const src = doc.features.find((x) => x.id === f.target);
