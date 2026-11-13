@@ -4,7 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -621,7 +621,8 @@ async function run({ confirmed = false } = {}) {
     const notes = new Map();
     for (const f of tr.features) {
       if (f.status !== 'built') continue;
-      const n = shapeNote(doc.features.find((x) => x.id === f.id), placed) ?? joinApartNote(f, doc, tr.features, fin?.measure?.bodies ?? []);
+      const df = doc.features.find((x) => x.id === f.id);
+      const n = shapeNote(df, placed, (id) => tr.features.find((x) => x.id === id)?.status === 'built') ?? spinNote(df, doc) ?? joinApartNote(f, doc, tr.features, fin?.measure?.bodies ?? []);
       if (n) notes.set(f.id, n);
     }
     showFeatures(tr, notes);

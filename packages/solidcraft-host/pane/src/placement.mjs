@@ -4,6 +4,7 @@
 // model-types.ts newShape; the first shape goes to the origin, and so does one whose only neighbours are swept parts that cannot be measured). A student who expects the origin then gets "pocket1 does not touch the part ..." with no clue. The interpreter records which shapes it placed
 // this way (RunResult.placed: [{ id, beside }]); the doc only has the centre. This module turns that record into
 //   shapeNote      the line on the shape's own step
+//   spinNote       the line on a spun part that does not stand upright
 //   placementHint  a clause added to the three sentences of a step that MISSED such a part (a pocket, keep(), a groove)
 // and, for the join of two shapes that do not touch (built: one part in separate pieces),
 //   joinApartNote  the line on the join's step
@@ -19,11 +20,14 @@ const at = (c) => `[${c.map(num).join(', ')}]`;
 export const placedMap = (placed) => new Map((Array.isArray(placed) ? placed : []).filter((p) => p && typeof p.id === 'string' && (typeof p.beside === 'string' || (p.beside === null && typeof p.unmeasured === 'string')))
   .map((p) => [p.id, typeof p.beside === 'string' ? p.beside : { origin: p.unmeasured }]));
 
-/** The note on a shape's step: null unless the script gave it no at: and it was placed beside another. */
-export function shapeNote(f, placed) {
+/**
+ * The note on a shape's step: null unless the script gave it no at: and it was placed beside another, or left at the origin beside a pulled or spun part that
+ * cannot be measured. `isBuilt(id)` (optional) says whether a step was built: a part that was not built is not something the shape can overlap.
+ */
+export function shapeNote(f, placed, isBuilt = () => true) {
   const beside = placed.get(f?.id);
   if (!beside || !Array.isArray(f.center)) return null;
-  if (typeof beside !== 'string') return `no at: given, so it is at the origin ${at(f.center)}; it may overlap ${beside.origin}`;
+  if (typeof beside !== 'string') return `no at: given, so it is at the origin ${at(f.center)}${isBuilt(beside.origin) ? `; it may overlap ${beside.origin}` : ''}`;
   return `no at: given, so it was placed beside ${beside}; its centre is at ${at(f.center)}`;
 }
 
@@ -62,6 +66,19 @@ export function placementHint(r, doc, placed) {
   const hit = parts.filter((p) => typeof placed.get(p) === 'string' && Array.isArray(byId.get(p)?.center)).sort((a, b) => doc.features.findIndex((x) => x.id === b) - doc.features.findIndex((x) => x.id === a))[0];
   if (!hit) return null;
   return `${r.refusal.replace(/\.\s*$/, '')} (${hit} has no at:, so it was placed beside ${placed.get(hit)} with its centre at ${at(byId.get(hit).center)}).`;
+}
+
+/**
+ * The note on a built spin (second pilot Q2; owner-approved text, 2026-11-12). revolve() reads the sketch as (distance from the axis, height along the axis) and
+ * the axis is the sketch plane's own normal (measured on 0.30.1: top -> z, front -> y, side -> x). A profile drawn on the front or side plane therefore gives a
+ * part that lies down; the note says which way its axis runs. Nothing is said for the top plane, or for a sketch on a plane of its own.
+ */
+export function spinNote(f, doc) {
+  if (!f || f.kind !== 'revolve') return null;
+  const sk = doc.features.find((x) => x.id === f.target);
+  if (!sk || sk.kind !== 'sketch' || sk.frame || sk.onDatum) return null;
+  const way = sk.plane === 'xz' ? 'front to back (y)' : sk.plane === 'yz' ? 'left to right (x)' : null;
+  return way ? `its axis runs ${way}; for a part that stands upright, draw the profile on sketch('top')` : null;
 }
 
 const apart = (a, b) => [0, 1, 2].some((i) => a[i] - b[i + 3] > 1e-6 || b[i] - a[i + 3] > 1e-6);

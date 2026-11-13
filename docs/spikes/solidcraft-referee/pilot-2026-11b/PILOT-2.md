@@ -113,3 +113,40 @@ Grooves, repeats around an axis, mirrors, rounds on joined parts, hollows of joi
 3D view: the screenshots of a headless browser show a blank viewport, so which way the knob stands was read from its size, not seen.
 
 Files: `tasks.mjs`, `run.mjs`, `show.mjs` (prints what the page told the student per script), `pilot.json`, three screenshots of the panel.
+
+## After the pilot: Q1 to Q6 (owner approved each text)
+
+The sticking points were run again in the page after the changes, and the new option with closed forms (`tasks-after.mjs`, `pilot-after.json`).
+
+**Q1, repeating a drilled block.**
+- The eleven script errors about repeats and mirrors no longer name a tool. "..., so brep-rs cannot yet cut through an edge and match the face
+  count FreeCAD gives" is now "..., which is not supported yet", and so on for the others (`packages/script/src/reshape-script.ts`).
+- New option, as `draft()` already has it: `linearPattern(b, { count: 3, step: [40, 0, 0], whole: true })` (and `repeat`, `polarPattern`,
+  `repeatAround`) repeats the **part** with its holes and pockets. The error of a hole repeat now ends "To repeat the whole part instead, add
+  whole: true." The round-trip emitter writes `whole: true` for such a repeat, so it comes back as the same document.
+- Real page, against closed forms: a drilled block three times apart 17151.911 (17151.770), counterbored 16699.561 (16699.381), a pocketed block
+  twice 23784.000 (exact), a drilled block four times around 22869.223 (22869.027), three touching 17151.911, a block with two holes twice along y
+  11183.296 (11183.186). Worst 1.1e-5. A further hole in a row of separate copies is refused as before ("3 separate pieces").
+- Does `whole` change an existing script? No: every script of twelve corpora (9066) gives the same document before and after.
+
+**Q2, a spun shape that lies down.** A built spin on the front plane now says "its axis runs front to back (y); for a part that stands upright,
+draw the profile on sketch('top')", on the side plane "its axis runs left to right (x); ...", on the top plane nothing. Measured for the three
+planes (the same profile: 24 x 24 x 14 on top, 24 x 14 x 24 on front, 14 x 24 x 24 on side). The rule itself is unchanged.
+
+**Q3.** A blind hole into a part made by a join, not flat under it: "... -- move the hole onto a flat top, let it go all the way through, or drill
+the piece before you join it." (p6a again: both standoff holes show it.)
+
+**Q4.** A hole that misses: "... -- move the hole onto the part (at: is measured from the middle of the part) or make it wider." (p3b again.)
+
+**Q5.** A hole in a join whose pieces do not touch: "... -- drill each piece before you join them, or move the pieces so that they overlap."
+(p3a again.) A part in pieces that was not made by a join keeps "drill each piece before copying it, or join the pieces first".
+
+**Q6.** A shape left at the origin beside a pulled part that was not built: "no at: given, so it is at the origin [0, 0, 0]" (p5a again).
+
+Still open from this pilot: Q7 (a join can take 10 to 17 s). Seen while doing Q1 and not changed: the sketch mapper's refusals also name
+"brep-rs" (for example "equal across a line and a circle/arc is refused by brep-rs too").
+
+Checked on 0.30.1: `npm test` 1059 tests, 1053 pass, 6 skipped, 0 fail; the browser checks give the same results as the last run (examples 48 of
+56, the 44 sketch scripts, the 14 blocked-step scripts and the 13 two-part scripts unchanged); the host-route sweep of the six corpora (4784
+rows, 24717 steps) has 0 changes in built / not built, guard or volume, and 15 sentences changed: 11 the `at:` sentence, 3 the two join
+sentences, and 1 that now names the other part (the G-OTHERS sentence, newer than the sweep it is compared with).

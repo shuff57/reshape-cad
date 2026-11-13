@@ -1,0 +1,881 @@
+[
+ {
+  "id": "p8a-row-after",
+  "title": "A drilled block repeated three times, then one more hole in the row",
+  "script": "// a drilled block, three in a row\nconst b = box(30, 20, 10)\nhole(b, { across: 6 })\nconst row = linearPattern(b, { count: 3, step: [40, 0, 0] })\nhole(row, { across: 3, at: [10, 0] })",
+  "expect": null,
+  "wallMs": 51,
+  "threw": null,
+  "status": "script error",
+  "error": "SCRIPT ERROR (line 4): repeat() of a hole drills a copy of the hole at each place, and copy 2 of the hole reaches the edge of the part, which is not supported yet. Drill the extra holes yourself, one hole(...) each. To repeat the whole part instead, add whole: true.",
+  "steps": [],
+  "sketchCheck": [],
+  "card": "-\nNo new build. The viewport still shows the previous run.",
+  "warnings": "",
+  "volume": null,
+  "bodies": []
+ },
+ {
+  "id": "p3a-bracket-boss-after",
+  "title": "Pulled L bracket with a round boss on the long leg, and a hole through the boss",
+  "script": "// an L bracket 30 wide, with a boss for a bolt\nconst sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(16, 8)\nconst both = union(part, boss)\nhole(both, { across: 6 })",
+  "expect": null,
+  "wallMs": 2363,
+  "threw": null,
+  "status": "built with 1 step not built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [80, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n2\nvolume\n28608.228 mm3\nsize\n88 x 48 x 34 mm\nfaces\n11\nsteps built\n3 of 4",
+  "warnings": "",
+  "volume": 28608.22826161774,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 28608.22826161774,
+    "faces": 11,
+    "bbox": {
+     "max": [
+      87.99987644970592,
+      40,
+      30
+     ],
+     "min": [
+      0,
+      -7.99978506992514,
+      -4.000000000000003
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "p3b-boss-at-after",
+  "title": "Bracket: the boss placed on the long leg, hole at the boss as the student reads at:",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nconst both = union(part, boss)\nhole(both, { across: 4, at: [35, 5] })",
+  "expect": null,
+  "wallMs": 2692,
+  "threw": null,
+  "status": "built with 1 step not built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n27402.057 mm3\nsize\n60 x 40 x 38 mm\nfaces\n10\nsteps built\n3 of 4",
+  "warnings": "",
+  "volume": 27402.057065404093,
+  "bodies": [
+   {
+    "name": "b_pull1",
+    "volume": 27402.057065404093,
+    "faces": 10,
+    "bbox": {
+     "max": [
+      60,
+      40,
+      38.00000000000002
+     ],
+     "min": [
+      0,
+      0,
+      0
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "p5a-plate-forgot-after",
+  "title": "Dimensioned plate, one dimension forgotten, then a spacer beside it",
+  "script": "// a plate drawn roughly and dimensioned\nconst sk = sketch('top')\nconst r = sk.rectangle([0.3, 0.4], [49, 31])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 50)\nconst plate = extrude(sk, 6)\nconst spacer = cylinder(12, 6)\nhole(spacer, { across: 5 })",
+  "expect": null,
+  "wallMs": 3120,
+  "threw": null,
+  "status": "built with 2 steps not built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "refused",
+    "refusal": "The rules of this sketch have to move its shape (by up to 1 mm) but leave 1 way for it to slide, turn or change size, so where it ends up depends on the solver of the 3D build; pin it down with more rules (a lock on a point, a dimension on each free edge) or draw it at the size the rules give.",
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "refused",
+    "refusal": "pull1: it uses sk1, which could not be built; fix sk1 first.",
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]"
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [
+   "sk1: not built -- It is not fully defined, and its rules have to move it. See sk1 under Steps."
+  ],
+  "card": "pieces\n1\nvolume\n560.741 mm3\nsize\n12 x 12 x 6 mm\nfaces\n4\nsteps built\n2 of 4",
+  "warnings": "",
+  "volume": 560.7405556517649,
+  "bodies": [
+   {
+    "name": "b_cyl1",
+    "volume": 560.7405556517649,
+    "faces": 4,
+    "bbox": {
+     "max": [
+      5.999907337279429,
+      5.9998388024438585,
+      3.000000000000002
+     ],
+     "min": [
+      -5.9999073372794305,
+      -5.999838802443856,
+      -3.000000000000011
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "p6a-standoffs-after",
+  "title": "Enclosure with two standoffs inside and a screw hole in each",
+  "script": "// an open box with two posts inside for a circuit board\nconst b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nconst body = union(b, post1, post2)\nhole(body, { across: 3, at: [-25, 0], deep: 8 })\nhole(body, { across: 3, at: [25, 0], deep: 8 })",
+  "expect": null,
+  "wallMs": 9927,
+  "threw": null,
+  "status": "built with 2 steps not built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "shell1",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl2",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole2 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n18077.143 mm3\nsize\n80 x 50 x 20 mm\nfaces\n15\nsteps built\n5 of 7",
+  "warnings": "",
+  "volume": 18077.142663510047,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 18077.142663510047,
+    "faces": 15,
+    "bbox": {
+     "max": [
+      40,
+      25,
+      10
+     ],
+     "min": [
+      -40,
+      -25,
+      -10
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "p9d-knob-alone-front-after",
+  "title": "The spun profile alone, drawn on the front plane (which way does it stand?)",
+  "script": "const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)",
+  "expect": 4825.486315913922,
+  "wallMs": 1588,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n4825.201 mm3\nsize\n24 x 14 x 24 mm\nfaces\n4\nsteps built\n1 of 1",
+  "warnings": "",
+  "volume": 4825.200678807604,
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807604,
+    "faces": 4,
+    "bbox": {
+     "max": [
+      12.000000000000004,
+      14.000000000000002,
+      11.999999999999996
+     ],
+     "min": [
+      -12,
+      0,
+      -12.000000000000002
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "p9c-knob-top-plane-after",
+  "title": "Knob: the same profile drawn on the top plane, so the spun part stands upright",
+  "script": "const sk = sketch('top')\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)",
+  "expect": 8425.486315913922,
+  "wallMs": 2811,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n8424.893 mm3\nsize\n30 x 30 x 18 mm\nfaces\n9\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 8424.892965686522,
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 8424.892965686522,
+    "faces": 9,
+    "bbox": {
+     "max": [
+      15,
+      15,
+      14.000000000000002
+     ],
+     "min": [
+      -15,
+      -15,
+      -4
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w1-row-whole",
+  "title": "A drilled block repeated three times as a whole",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })\nconst row = linearPattern(b, { count: 3, step: [40, 0, 0], whole: true })",
+  "expect": 17151.769983530758,
+  "wallMs": 3393,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n3\nvolume\n17151.911 mm3\nsize\n110 x 20 x 10 mm\nfaces\n21\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 17151.91087766351,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21,
+    "bbox": {
+     "max": [
+      95,
+      10,
+      5.0000000000000036
+     ],
+     "min": [
+      -15,
+      -10,
+      -5.0000000000000036
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w2-row-counterbore",
+  "title": "A counterbored block repeated three times",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6, counterbore: { across: 10, deep: 3 } })\nlinearPattern(b, { count: 3, step: [40, 0, 0], whole: true })",
+  "expect": 16699.380641413823,
+  "wallMs": 3881,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n3\nvolume\n16699.561 mm3\nsize\n110 x 20 x 10 mm\nfaces\n27\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 16699.560825723496,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 16699.560825723496,
+    "faces": 27,
+    "bbox": {
+     "max": [
+      95,
+      10,
+      5.000000000000002
+     ],
+     "min": [
+      -15,
+      -10,
+      -5.000000000000004
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w3-row-pocket",
+  "title": "A pocketed block repeated twice",
+  "script": "const b = box(40, 30, 10)\nconst sk = sketch('top', 5)\nsk.rect(6, 6)\npocket(sk, b, 3)\nlinearPattern(b, { count: 2, step: [50, 0, 0], whole: true })",
+  "expect": 23784,
+  "wallMs": 2358,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n2\nvolume\n23784.000 mm3\nsize\n90 x 30 x 10 mm\nfaces\n22\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 23784,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 23784,
+    "faces": 22,
+    "bbox": {
+     "max": [
+      70,
+      15,
+      5
+     ],
+     "min": [
+      -20,
+      -15,
+      -5
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w4-ring-whole",
+  "title": "A drilled block repeated four times around",
+  "script": "const b = box(30, 20, 10, { at: [50, 0, 0] })\nhole(b, { across: 6 })\npolarPattern(b, { count: 4, axis: 'z', whole: true })",
+  "expect": 22869.026644707676,
+  "wallMs": 3601,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n4\nvolume\n22869.223 mm3\nsize\n130 x 130 x 10 mm\nfaces\n28\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 22869.22302234767,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 22869.22302234767,
+    "faces": 28,
+    "bbox": {
+     "max": [
+      65,
+      65,
+      5.0000000000000036
+     ],
+     "min": [
+      -65,
+      -65,
+      -5.0000000000000036
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w5-row-touching",
+  "title": "Drilled blocks repeated so that they touch",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })\nlinearPattern(b, { count: 3, step: [30, 0, 0], whole: true })",
+  "expect": 17151.769983530758,
+  "wallMs": 3540,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n17151.911 mm3\nsize\n90 x 20 x 10 mm\nfaces\n9\nsteps built\n3 of 3",
+  "warnings": "",
+  "volume": 17151.910877663468,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.910877663468,
+    "faces": 9,
+    "bbox": {
+     "max": [
+      75,
+      10,
+      5
+     ],
+     "min": [
+      -15,
+      -10,
+      -5.000000000000034
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w6-row-two-holes",
+  "title": "A block with two holes repeated along y",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6, at: [-8, 0] })\nhole(b, { across: 4, at: [8, 0] })\nlinearPattern(b, { count: 2, step: [0, 30, 0], whole: true })",
+  "expect": 11183.185910066655,
+  "wallMs": 4021,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n2\nvolume\n11183.296 mm3\nsize\n30 x 50 x 10 mm\nfaces\n16\nsteps built\n4 of 4",
+  "warnings": "",
+  "volume": 11183.296219283058,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 11183.296219283058,
+    "faces": 16,
+    "bbox": {
+     "max": [
+      15,
+      40,
+      5.0000000000000036
+     ],
+     "min": [
+      -15,
+      -10,
+      -5.000000000000004
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w7-row-then-hole",
+  "title": "After the repeat, one more hole in the row",
+  "script": "const b = box(30, 20, 10)\nhole(b, { across: 6 })\nconst row = linearPattern(b, { count: 3, step: [40, 0, 0], whole: true })\nhole(row, { across: 3, at: [10, 0] })",
+  "expect": null,
+  "wallMs": 3298,
+  "threw": null,
+  "status": "built with 1 step not built",
+  "error": null,
+  "steps": [
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole1",
+    "kind": "hole",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pat1",
+    "kind": "pattern",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "hole2",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "hole2 (hole): the part it drills is 3 separate pieces and a hole cannot tell which one to drill, so hole2 is shown without it -- drill each piece before copying it, or join the pieces first.",
+    "note": null
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n3\nvolume\n17151.911 mm3\nsize\n110 x 20 x 10 mm\nfaces\n21\nsteps built\n3 of 4",
+  "warnings": "",
+  "volume": 17151.91087766351,
+  "bodies": [
+   {
+    "name": "b_box1",
+    "volume": 17151.91087766351,
+    "faces": 21,
+    "bbox": {
+     "max": [
+      95,
+      10,
+      5.0000000000000036
+     ],
+     "min": [
+      -15,
+      -10,
+      -5.0000000000000036
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "id": "w8-spin-side",
+  "title": "A profile spun on the side plane",
+  "script": "const sk = sketch('side')\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst k = revolve(sk, 360)",
+  "expect": 4825.486315913922,
+  "wallMs": 1597,
+  "threw": null,
+  "status": "built",
+  "error": null,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": "its axis runs left to right (x); for a part that stands upright, draw the profile on sketch('top')"
+   }
+  ],
+  "sketchCheck": [],
+  "card": "pieces\n1\nvolume\n4825.201 mm3\nsize\n14 x 24 x 24 mm\nfaces\n4\nsteps built\n1 of 1",
+  "warnings": "",
+  "volume": 4825.200678807602,
+  "bodies": [
+   {
+    "name": "b_rev1",
+    "volume": 4825.200678807602,
+    "faces": 4,
+    "bbox": {
+     "max": [
+      14.000000000000002,
+      12.000000000000004,
+      12.000000000000002
+     ],
+     "min": [
+      0,
+      -12,
+      -11.999999999999996
+     ]
+    }
+   }
+  ]
+ }
+]

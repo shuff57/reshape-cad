@@ -66,10 +66,14 @@ export const SENTENCE = {
   stale: (f, head, by) => `${f.id} (hole): ${head} was already changed by ${by} after the hole was set up, so ${f.id} is shown without it -- drill the part before changing it.`,
   noBody: (f) => `${f.id} (hole): the part it drills could not be found as a single piece, so ${f.id} is shown without it -- drill one shape at a time.`,
   multi: (f, n) => `${f.id} (hole): the part it drills is ${n} separate pieces and a hole cannot tell which one to drill, so ${f.id} is shown without it -- drill each piece before copying it, or join the pieces first.`,
+  // the part was made by a join whose pieces do not touch (owner-approved text, 2026-11-12)
+  multiJoin: (f, n) => `${f.id} (hole): the part it drills is ${n} separate pieces and a hole cannot tell which one to drill, so ${f.id} is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.`,
   cornersAxis: (f) => `${f.id} (holes): four holes drilled along ${f.axis} are not supported yet, so ${f.id} is shown without it -- use holes() along z, or drill each hole with hole(shape, { along: '${f.axis}', at: [...] }).`,
   top: (f) => `${f.id} (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so ${f.id} is shown without it -- move the hole onto a flat top, or let it go all the way through.`,
+  // the part was made by a join (owner-approved text, 2026-11-12): the piece can be drilled before it is joined
+  topJoin: (f) => `${f.id} (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so ${f.id} is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.`,
   topRecess: (f, what) => `${f.id} (hole): a ${what} is cut from the top of the part, but the part is not flat and level under this spot, so ${f.id} is shown without it -- move the hole onto a flat top.`,
-  noop: (f) => `${f.id} (hole): it does not touch the part, so it would cut nothing and ${f.id} is shown without it -- move the hole onto the part (check at:) or make it wider.`,
+  noop: (f) => `${f.id} (hole): it does not touch the part, so it would cut nothing and ${f.id} is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.`,
   split: (f, n0, n1) => `${f.id} (hole): it would leave ${n1} separate pieces where there ${n0 === 1 ? 'is 1 now' : `are ${n0} now`}, so ${f.id} is shown without it -- make the hole narrower than the part, or drill each separate piece before copying it.`,
   tangent: (f, what, other = 'edge') => `${f.id} (hole): its ${what} would touch ${other === 'edge' ? 'the edge of the part' : other === 'sibling' ? (what === 'recess' ? 'the recess of another hole in this holes() call' : 'another hole in this holes() call') : 'another hole'} along a line, which leaves a zero-thickness wall, so ${f.id} is shown without it -- move it a little or change its size.`,
   torus: (f) => `${f.id} (hole): drilling a ring (torus) is not supported yet, so ${f.id} is shown without it -- drill a box, cylinder or other flat-faced shape.`,
@@ -377,11 +381,13 @@ function planHole(f, st, G) {
   const bs = st.bodies[head];
   const m = st.measure[head] ?? st.measure[f.target];
   if (!bs || !bs.length || !m) return refuse(SENTENCE.noBody(f), 'G-BODIES');
+  // was the part made by a join? (mirrors packages/layer/src/holes.ts)
+  const joined = rootOf(f.target, G)?.kind === 'combine' && rootOf(f.target, G)?.op === 'union';
   // The part itself in several pieces is refused. Other bodies in the engine do not refuse the hole when each is a DIFFERENT PART (otherPartsOnly; owner decision
   // 2026-11-12, mirrors packages/layer/src/holes.ts): the cut names its body, and the after-the-cut check G-OTHERS requires every other part to come back as it was.
-  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse(SENTENCE.multi(f, ownPieces(f.target, bs, st, G.byId)), 'G-BODIES');
+  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse((joined ? SENTENCE.multiJoin : SENTENCE.multi)(f, ownPieces(f.target, bs, st, G.byId)), 'G-BODIES');
   // ---- ROUND 4 pre-checks (each exists so the student is told at once instead of after BUDGET_S seconds; the budget is the backstop)
-  if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse(SENTENCE.multi(f, m.shells), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
+  if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse((joined ? SENTENCE.multiJoin : SENTENCE.multi)(f, m.shells), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
   if (!off.has('G-TINY') && !(f.diameter >= MIN_ACROSS - 1e-12)) return refuse(SENTENCE.tiny(f), 'G-TINY');
   const rootF = rootOf(f.target, G);
   if (!off.has('G-REVOLVE') && rootF?.kind === 'revolve') return refuse(SENTENCE.revolve(f), 'G-REVOLVE');
@@ -539,7 +545,7 @@ function planHole(f, st, G) {
     if (!ok) {
       if (res_timedOut) return { ...refuse(SENTENCE.budget(f), 'G-BUDGET'), probe: probeInfo };
       const buried = (removed !== null && !curvedBase && !faceProbe && removed / (want * centres.length) > 1.2) || ((curvedBase || faceProbe) && dFaces === 3 * centres.length);
-      const s = recess ? (buried ? SENTENCE.recessCavity(f, recess) : SENTENCE.topRecess(f, recess)) : SENTENCE.top(f);
+      const s = recess ? (buried ? SENTENCE.recessCavity(f, recess) : SENTENCE.topRecess(f, recess)) : joined ? SENTENCE.topJoin(f) : SENTENCE.top(f);
       return { ...refuse(s, 'G-TOP'), probe: probeInfo };
     }
   }

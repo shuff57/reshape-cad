@@ -94,6 +94,17 @@ test('the G-OTHERS sentence is the owner-approved text, in the layer and in the 
   assert.equal(C.SENTENCE.others({ id: 'hole1' }, 'box2'), want);
 });
 
+test('the hole sentences of the second pilot (owner-approved text, 2026-11-12), in the layer and in the contract copy', () => {
+  for (const S of [L.HOLES_SENTENCE, C.SENTENCE]) {
+    assert.equal(S.noop({ id: 'hole1' }), 'hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.');
+    assert.equal(S.topJoin({ id: 'hole1' }), 'hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.');
+    assert.equal(S.multiJoin({ id: 'hole1' }, 2), 'hole1 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so hole1 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.');
+    // the sentences for a part that was not made by a join are as they were
+    assert.match(S.top({ id: 'hole1' }), /-- move the hole onto a flat top, or let it go all the way through\.$/);
+    assert.match(S.multi({ id: 'hole1' }, 3), /-- drill each piece before copying it, or join the pieces first\.$/);
+  }
+});
+
 const TWO = { version: 1, features: [box('box1', [40, 40, 20]), box('box2', [40, 40, 4], [0, 0, 12]), hole('hole1', 'box1', { diameter: 6 })] };
 const lean = (r) => r.features.map((f) => [f.id, f.status, f.guard ?? null, f.refusal ?? null]);
 async function both(doc, runSCOf, off = []) {

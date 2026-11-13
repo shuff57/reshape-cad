@@ -61,6 +61,22 @@ const POCKET = 'pocket1 does not touch the part, so it cuts nothing; move the sk
 const KEEP = 'The two shapes do not overlap, so keeping their overlap leaves nothing.';
 const GROOVE = 'groove1 (groove): the ring does not cut the part (it misses it, or turns away from it), so there is nothing to remove.';
 
+test('a shape left at the origin does not claim it may overlap a part that was not built', () => {
+  const og = { id: 'cyl1', kind: 'cylinder', center: [0, 0, 0] }; const placed = P.placedMap([{ id: 'cyl1', beside: null, unmeasured: 'pull1' }]);
+  assert.equal(P.shapeNote(og, placed, () => true), 'no at: given, so it is at the origin [0, 0, 0]; it may overlap pull1');
+  assert.equal(P.shapeNote(og, placed, (id) => id !== 'pull1'), 'no at: given, so it is at the origin [0, 0, 0]');
+});
+
+test('spinNote: a spun part on the front or side plane says which way its axis runs; the top plane says nothing', () => {
+  const PROF = `sk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]]); const k = revolve(sk, 360);`;
+  const note = (plane) => { const r = run(`const sk = sketch('${plane}'); ${PROF}`); return P.spinNote(r.doc.features.at(-1), r.doc); };
+  assert.equal(note('front'), "its axis runs front to back (y); for a part that stands upright, draw the profile on sketch('top')");
+  assert.equal(note('side'), "its axis runs left to right (x); for a part that stands upright, draw the profile on sketch('top')");
+  assert.equal(note('top'), null);
+  const r = run(`const b = box(10, 10, 10);`); assert.equal(P.spinNote(r.doc.features[0], r.doc), null, 'not a spin');
+  assert.equal(P.spinNote({ id: 'rev1', kind: 'revolve', target: 'sk1' }, { features: [{ id: 'sk1', kind: 'sketch', plane: 'xz', frame: { origin: [0, 0, 0], u: [1, 0, 0], v: [0, 1, 0] } }] }), null, 'a sketch on a plane of its own');
+});
+
 test('the three sentences the hint is added to are the layer\'s own', () => {
   assert.ok(LAYER.includes('does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction'));
   assert.ok(LAYER.includes('do not overlap, so keeping their overlap leaves nothing'));
