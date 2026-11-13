@@ -143,8 +143,48 @@ export function coneDistance(cone, p) {
   return Math.min(d(rho), d(-rho));
 }
 /**
+ * The box of one boundary edge, as [lo, hi]: its start, mid and end, and, when the edge is an arc, how far the arc reaches between them. Upstream gives three
+ * points per edge; a half circle reaches up to a radius further than they do (measured on 0.30.1: a cylinder's cap is two half circles whose seam is not on an
+ * axis, and upstream's own pick point of the cap lies outside the box of those six points, so every pick on a cylinder was refused in the page).
+ *  - three points not on a line: the circle through them; the arc is the part from start to end that passes mid, and the box takes in each point of the
+ *    circle that is furthest along an axis and lies on that arc;
+ *  - start and end the same point and mid another (a whole circle as one edge): the circle with start-mid as diameter in the plane across `axis` (the
+ *    face's plane normal or cylinder axis), when that is known and at right angles to the diameter.
+ * A circle is only used when its radius is under 1000 chords: a flatter arc reaches no further than its three points to any size that matters, and the angles
+ * of a huge circle are not worth trusting. An edge that is some other curve keeps the box of its three points, as before.
+ */
+export function edgeBox(e, axis, tol) {
+  const pts = [e.start, e.mid, e.end];
+  const lo = [0, 1, 2].map((k) => Math.min(...pts.map((p) => p[k]))), hi = [0, 1, 2].map((k) => Math.max(...pts.map((p) => p[k])));
+  const grow = (K, onArc) => {
+    for (let k = 0; k < 3; k++) {
+      const ek = [0, 1, 2].map((i) => (i === k ? 1 : 0)); const t = dot3(ek, K.n);
+      const w = [0, 1, 2].map((i) => ek[i] - t * K.n[i]); const l = len3(w);
+      if (!(l > 1e-12)) continue; // the circle lies across this axis: no reach along it
+      for (const sgn of [1, -1]) { const q = [0, 1, 2].map((i) => K.c[i] + sgn * K.r * w[i] / l); if (onArc(q)) { lo[k] = Math.min(lo[k], q[k]); hi[k] = Math.max(hi[k], q[k]); } }
+    }
+  };
+  const chord = len3(sub3(e.end, e.start)); const reach = len3(sub3(e.mid, e.start));
+  if (chord <= tol && reach > tol) {
+    const L = isV3(axis) ? len3(axis) : 0; if (!(L > 0)) return [lo, hi];
+    const n = axis.map((x) => x / L); const d = sub3(e.mid, e.start);
+    if (Math.abs(dot3(d, n)) > tol) return [lo, hi]; // the diameter is not in the plane across the axis
+    grow({ c: [0, 1, 2].map((i) => (e.start[i] + e.mid[i]) / 2), n, r: reach / 2 }, () => true);
+    return [lo, hi];
+  }
+  const K = circle3(e.start, e.mid, e.end);
+  if (!K || !(K.r <= 1000 * Math.max(chord, reach))) return [lo, hi];
+  // angles round the circle from start. circle3's normal is (mid - start) x (end - start), so turning about it from start reaches mid before end, always:
+  // the arc is the angles from 0 to the angle of end
+  const u = sub3(e.start, K.c).map((x) => x / K.r); const v = cross3(K.n, u);
+  const ang = (q) => { const d = sub3(q, K.c); const a = Math.atan2(dot3(d, v), dot3(d, u)); return a < 0 ? a + 2 * Math.PI : a; };
+  const aEnd = ang(e.end);
+  grow(K, (q) => ang(q) <= aEnd);
+  return [lo, hi];
+}
+/**
  * Upstream says a face's `point` "picks it". That is taken as given for "the point is on the face", and everything that CAN be checked from the data is:
- * the point lies on the face's own plane / cylinder (to tol); it lies inside the box of the face's boundary edges (edges named `<face>|<other>`);
+ * the point lies on the face's own plane / cylinder (to tol); it lies inside the box of the face's boundary edges (edges named `<face>|<other>`; edgeBox);
  * and no OTHER face's surface comes within `clear` of it, so the nearest-face rule cannot send it elsewhere. Any other face whose surface is not described, or
  * that is coplanar with the point, makes the answer null (no pick point is passed on). Returns the point or null.
  * `cones` (optional): Map of a face to its cone (coneOfFace), the description of a countersink's wall as ANOTHER face; a cone face itself gets no pick point.
@@ -163,9 +203,10 @@ export function verifiedInnerPoint(face, faces, edges, scale, cones) {
   }
   const mine = edges.filter((e) => faceNamesOfEdge(e.name).includes(face.name) && isV3(e.start) && isV3(e.mid) && isV3(e.end));
   if (!mine.length) return null;
+  const axis = isV3(face.plane_normal) ? face.plane_normal : face.cylinder && isV3(face.cylinder.axis) ? face.cylinder.axis : null;
+  const boxes = mine.map((e) => edgeBox(e, axis, tol));
   for (let k = 0; k < 3; k++) {
-    const vals = mine.flatMap((e) => [e.start[k], e.mid[k], e.end[k]]);
-    if (p[k] < Math.min(...vals) - tol || p[k] > Math.max(...vals) + tol) return null;
+    if (p[k] < Math.min(...boxes.map((b) => b[0][k])) - tol || p[k] > Math.max(...boxes.map((b) => b[1][k])) + tol) return null;
   }
   return p;
 }

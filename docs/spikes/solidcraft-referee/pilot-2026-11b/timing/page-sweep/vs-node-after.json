@@ -1,0 +1,318 @@
+[
+ {
+  "id": "holes#68 at-off-the-part",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#92 holes-all-outside",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#93 holes-two-outside",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#106 pad-L-hole-in-notch",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#227 hole-twice-identical",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#228 hole-twice-blind",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#229 hole-inside-earlier-bore",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#230 step-join-blind-low",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "holes#231 step-join-blind-low-deep12",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "holes#234 step-join-blind-on-seam",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "mt#215 p-magnitude:turn1#33",
+  "what": "page built nothing",
+  "page": "refused"
+ },
+ {
+  "id": "combined#39 combined seed 39",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#106 combined seed 106",
+  "what": "sentence",
+  "step": "h7",
+  "page": "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h7 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h7 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#213 combined seed 213",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#265 combined seed 265",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#309 combined seed 309",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#324 combined seed 324",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): it does not touch the part, so it would cut nothing and h6 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h6 (hole): it does not touch the part, so it would cut nothing and h6 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#357 combined seed 357",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#381 combined seed 381",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#392 combined seed 392",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#407 combined seed 407",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#465 combined seed 465",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#501 combined seed 501",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#1 rg combined seed 1",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#25 rg combined seed 25",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#49 rg combined seed 49",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+  "node": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before copying it, or join the pieces first."
+ },
+ {
+  "id": "rgcombined#145 rg combined seed 145",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#153 rg combined seed 153",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#169 rg combined seed 169",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#173 rg combined seed 173",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#192 rg combined seed 192",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#253 rg combined seed 253",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#365 rg combined seed 365",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#389 rg combined seed 389",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#399 rg combined seed 399",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#25 fc combined seed 25",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#117 fc combined seed 117",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#129 fc combined seed 129",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#189 fc combined seed 189",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#246 fc combined seed 246",
+  "what": "built / not built",
+  "step": "h2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "h2 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h2 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#296 fc combined seed 296",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#309 fc combined seed 309",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#321 fc combined seed 321",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+  "node": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before copying it, or join the pieces first."
+ },
+ {
+  "id": "fccombined#337 fc combined seed 337",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#381 fc combined seed 381",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ }
+]

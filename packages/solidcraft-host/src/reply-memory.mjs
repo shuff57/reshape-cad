@@ -53,7 +53,8 @@ export function compareReplies(a, b) {
 /**
  * `bridge` = { execute(cmds, opts), topologyOf(cmds, opts), inspect() } (upstream-bridge.mjs). Its methods are looked up at each call.
  * `continueRuns`: run only the commands after the ones SolidCraft holds. `shadow`: a second bridge for the from-empty reference; `log`: an array that gets one
- * row per real run: { kind, n (commands), held (commands not run), ms, same, count, maxRel, diffs } (the last four only with a shadow).
+ * row per real run: { kind, n (commands), held (commands not run), ms, budget (it ran under a time budget), same, count, maxRel, diffs } (the last four only
+ * with a shadow). A run stopped by the budget is not a row: SolidCraft did not run it.
  */
 export function createReplyMemory(bridge, { continueRuns = false, shadow = null, log = null } = {}) {
   const exec = new Map(); const topo = new Map();
@@ -65,9 +66,9 @@ export function createReplyMemory(bridge, { continueRuns = false, shadow = null,
     for (let i = 0; i < p.cmds.length; i++) if (p.cmds[i] !== JSON.stringify(cmds[i])) return 0;
     return p.cmds.length;
   };
-  const note = async (kind, cmds, held, ms, r, ref) => {
+  const note = async (kind, cmds, held, ms, r, ref, budget = false) => {
     if (!log) return;
-    const row = { kind, n: cmds.length, held, ms: Math.round(ms), ok: !!(r && r.ok), last: cmds.at(-1)?.command ?? null };
+    const row = { kind, n: cmds.length, held, ms: Math.round(ms), ok: !!(r && r.ok), last: cmds.at(-1)?.command ?? null, budget };
     if (shadow) { const c = compareReplies(r, await ref()); Object.assign(row, { same: c.same, count: c.count, maxRel: c.maxRel, diffs: c.diffs }); }
     log.push(row);
   };
@@ -89,7 +90,7 @@ export function createReplyMemory(bridge, { continueRuns = false, shadow = null,
       const results = r && r.ok && Array.isArray(ran) && ran.length === cmds.length - held && (!held || Array.isArray(heldResults)) ? [...(held ? heldResults : []), ...ran] : null;
       if (r) exec.set(k, structuredClone(reply));
       m.page = r && r.ok && opts.fresh ? { list, cmds: cmds.map((c) => JSON.stringify(c)), reply: structuredClone(reply), results } : null;
-      if (opts.fresh) await note('execute', cmds, held, now() - t0, reply, async () => { const { ran: _x, ...ref } = (await shadow.execute(cmds, { fresh: true })) ?? {}; return ref; });
+      if (opts.fresh) await note('execute', cmds, held, now() - t0, reply, async () => { const { ran: _x, ...ref } = (await shadow.execute(cmds, { fresh: true })) ?? {}; return ref; }, !!opts.budgetS);
       return r ? reply : r;
     },
     async topologyOf(cmds) {

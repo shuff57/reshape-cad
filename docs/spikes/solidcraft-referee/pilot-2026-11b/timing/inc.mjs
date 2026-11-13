@@ -13,6 +13,8 @@
 //                Each row of `tri` ends with whether the list holds a round or bevel command.
 //   mode off     the page as it is (no continuation, no reference): the results to compare the `on` results with, and the time.
 //   mode timing  ?inc=on without the reference: the time.
+// BUDGET_ALL=1 (any mode): every run from an empty design that the layer sent without a time budget is given one of 45 s here, so it goes through the worker
+// first: what a budget on every step would cost in time (topology readings are not covered).
 // A case is { id, script } or { id, doc } (a ModelDoc, through the page's translateRaw). One JSON line per case; a case already in the file is skipped.
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 import { createRequire } from 'node:module'; import { pathToFileURL } from 'node:url';
@@ -38,6 +40,7 @@ async function openPage() {
   const page = await browser.newPage({ viewport: { width: 1400, height: 900 } }); await page.goto(base);
   await page.waitForFunction(() => { const f = document.getElementById('sc'); return f.contentWindow && f.contentWindow.solidcraft && window.__host; }, null, { timeout: 90000 });
   page.setDefaultTimeout(LIMIT_MS + 60000);
+  if (process.env.BUDGET_ALL) await page.evaluate(() => { const b = window.__host.bridge; const ex = b.execute.bind(b); b.execute = (cmds, o = {}) => ex(cmds, o.fresh && !o.budgetS ? { ...o, budgetS: 45 } : o); });
   if (MODE === 'on' || MODE === 'control' || MODE === 'on3') {
     await page.evaluate(async ({ control, three }) => {
       const f = document.createElement('iframe'); f.id = 'sc2'; f.src = './solidcraft/index.html';
@@ -120,7 +123,7 @@ async function openPage() {
 }
 
 const runCase = (page, t) => page.evaluate(async ({ t, mode }) => {
-  const H = window.__host; const log0 = H.engineLog.length; const p0 = H.probeLog.length; const tri0 = (window.__tri ?? []).length;
+  const H = window.__host; const log0 = H.engineLog.length; const p0 = H.probeLog.length; const tri0 = (window.__tri ?? []).length; const stops0 = (H.engineStops ?? []).length;
   const t0 = performance.now(); let threw = null; let sum = null; let cmds = null;
   try {
     if (typeof t.script === 'string') { H.setScript(t.script); sum = await H.run({ confirmed: true }); cmds = window.__lastRun?.tr?.commands ?? null; }
@@ -136,6 +139,8 @@ const runCase = (page, t) => page.evaluate(async ({ t, mode }) => {
     pageSame: (bodies.length === pageBodies.length && bodies.every((q, i) => q.name === pageBodies[i].name && q.volume === pageBodies[i].volume && q.faces === pageBodies[i].faces)),
     engineUse: sum?.engineUse ?? null, commands: cmds ? cmds.length : null,
     probes: H.probeLog.slice(p0).length, probeMs: H.probeLog.slice(p0).reduce((a, p) => a + (p.wallMs ?? 0), 0),
+    noBudgetRuns: log.filter((r) => !r.budget).length, slowestNoBudgetMs: Math.max(0, ...log.filter((r) => !r.budget).map((r) => r.ms)), slowestNoBudget: (log.filter((r) => !r.budget).sort((a, b) => b.ms - a.ms)[0] ?? {}).last ?? null,
+    stops: (H.engineStops ?? []).length - stops0,
     runs: log.length, continued: log.filter((r) => r.held > 0).length, heldCommands: log.reduce((a, r) => a + r.held, 0), ranCommands: log.reduce((a, r) => a + r.n - r.held, 0), engineMs: log.reduce((a, r) => a + r.ms, 0) };
   if (mode === 'on3') {
     // one row per real run: [kind, commands, held, last command, page vs reference, reference vs reference]

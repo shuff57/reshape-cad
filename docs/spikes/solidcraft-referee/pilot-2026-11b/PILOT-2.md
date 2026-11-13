@@ -321,3 +321,73 @@ A trap during a step costs the time to load SolidCraft again (about 2 s here).
 Checked with both changes in (continuation off, as shipped): `npm test` 1104 tests, 1098 pass, 6 skipped, 0 fail, and the crash guard's eleventh
 test after that run (the host package alone: 134 of 134); the six browser checks, the 44 sketch scripts, the 14 blocked-step scripts, the 13
 two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).
+
+## The corpora in the real page (owner chose "sweep the page for more freezes", 2026-11-13)
+
+Until now the six corpora (4784 rows) were swept in Node, on a harness that mirrors the page's route. Here every row is run in the real page
+(`timing/inc.mjs`, mode `off`: the page as shipped) and compared with the Node sweep, step by step (`timing/page-sweep/vs-node.mjs`).
+
+**Found: the page refused every cylinder hollowed with its top or bottom open.** The first comparison (`page-sweep/vs-node-before-the-fix.json`)
+had 24 rows where the page refused a step that Node builds, all of this kind, and 20 more where the page gave this sentence for a step that
+Node refuses for another reason. The simplest one is a cup:
+
+    const c = cylinder(24, 30, { at: [5, 3, 2] });
+    hollow(c, { wall: 2, open: 'top' });
+
+> shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.
+
+The face was there. The page does not take upstream's pick point of a face on trust (the Node stand-in does): `verifiedInnerPoint` checks, among
+other things, that the point lies inside the box of the face's boundary edges. Upstream gives three points per edge, and the box was made of
+those. A cylinder's cap on 0.30.1 is two half circles whose seam is not on an axis, so the circle reaches up to 2.2 beyond the six points, and
+upstream's own pick point (0.7 inside the rim) fell outside the box: no face of any cylinder got a pick point in the page
+(`packages/solidcraft-host/test/topology-cylinder-0.30.1.json`, measured in the page).
+
+Fixed (`upstream-bridge.mjs` `edgeBox`): an edge whose three points are not on a line is boxed as the arc through them, from start to end
+past mid; a whole circle given as one edge, as the circle in the face's plane. Everything else in the check is as it was: the point on the
+face's own surface, no other face's surface within 0.001 of it. The two halves of a cylinder's wall still get no pick point (each is on the
+other's surface), as designed. No sentence is new or changed.
+
+After the fix (`page-sweep/page-rows.jsonl`, `vs-node-after.json`; Node side: the host-route sweep that mirrors the page):
+
+| 4784 rows, the page against Node | count |
+|---|---|
+| every step built or not built alike, the same sentences, and the final volume equal (1e-9) where Node recorded one (1411 rows) | 4739 |
+| a sentence differs: the three hole sentences approved after that Node sweep was recorded (`at:` 22, flat and level 19, separate pieces 2) | 43 |
+| the page refuses the whole run before building: a dimension over 1,000,000 mm (the page's own limit) | 1 |
+| the page stops a hole at the 45 s time budget, which the Node harness does not enforce (`fc combined seed 246`) | 1 |
+| no answer | 0 |
+
+The 24 rows now build and refuse as Node does. In the oracle-scored Node sweep the same rows carry the verdicts RIGHT (9, with the page's final
+volume equal to Node's) and REFUSED (the measured step is a later one that both refuse). The cup above: 4774.728965992665 mm3 in the page and in
+Node, 1.0e-4 under the closed form (pi x (144 x 30 - 100 x 28) = 4775.22; the engine's cylinder itself is 1.1e-4 under pi r2 h).
+
+**Freezes.** In this run 13806 of 19624 engine runs had no time budget (4275 of the 4784 scripts have at least one): pulls, pockets, drafts,
+rounds, moves, turns, spins and plain shapes in a script that drills no hole, and every topology reading. The slowest of them:
+
+| slowest run without a budget, per script | scripts |
+|---|---|
+| under 1 s | 4722 |
+| 1 to 5 s (the slowest 4.2 s, a pull or pocket) | 61 |
+| the engine stop above (8.0 s, then refused) | 1 |
+
+So in the 4784 rows, and the 61 pilot and timing scripts, the only way the page stopped answering was the engine stop, and that is fixed. What is
+not covered: a step without a budget that hangs without a trap. None was seen.
+
+**What a budget on every run would cost** (`page-sweep/budget-every-run.jsonl`; the harness gives every unbudgeted run from empty a 45 s budget,
+so it goes through the worker first; topology readings are not covered; same steps, sentences and volumes in all 534 scripts):
+
+| | as shipped | every run budgeted | |
+|---|---|---|---|
+| the 55 pilot and timing scripts | 372.9 s (worker 127.4 s) | 545.8 s (worker 262.1 s) | 46% more |
+| of those, the slow join with both extra passes | 129.0 s | 220.8 s | 71% more |
+| every tenth corpus row (479): time in the worker | 228.5 s | 252.7 s | 11% more; the median script 6% more |
+
+(The tenth's totals come from two sessions with different load and are not compared; the worker's time and the per-script median are.) The cost
+falls where a script is slow already: each replay of a slow step is then computed twice.
+
+Tests: `packages/solidcraft-host/test/upstream-bridge.test.mjs` (5 for the box of a curved edge, on the measured cylinder: both caps keep their pick
+point, a point past the rim, off the plane or within the clearance of the wall does not pass). Each rule was removed in turn in a copy; a test
+failed for each one that can change an answer.
+
+Checked with the fix in: `npm test` 1109 tests, 1103 pass, 6 skipped, 0 fail; the six browser checks, the 44 sketch scripts, the 14 blocked-step
+scripts, the 13 two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).

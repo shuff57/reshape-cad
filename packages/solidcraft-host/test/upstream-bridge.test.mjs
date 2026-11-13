@@ -282,3 +282,56 @@ test('topologyOf without the held feature numbers, or with the wrong count of th
     assert.equal(news(sc), 1, JSON.stringify(o)); assert.equal(sent(sc)[0].length, 3); assert.deepEqual(r.results.map((x) => x.feature), [1, 2, 3]);
   }
 });
+
+// ---- the box of a curved edge (found 2026-11-13: every pick on a cylinder was refused in the page; test/topology-cylinder-0.30.1.json is that cylinder) ------
+import { edgeBox } from '../src/upstream-bridge.mjs';
+const CYL = JSON.parse(readFileSync(new URL('./topology-cylinder-0.30.1.json', import.meta.url), 'utf8'));
+const closeTo = (a, b, tol = 1e-9) => assert.ok(Math.abs(a - b) <= tol, `${a} vs ${b}`);
+
+test('a half circle reaches a radius beyond its three points: the box of the two arcs of a cap is the box of the circle', () => {
+  const arcs = CYL.edges.edges.filter((e) => e.name.startsWith('F1:bottom|'));
+  assert.equal(arcs.length, 2);
+  const boxes = arcs.map((e) => edgeBox(e, [0, 0, 1], 3e-5));
+  const lo = [0, 1, 2].map((k) => Math.min(...boxes.map((b) => b[0][k]))), hi = [0, 1, 2].map((k) => Math.max(...boxes.map((b) => b[1][k])));
+  // the cylinder: radius 12 about (5, 3), the cap at z = -13
+  closeTo(lo[0], -7, 1e-6); closeTo(hi[0], 17, 1e-6); closeTo(lo[1], -9, 1e-6); closeTo(hi[1], 15, 1e-6); closeTo(lo[2], -13, 1e-9); closeTo(hi[2], -13, 1e-9);
+  // and the three points alone fall short of it, which is what refused the pick
+  const three = arcs.flatMap((e) => [e.start, e.mid, e.end]);
+  assert.ok(Math.max(...three.map((p) => p[1])) < 13);
+});
+test('one arc is boxed as the arc, not as its whole circle', () => {
+  // a quarter of the unit circle in the xy plane, from (1,0) to (0,1): it reaches x = 1 and y = 1 at its ends and nowhere beyond
+  const q = { start: [1, 0, 0], mid: [Math.SQRT1_2, Math.SQRT1_2, 0], end: [0, 1, 0] };
+  const [lo, hi] = edgeBox(q, null, 1e-9);
+  closeTo(lo[0], 0); closeTo(lo[1], 0); closeTo(hi[0], 1); closeTo(hi[1], 1);
+  // the other three quarters, same ends, mid on the far side: it reaches -1 in both and +1 at its ends
+  const [lo3, hi3] = edgeBox({ start: [1, 0, 0], mid: [-Math.SQRT1_2, -Math.SQRT1_2, 0], end: [0, 1, 0] }, null, 1e-9);
+  closeTo(lo3[0], -1); closeTo(lo3[1], -1); closeTo(hi3[0], 1); closeTo(hi3[1], 1);
+  // run the other way round (end and start swapped) it is the same arc
+  const [lo4, hi4] = edgeBox({ start: [0, 1, 0], mid: [-Math.SQRT1_2, -Math.SQRT1_2, 0], end: [1, 0, 0] }, null, 1e-9);
+  closeTo(lo4[0], -1); closeTo(lo4[1], -1); closeTo(hi4[0], 1); closeTo(hi4[1], 1);
+});
+test('a straight edge, and an arc flatter than 1000 chords, keep the box of their three points', () => {
+  assert.deepEqual(edgeBox({ start: [0, 0, 0], mid: [1, 1, 1], end: [2, 2, 2] }, null, 1e-9), [[0, 0, 0], [2, 2, 2]]);
+  assert.deepEqual(edgeBox({ start: [0, 0, 0], mid: [1, 1e-7, 0], end: [2, 0, 0] }, null, 1e-9), [[0, 0, 0], [2, 1e-7, 0]]);
+});
+test('a whole circle given as one edge is boxed as the circle when the face says which plane it is in, and as its points when it does not', () => {
+  const ring = { start: [3, 0, 5], mid: [-3, 0, 5], end: [3, 0, 5] };
+  const [lo, hi] = edgeBox(ring, [0, 0, 2], 1e-9);
+  closeTo(lo[0], -3); closeTo(hi[0], 3); closeTo(lo[1], -3); closeTo(hi[1], 3); closeTo(lo[2], 5); closeTo(hi[2], 5);
+  assert.deepEqual(edgeBox(ring, null, 1e-9), [[-3, 0, 5], [3, 0, 5]]);
+  assert.deepEqual(edgeBox(ring, [1, 0, 0], 1e-9), [[-3, 0, 5], [3, 0, 5]]); // an axis along the diameter cannot be the circle's
+});
+test('the measured cylinder: both caps keep the pick point upstream gives, and a point off a cap does not pass', () => {
+  const b = adaptBody('b_cyl1', CYL.faces, CYL.edges);
+  // the two halves of the wall are one cylinder: a point on one is on the other's surface too, so neither gets a pick point (verifiedInnerPoint, as before)
+  assert.deepEqual(b.faces.map((f) => [f.name, !!f.inner_point]), [['F1:bottom', true], ['F1:side#2', false], ['F1:side#1', false], ['F1:top', true]]);
+  for (const f of b.faces.filter((x) => x.inner_point)) assert.deepEqual(f.inner_hit, { index: f.index, dist: 0 });
+  const faces = CYL.faces.faces, edges = CYL.edges.edges; const cap = faces.find((f) => f.name === 'F1:top');
+  const at = (point) => { const moved = { ...cap, point }; return verifiedInnerPoint(moved, faces.map((f) => (f === cap ? moved : f)), edges, 30); };
+  assert.notEqual(at([5, 3, 17]), null); // the middle of the cap
+  assert.equal(at([5, 16, 17]), null); // on its plane, 1 past the rim: outside the box of the circle
+  assert.equal(at([18, 3, 17]), null);
+  assert.equal(at([5, 3, 16]), null); // not on the plane
+  assert.equal(at([5, 14.9995, 17]), null); // on the cap but within the clearance of the wall
+});

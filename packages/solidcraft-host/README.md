@@ -107,6 +107,8 @@ Within one run of a script the pane remembers the engine's replies (`src/reply-m
 
 `src/crash-guard.mjs` (2026-11-13): a command that makes SolidCraft's engine trap (a wasm RuntimeError) used to leave the page waiting for ever. The calls in flight are now rejected, so the step is refused in the layer's own sentence, and SolidCraft's frame is loaded again. Same write-up, "A step that stops SolidCraft".
 
+Pick points (2026-11-13): `verifiedInnerPoint` boxed a curved boundary edge by upstream's three points, so upstream's own pick point of a cylinder's cap fell outside and every cylinder hollowed with its top or bottom open was refused in the page (Node built it). `edgeBox` now boxes an arc as the arc. Found by the first run of the corpora in the real page; same write-up, "The corpora in the real page".
+
 Setup: `sh kernel/build.sh` (needs the rig's `sc-src`, cargo, wasm-bindgen; a few minutes, 8 GB or more at 0.30.1: run under `systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0`) makes `kernel/dist/`; serve that folder as `kernel/` next to `pane/` (the preview folder has a symlink). `npm test` has 12 unit tests for the pure parts (fake Worker and clock) and one against the real wasm if the rig is there.
 
 Real browser (one headless Chrome, 3 GB cap), against the 0.21.0 web build:

@@ -1,0 +1,540 @@
+{"set":"pilot","id":"p1a-box-lid","asShippedMs":3175,"everyRunBudgetedMs":1979,"workerMs":[578,443],"probes":[4,4],"same":true}
+{"set":"pilot","id":"p2a-plate-peg","asShippedMs":761,"everyRunBudgetedMs":943,"workerMs":[144,480],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p3a-bracket-boss","asShippedMs":847,"everyRunBudgetedMs":727,"workerMs":[304,307],"probes":[4,5],"same":true}
+{"set":"pilot","id":"p4a-cup-pulled","asShippedMs":1064,"everyRunBudgetedMs":1131,"workerMs":[27,145],"probes":[1,10],"same":true}
+{"set":"pilot","id":"p4b-cup-from-top","asShippedMs":928,"everyRunBudgetedMs":997,"workerMs":[0,148],"probes":[0,10],"same":true}
+{"set":"pilot","id":"p5a-plate-forgot","asShippedMs":1481,"everyRunBudgetedMs":1114,"workerMs":[699,455],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p6a-standoffs","asShippedMs":10561,"everyRunBudgetedMs":8002,"workerMs":[4675,4072],"probes":[9,10],"same":true}
+{"set":"pilot","id":"p7a-cut-tool","asShippedMs":245,"everyRunBudgetedMs":247,"workerMs":[0,84],"probes":[0,2],"same":true}
+{"set":"pilot","id":"p8a-row","asShippedMs":14,"everyRunBudgetedMs":11,"workerMs":[0,0],"probes":[0,0],"same":true}
+{"set":"pilot","id":"p9a-knob","asShippedMs":1247,"everyRunBudgetedMs":1184,"workerMs":[253,558],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p1b-lid-on-top","asShippedMs":496,"everyRunBudgetedMs":430,"workerMs":[136,101],"probes":[4,4],"same":true}
+{"set":"pilot","id":"p1c-lid-counterbore","asShippedMs":847,"everyRunBudgetedMs":764,"workerMs":[288,241],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p1d-lid-first","asShippedMs":1247,"everyRunBudgetedMs":881,"workerMs":[485,316],"probes":[5,5],"same":true}
+{"set":"pilot","id":"p2b-peg-at","asShippedMs":693,"everyRunBudgetedMs":779,"workerMs":[95,352],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p2c-peg-hole","asShippedMs":1332,"everyRunBudgetedMs":965,"workerMs":[656,451],"probes":[5,5],"same":true}
+{"set":"pilot","id":"p3b-boss-at","asShippedMs":1111,"everyRunBudgetedMs":847,"workerMs":[469,345],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p3c-boss-hole-first","asShippedMs":1698,"everyRunBudgetedMs":1518,"workerMs":[748,700],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p5b-plate-fixed","asShippedMs":896,"everyRunBudgetedMs":733,"workerMs":[285,245],"probes":[3,4],"same":true}
+{"set":"pilot","id":"p5c-plate-spacer-at","asShippedMs":880,"everyRunBudgetedMs":715,"workerMs":[311,231],"probes":[3,4],"same":true}
+{"set":"pilot","id":"p6b-standoffs-drilled-first","asShippedMs":11281,"everyRunBudgetedMs":12153,"workerMs":[4713,6259],"probes":[11,12],"same":true}
+{"set":"pilot","id":"p7b-cut-at","asShippedMs":430,"everyRunBudgetedMs":413,"workerMs":[135,159],"probes":[1,3],"same":true}
+{"set":"pilot","id":"p8b-row-then-drill","asShippedMs":281,"everyRunBudgetedMs":292,"workerMs":[59,66],"probes":[3,4],"same":true}
+{"set":"pilot","id":"p8c-row-touching","asShippedMs":486,"everyRunBudgetedMs":364,"workerMs":[150,121],"probes":[4,4],"same":true}
+{"set":"pilot","id":"p8d-three-by-hand","asShippedMs":1857,"everyRunBudgetedMs":1282,"workerMs":[915,601],"probes":[6,6],"same":true}
+{"set":"pilot","id":"p9b-knob-base-at","asShippedMs":15063,"everyRunBudgetedMs":20964,"workerMs":[3851,10921],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p9c-knob-top-plane","asShippedMs":898,"everyRunBudgetedMs":3000,"workerMs":[168,1175],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p9d-knob-alone-front","asShippedMs":278,"everyRunBudgetedMs":380,"workerMs":[0,127],"probes":[0,1],"same":true}
+{"set":"pilot","id":"p8e-holes-in-a-row","asShippedMs":1414,"everyRunBudgetedMs":931,"workerMs":[638,405],"probes":[4,4],"same":true}
+{"set":"pilot","id":"p6c-standoff-through","asShippedMs":8813,"everyRunBudgetedMs":6747,"workerMs":[4431,3425],"probes":[9,9],"same":true}
+{"set":"pilot","id":"p3d-boss-hole-centre","asShippedMs":1131,"everyRunBudgetedMs":964,"workerMs":[488,397],"probes":[5,5],"same":true}
+{"set":"pilot","id":"p8a-row-after","asShippedMs":29,"everyRunBudgetedMs":31,"workerMs":[0,0],"probes":[0,0],"same":true}
+{"set":"pilot","id":"p3a-bracket-boss-after","asShippedMs":781,"everyRunBudgetedMs":715,"workerMs":[272,272],"probes":[4,5],"same":true}
+{"set":"pilot","id":"p3b-boss-at-after","asShippedMs":981,"everyRunBudgetedMs":914,"workerMs":[368,370],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p5a-plate-forgot-after","asShippedMs":1480,"everyRunBudgetedMs":1113,"workerMs":[591,456],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p6a-standoffs-after","asShippedMs":9735,"everyRunBudgetedMs":8532,"workerMs":[4294,4351],"probes":[9,10],"same":true}
+{"set":"pilot","id":"p9d-knob-alone-front-after","asShippedMs":274,"everyRunBudgetedMs":348,"workerMs":[0,126],"probes":[0,1],"same":true}
+{"set":"pilot","id":"p9c-knob-top-plane-after","asShippedMs":1323,"everyRunBudgetedMs":1481,"workerMs":[208,711],"probes":[1,5],"same":true}
+{"set":"pilot","id":"w1-row-whole","asShippedMs":1578,"everyRunBudgetedMs":1548,"workerMs":[632,719],"probes":[4,5],"same":true}
+{"set":"pilot","id":"w2-row-counterbore","asShippedMs":2211,"everyRunBudgetedMs":2355,"workerMs":[860,1175],"probes":[5,6],"same":true}
+{"set":"pilot","id":"w3-row-pocket","asShippedMs":515,"everyRunBudgetedMs":531,"workerMs":[104,121],"probes":[5,6],"same":true}
+{"set":"pilot","id":"w4-ring-whole","asShippedMs":2143,"everyRunBudgetedMs":1958,"workerMs":[742,931],"probes":[4,5],"same":true}
+{"set":"pilot","id":"w5-row-touching","asShippedMs":1563,"everyRunBudgetedMs":1582,"workerMs":[617,762],"probes":[4,5],"same":true}
+{"set":"pilot","id":"w6-row-two-holes","asShippedMs":2398,"everyRunBudgetedMs":2325,"workerMs":[1155,1181],"probes":[5,6],"same":true}
+{"set":"pilot","id":"w7-row-then-hole","asShippedMs":1546,"everyRunBudgetedMs":1496,"workerMs":[652,726],"probes":[4,5],"same":true}
+{"set":"pilot","id":"w8-spin-side","asShippedMs":230,"everyRunBudgetedMs":348,"workerMs":[0,121],"probes":[0,1],"same":true}
+{"set":"pilot","id":"one-box","asShippedMs":147,"everyRunBudgetedMs":143,"workerMs":[0,15],"probes":[0,1],"same":true}
+{"set":"pilot","id":"box-hole","asShippedMs":314,"everyRunBudgetedMs":281,"workerMs":[124,100],"probes":[2,2],"same":true}
+{"set":"pilot","id":"box-hole-hollow","asShippedMs":865,"everyRunBudgetedMs":764,"workerMs":[337,274],"probes":[3,3],"same":true}
+{"set":"pilot","id":"p2b-peg-at","asShippedMs":693,"everyRunBudgetedMs":872,"workerMs":[95,416],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p3c-boss-hole-first","asShippedMs":1698,"everyRunBudgetedMs":1715,"workerMs":[748,847],"probes":[5,6],"same":true}
+{"set":"pilot","id":"p6a-standoffs","asShippedMs":10561,"everyRunBudgetedMs":11142,"workerMs":[4675,5338],"probes":[9,10],"same":true}
+{"set":"pilot","id":"p6b-standoffs-drilled-first","asShippedMs":11281,"everyRunBudgetedMs":13436,"workerMs":[4713,6890],"probes":[11,12],"same":true}
+{"set":"pilot","id":"p9b-knob-base-at","asShippedMs":15063,"everyRunBudgetedMs":24447,"workerMs":[3851,12453],"probes":[1,5],"same":true}
+{"set":"pilot","id":"p9c-knob-top-plane","asShippedMs":898,"everyRunBudgetedMs":1464,"workerMs":[168,663],"probes":[1,5],"same":true}
+{"set":"pilot","id":"blocked-chain","asShippedMs":365,"everyRunBudgetedMs":381,"workerMs":[49,84],"probes":[2,3],"same":true}
+{"set":"pilot","id":"second-pass","asShippedMs":2714,"everyRunBudgetedMs":2780,"workerMs":[685,725],"probes":[13,13],"same":true}
+{"set":"pilot","id":"slow-join-alone","asShippedMs":14996,"everyRunBudgetedMs":22546,"workerMs":[3758,11539],"probes":[1,5],"same":true}
+{"set":"pilot","id":"slow-join-then-stale","asShippedMs":50446,"everyRunBudgetedMs":81641,"workerMs":[3752,37394],"probes":[1,12],"same":true}
+{"set":"pilot","id":"slow-join-then-blocked","asShippedMs":36280,"everyRunBudgetedMs":46829,"workerMs":[14752,23733],"probes":[6,10],"same":true}
+{"set":"pilot","id":"slow-join-stale-blocked","asShippedMs":129042,"everyRunBudgetedMs":220771,"workerMs":[51917,105703],"probes":[15,22],"same":true}
+{"set":"pilot","id":"stale-blocked-then-slow-join","asShippedMs":39478,"everyRunBudgetedMs":66293,"workerMs":[15796,34096],"probes":[19,27],"same":true}
+{"set":"tenth","id":"holes#5 g:hole-simple__tiny-deep","asShippedMs":363,"everyRunBudgetedMs":2979,"workerMs":[94,460],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#15 g:hole-simple__breaks-out-of-the-side","asShippedMs":331,"everyRunBudgetedMs":381,"workerMs":[77,109],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#25 core-at-xy","asShippedMs":1890,"everyRunBudgetedMs":396,"workerMs":[495,111],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#35 size-M4","asShippedMs":381,"everyRunBudgetedMs":396,"workerMs":[100,105],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#45 through-cone","asShippedMs":2614,"everyRunBudgetedMs":3161,"workerMs":[1316,1515],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#55 blind-on-pulled-sketch","asShippedMs":480,"everyRunBudgetedMs":530,"workerMs":[168,170],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#65 along-z-explicit","asShippedMs":368,"everyRunBudgetedMs":380,"workerMs":[105,102],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#75 cb-deeper-than-blind-hole","asShippedMs":1765,"everyRunBudgetedMs":384,"workerMs":[385,96],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#85 holes-corners-at","asShippedMs":697,"everyRunBudgetedMs":813,"workerMs":[277,330],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#95 holes-along-x","asShippedMs":198,"everyRunBudgetedMs":196,"workerMs":[10,13],"probes":[1,1],"same":true}
+{"set":"tenth","id":"holes#105 pocket-then-two-holes","asShippedMs":931,"everyRunBudgetedMs":1047,"workerMs":[276,372],"probes":[5,5],"same":true}
+{"set":"tenth","id":"holes#115 rot-box-y45-hole-z","asShippedMs":6198,"everyRunBudgetedMs":7512,"workerMs":[3211,3979],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#125 bores-blind-stacked","asShippedMs":2717,"everyRunBudgetedMs":1280,"workerMs":[931,606],"probes":[6,6],"same":true}
+{"set":"tenth","id":"holes#135 through-ring-misses-4","asShippedMs":2450,"everyRunBudgetedMs":2714,"workerMs":[1208,1316],"probes":[1,1],"same":true}
+{"set":"tenth","id":"holes#145 mirror-hole-seam-var-blind","asShippedMs":481,"everyRunBudgetedMs":581,"workerMs":[169,209],"probes":[6,6],"same":true}
+{"set":"tenth","id":"holes#155 cs-blind-d6-D12-a90-b3.5","asShippedMs":898,"everyRunBudgetedMs":1047,"workerMs":[422,496],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#165 cs-blind-d6-D12-a120-b3","asShippedMs":915,"everyRunBudgetedMs":1047,"workerMs":[418,509],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#175 cs-blind-d3-D6-a60-b3.5","asShippedMs":3252,"everyRunBudgetedMs":1137,"workerMs":[1257,611],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#185 cb-deep-beyond-thickness-30","asShippedMs":232,"everyRunBudgetedMs":241,"workerMs":[55,71],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#195 cb-wider-than-plate","asShippedMs":598,"everyRunBudgetedMs":564,"workerMs":[205,189],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#205 cs-in-cylinder-blind","asShippedMs":2264,"everyRunBudgetedMs":2181,"workerMs":[1174,1116],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#215 holes-cs-blind","asShippedMs":8810,"everyRunBudgetedMs":8264,"workerMs":[4493,4305],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#225 apart-negative","asShippedMs":3009,"everyRunBudgetedMs":677,"workerMs":[871,274],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#235 tilt-x30-blind-8","asShippedMs":247,"everyRunBudgetedMs":280,"workerMs":[65,72],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#245 faces-notch-r2-far","asShippedMs":847,"everyRunBudgetedMs":702,"workerMs":[418,317],"probes":[4,4],"same":true}
+{"set":"tenth","id":"holes#255 cs-over-earlier-cb","asShippedMs":564,"everyRunBudgetedMs":2141,"workerMs":[227,584],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#265 spin-cup-along-y-blind","asShippedMs":331,"everyRunBudgetedMs":430,"workerMs":[104,186],"probes":[1,1],"same":true}
+{"set":"tenth","id":"holes#275 octagon-prism-along-x","asShippedMs":8079,"everyRunBudgetedMs":5196,"workerMs":[3863,2667],"probes":[2,2],"same":true}
+{"set":"tenth","id":"holes#285 cb-tiny-0p04","asShippedMs":362,"everyRunBudgetedMs":331,"workerMs":[79,74],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#295 cs-angle-170","asShippedMs":2131,"everyRunBudgetedMs":1964,"workerMs":[1008,898],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#305 pat-polar-disjoint-hole","asShippedMs":331,"everyRunBudgetedMs":330,"workerMs":[89,81],"probes":[3,4],"same":true}
+{"set":"tenth","id":"holes#315 rs-cb-0.02-0.1-1","asShippedMs":331,"everyRunBudgetedMs":298,"workerMs":[61,74],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#325 rs-cb-6-6.001-3","asShippedMs":1957,"everyRunBudgetedMs":347,"workerMs":[389,76],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#335 rs-cs-6-6.01-90","asShippedMs":365,"everyRunBudgetedMs":332,"workerMs":[82,73],"probes":[2,3],"same":true}
+{"set":"tenth","id":"holes#345 rs-cb-6-12-0.02","asShippedMs":564,"everyRunBudgetedMs":548,"workerMs":[184,176],"probes":[3,3],"same":true}
+{"set":"tenth","id":"holes#355 cb-nest-cyl","asShippedMs":1858,"everyRunBudgetedMs":1884,"workerMs":[853,918],"probes":[4,5],"same":true}
+{"set":"tenth","id":"sd#5 hollow-open-top","asShippedMs":330,"everyRunBudgetedMs":263,"workerMs":[28,29],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#15 hollow-open-top-scale-1e2","asShippedMs":264,"everyRunBudgetedMs":281,"workerMs":[18,39],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#25 hollow-wall-5.9-box-open-top","asShippedMs":1636,"everyRunBudgetedMs":264,"workerMs":[293,31],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#35 hollow-wall-14.9-tall-open-top","asShippedMs":265,"everyRunBudgetedMs":264,"workerMs":[19,32],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#45 hollow-wall-11.9-disc60x12","asShippedMs":417,"everyRunBudgetedMs":481,"workerMs":[113,168],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#55 hollow-wall-14.9-hex60x12","asShippedMs":398,"everyRunBudgetedMs":365,"workerMs":[18,44],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#65 hollow-prism3-bottom","asShippedMs":348,"everyRunBudgetedMs":351,"workerMs":[15,27],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#75 hollow-prism4-right","asShippedMs":1229,"everyRunBudgetedMs":197,"workerMs":[0,15],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#85 hollow-prism6-back","asShippedMs":198,"everyRunBudgetedMs":198,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#95 hollow-prism8-bottom","asShippedMs":364,"everyRunBudgetedMs":382,"workerMs":[20,34],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#105 hollow-prism10-right","asShippedMs":195,"everyRunBudgetedMs":215,"workerMs":[0,16],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#115 hollow-wedge-back","asShippedMs":198,"everyRunBudgetedMs":198,"workerMs":[0,12],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#125 hollow-extrude-tri-top","asShippedMs":1800,"everyRunBudgetedMs":365,"workerMs":[363,32],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#135 hollow-join-pillar","asShippedMs":315,"everyRunBudgetedMs":361,"workerMs":[19,76],"probes":[1,5],"same":true}
+{"set":"tenth","id":"sd#145 hollow-move-dz-12-bottom","asShippedMs":381,"everyRunBudgetedMs":1889,"workerMs":[15,356],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#155 hollow-turn-y45-top","asShippedMs":118,"everyRunBudgetedMs":167,"workerMs":[0,22],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#165 hollow-turn-z45-square-top","asShippedMs":115,"everyRunBudgetedMs":175,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#175 hollow-round-r1.5-wall2","asShippedMs":2015,"everyRunBudgetedMs":1801,"workerMs":[0,964],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#185 hollow-after-draft","asShippedMs":548,"everyRunBudgetedMs":564,"workerMs":[22,91],"probes":[1,6],"same":true}
+{"set":"tenth","id":"sd#195 draft-bottom-default-parallel-to-pull","asShippedMs":115,"everyRunBudgetedMs":114,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#205 draft-right-angle--45","asShippedMs":431,"everyRunBudgetedMs":431,"workerMs":[0,82],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#215 draft-right-angle-90-limit","asShippedMs":114,"everyRunBudgetedMs":114,"workerMs":[0,14],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#225 draft-right-neutral-12","asShippedMs":1541,"everyRunBudgetedMs":464,"workerMs":[0,89],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#235 draft-top-from-right","asShippedMs":431,"everyRunBudgetedMs":448,"workerMs":[0,84],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#245 draft-same-face-twice","asShippedMs":431,"everyRunBudgetedMs":431,"workerMs":[0,77],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#255 draft-cylinder-side","asShippedMs":147,"everyRunBudgetedMs":214,"workerMs":[0,74],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#265 draft-prism4-back","asShippedMs":198,"everyRunBudgetedMs":198,"workerMs":[0,36],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#275 draft-prism7-left","asShippedMs":1174,"everyRunBudgetedMs":197,"workerMs":[0,15],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#285 draft-prism10-back","asShippedMs":198,"everyRunBudgetedMs":199,"workerMs":[0,16],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#295 draft-extrude-rect-left","asShippedMs":582,"everyRunBudgetedMs":613,"workerMs":[0,83],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#305 draft-hole-z-right","asShippedMs":1301,"everyRunBudgetedMs":1466,"workerMs":[499,605],"probes":[6,7],"same":true}
+{"set":"tenth","id":"sd#315 draft-move-dy30-back","asShippedMs":564,"everyRunBudgetedMs":598,"workerMs":[0,106],"probes":[0,7],"same":true}
+{"set":"tenth","id":"sd#325 draft-from-bottom-prism-offset","asShippedMs":1246,"everyRunBudgetedMs":164,"workerMs":[0,13],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#335 hollow-hole-pos-8_5","asShippedMs":782,"everyRunBudgetedMs":831,"workerMs":[267,284],"probes":[3,3],"same":true}
+{"set":"tenth","id":"sd#345 hollow-hole-pos-10_-16","asShippedMs":281,"everyRunBudgetedMs":248,"workerMs":[101,93],"probes":[2,2],"same":true}
+{"set":"tenth","id":"sd#355 fuzz-hollow-01","asShippedMs":397,"everyRunBudgetedMs":382,"workerMs":[21,38],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#365 fuzz-hollow-11","asShippedMs":247,"everyRunBudgetedMs":248,"workerMs":[14,25],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#375 fuzz-hollow-21","asShippedMs":1846,"everyRunBudgetedMs":265,"workerMs":[396,31],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#385 fuzz-hollow-31","asShippedMs":398,"everyRunBudgetedMs":381,"workerMs":[22,40],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#395 fuzz-draft-01","asShippedMs":431,"everyRunBudgetedMs":1840,"workerMs":[0,392],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#405 fuzz-draft-11","asShippedMs":330,"everyRunBudgetedMs":451,"workerMs":[0,48],"probes":[0,2],"same":true}
+{"set":"tenth","id":"sd#415 fuzz-draft-21","asShippedMs":564,"everyRunBudgetedMs":687,"workerMs":[0,122],"probes":[0,7],"same":true}
+{"set":"tenth","id":"sd#425 fuzz-draft-31","asShippedMs":1778,"everyRunBudgetedMs":496,"workerMs":[0,91],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#435 dnc-L-left-in20","asShippedMs":581,"everyRunBudgetedMs":665,"workerMs":[0,129],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#445 dnc-L-left-out80","asShippedMs":581,"everyRunBudgetedMs":647,"workerMs":[0,95],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#455 dnc-L-front-out45","asShippedMs":578,"everyRunBudgetedMs":665,"workerMs":[0,97],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#465 dnc-L-right-out20","asShippedMs":580,"everyRunBudgetedMs":614,"workerMs":[0,97],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#475 dnc-L-back-in80","asShippedMs":1657,"everyRunBudgetedMs":284,"workerMs":[0,14],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#485 dnc-T-left-in60","asShippedMs":281,"everyRunBudgetedMs":293,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#495 dnc-T-front-in60","asShippedMs":273,"everyRunBudgetedMs":297,"workerMs":[0,16],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#505 dnc-join-right-in45","asShippedMs":946,"everyRunBudgetedMs":748,"workerMs":[324,167],"probes":[1,9],"same":true}
+{"set":"tenth","id":"sd#515 dnc-join-front-in60","asShippedMs":597,"everyRunBudgetedMs":699,"workerMs":[24,154],"probes":[1,9],"same":true}
+{"set":"tenth","id":"sd#525 dnc-slot-right-out20","asShippedMs":2347,"everyRunBudgetedMs":614,"workerMs":[425,140],"probes":[1,8],"same":true}
+{"set":"tenth","id":"sd#535 dnc-pocket-right-in80","asShippedMs":596,"everyRunBudgetedMs":547,"workerMs":[0,50],"probes":[0,3],"same":true}
+{"set":"tenth","id":"sd#545 dnc-notch-right-in20","asShippedMs":314,"everyRunBudgetedMs":397,"workerMs":[15,49],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#555 dnc-hole-right-in5","asShippedMs":1491,"everyRunBudgetedMs":1401,"workerMs":[599,599],"probes":[6,7],"same":true}
+{"set":"tenth","id":"sd#565 dnc-L-seq-two-20","asShippedMs":693,"everyRunBudgetedMs":731,"workerMs":[0,101],"probes":[0,7],"same":true}
+{"set":"tenth","id":"sd#575 dnc-L-seq-four-45","asShippedMs":1473,"everyRunBudgetedMs":281,"workerMs":[0,14],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#585 dnc-T-seq-four-60","asShippedMs":281,"everyRunBudgetedMs":280,"workerMs":[0,15],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#595 dbox-two-n0","asShippedMs":714,"everyRunBudgetedMs":798,"workerMs":[0,144],"probes":[0,10],"same":true}
+{"set":"tenth","id":"sd#605 hollow-slit-15","asShippedMs":115,"everyRunBudgetedMs":115,"workerMs":[0,13],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#615 hc2-box","asShippedMs":165,"everyRunBudgetedMs":181,"workerMs":[14,42],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#625 hc2-box-wall-over","asShippedMs":1160,"everyRunBudgetedMs":115,"workerMs":[0,14],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#635 hc2-prism4","asShippedMs":365,"everyRunBudgetedMs":282,"workerMs":[18,30],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#645 hc2-box-hole","asShippedMs":247,"everyRunBudgetedMs":1710,"workerMs":[88,391],"probes":[2,2],"same":true}
+{"set":"tenth","id":"sd#655 hc2-cyl-then-move","asShippedMs":655,"everyRunBudgetedMs":1195,"workerMs":[194,647],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#665 dw2-box-option-only","asShippedMs":348,"everyRunBudgetedMs":414,"workerMs":[0,102],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#675 dw2-box-small","asShippedMs":1109,"everyRunBudgetedMs":164,"workerMs":[0,25],"probes":[0,2],"same":true}
+{"set":"tenth","id":"sd#685 dw2-box-vanish-neg","asShippedMs":348,"everyRunBudgetedMs":398,"workerMs":[0,84],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#695 dw2-prism6-5","asShippedMs":498,"everyRunBudgetedMs":549,"workerMs":[0,112],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#705 dw2-wedge-12","asShippedMs":498,"everyRunBudgetedMs":531,"workerMs":[0,87],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#715 dw2-cylinder-moved","asShippedMs":331,"everyRunBudgetedMs":697,"workerMs":[0,277],"probes":[0,3],"same":true}
+{"set":"tenth","id":"sd#725 dw2-after-hole","asShippedMs":1826,"everyRunBudgetedMs":248,"workerMs":[430,96],"probes":[2,2],"same":true}
+{"set":"tenth","id":"sd#735 dw2-L--5","asShippedMs":498,"everyRunBudgetedMs":531,"workerMs":[0,99],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#745 dw2-T-10","asShippedMs":498,"everyRunBudgetedMs":548,"workerMs":[0,96],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#755 dw2-U-5","asShippedMs":497,"everyRunBudgetedMs":530,"workerMs":[0,89],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#765 dw2-Lthin-2","asShippedMs":264,"everyRunBudgetedMs":281,"workerMs":[0,28],"probes":[0,2],"same":true}
+{"set":"tenth","id":"sd#775 dw2-Lthin-neutral-top","asShippedMs":1424,"everyRunBudgetedMs":565,"workerMs":[0,102],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#785 dw2-fuzz-box-7","asShippedMs":348,"everyRunBudgetedMs":381,"workerMs":[0,81],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#795 dw2-fuzz-box-17","asShippedMs":348,"everyRunBudgetedMs":364,"workerMs":[0,89],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#805 dw2-fuzz-box-27","asShippedMs":345,"everyRunBudgetedMs":348,"workerMs":[0,68],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#815 dw2-fuzz-box-37","asShippedMs":348,"everyRunBudgetedMs":348,"workerMs":[0,69],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#825 dw2-fuzz-prism-7","asShippedMs":1602,"everyRunBudgetedMs":510,"workerMs":[0,96],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#835 dw2-fuzz-prism-17","asShippedMs":498,"everyRunBudgetedMs":565,"workerMs":[0,99],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#845 dw2-fuzz-poly-7","asShippedMs":498,"everyRunBudgetedMs":545,"workerMs":[0,90],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#855 dw2-fuzz-poly-17","asShippedMs":498,"everyRunBudgetedMs":514,"workerMs":[0,87],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#865 dw2-fuzz-poly-27","asShippedMs":500,"everyRunBudgetedMs":514,"workerMs":[0,91],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#875 dw2-fuzz-poly-37","asShippedMs":1541,"everyRunBudgetedMs":530,"workerMs":[0,91],"probes":[0,6],"same":true}
+{"set":"tenth","id":"sd#885 hd2-right-w2-10","asShippedMs":565,"everyRunBudgetedMs":646,"workerMs":[14,114],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#895 hd2-left-w2-15","asShippedMs":581,"everyRunBudgetedMs":2164,"workerMs":[17,490],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#905 hd2-back-w2-1","asShippedMs":381,"everyRunBudgetedMs":434,"workerMs":[14,60],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#915 hd2-right-w3-2","asShippedMs":382,"everyRunBudgetedMs":405,"workerMs":[15,54],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#925 hd2-left-w3-3","asShippedMs":1869,"everyRunBudgetedMs":647,"workerMs":[287,116],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#935 hd2-front-w3-4","asShippedMs":565,"everyRunBudgetedMs":648,"workerMs":[13,131],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#945 hd2-back-w3-5","asShippedMs":565,"everyRunBudgetedMs":648,"workerMs":[13,117],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#955 hd2-edge-w3--0.01","asShippedMs":582,"everyRunBudgetedMs":648,"workerMs":[17,113],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#965 hd2-contract-case","asShippedMs":582,"everyRunBudgetedMs":631,"workerMs":[17,121],"probes":[1,7],"same":true}
+{"set":"tenth","id":"sd#975 ha2-right-8-w2","asShippedMs":1478,"everyRunBudgetedMs":489,"workerMs":[0,64],"probes":[0,5],"same":true}
+{"set":"tenth","id":"sd#985 hm2-mirror-tb-top","asShippedMs":514,"everyRunBudgetedMs":531,"workerMs":[84,87],"probes":[5,5],"same":true}
+{"set":"tenth","id":"sd#995 hb2-box-only","asShippedMs":48,"everyRunBudgetedMs":47,"workerMs":[0,9],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#1005 sn2-draft-cap-from-right","asShippedMs":114,"everyRunBudgetedMs":115,"workerMs":[0,13],"probes":[0,1],"same":true}
+{"set":"tenth","id":"sd#1015 hc2-fuzz-4","asShippedMs":232,"everyRunBudgetedMs":164,"workerMs":[14,25],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#1025 hc2-fuzz-14","asShippedMs":1929,"everyRunBudgetedMs":631,"workerMs":[480,274],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#1035 hc2-fuzz-24","asShippedMs":248,"everyRunBudgetedMs":181,"workerMs":[18,28],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#1045 hc2-fuzz-34","asShippedMs":400,"everyRunBudgetedMs":465,"workerMs":[122,195],"probes":[1,2],"same":true}
+{"set":"tenth","id":"sd#1055 ha3-prism6-face","asShippedMs":398,"everyRunBudgetedMs":398,"workerMs":[24,63],"probes":[1,3],"same":true}
+{"set":"tenth","id":"sd#1065 hm2-fuzz-4","asShippedMs":514,"everyRunBudgetedMs":547,"workerMs":[81,80],"probes":[5,5],"same":true}
+{"set":"tenth","id":"sd#1075 hm2-fuzz-14","asShippedMs":2071,"everyRunBudgetedMs":531,"workerMs":[400,88],"probes":[5,5],"same":true}
+{"set":"tenth","id":"sd#1085 hm2-fuzz-24","asShippedMs":459,"everyRunBudgetedMs":430,"workerMs":[59,55],"probes":[4,4],"same":true}
+{"set":"tenth","id":"sd#1095 hm2-fuzz-34","asShippedMs":497,"everyRunBudgetedMs":547,"workerMs":[72,89],"probes":[5,5],"same":true}
+{"set":"tenth","id":"mt#5 k-pickguard:round1#5","asShippedMs":336,"everyRunBudgetedMs":331,"workerMs":[0,21],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#15 k-pickguard:shell1#15","asShippedMs":397,"everyRunBudgetedMs":401,"workerMs":[17,44],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#25 k-pickguard:shell1#25","asShippedMs":1939,"everyRunBudgetedMs":375,"workerMs":[360,38],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#35 k-pickguard:shell1#35","asShippedMs":398,"everyRunBudgetedMs":398,"workerMs":[17,43],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#45 k-pickguard:shell1#45","asShippedMs":397,"everyRunBudgetedMs":1890,"workerMs":[18,352],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#55 k-pickguard:shell1#55","asShippedMs":397,"everyRunBudgetedMs":529,"workerMs":[19,79],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#65 k-pickguard:shell1#65","asShippedMs":373,"everyRunBudgetedMs":407,"workerMs":[14,47],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#75 k-pickguard:shell1#75","asShippedMs":1453,"everyRunBudgetedMs":431,"workerMs":[0,79],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#85 k-pickguard:shell1#85","asShippedMs":381,"everyRunBudgetedMs":398,"workerMs":[0,43],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#95 k-pickguard:round1#95","asShippedMs":448,"everyRunBudgetedMs":546,"workerMs":[16,113],"probes":[1,6],"same":true}
+{"set":"tenth","id":"mt#105 k-pickguard:draft1#105","asShippedMs":565,"everyRunBudgetedMs":597,"workerMs":[0,107],"probes":[0,7],"same":true}
+{"set":"tenth","id":"mt#115 k-pickguard:move1#115","asShippedMs":317,"everyRunBudgetedMs":315,"workerMs":[21,42],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#125 k-pickguard:shell1#125","asShippedMs":1169,"everyRunBudgetedMs":115,"workerMs":[0,13],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#135 k2-guard-scope:#5","asShippedMs":531,"everyRunBudgetedMs":531,"workerMs":[86,83],"probes":[5,5],"same":true}
+{"set":"tenth","id":"mt#145 m-copy:copy/hollow#8","asShippedMs":264,"everyRunBudgetedMs":265,"workerMs":[19,29],"probes":[1,2],"same":true}
+{"set":"tenth","id":"mt#155 m-copy:copy/join-touch#18","asShippedMs":164,"everyRunBudgetedMs":115,"workerMs":[0,12],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#165 m-copy:copy/param@dx=40#28","asShippedMs":114,"everyRunBudgetedMs":115,"workerMs":[0,14],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#175 n-fork:#9","asShippedMs":1923,"everyRunBudgetedMs":548,"workerMs":[337,106],"probes":[1,6],"same":true}
+{"set":"tenth","id":"mt#185 p-magnitude:turn1#3","asShippedMs":596,"everyRunBudgetedMs":681,"workerMs":[264,280],"probes":[4,4],"same":true}
+{"set":"tenth","id":"mt#195 p-magnitude:move2#13","asShippedMs":81,"everyRunBudgetedMs":81,"workerMs":[0,9],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#205 p-magnitude:hole1#23","asShippedMs":376,"everyRunBudgetedMs":332,"workerMs":[144,118],"probes":[3,3],"same":true}
+{"set":"tenth","id":"mt#215 p-magnitude:turn1#33","asShippedMs":15,"everyRunBudgetedMs":16,"workerMs":[0,0],"probes":[0,0],"same":true}
+{"set":"tenth","id":"mt#225 p-magnitude2:move1#7","asShippedMs":1922,"everyRunBudgetedMs":415,"workerMs":[484,170],"probes":[3,3],"same":true}
+{"set":"tenth","id":"mt#235 p-magnitude2:op1#17","asShippedMs":81,"everyRunBudgetedMs":81,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#245 r3-cuthead-control:join;pocket;move(a)#6","asShippedMs":564,"everyRunBudgetedMs":816,"workerMs":[16,316],"probes":[1,7],"same":true}
+{"set":"tenth","id":"mt#255 r3-cuthead:box;pocket;move(pocket result)#2","asShippedMs":415,"everyRunBudgetedMs":598,"workerMs":[0,214],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#265 r3-cuthead:box;move;pocket control#12","asShippedMs":297,"everyRunBudgetedMs":330,"workerMs":[0,65],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#275 r3-deps:#8","asShippedMs":1161,"everyRunBudgetedMs":131,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#285 r3-lumps-control:cut-split then round edge#9","asShippedMs":165,"everyRunBudgetedMs":165,"workerMs":[0,26],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#295 r3-lumps-control:pocket-split#19","asShippedMs":348,"everyRunBudgetedMs":1795,"workerMs":[0,373],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#305 r3-lumps:cut/x07 copy moved +20#1","asShippedMs":204,"everyRunBudgetedMs":291,"workerMs":[0,43],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#315 r3-lumps:cut-split then repeat#11","asShippedMs":164,"everyRunBudgetedMs":214,"workerMs":[26,32],"probes":[2,2],"same":true}
+{"set":"tenth","id":"mt#325 r3-lumps:pocket-split alone#21","asShippedMs":1564,"everyRunBudgetedMs":393,"workerMs":[0,90],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#335 r3-lumps-shipped:cut/turned tool 90#3","asShippedMs":230,"everyRunBudgetedMs":298,"workerMs":[23,50],"probes":[1,3],"same":true}
+{"set":"tenth","id":"mt#345 r3-lumps-shipped:cut by round tool (2 pieces)#13","asShippedMs":198,"everyRunBudgetedMs":281,"workerMs":[0,99],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#355 r3-lumps-shipped:join disjoint copy#23","asShippedMs":115,"everyRunBudgetedMs":115,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#365 r3-param:turn(wedge, 3 params)#5","asShippedMs":264,"everyRunBudgetedMs":231,"workerMs":[0,26],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#375 r4-conechain-control-noinvariant:cone#1","asShippedMs":2042,"everyRunBudgetedMs":515,"workerMs":[0,159],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#385 r4-conechain-control-noinvariant:cone#11","asShippedMs":214,"everyRunBudgetedMs":231,"workerMs":[0,38],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#395 r4-conechain-control-noinvariant:cone#21","asShippedMs":530,"everyRunBudgetedMs":648,"workerMs":[0,207],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#405 r4-conechain-control-noinvariant:cone#31","asShippedMs":330,"everyRunBudgetedMs":381,"workerMs":[0,76],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#415 r4-conechain-control-noinvariant:join#42","asShippedMs":1030,"everyRunBudgetedMs":1181,"workerMs":[244,491],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#425 r4-conechain-control-noinvariant:join#52","asShippedMs":3027,"everyRunBudgetedMs":1130,"workerMs":[738,466],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#435 r4-conechain-control-noinvariant:join#62","asShippedMs":1013,"everyRunBudgetedMs":1198,"workerMs":[244,488],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#445 r4-conechain-control-noinvariant:join#72","asShippedMs":997,"everyRunBudgetedMs":1148,"workerMs":[227,479],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#455 r4-conechain-control-norepair:cone#1","asShippedMs":365,"everyRunBudgetedMs":515,"workerMs":[0,149],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#465 r4-conechain-control-norepair:cone#11","asShippedMs":197,"everyRunBudgetedMs":231,"workerMs":[0,33],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#475 r4-conechain-control-norepair:cone#21","asShippedMs":1560,"everyRunBudgetedMs":615,"workerMs":[0,183],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#485 r4-conechain-control-norepair:cone#31","asShippedMs":331,"everyRunBudgetedMs":398,"workerMs":[0,80],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#495 r4-conechain-control-norepair:join#42","asShippedMs":964,"everyRunBudgetedMs":1148,"workerMs":[232,489],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#505 r4-conechain-control-norepair:join#52","asShippedMs":864,"everyRunBudgetedMs":1131,"workerMs":[196,468],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#515 r4-conechain-control-norepair:join#62","asShippedMs":930,"everyRunBudgetedMs":1148,"workerMs":[202,481],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#525 r4-conechain-control-norepair:join#72","asShippedMs":2537,"everyRunBudgetedMs":1147,"workerMs":[674,467],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#535 r4-conechain-control-norepair:copies#83","asShippedMs":201,"everyRunBudgetedMs":215,"workerMs":[0,25],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#545 r4-conechain-control-norepair:copies#93","asShippedMs":331,"everyRunBudgetedMs":1694,"workerMs":[0,454],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#555 r4-conechain-control-norepair:copies#103","asShippedMs":194,"everyRunBudgetedMs":242,"workerMs":[0,32],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#565 r4-conechain-control-norepair:copies#113","asShippedMs":198,"everyRunBudgetedMs":269,"workerMs":[0,45],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#575 r4-conechain:cone#1","asShippedMs":1589,"everyRunBudgetedMs":551,"workerMs":[0,159],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#585 r4-conechain:cone#11","asShippedMs":197,"everyRunBudgetedMs":232,"workerMs":[0,39],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#595 r4-conechain:cone#21","asShippedMs":463,"everyRunBudgetedMs":648,"workerMs":[0,201],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#605 r4-conechain:cone#31","asShippedMs":328,"everyRunBudgetedMs":382,"workerMs":[0,69],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#615 r4-conechain:copies#42","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,27],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#625 r4-conechain:copies#52","asShippedMs":1541,"everyRunBudgetedMs":214,"workerMs":[0,19],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#635 r4-conechain:copies#62","asShippedMs":264,"everyRunBudgetedMs":298,"workerMs":[0,45],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#645 r4-conechain:copies#72","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,21],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#655 r4-conechain:join#83","asShippedMs":1030,"everyRunBudgetedMs":1181,"workerMs":[262,486],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#665 r4-conechain:join#93","asShippedMs":981,"everyRunBudgetedMs":1164,"workerMs":[236,475],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#675 r4-conechain:join#103","asShippedMs":2603,"everyRunBudgetedMs":1130,"workerMs":[721,476],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#685 r4-conechain:join#113","asShippedMs":947,"everyRunBudgetedMs":1165,"workerMs":[212,488],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#695 r4-conechain:control#124","asShippedMs":364,"everyRunBudgetedMs":414,"workerMs":[0,82],"probes":[0,6],"same":true}
+{"set":"tenth","id":"mt#705 r4-conechain:control#134","asShippedMs":297,"everyRunBudgetedMs":314,"workerMs":[0,47],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#715 r4-conechain:control#144","asShippedMs":364,"everyRunBudgetedMs":415,"workerMs":[0,54],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#725 r4-conechain:control#154","asShippedMs":1407,"everyRunBudgetedMs":398,"workerMs":[0,53],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#735 r4-lint:#1","asShippedMs":165,"everyRunBudgetedMs":198,"workerMs":[0,21],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#745 r4-misc:mir-turn30-leftright#1","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[26,57],"probes":[2,3],"same":true}
+{"set":"tenth","id":"mt#755 r4-misc:prism8-hole#11","asShippedMs":433,"everyRunBudgetedMs":331,"workerMs":[132,98],"probes":[2,2],"same":true}
+{"set":"tenth","id":"mt#765 r4-misc:keep-disjoint-by-move#21","asShippedMs":214,"everyRunBudgetedMs":248,"workerMs":[0,39],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#775 r5-conechain-moves:moves#5","asShippedMs":1642,"everyRunBudgetedMs":598,"workerMs":[0,200],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#785 r5-conechain-moves:moves#15","asShippedMs":364,"everyRunBudgetedMs":463,"workerMs":[0,81],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#795 r5-conechain-moves:moves#25","asShippedMs":464,"everyRunBudgetedMs":1975,"workerMs":[0,578],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#805 r5-conechain-moves:moves#35","asShippedMs":397,"everyRunBudgetedMs":546,"workerMs":[0,136],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#815 r5-conechain-moves:moves#45","asShippedMs":397,"everyRunBudgetedMs":498,"workerMs":[0,129],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#825 r5-conechain-moves:moves#55","asShippedMs":1596,"everyRunBudgetedMs":464,"workerMs":[0,88],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#835 r5-conechain-moves:moves#65","asShippedMs":398,"everyRunBudgetedMs":464,"workerMs":[0,89],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#845 r5-conechain-moves:moves#75","asShippedMs":398,"everyRunBudgetedMs":465,"workerMs":[0,94],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#855 r5-conechain-moves:moves#85","asShippedMs":114,"everyRunBudgetedMs":114,"workerMs":[0,10],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#865 r5-conechain-moves:moves#95","asShippedMs":465,"everyRunBudgetedMs":581,"workerMs":[0,187],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#875 r6-conechain-moves:moves#5","asShippedMs":1430,"everyRunBudgetedMs":465,"workerMs":[0,101],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#885 r6-conechain-moves:moves#15","asShippedMs":465,"everyRunBudgetedMs":581,"workerMs":[0,152],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#895 r6-conechain-moves:moves#25","asShippedMs":397,"everyRunBudgetedMs":464,"workerMs":[0,110],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#905 r6-conechain-moves:moves#35","asShippedMs":397,"everyRunBudgetedMs":481,"workerMs":[0,98],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#915 r6-conechain-moves:moves#45","asShippedMs":464,"everyRunBudgetedMs":597,"workerMs":[0,181],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#925 r6-conechain-moves:moves#55","asShippedMs":1437,"everyRunBudgetedMs":465,"workerMs":[0,85],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#935 r6-conechain-moves:moves#65","asShippedMs":114,"everyRunBudgetedMs":114,"workerMs":[0,10],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#945 r6-conechain-moves:moves#75","asShippedMs":398,"everyRunBudgetedMs":431,"workerMs":[0,94],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#955 r6-conechain-moves:moves#85","asShippedMs":398,"everyRunBudgetedMs":481,"workerMs":[0,114],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#965 r6-conechain-moves:moves#95","asShippedMs":463,"everyRunBudgetedMs":598,"workerMs":[0,172],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#975 r6-control-nolimit:cone#5","asShippedMs":1451,"everyRunBudgetedMs":215,"workerMs":[0,27],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#985 r6-control-nolimit:cone#15","asShippedMs":398,"everyRunBudgetedMs":481,"workerMs":[0,99],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#995 r6-control-nolimit:cone#25","asShippedMs":397,"everyRunBudgetedMs":496,"workerMs":[0,134],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1005 r6-control-nolimit:cone#35","asShippedMs":456,"everyRunBudgetedMs":598,"workerMs":[0,173],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1015 r6-control-nolimit:cone#45","asShippedMs":398,"everyRunBudgetedMs":484,"workerMs":[0,100],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1025 r6-control-nolimit:cone#55","asShippedMs":1581,"everyRunBudgetedMs":465,"workerMs":[0,105],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1035 r6-control-nolimit:cone#65","asShippedMs":398,"everyRunBudgetedMs":466,"workerMs":[0,99],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1045 r6-control-nolimit:cone#75","asShippedMs":398,"everyRunBudgetedMs":1827,"workerMs":[0,392],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1055 r6-control-nolimit:cone#85","asShippedMs":465,"everyRunBudgetedMs":753,"workerMs":[0,237],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1065 r6-control-nolimit:cone#95","asShippedMs":531,"everyRunBudgetedMs":730,"workerMs":[0,245],"probes":[0,6],"same":true}
+{"set":"tenth","id":"mt#1075 r6-control-nolimit:cone#105","asShippedMs":1383,"everyRunBudgetedMs":215,"workerMs":[0,22],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1085 r6-control-nolimit:cone#115","asShippedMs":397,"everyRunBudgetedMs":482,"workerMs":[0,101],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1095 r6-control-nolimit:copies#126","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1105 r6-control-nolimit:copies#136","asShippedMs":206,"everyRunBudgetedMs":214,"workerMs":[0,29],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1115 r6-control-nolimit:copies#146","asShippedMs":198,"everyRunBudgetedMs":214,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1125 r6-control-nolimit:copies#156","asShippedMs":1203,"everyRunBudgetedMs":215,"workerMs":[0,19],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1135 r6-control-nolimit:copies#166","asShippedMs":198,"everyRunBudgetedMs":215,"workerMs":[0,25],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1145 r6-control-nolimit:copies#176","asShippedMs":198,"everyRunBudgetedMs":215,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1155 r6-control-nolimit:copies#186","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1165 r6-control-nolimit:copies#196","asShippedMs":197,"everyRunBudgetedMs":213,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1175 r6-control-nolimit:copies#206","asShippedMs":1222,"everyRunBudgetedMs":215,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1185 r6-control-nolimit:copies#216","asShippedMs":197,"everyRunBudgetedMs":207,"workerMs":[0,19],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1195 r6-control-nolimit:copies#226","asShippedMs":198,"everyRunBudgetedMs":214,"workerMs":[0,20],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1205 r6-control-nolimit:copies#236","asShippedMs":204,"everyRunBudgetedMs":215,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1215 r6-fresh-a:cone#5","asShippedMs":331,"everyRunBudgetedMs":381,"workerMs":[0,66],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#1225 r6-fresh-a:cone#15","asShippedMs":1477,"everyRunBudgetedMs":467,"workerMs":[0,85],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1235 r6-fresh-a:cone#25","asShippedMs":398,"everyRunBudgetedMs":514,"workerMs":[0,150],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1245 r6-fresh-a:cone#35","asShippedMs":398,"everyRunBudgetedMs":465,"workerMs":[0,98],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1255 r6-fresh-a:cone#45","asShippedMs":398,"everyRunBudgetedMs":465,"workerMs":[0,89],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1265 r6-fresh-a:cone#55","asShippedMs":331,"everyRunBudgetedMs":381,"workerMs":[0,78],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#1275 r6-fresh-a:cone#65","asShippedMs":1394,"everyRunBudgetedMs":481,"workerMs":[0,123],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1285 r6-fresh-a:cone#75","asShippedMs":398,"everyRunBudgetedMs":498,"workerMs":[0,133],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1295 r6-fresh-a:cone#85","asShippedMs":465,"everyRunBudgetedMs":2030,"workerMs":[0,527],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1305 r6-fresh-a:cone#95","asShippedMs":397,"everyRunBudgetedMs":561,"workerMs":[0,170],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1315 r6-fresh-a:cone#105","asShippedMs":115,"everyRunBudgetedMs":114,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1325 r6-fresh-a:cone#115","asShippedMs":1294,"everyRunBudgetedMs":298,"workerMs":[0,86],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#1335 r6-fresh-a:copies#126","asShippedMs":198,"everyRunBudgetedMs":214,"workerMs":[0,29],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1345 r6-fresh-a:copies#136","asShippedMs":198,"everyRunBudgetedMs":214,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1355 r6-fresh-a:copies#146","asShippedMs":201,"everyRunBudgetedMs":215,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1365 r6-fresh-a:copies#156","asShippedMs":264,"everyRunBudgetedMs":297,"workerMs":[0,41],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#1375 r6-fresh-a:copies#166","asShippedMs":1436,"everyRunBudgetedMs":298,"workerMs":[0,45],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#1385 r6-fresh-a:copies#176","asShippedMs":198,"everyRunBudgetedMs":214,"workerMs":[0,25],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1395 r6-fresh-a:copies#186","asShippedMs":264,"everyRunBudgetedMs":315,"workerMs":[0,61],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#1405 r6-fresh-a:copies#196","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,26],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1415 r6-fresh-a:copies#206","asShippedMs":397,"everyRunBudgetedMs":531,"workerMs":[0,165],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1425 r6-fresh-a:copies#216","asShippedMs":1337,"everyRunBudgetedMs":215,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1435 r6-fresh-a:copies#226","asShippedMs":466,"everyRunBudgetedMs":598,"workerMs":[0,151],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1445 r6-fresh-a:copies#236","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,20],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1455 r6-fresh-join:join#5","asShippedMs":964,"everyRunBudgetedMs":1181,"workerMs":[221,479],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1465 r6-fresh-join:join#15","asShippedMs":965,"everyRunBudgetedMs":1115,"workerMs":[228,446],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1475 r6-fresh-join:join#25","asShippedMs":2588,"everyRunBudgetedMs":1131,"workerMs":[651,471],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1485 r6-fresh-join:join#35","asShippedMs":947,"everyRunBudgetedMs":1132,"workerMs":[229,455],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1495 r6-fresh-join:join#45","asShippedMs":916,"everyRunBudgetedMs":1131,"workerMs":[201,464],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1505 r6-fresh-join:join#55","asShippedMs":890,"everyRunBudgetedMs":1131,"workerMs":[199,459],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1515 r6-wide-a:cone#5","asShippedMs":198,"everyRunBudgetedMs":231,"workerMs":[0,35],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1525 r6-wide-a:cone#15","asShippedMs":1476,"everyRunBudgetedMs":464,"workerMs":[0,92],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1535 r6-wide-a:cone#25","asShippedMs":397,"everyRunBudgetedMs":532,"workerMs":[0,159],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1545 r6-wide-a:cone#35","asShippedMs":465,"everyRunBudgetedMs":1981,"workerMs":[0,528],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1555 r6-wide-a:cone#45","asShippedMs":396,"everyRunBudgetedMs":607,"workerMs":[0,166],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1565 r6-wide-a:cone#55","asShippedMs":396,"everyRunBudgetedMs":531,"workerMs":[0,143],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1575 r6-wide-a:cone#65","asShippedMs":1425,"everyRunBudgetedMs":450,"workerMs":[0,94],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1585 r6-wide-a:cone#75","asShippedMs":399,"everyRunBudgetedMs":464,"workerMs":[0,101],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1595 r6-wide-a:cone#85","asShippedMs":464,"everyRunBudgetedMs":581,"workerMs":[0,141],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1605 r6-wide-a:cone#95","asShippedMs":564,"everyRunBudgetedMs":731,"workerMs":[0,208],"probes":[0,6],"same":true}
+{"set":"tenth","id":"mt#1615 r6-wide-a:cone#105","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,24],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1625 r6-wide-a:cone#115","asShippedMs":1606,"everyRunBudgetedMs":465,"workerMs":[0,100],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1635 r6-wide-a:copies#126","asShippedMs":199,"everyRunBudgetedMs":231,"workerMs":[0,29],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1645 r6-wide-a:copies#136","asShippedMs":197,"everyRunBudgetedMs":215,"workerMs":[0,25],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1655 r6-wide-a:copies#146","asShippedMs":182,"everyRunBudgetedMs":215,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1665 r6-wide-a:copies#156","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,20],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1675 r6-wide-a:copies#166","asShippedMs":1359,"everyRunBudgetedMs":214,"workerMs":[0,17],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1685 r6-wide-a:copies#176","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,22],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1695 r6-wide-a:copies#186","asShippedMs":198,"everyRunBudgetedMs":215,"workerMs":[0,19],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1705 r6-wide-a:copies#196","asShippedMs":186,"everyRunBudgetedMs":214,"workerMs":[0,20],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1715 r6-wide-a:copies#206","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,18],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1725 r6-wide-a:copies#216","asShippedMs":1385,"everyRunBudgetedMs":215,"workerMs":[0,24],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1735 r6-wide-a:copies#226","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,19],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1745 r6-wide-a:copies#236","asShippedMs":197,"everyRunBudgetedMs":214,"workerMs":[0,21],"probes":[0,1],"same":true}
+{"set":"tenth","id":"mt#1755 r6-wide-control:control#5","asShippedMs":331,"everyRunBudgetedMs":331,"workerMs":[0,39],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#1765 r6-wide-control:control#15","asShippedMs":1648,"everyRunBudgetedMs":3176,"workerMs":[0,1527],"probes":[0,2],"same":true}
+{"set":"tenth","id":"mt#1775 r6-wide-control:control#25","asShippedMs":1536,"everyRunBudgetedMs":475,"workerMs":[0,79],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1785 r6-wide-control:control#35","asShippedMs":398,"everyRunBudgetedMs":398,"workerMs":[0,50],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1795 r6-wide-control:control#45","asShippedMs":464,"everyRunBudgetedMs":2276,"workerMs":[0,777],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1805 r6-wide-control:control#55","asShippedMs":332,"everyRunBudgetedMs":396,"workerMs":[0,77],"probes":[0,3],"same":true}
+{"set":"tenth","id":"mt#1815 r6-wide-control:control#65","asShippedMs":499,"everyRunBudgetedMs":655,"workerMs":[0,106],"probes":[0,6],"same":true}
+{"set":"tenth","id":"mt#1825 r6-wide-control:control#75","asShippedMs":1296,"everyRunBudgetedMs":331,"workerMs":[0,65],"probes":[0,4],"same":true}
+{"set":"tenth","id":"mt#1835 r6-wide-control:control#85","asShippedMs":798,"everyRunBudgetedMs":781,"workerMs":[0,140],"probes":[0,10],"same":true}
+{"set":"tenth","id":"mt#1845 r6-wide-control:control#95","asShippedMs":431,"everyRunBudgetedMs":481,"workerMs":[0,66],"probes":[0,5],"same":true}
+{"set":"tenth","id":"mt#1855 r6-wide-control:control#105","asShippedMs":565,"everyRunBudgetedMs":591,"workerMs":[0,97],"probes":[0,7],"same":true}
+{"set":"tenth","id":"mt#1865 r6-wide-control:control#115","asShippedMs":531,"everyRunBudgetedMs":581,"workerMs":[0,89],"probes":[0,6],"same":true}
+{"set":"tenth","id":"mt#1875 r6-wide-join:join#5","asShippedMs":2688,"everyRunBudgetedMs":1181,"workerMs":[751,492],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1885 r6-wide-join:join#15","asShippedMs":930,"everyRunBudgetedMs":1130,"workerMs":[213,459],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1895 r6-wide-join:join#25","asShippedMs":1482,"everyRunBudgetedMs":1131,"workerMs":[203,471],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1905 r6-wide-join:join#35","asShippedMs":1815,"everyRunBudgetedMs":1148,"workerMs":[489,475],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1915 r6-wide-join:join#45","asShippedMs":1229,"everyRunBudgetedMs":1130,"workerMs":[297,466],"probes":[1,5],"same":true}
+{"set":"tenth","id":"mt#1925 r6-wide-join:join#55","asShippedMs":4233,"everyRunBudgetedMs":1131,"workerMs":[993,480],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#5 combined seed 5","asShippedMs":312,"everyRunBudgetedMs":331,"workerMs":[52,60],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#15 combined seed 15","asShippedMs":257,"everyRunBudgetedMs":264,"workerMs":[0,33],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#25 combined seed 25","asShippedMs":2081,"everyRunBudgetedMs":730,"workerMs":[1321,294],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#35 combined seed 35","asShippedMs":2542,"everyRunBudgetedMs":5280,"workerMs":[0,2700],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#45 combined seed 45","asShippedMs":254,"everyRunBudgetedMs":280,"workerMs":[14,71],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#55 combined seed 55","asShippedMs":398,"everyRunBudgetedMs":415,"workerMs":[23,62],"probes":[1,4],"same":true}
+{"set":"tenth","id":"combined#65 combined seed 65","asShippedMs":463,"everyRunBudgetedMs":481,"workerMs":[46,61],"probes":[3,5],"same":true}
+{"set":"tenth","id":"combined#75 combined seed 75","asShippedMs":1817,"everyRunBudgetedMs":597,"workerMs":[409,89],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#85 combined seed 85","asShippedMs":465,"everyRunBudgetedMs":495,"workerMs":[102,147],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#95 combined seed 95","asShippedMs":31813,"everyRunBudgetedMs":31647,"workerMs":[16432,16497],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#105 combined seed 105","asShippedMs":381,"everyRunBudgetedMs":414,"workerMs":[102,127],"probes":[5,6],"same":true}
+{"set":"tenth","id":"combined#115 combined seed 115","asShippedMs":214,"everyRunBudgetedMs":1225,"workerMs":[52,276],"probes":[3,3],"same":true}
+{"set":"tenth","id":"combined#125 combined seed 125","asShippedMs":1317,"everyRunBudgetedMs":433,"workerMs":[259,97],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#135 combined seed 135","asShippedMs":382,"everyRunBudgetedMs":541,"workerMs":[75,133],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#145 combined seed 145","asShippedMs":315,"everyRunBudgetedMs":281,"workerMs":[31,60],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#155 combined seed 155","asShippedMs":288,"everyRunBudgetedMs":444,"workerMs":[78,190],"probes":[1,2],"same":true}
+{"set":"tenth","id":"combined#165 combined seed 165","asShippedMs":621,"everyRunBudgetedMs":715,"workerMs":[252,287],"probes":[6,7],"same":true}
+{"set":"tenth","id":"combined#175 combined seed 175","asShippedMs":2354,"everyRunBudgetedMs":1147,"workerMs":[797,497],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#185 combined seed 185","asShippedMs":364,"everyRunBudgetedMs":493,"workerMs":[0,147],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#195 combined seed 195","asShippedMs":1106,"everyRunBudgetedMs":1201,"workerMs":[513,537],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#205 combined seed 205","asShippedMs":398,"everyRunBudgetedMs":359,"workerMs":[84,88],"probes":[3,4],"same":true}
+{"set":"tenth","id":"combined#215 combined seed 215","asShippedMs":137,"everyRunBudgetedMs":150,"workerMs":[0,63],"probes":[0,1],"same":true}
+{"set":"tenth","id":"combined#225 combined seed 225","asShippedMs":1696,"everyRunBudgetedMs":298,"workerMs":[306,73],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#235 combined seed 235","asShippedMs":414,"everyRunBudgetedMs":429,"workerMs":[26,65],"probes":[1,4],"same":true}
+{"set":"tenth","id":"combined#245 combined seed 245","asShippedMs":299,"everyRunBudgetedMs":486,"workerMs":[0,213],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#255 combined seed 255","asShippedMs":363,"everyRunBudgetedMs":364,"workerMs":[20,35],"probes":[1,3],"same":true}
+{"set":"tenth","id":"combined#265 combined seed 265","asShippedMs":982,"everyRunBudgetedMs":1076,"workerMs":[359,457],"probes":[5,6],"same":true}
+{"set":"tenth","id":"combined#275 combined seed 275","asShippedMs":14135,"everyRunBudgetedMs":14685,"workerMs":[6599,7522],"probes":[3,5],"same":true}
+{"set":"tenth","id":"combined#285 combined seed 285","asShippedMs":281,"everyRunBudgetedMs":270,"workerMs":[24,70],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#295 combined seed 295","asShippedMs":434,"everyRunBudgetedMs":504,"workerMs":[162,247],"probes":[1,2],"same":true}
+{"set":"tenth","id":"combined#305 combined seed 305","asShippedMs":480,"everyRunBudgetedMs":480,"workerMs":[66,85],"probes":[3,5],"same":true}
+{"set":"tenth","id":"combined#315 combined seed 315","asShippedMs":331,"everyRunBudgetedMs":332,"workerMs":[97,103],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#325 combined seed 325","asShippedMs":4083,"everyRunBudgetedMs":2431,"workerMs":[1820,1126],"probes":[5,6],"same":true}
+{"set":"tenth","id":"combined#335 combined seed 335","asShippedMs":461,"everyRunBudgetedMs":861,"workerMs":[0,401],"probes":[0,4],"same":true}
+{"set":"tenth","id":"combined#345 combined seed 345","asShippedMs":340,"everyRunBudgetedMs":397,"workerMs":[109,123],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#355 combined seed 355","asShippedMs":841,"everyRunBudgetedMs":1389,"workerMs":[158,697],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#365 combined seed 365","asShippedMs":317,"everyRunBudgetedMs":1461,"workerMs":[59,348],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#375 combined seed 375","asShippedMs":1719,"everyRunBudgetedMs":640,"workerMs":[413,183],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#385 combined seed 385","asShippedMs":414,"everyRunBudgetedMs":480,"workerMs":[68,123],"probes":[3,5],"same":true}
+{"set":"tenth","id":"combined#395 combined seed 395","asShippedMs":847,"everyRunBudgetedMs":913,"workerMs":[272,330],"probes":[5,7],"same":true}
+{"set":"tenth","id":"combined#405 combined seed 405","asShippedMs":297,"everyRunBudgetedMs":298,"workerMs":[24,65],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#415 combined seed 415","asShippedMs":348,"everyRunBudgetedMs":330,"workerMs":[61,49],"probes":[3,3],"same":true}
+{"set":"tenth","id":"combined#425 combined seed 425","asShippedMs":1821,"everyRunBudgetedMs":333,"workerMs":[1311,75],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#435 combined seed 435","asShippedMs":347,"everyRunBudgetedMs":314,"workerMs":[0,21],"probes":[0,2],"same":true}
+{"set":"tenth","id":"combined#445 combined seed 445","asShippedMs":463,"everyRunBudgetedMs":481,"workerMs":[123,140],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#455 combined seed 455","asShippedMs":22440,"everyRunBudgetedMs":24130,"workerMs":[9528,12352],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#465 combined seed 465","asShippedMs":415,"everyRunBudgetedMs":431,"workerMs":[128,126],"probes":[5,6],"same":true}
+{"set":"tenth","id":"combined#475 combined seed 475","asShippedMs":2776,"everyRunBudgetedMs":1173,"workerMs":[619,524],"probes":[1,4],"same":true}
+{"set":"tenth","id":"combined#485 combined seed 485","asShippedMs":364,"everyRunBudgetedMs":333,"workerMs":[35,51],"probes":[2,3],"same":true}
+{"set":"tenth","id":"combined#495 combined seed 495","asShippedMs":181,"everyRunBudgetedMs":198,"workerMs":[0,33],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#505 combined seed 505","asShippedMs":481,"everyRunBudgetedMs":431,"workerMs":[107,112],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#515 combined seed 515","asShippedMs":141,"everyRunBudgetedMs":178,"workerMs":[0,71],"probes":[0,1],"same":true}
+{"set":"tenth","id":"combined#525 combined seed 525","asShippedMs":1685,"everyRunBudgetedMs":282,"workerMs":[1241,77],"probes":[4,5],"same":true}
+{"set":"tenth","id":"combined#535 combined seed 535","asShippedMs":231,"everyRunBudgetedMs":231,"workerMs":[13,53],"probes":[1,4],"same":true}
+{"set":"tenth","id":"combined#545 combined seed 545","asShippedMs":481,"everyRunBudgetedMs":498,"workerMs":[63,81],"probes":[3,5],"same":true}
+{"set":"tenth","id":"combined#555 combined seed 555","asShippedMs":347,"everyRunBudgetedMs":365,"workerMs":[0,36],"probes":[0,3],"same":true}
+{"set":"tenth","id":"combined#565 combined seed 565","asShippedMs":664,"everyRunBudgetedMs":648,"workerMs":[202,197],"probes":[5,6],"same":true}
+{"set":"tenth","id":"combined#575 combined seed 575","asShippedMs":1694,"everyRunBudgetedMs":314,"workerMs":[335,45],"probes":[1,4],"same":true}
+{"set":"tenth","id":"combined#585 combined seed 585","asShippedMs":281,"everyRunBudgetedMs":315,"workerMs":[18,68],"probes":[1,5],"same":true}
+{"set":"tenth","id":"combined#595 combined seed 595","asShippedMs":398,"everyRunBudgetedMs":432,"workerMs":[25,66],"probes":[1,4],"same":true}
+{"set":"tenth","id":"rgcombined#5 rg combined seed 5","asShippedMs":379,"everyRunBudgetedMs":414,"workerMs":[90,97],"probes":[3,4],"same":true}
+{"set":"tenth","id":"rgcombined#15 rg combined seed 15","asShippedMs":309,"everyRunBudgetedMs":1533,"workerMs":[0,451],"probes":[0,2],"same":true}
+{"set":"tenth","id":"rgcombined#25 rg combined seed 25","asShippedMs":2052,"everyRunBudgetedMs":909,"workerMs":[1349,356],"probes":[6,7],"same":true}
+{"set":"tenth","id":"rgcombined#35 rg combined seed 35","asShippedMs":747,"everyRunBudgetedMs":812,"workerMs":[74,166],"probes":[4,7],"same":true}
+{"set":"tenth","id":"rgcombined#45 rg combined seed 45","asShippedMs":264,"everyRunBudgetedMs":296,"workerMs":[29,35],"probes":[2,3],"same":true}
+{"set":"tenth","id":"rgcombined#55 rg combined seed 55","asShippedMs":986,"everyRunBudgetedMs":944,"workerMs":[343,299],"probes":[5,6],"same":true}
+{"set":"tenth","id":"rgcombined#65 rg combined seed 65","asShippedMs":1978,"everyRunBudgetedMs":1730,"workerMs":[957,807],"probes":[3,4],"same":true}
+{"set":"tenth","id":"rgcombined#75 rg combined seed 75","asShippedMs":9627,"everyRunBudgetedMs":6301,"workerMs":[5663,3193],"probes":[4,4],"same":true}
+{"set":"tenth","id":"rgcombined#85 rg combined seed 85","asShippedMs":45913,"everyRunBudgetedMs":45996,"workerMs":[45350,45466],"probes":[5,6],"same":true}
+{"set":"tenth","id":"rgcombined#95 rg combined seed 95","asShippedMs":413,"everyRunBudgetedMs":542,"workerMs":[44,207],"probes":[1,5],"same":true}
+{"set":"tenth","id":"rgcombined#105 rg combined seed 105","asShippedMs":112,"everyRunBudgetedMs":165,"workerMs":[0,34],"probes":[0,1],"same":true}
+{"set":"tenth","id":"rgcombined#115 rg combined seed 115","asShippedMs":222,"everyRunBudgetedMs":422,"workerMs":[0,180],"probes":[0,2],"same":true}
+{"set":"tenth","id":"rgcombined#125 rg combined seed 125","asShippedMs":1588,"everyRunBudgetedMs":362,"workerMs":[1166,77],"probes":[3,4],"same":true}
+{"set":"tenth","id":"rgcombined#135 rg combined seed 135","asShippedMs":5476,"everyRunBudgetedMs":4814,"workerMs":[2806,2487],"probes":[2,2],"same":true}
+{"set":"tenth","id":"rgcombined#145 rg combined seed 145","asShippedMs":1678,"everyRunBudgetedMs":1729,"workerMs":[737,837],"probes":[6,7],"same":true}
+{"set":"tenth","id":"rgcombined#155 rg combined seed 155","asShippedMs":1122,"everyRunBudgetedMs":968,"workerMs":[566,468],"probes":[4,4],"same":true}
+{"set":"tenth","id":"rgcombined#165 rg combined seed 165","asShippedMs":315,"everyRunBudgetedMs":497,"workerMs":[0,203],"probes":[0,2],"same":true}
+{"set":"tenth","id":"rgcombined#175 rg combined seed 175","asShippedMs":1955,"everyRunBudgetedMs":1225,"workerMs":[0,524],"probes":[0,4],"same":true}
+{"set":"tenth","id":"rgcombined#185 rg combined seed 185","asShippedMs":1855,"everyRunBudgetedMs":1845,"workerMs":[799,851],"probes":[7,8],"same":true}
+{"set":"tenth","id":"rgcombined#195 rg combined seed 195","asShippedMs":130,"everyRunBudgetedMs":147,"workerMs":[0,20],"probes":[0,1],"same":true}
+{"set":"tenth","id":"rgcombined#205 rg combined seed 205","asShippedMs":332,"everyRunBudgetedMs":304,"workerMs":[45,66],"probes":[1,5],"same":true}
+{"set":"tenth","id":"rgcombined#215 rg combined seed 215","asShippedMs":608,"everyRunBudgetedMs":381,"workerMs":[250,116],"probes":[4,4],"same":true}
+{"set":"tenth","id":"rgcombined#225 rg combined seed 225","asShippedMs":4537,"everyRunBudgetedMs":930,"workerMs":[1086,377],"probes":[3,5],"same":true}
+{"set":"tenth","id":"rgcombined#235 rg combined seed 235","asShippedMs":311,"everyRunBudgetedMs":330,"workerMs":[0,21],"probes":[0,2],"same":true}
+{"set":"tenth","id":"rgcombined#245 rg combined seed 245","asShippedMs":2424,"everyRunBudgetedMs":1597,"workerMs":[840,541],"probes":[6,6],"same":true}
+{"set":"tenth","id":"rgcombined#255 rg combined seed 255","asShippedMs":395,"everyRunBudgetedMs":264,"workerMs":[117,56],"probes":[2,2],"same":true}
+{"set":"tenth","id":"rgcombined#265 rg combined seed 265","asShippedMs":196,"everyRunBudgetedMs":1455,"workerMs":[24,312],"probes":[1,3],"same":true}
+{"set":"tenth","id":"rgcombined#275 rg combined seed 275","asShippedMs":4269,"everyRunBudgetedMs":1812,"workerMs":[777,975],"probes":[1,4],"same":true}
+{"set":"tenth","id":"rgcombined#285 rg combined seed 285","asShippedMs":112,"everyRunBudgetedMs":129,"workerMs":[0,13],"probes":[0,1],"same":true}
+{"set":"tenth","id":"rgcombined#295 rg combined seed 295","asShippedMs":367,"everyRunBudgetedMs":397,"workerMs":[0,130],"probes":[0,4],"same":true}
+{"set":"tenth","id":"rgcombined#305 rg combined seed 305","asShippedMs":427,"everyRunBudgetedMs":368,"workerMs":[135,90],"probes":[3,3],"same":true}
+{"set":"tenth","id":"rgcombined#315 rg combined seed 315","asShippedMs":1015,"everyRunBudgetedMs":1519,"workerMs":[0,752],"probes":[0,1],"same":true}
+{"set":"tenth","id":"rgcombined#325 rg combined seed 325","asShippedMs":2291,"everyRunBudgetedMs":397,"workerMs":[1710,142],"probes":[4,5],"same":true}
+{"set":"tenth","id":"rgcombined#335 rg combined seed 335","asShippedMs":446,"everyRunBudgetedMs":448,"workerMs":[88,76],"probes":[4,4],"same":true}
+{"set":"tenth","id":"rgcombined#345 rg combined seed 345","asShippedMs":1147,"everyRunBudgetedMs":1214,"workerMs":[434,538],"probes":[3,5],"same":true}
+{"set":"tenth","id":"rgcombined#355 rg combined seed 355","asShippedMs":6479,"everyRunBudgetedMs":5912,"workerMs":[3279,3028],"probes":[3,4],"same":true}
+{"set":"tenth","id":"rgcombined#365 rg combined seed 365","asShippedMs":978,"everyRunBudgetedMs":914,"workerMs":[306,323],"probes":[5,7],"same":true}
+{"set":"tenth","id":"rgcombined#375 rg combined seed 375","asShippedMs":1596,"everyRunBudgetedMs":146,"workerMs":[0,11],"probes":[0,1],"same":true}
+{"set":"tenth","id":"rgcombined#385 rg combined seed 385","asShippedMs":227,"everyRunBudgetedMs":230,"workerMs":[20,47],"probes":[1,3],"same":true}
+{"set":"tenth","id":"rgcombined#395 rg combined seed 395","asShippedMs":596,"everyRunBudgetedMs":613,"workerMs":[76,160],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#5 fc combined seed 5","asShippedMs":396,"everyRunBudgetedMs":430,"workerMs":[28,66],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#15 fc combined seed 15","asShippedMs":296,"everyRunBudgetedMs":315,"workerMs":[0,43],"probes":[0,4],"same":true}
+{"set":"tenth","id":"fccombined#25 fc combined seed 25","asShippedMs":1542,"everyRunBudgetedMs":247,"workerMs":[1162,59],"probes":[2,3],"same":true}
+{"set":"tenth","id":"fccombined#35 fc combined seed 35","asShippedMs":130,"everyRunBudgetedMs":148,"workerMs":[0,25],"probes":[0,1],"same":true}
+{"set":"tenth","id":"fccombined#45 fc combined seed 45","asShippedMs":46824,"everyRunBudgetedMs":47351,"workerMs":[45313,45991],"probes":[5,10],"same":true}
+{"set":"tenth","id":"fccombined#55 fc combined seed 55","asShippedMs":598,"everyRunBudgetedMs":657,"workerMs":[24,112],"probes":[1,6],"same":true}
+{"set":"tenth","id":"fccombined#65 fc combined seed 65","asShippedMs":531,"everyRunBudgetedMs":565,"workerMs":[192,219],"probes":[2,3],"same":true}
+{"set":"tenth","id":"fccombined#75 fc combined seed 75","asShippedMs":1491,"everyRunBudgetedMs":264,"workerMs":[1130,35],"probes":[3,3],"same":true}
+{"set":"tenth","id":"fccombined#85 fc combined seed 85","asShippedMs":446,"everyRunBudgetedMs":446,"workerMs":[75,69],"probes":[3,4],"same":true}
+{"set":"tenth","id":"fccombined#95 fc combined seed 95","asShippedMs":1565,"everyRunBudgetedMs":1473,"workerMs":[769,742],"probes":[1,1],"same":true}
+{"set":"tenth","id":"fccombined#105 fc combined seed 105","asShippedMs":796,"everyRunBudgetedMs":930,"workerMs":[24,199],"probes":[1,7],"same":true}
+{"set":"tenth","id":"fccombined#115 fc combined seed 115","asShippedMs":413,"everyRunBudgetedMs":1490,"workerMs":[48,322],"probes":[3,5],"same":true}
+{"set":"tenth","id":"fccombined#125 fc combined seed 125","asShippedMs":2003,"everyRunBudgetedMs":456,"workerMs":[409,88],"probes":[1,2],"same":true}
+{"set":"tenth","id":"fccombined#135 fc combined seed 135","asShippedMs":295,"everyRunBudgetedMs":375,"workerMs":[0,30],"probes":[0,2],"same":true}
+{"set":"tenth","id":"fccombined#145 fc combined seed 145","asShippedMs":614,"everyRunBudgetedMs":762,"workerMs":[192,308],"probes":[5,6],"same":true}
+{"set":"tenth","id":"fccombined#155 fc combined seed 155","asShippedMs":939,"everyRunBudgetedMs":1504,"workerMs":[0,748],"probes":[0,1],"same":true}
+{"set":"tenth","id":"fccombined#165 fc combined seed 165","asShippedMs":614,"everyRunBudgetedMs":677,"workerMs":[100,204],"probes":[1,3],"same":true}
+{"set":"tenth","id":"fccombined#175 fc combined seed 175","asShippedMs":2490,"everyRunBudgetedMs":893,"workerMs":[583,433],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#185 fc combined seed 185","asShippedMs":363,"everyRunBudgetedMs":604,"workerMs":[0,287],"probes":[0,3],"same":true}
+{"set":"tenth","id":"fccombined#195 fc combined seed 195","asShippedMs":18542,"everyRunBudgetedMs":13525,"workerMs":[9064,6971],"probes":[3,4],"same":true}
+{"set":"tenth","id":"fccombined#205 fc combined seed 205","asShippedMs":396,"everyRunBudgetedMs":381,"workerMs":[89,79],"probes":[3,4],"same":true}
+{"set":"tenth","id":"fccombined#215 fc combined seed 215","asShippedMs":11469,"everyRunBudgetedMs":10310,"workerMs":[0,8929],"probes":[0,6],"same":true}
+{"set":"tenth","id":"fccombined#225 fc combined seed 225","asShippedMs":1849,"everyRunBudgetedMs":313,"workerMs":[327,51],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#235 fc combined seed 235","asShippedMs":426,"everyRunBudgetedMs":464,"workerMs":[23,62],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#245 fc combined seed 245","asShippedMs":227,"everyRunBudgetedMs":264,"workerMs":[0,34],"probes":[0,3],"same":true}
+{"set":"tenth","id":"fccombined#255 fc combined seed 255","asShippedMs":344,"everyRunBudgetedMs":364,"workerMs":[0,30],"probes":[0,3],"same":true}
+{"set":"tenth","id":"fccombined#265 fc combined seed 265","asShippedMs":879,"everyRunBudgetedMs":681,"workerMs":[194,136],"probes":[2,9],"same":true}
+{"set":"tenth","id":"fccombined#275 fc combined seed 275","asShippedMs":1615,"everyRunBudgetedMs":471,"workerMs":[845,208],"probes":[1,2],"same":true}
+{"set":"tenth","id":"fccombined#285 fc combined seed 285","asShippedMs":1212,"everyRunBudgetedMs":1055,"workerMs":[206,249],"probes":[5,11],"same":true}
+{"set":"tenth","id":"fccombined#295 fc combined seed 295","asShippedMs":1081,"everyRunBudgetedMs":688,"workerMs":[509,324],"probes":[3,3],"same":true}
+{"set":"tenth","id":"fccombined#305 fc combined seed 305","asShippedMs":297,"everyRunBudgetedMs":264,"workerMs":[43,31],"probes":[2,3],"same":true}
+{"set":"tenth","id":"fccombined#315 fc combined seed 315","asShippedMs":634,"everyRunBudgetedMs":546,"workerMs":[237,213],"probes":[3,4],"same":true}
+{"set":"tenth","id":"fccombined#325 fc combined seed 325","asShippedMs":2678,"everyRunBudgetedMs":666,"workerMs":[1794,172],"probes":[4,7],"same":true}
+{"set":"tenth","id":"fccombined#335 fc combined seed 335","asShippedMs":6826,"everyRunBudgetedMs":5129,"workerMs":[2551,2638],"probes":[1,2],"same":true}
+{"set":"tenth","id":"fccombined#345 fc combined seed 345","asShippedMs":514,"everyRunBudgetedMs":548,"workerMs":[26,113],"probes":[1,6],"same":true}
+{"set":"tenth","id":"fccombined#355 fc combined seed 355","asShippedMs":314,"everyRunBudgetedMs":330,"workerMs":[17,58],"probes":[1,4],"same":true}
+{"set":"tenth","id":"fccombined#365 fc combined seed 365","asShippedMs":497,"everyRunBudgetedMs":1567,"workerMs":[153,1115],"probes":[2,3],"same":true}
+{"set":"tenth","id":"fccombined#375 fc combined seed 375","asShippedMs":3953,"everyRunBudgetedMs":1573,"workerMs":[2749,832],"probes":[4,5],"same":true}
+{"set":"tenth","id":"fccombined#385 fc combined seed 385","asShippedMs":6447,"everyRunBudgetedMs":4914,"workerMs":[3248,2524],"probes":[3,4],"same":true}
+{"set":"tenth","id":"fccombined#395 fc combined seed 395","asShippedMs":327,"everyRunBudgetedMs":348,"workerMs":[25,50],"probes":[1,3],"same":true}

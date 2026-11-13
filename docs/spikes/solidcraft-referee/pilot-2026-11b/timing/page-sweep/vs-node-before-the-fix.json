@@ -1,0 +1,699 @@
+[
+ {
+  "id": "holes#68 at-off-the-part",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#92 holes-all-outside",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#93 holes-two-outside",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#106 pad-L-hole-in-notch",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole1 (hole): it does not touch the part, so it would cut nothing and hole1 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#227 hole-twice-identical",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#228 hole-twice-blind",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#229 hole-inside-earlier-bore",
+  "what": "sentence",
+  "step": "hole2",
+  "page": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "hole2 (hole): it does not touch the part, so it would cut nothing and hole2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "holes#230 step-join-blind-low",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "holes#231 step-join-blind-low-deep12",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "holes#234 step-join-blind-on-seam",
+  "what": "sentence",
+  "step": "hole1",
+  "page": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "hole1 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so hole1 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "sd#17 hollow-open-top-cylinder",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "sd#18 hollow-open-bottom-cylinder",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the bottom face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "sd#44 hollow-wall-11-disc60x12",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "sd#45 hollow-wall-11.9-disc60x12",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "sd#46 hollow-wall-12-disc60x12",
+  "what": "sentence",
+  "step": "shell1",
+  "page": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "Hollowing cyl1 to 12 thick would collapse it, so shell1 is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width."
+ },
+ {
+  "id": "sd#47 hollow-wall-13-disc60x12",
+  "what": "sentence",
+  "step": "shell1",
+  "page": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "Hollowing cyl1 to 13 thick would collapse it, so shell1 is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width."
+ },
+ {
+  "id": "sd#48 hollow-wall-11.9-cyl24x30",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "sd#49 hollow-wall-12-cyl24x30",
+  "what": "sentence",
+  "step": "shell1",
+  "page": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "Hollowing cyl1 to 12 thick would collapse it, so shell1 is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width."
+ },
+ {
+  "id": "sd#50 hollow-wall-13-cyl24x30",
+  "what": "sentence",
+  "step": "shell1",
+  "page": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "Hollowing cyl1 to 13 thick would collapse it, so shell1 is shown without it -- use a wall thinner than the depth of the part and than half its narrowest width."
+ },
+ {
+  "id": "sd#158 hollow-move-cylinder-top",
+  "what": "built / not built",
+  "step": "shell1",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "mt#215 p-magnitude:turn1#33",
+  "what": "page built nothing",
+  "page": "refused"
+ },
+ {
+  "id": "combined#1 combined seed 1",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#32 combined seed 32",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#39 combined seed 39",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#47 combined seed 47",
+  "what": "sentence",
+  "step": "s4",
+  "page": "s4 (hollow): the bottom face of c1 could not be found on the part as it is now, so s4 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s4 (hollow): it needs d3, which could not be built, so s4 is shown without it."
+ },
+ {
+  "id": "combined#106 combined seed 106",
+  "what": "sentence",
+  "step": "h7",
+  "page": "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h7 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h7 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#128 combined seed 128",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#152 combined seed 152",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#164 combined seed 164",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#213 combined seed 213",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#226 combined seed 226",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#229 combined seed 229",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#265 combined seed 265",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#267 combined seed 267",
+  "what": "built / not built",
+  "step": "s4",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s4 (hollow): the top face of c1 could not be found on the part as it is now, so s4 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#309 combined seed 309",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#320 combined seed 320",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#324 combined seed 324",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): it does not touch the part, so it would cut nothing and h6 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h6 (hole): it does not touch the part, so it would cut nothing and h6 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#348 combined seed 348",
+  "what": "sentence",
+  "step": "s5",
+  "page": "s5 (hollow): the top face of c1 could not be found on the part as it is now, so s5 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s5 (hollow): it needs h4, which could not be built, so s5 is shown without it."
+ },
+ {
+  "id": "combined#356 combined seed 356",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "combined#357 combined seed 357",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#381 combined seed 381",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#392 combined seed 392",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#399 combined seed 399",
+  "what": "built / not built",
+  "step": "s3",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#407 combined seed 407",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "combined#421 combined seed 421",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#431 combined seed 431",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#465 combined seed 465",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#493 combined seed 493",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#501 combined seed 501",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "combined#531 combined seed 531",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3: the top face cannot be found reliably after the part was turned or copied, so s3 is shown without it -- apply it before turning the part."
+ },
+ {
+  "id": "combined#539 combined seed 539",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "combined#574 combined seed 574",
+  "what": "built / not built",
+  "step": "s3",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "rgcombined#1 rg combined seed 1",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#25 rg combined seed 25",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#36 rg combined seed 36",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "rgcombined#49 rg combined seed 49",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+  "node": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before copying it, or join the pieces first."
+ },
+ {
+  "id": "rgcombined#145 rg combined seed 145",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#153 rg combined seed 153",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#169 rg combined seed 169",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h5 (hole): it does not touch the part, so it would cut nothing and h5 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#173 rg combined seed 173",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#192 rg combined seed 192",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#211 rg combined seed 211",
+  "what": "sentence",
+  "step": "s4",
+  "page": "s4 (hollow): the top face of c1 could not be found on the part as it is now, so s4 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s4: the top face cannot be found reliably after the part was turned or copied, so s4 is shown without it -- apply it before turning the part."
+ },
+ {
+  "id": "rgcombined#223 rg combined seed 223",
+  "what": "built / not built",
+  "step": "s3",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "rgcombined#253 rg combined seed 253",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "rgcombined#293 rg combined seed 293",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "rgcombined#312 rg combined seed 312",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "rgcombined#365 rg combined seed 365",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h4 (hole): it does not touch the part, so it would cut nothing and h4 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#389 rg combined seed 389",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "rgcombined#399 rg combined seed 399",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#25 fc combined seed 25",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#37 fc combined seed 37",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#116 fc combined seed 116",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "fccombined#117 fc combined seed 117",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#121 fc combined seed 121",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#129 fc combined seed 129",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#164 fc combined seed 164",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "fccombined#184 fc combined seed 184",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): a countersink is cut from the top of the part, but the part is not flat and level under this spot, so h4 is shown without it -- move the hole onto a flat top.",
+  "node": "h4 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h4 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded."
+ },
+ {
+  "id": "fccombined#189 fc combined seed 189",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#215 fc combined seed 215",
+  "what": "page gave no answer"
+ },
+ {
+  "id": "fccombined#229 fc combined seed 229",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#248 fc combined seed 248",
+  "what": "built / not built",
+  "step": "s3",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#272 fc combined seed 272",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the bottom face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "fccombined#289 fc combined seed 289",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the bottom face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ },
+ {
+  "id": "fccombined#296 fc combined seed 296",
+  "what": "sentence",
+  "step": "h2",
+  "page": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#309 fc combined seed 309",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h5 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h5 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#321 fc combined seed 321",
+  "what": "sentence",
+  "step": "h5",
+  "page": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before you join them, or move the pieces so that they overlap.",
+  "node": "h5 (hole): the part it drills is 2 separate pieces and a hole cannot tell which one to drill, so h5 is shown without it -- drill each piece before copying it, or join the pieces first."
+ },
+ {
+  "id": "fccombined#337 fc combined seed 337",
+  "what": "sentence",
+  "step": "h3",
+  "page": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (at: is measured from the middle of the part) or make it wider.",
+  "node": "h3 (hole): it does not touch the part, so it would cut nothing and h3 is shown without it -- move the hole onto the part (check at:) or make it wider."
+ },
+ {
+  "id": "fccombined#368 fc combined seed 368",
+  "what": "sentence",
+  "step": "s3",
+  "page": "s3 (hollow): the top face of c1 could not be found on the part as it is now, so s3 is shown without it -- open a different face, or hollow before drafting.",
+  "node": "s3 (hollow): it needs h2, which could not be built, so s3 is shown without it."
+ },
+ {
+  "id": "fccombined#381 fc combined seed 381",
+  "what": "sentence",
+  "step": "h6",
+  "page": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, let it go all the way through, or drill the piece before you join it.",
+  "node": "h6 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h6 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+ },
+ {
+  "id": "fccombined#397 fc combined seed 397",
+  "what": "built / not built",
+  "step": "s2",
+  "page": "refused",
+  "node": "built",
+  "pageSays": "s2 (hollow): the top face of c1 could not be found on the part as it is now, so s2 is shown without it -- open a different face, or hollow before drafting.",
+  "nodeSays": null,
+  "guard": null
+ }
+]
