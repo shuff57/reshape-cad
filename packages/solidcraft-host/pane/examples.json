@@ -1444,79 +1444,53 @@
  {
   "id": "named-counterbore-round",
   "group": "3d",
-  "title": "Counterbore (refused) and a named-edge round (built)",
+  "title": "Counterbore and a named-edge round (both built)",
   "script": "const base = cuboid(40, 30, 10)\nconst post = extrude(sketch('top', 5).rect(10, 10), 20)\nhole(base, { across: 6, at: [12, 0], counterbore: { across: 10, deep: 3 } })\nconst other = cuboid(10, 10, 10, { at: [30, 0, 0] })\nround(other.edge('top', 'right'), 1)",
-  "expect": "Mixed: base, post and other build, the NAMED round now builds too (phase 3 refused it); only the counterbored hole is refused, with its sentence. Built volume = base 12000 + post 2000 + rounded box.",
-  "partial": true,
+  "expect": "All built: the base with its counterbored hole, the post, and the box with a named round. Scene volume = 12000 - 90 pi - 48 pi + 2000 + 1000 - (1 - pi/4) * 10 = 14564.314 mm3 (closed form; curved, bar 3e-4), bbox [-20,-15,-5, 35,15,25]. (The spike refused a counterbore, and until 2026-11-12 the hole was refused because the script has more than one part. Updated 2026-11-12, owner decision.)",
   "curved": true,
-  "expectRefused": [
-   {
-    "id": "hole1",
-    "contains": "counterbore"
-   }
-  ],
-  "expectBuilt": [
-   "box1",
-   "pull1",
-   "round1"
-  ],
   "ref": {
    "finalFeature": "round1",
-   "closed": null,
-   "brep": {
-    "volume": 997.8539816339749,
-    "faces": 7
-   },
-   "occt": {
-    "volume": 997.8539816348185,
-    "bbox": [
-     25,
-     -5,
-     -5,
-     35,
-     5,
-     5
-    ]
-   },
-   "builtVolume": 14997.853981634817,
-   "builtFeatures": [
-    "box1",
-    "pull1",
-    "round1"
-   ],
-   "volume": 997.8539816348185,
-   "source": "OCCT",
+   "closed": 14564.314195438583,
+   "volume": 14564.314195438583,
+   "source": "closed form (the whole scene)",
    "bbox": [
-    25,
-    -5,
+    -20,
+    -15,
     -5,
     35,
-    5,
-    5
+    15,
+    25
    ],
-   "agree": {
-    "occtVsBrep": 8.454844478854634e-13
+   "lastStep": {
+    "brep": {
+     "volume": 997.8539816339749,
+     "faces": 7
+    },
+    "occt": {
+     "volume": 997.8539816348185,
+     "bbox": [
+      25,
+      -5,
+      -5,
+      35,
+      5,
+      5
+     ]
+    },
+    "agree": {
+     "occtVsBrep": 8.454844478854634e-13
+    }
    }
-  }
+  },
+  "closed": 14564.314195438583
  },
  {
   "id": "refuse-shell-closed",
-  "group": "refusal",
-  "title": "Shell: a closed hollow box (no open face)",
+  "group": "3d",
+  "title": "Shell: a closed hollow box (no open face), built",
   "script": "// a closed hollow box, 2 mm walls: no face is opened\nconst b = cuboid(40, 40, 20)\nshell(b, { wall: 2 })",
-  "expect": "REFUSAL by this spike's translator: a shell needs a face to remove and a closed hollow box is not mapped. brep-rs builds it (40*40*20 - 36*36*16 = 11264 mm3). The box itself still builds (32000).",
-  "refusal": true,
-  "partial": true,
+  "expect": "One body with a sealed cavity. Volume 40*40*20 - 36*36*16 = 11264 mm3 (planar, exact); OCCT and brep-rs give the same. (The spike refused a closed hollow; the layer builds it. Updated 2026-11-12, owner decision.)",
   "closed": 11264,
-  "expectRefused": [
-   {
-    "id": "shell1",
-    "contains": "closed hollow box is not mapped"
-   }
-  ],
-  "expectBuilt": [
-   "box1"
-  ],
   "ref": {
    "finalFeature": "shell1",
    "closed": 11264,
@@ -1535,10 +1509,6 @@
      10
     ]
    },
-   "builtVolume": 31999.999999999993,
-   "builtFeatures": [
-    "box1"
-   ],
    "volume": 11263.999999999993,
    "source": "OCCT",
    "bbox": [

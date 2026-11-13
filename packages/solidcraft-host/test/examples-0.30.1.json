@@ -338,16 +338,16 @@
  {
   "id": "named-counterbore-round",
   "group": "3d",
-  "pass": false,
-  "verdict": "FAIL: expected hole1 to be refused but it was built; built volume 14564.373 differs from the reference of what should build, 14997.854 (rel 2.89e-2)",
+  "pass": true,
+  "verdict": "PASS: volume 14564.372849 vs closed form (the whole scene) 14564.314195 (rel delta 4.03e-6, bar 0.0003); bbox delta 1.78e-16",
   "refusals": [],
   "volume": 14564.372849349813
  },
  {
   "id": "refuse-shell-closed",
-  "group": "refusal",
-  "pass": false,
-  "verdict": "FAIL: expected shell1 to be refused but it was built; built volume 11264.000 differs from the reference of what should build, 32000.000 (rel 6.48e-1)",
+  "group": "3d",
+  "pass": true,
+  "verdict": "PASS: volume 11264.000000 vs OCCT 11264.000000 (rel delta 6.46e-16, bar 1e-9); bbox delta 0.00e+0",
   "refusals": [],
   "volume": 11264
  },
