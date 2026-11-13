@@ -1849,17 +1849,51 @@ function shapeRightEdgeX(f: Feature): number | null {
  * already exist, with a 10-unit gap so the two are visibly separate rather
  * than touching.
  */
-/** The shape a new one without a position is placed beside: the primitive whose right edge reaches furthest along +x (the edge newShape() measures from).
- *  null in a doc with no primitive yet (the new shape then goes to the origin). */
+/** How far a part pulled or spun from a sketch reaches along +x, when that is its exact extent (rangeOf: a plain outline on a world-aligned plane, no taper,
+ *  a full spin). null when it is not known exactly: the new shape is then not placed against it. */
+function sweptRightEdgeX(doc: ModelDoc, f: Feature): number | null {
+  if (f.kind !== 'extrude' && f.kind !== 'revolve') return null;
+  const r = rangeOf(doc, f.id, 'x');
+  return r && r.exact ? r.hi : null;
+}
+const rightEdgeX = (doc: ModelDoc, f: Feature): number | null => shapeRightEdgeX(f) ?? sweptRightEdgeX(doc, f);
+
+/** The shape a new one without a position is placed beside: the plain shape, or the part pulled or spun from a sketch, whose right edge reaches furthest along
+ *  +x (the edge newShape() measures from). null in a doc with nothing to measure yet (the new shape then goes to the origin). */
 export function rightmostShapeId(doc: ModelDoc): string | null {
   let best: string | null = null; let x = -Infinity;
-  for (const f of doc.features) { const e = shapeRightEdgeX(f); if (e !== null && e > x) { x = e; best = f.id; } }
+  for (const f of doc.features) { const e = rightEdgeX(doc, f); if (e !== null && e > x) { x = e; best = f.id; } }
   return best;
 }
+/** A part pulled or spun from a sketch whose reach along x is NOT known exactly (the last one in the doc), or null. With nothing else to measure from, a new
+ *  shape without a position stays at the origin and may overlap it; the script layer records that so the host can say so. */
+export function unmeasuredSweptId(doc: ModelDoc): string | null {
+  let last: string | null = null;
+  for (const f of doc.features) if ((f.kind === 'extrude' || f.kind === 'revolve') && sweptRightEdgeX(doc, f) === null) last = f.id;
+  return last;
+}
 
+/**
+ * A second shape used to land exactly on top of the first -- every primitive
+ * is born at world zero, so a student's second box was invisible, hidden
+ * inside the first, with no clue anything but the x field would ever explain
+ * why (a moderate-lens student found this only by discovering that field).
+ *
+ * The first shape in an empty doc still gets [0, 0, 0] -- there is nothing to
+ * clear yet, and 0 is the friendliest place to start building. Every shape
+ * after that is placed just past the rightmost edge of whatever shapes
+ * already exist, with a 10-unit gap (for a shape of the default size) so the
+ * two are visibly separate rather than touching.
+ *
+ * "Shapes that already exist" are the plain primitives and, since 2026-11-12
+ * (owner decision), the parts pulled or spun from a sketch whose extent is
+ * known exactly: a box made after a pulled plate used to land at the origin,
+ * inside the plate. A swept part whose extent is not known exactly is not
+ * measured (see unmeasuredSweptId).
+ */
 export function newShape(doc: ModelDoc, kind: ShapeKind): Feature {
   const edges = doc.features
-    .map(shapeRightEdgeX)
+    .map((f) => rightEdgeX(doc, f))
     .filter((x): x is number => x !== null);
   const cx = edges.length === 0 ? 0 : Math.max(...edges) + newHalfWidthX(kind) + 10;
 

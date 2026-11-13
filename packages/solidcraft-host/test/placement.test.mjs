@@ -21,9 +21,21 @@ test('the script records the shapes it placed by default, and only those', () =>
   // the first shape goes to the origin and is not listed; a script with one shape, or with every shape placed, has no record at all
   assert.equal(run(`const a = box(40, 40, 20);`).placed, undefined);
   assert.equal(run(`const a = box(40, 40, 20); const b = box(10, 10, 10, { at: [0, 0, 30] });`).placed, undefined);
-  // a pulled sketch is not a shape newShape() measures from: a box after it goes to the origin, and is not listed
+  // a part pulled from a sketch counts too (owner decision 2026-11-12; a box after a pulled plate used to land at the origin, inside the plate)
   const p = run(`const sk = sketch('top'); sk.rect(40, 30); const q = extrude(sk, 10); const b = box(10, 10, 10);`);
-  assert.equal(p.placed, undefined); assert.deepEqual(p.doc.features.find((f) => f.id === 'box1').center, [0, 0, 0]);
+  assert.deepEqual(p.placed, [{ id: 'box1', beside: 'pull1' }]);
+  assert.deepEqual(p.doc.features.find((f) => f.id === 'box1').center, [50, 0, 0], 'the plate reaches x = 20; a default box is 40 wide; 10 apart');
+  // and a spun part
+  const sp = run(`const s = sketch('front', 0); s.polygon([[5, -10], [15, -10], [15, 10], [5, 10]]); const t = revolve(s, 360); const b = box(10, 10, 10);`);
+  assert.deepEqual(sp.placed, [{ id: 'box1', beside: 'rev1' }]);
+  // a pulled part whose size is not known exactly (a sketch with dimensions and rules has no outline until the solver runs): the shape stays at the origin, and that is recorded
+  const DIM = `const sk = sketch('top'); sk.geom([{ k: 'line', id: 1, a: [0, 0], b: [50, 0] }, { k: 'line', id: 2, a: [50, 0], b: [50, 30] }, { k: 'line', id: 3, a: [50, 30], b: [0, 30] }, { k: 'line', id: 4, a: [0, 30], b: [0, 0] }]); const q = extrude(sk, 6);`;
+  const dm = run(`${DIM} const b = box(10, 10, 10);`);
+  assert.deepEqual(dm.placed, [{ id: 'box1', beside: null, unmeasured: 'pull1' }]);
+  assert.deepEqual(dm.doc.features.find((f) => f.id === 'box1').center, [0, 0, 0]);
+  // the pull itself is where its sketch is: it is never moved, whatever came before
+  const bp = run(`const b = box(10, 10, 10); const sk = sketch('top'); sk.rect(40, 30); const q = extrude(sk, 10);`);
+  assert.equal(bp.placed, undefined);
 });
 
 test('shapeNote: the approved line, with the centre the doc has', () => {
@@ -32,7 +44,15 @@ test('shapeNote: the approved line, with the centre the doc has', () => {
   assert.equal(P.shapeNote(r.doc.features[1], placed), 'no at: given, so it was placed beside box1; its centre is at [40, 0, 0]');
   assert.equal(P.shapeNote(r.doc.features[0], placed), null, 'the first shape');
   assert.equal(P.shapeNote(r.doc.features[1], P.placedMap(undefined)), null, 'no record (a ModelDoc example): nothing is claimed');
-  assert.equal(P.placedMap([{ id: 'x' }, null, { id: 'a', beside: 'b' }]).size, 1, 'a malformed entry is dropped');
+  assert.equal(P.placedMap([{ id: 'x' }, null, { id: 'a', beside: 'b' }, { id: 'c', beside: null }]).size, 1, 'a malformed entry is dropped');
+  // beside a pulled part, and at the origin because the pulled part cannot be measured
+  const pl = run(`const sk = sketch('top'); sk.rect(40, 30); const q = extrude(sk, 10); const b = box(10, 10, 10);`);
+  assert.equal(P.shapeNote(pl.doc.features.at(-1), P.placedMap(pl.placed)), 'no at: given, so it was placed beside pull1; its centre is at [50, 0, 0]');
+  const og = { id: 'box1', kind: 'box', center: [0, 0, 0] };
+  assert.equal(P.shapeNote(og, P.placedMap([{ id: 'box1', beside: null, unmeasured: 'pull1' }])), 'no at: given, so it is at the origin [0, 0, 0]; it may overlap pull1');
+  // a shape that stayed at the origin gets no "placed beside" hint on a step that missed it
+  const doc = { version: 1, features: [{ id: 'pull1', kind: 'extrude', target: 'sk1' }, og, { id: 'sk2', kind: 'sketch' }, { id: 'pocket1', kind: 'pocket', target: 'sk2', into: 'box1' }] };
+  assert.equal(P.placementHint({ id: 'pocket1', status: 'refused', refusal: 'pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction' }, doc, P.placedMap([{ id: 'box1', beside: null, unmeasured: 'pull1' }])), null);
 });
 
 // the three sentences the hint is added to, as the layer writes them

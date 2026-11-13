@@ -15,4 +15,8 @@ export const CASES = [
   { id: 'pocket-first-shape', script: `const b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)` },
   { id: 'join-three-apart', script: `const a = box(10, 10, 10)\nconst b = box(10, 10, 10)\nconst c = box(10, 10, 10)\nunion(a, b, c)` },
   { id: 'join-touching', script: `const a = box(20, 20, 10)\nconst b = box(20, 20, 10, { at: [15, 0, 0] })\nunion(a, b)` },
+  { id: 'pull-then-cylinder-join', script: `const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst c = cylinder(10, 30)\nunion(p, c)` },
+  { id: 'dimensioned-pull-then-box', script: `const sk = sketch('top')\nconst r = sk.rectangle([0, 0], [40, 30])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 40)\nsk.length(r.right, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)` },
+  { id: 'spin-then-box', script: `const s = sketch('front', 0)\ns.polygon([[5, -10], [15, -10], [15, 10], [5, 10]])\nconst t = revolve(s, 360)\nconst b = box(10, 10, 10)` },
+  { id: 'pull-then-pocket-on-box', script: `const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(20, 20, 10)\nconst s2 = sketch('top', 5)\ns2.rect(6, 6)\npocket(s2, b, 3)` },
 ];

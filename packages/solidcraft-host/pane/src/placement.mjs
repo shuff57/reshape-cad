@@ -1,7 +1,7 @@
 // Where a shape without `at:` went, and a join that joins nothing: what the page tells the student (owner-approved text, 2026-11-12).
 //
-// A shape the script gave no `at:` is placed beside the rightmost shape already there, 10 apart (packages/script model-types.ts newShape; the first shape goes to
-// the origin). A student who expects the origin then gets "pocket1 does not touch the part ..." with no clue. The interpreter records which shapes it placed
+// A shape the script gave no `at:` is placed beside the rightmost shape already there: a plain shape, or a part pulled or spun from a sketch (packages/script
+// model-types.ts newShape; the first shape goes to the origin, and so does one whose only neighbours are swept parts that cannot be measured). A student who expects the origin then gets "pocket1 does not touch the part ..." with no clue. The interpreter records which shapes it placed
 // this way (RunResult.placed: [{ id, beside }]); the doc only has the centre. This module turns that record into
 //   shapeNote      the line on the shape's own step
 //   placementHint  a clause added to the three sentences of a step that MISSED such a part (a pocket, keep(), a groove)
@@ -12,13 +12,18 @@
 
 const num = (v) => String(+(+v).toFixed(4));
 const at = (c) => `[${c.map(num).join(', ')}]`;
-/** RunResult.placed as a Map id -> beside (an absent or malformed record is an empty map: no note, no hint). */
-export const placedMap = (placed) => new Map((Array.isArray(placed) ? placed : []).filter((p) => p && typeof p.id === 'string' && typeof p.beside === 'string').map((p) => [p.id, p.beside]));
+/**
+ * RunResult.placed as a Map: id -> the shape it was placed beside (a string), or, for a shape that stayed at the origin because the pulled or spun part already
+ * there cannot be measured, { origin: <that part> }. An absent or malformed record is an empty map: no note, no hint.
+ */
+export const placedMap = (placed) => new Map((Array.isArray(placed) ? placed : []).filter((p) => p && typeof p.id === 'string' && (typeof p.beside === 'string' || (p.beside === null && typeof p.unmeasured === 'string')))
+  .map((p) => [p.id, typeof p.beside === 'string' ? p.beside : { origin: p.unmeasured }]));
 
 /** The note on a shape's step: null unless the script gave it no at: and it was placed beside another. */
 export function shapeNote(f, placed) {
   const beside = placed.get(f?.id);
   if (!beside || !Array.isArray(f.center)) return null;
+  if (typeof beside !== 'string') return `no at: given, so it is at the origin ${at(f.center)}; it may overlap ${beside.origin}`;
   return `no at: given, so it was placed beside ${beside}; its centre is at ${at(f.center)}`;
 }
 
@@ -54,7 +59,7 @@ export function placementHint(r, doc, placed) {
   if (f.kind === 'combine' && f.op !== 'intersect') return null;
   const parts = (f.kind === 'combine' ? (f.targets ?? []) : [f.into]).filter((x) => typeof x === 'string').map((x) => startOf(x, byId));
   // the part that was placed by default; of two, the one made later (it is the one that moved away from the other)
-  const hit = parts.filter((p) => placed.has(p) && Array.isArray(byId.get(p)?.center)).sort((a, b) => doc.features.findIndex((x) => x.id === b) - doc.features.findIndex((x) => x.id === a))[0];
+  const hit = parts.filter((p) => typeof placed.get(p) === 'string' && Array.isArray(byId.get(p)?.center)).sort((a, b) => doc.features.findIndex((x) => x.id === b) - doc.features.findIndex((x) => x.id === a))[0];
   if (!hit) return null;
   return `${r.refusal.replace(/\.\s*$/, '')} (${hit} has no at:, so it was placed beside ${placed.get(hit)} with its centre at ${at(byId.get(hit).center)}).`;
 }

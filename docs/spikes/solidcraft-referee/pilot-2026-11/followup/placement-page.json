@@ -2,7 +2,7 @@
  {
   "id": "join-plate-peg",
   "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nunion(plate, peg)",
-  "ms": 1906,
+  "ms": 2140,
   "status": "built",
   "volume": 13570.53541173428,
   "steps": [
@@ -54,7 +54,7 @@
  {
   "id": "cut-block-cutter",
   "script": "const b = box(40, 40, 20)\nconst c = cylinder(10, 30)\nsubtract(b, c)",
-  "ms": 1304,
+  "ms": 1417,
   "status": "built with 1 step not built",
   "volume": 34355.80311760145,
   "steps": [
@@ -123,7 +123,7 @@
  {
   "id": "pocket-second-box",
   "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10)\npocket(sk, b, 5)",
-  "ms": 1228,
+  "ms": 1276,
   "status": "built with 1 step not built",
   "volume": 34000,
   "steps": [
@@ -199,7 +199,7 @@
  {
   "id": "two-boxes-only",
   "script": "const a = box(40, 40, 20)\nconst b = box(10, 10, 10)",
-  "ms": 1188,
+  "ms": 1210,
   "status": "built",
   "volume": 33000,
   "steps": [
@@ -261,7 +261,7 @@
  {
   "id": "pull-then-box",
   "script": "const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)",
-  "ms": 1254,
+  "ms": 1308,
   "status": "built",
   "volume": 13000,
   "steps": [
@@ -284,11 +284,11 @@
     "kind": "box",
     "status": "built",
     "refusal": null,
-    "note": null
+    "note": "no at: given, so it was placed beside pull1; its centre is at [50, 0, 0]"
    }
   ],
-  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\t",
-  "card": "pieces\n2\nvolume\n13000.000 mm3\nsize\n40 x 30 x 15 mm\nfaces\n12\nsteps built\n2 of 2",
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\tno at: given, so it was placed beside pull1; its centre is at [50, 0, 0]",
+  "card": "pieces\n2\nvolume\n13000.000 mm3\nsize\n75 x 30 x 15 mm\nfaces\n12\nsteps built\n2 of 2",
   "warnings": "",
   "bodies": [
    [
@@ -314,12 +314,12 @@
     6,
     {
      "max": [
-      5,
+      55,
       5,
       5
      ],
      "min": [
-      -5,
+      45,
       -5,
       -5
      ]
@@ -330,7 +330,7 @@
  {
   "id": "box-then-pull",
   "script": "const b = box(10, 10, 10)\nconst sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)",
-  "ms": 1210,
+  "ms": 1291,
   "status": "built",
   "volume": 13000,
   "steps": [
@@ -399,7 +399,7 @@
  {
   "id": "join-with-at",
   "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 10] })\nunion(plate, peg)",
-  "ms": 2064,
+  "ms": 2217,
   "status": "built",
   "volume": 13374.218485267489,
   "steps": [
@@ -451,7 +451,7 @@
  {
   "id": "intersect-two",
   "script": "const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)",
-  "ms": 1167,
+  "ms": 1344,
   "status": "built with 1 step not built",
   "volume": 44000,
   "steps": [
@@ -520,7 +520,7 @@
  {
   "id": "groove-second-box",
   "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20)\nconst sg = sketch('front')\nsg.polygon([[10, 2], [16, 2], [16, 8], [10, 8]])\ngroove(sg, b, 360)",
-  "ms": 1604,
+  "ms": 1979,
   "status": "built with 1 step not built",
   "volume": 34000,
   "steps": [
@@ -596,7 +596,7 @@
  {
   "id": "three-shapes",
   "script": "const a = box(40, 40, 20)\nconst b = cylinder(10, 30)\nconst c = sphere(20)",
-  "ms": 2638,
+  "ms": 3221,
   "status": "built",
   "volume": 38544.29620326245,
   "steps": [
@@ -682,7 +682,7 @@
  {
   "id": "join-plate-peg-then-hole",
   "script": "const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nconst j = union(plate, peg)\nhole(j, { across: 4 })",
-  "ms": 2176,
+  "ms": 2452,
   "status": "built with 1 step not built",
   "volume": 13570.53541173428,
   "steps": [
@@ -741,7 +741,7 @@
  {
   "id": "keep-second-box",
   "script": "const a = box(40, 40, 20)\nconst b = box(20, 20, 30)\nkeep(a, b)",
-  "ms": 1143,
+  "ms": 1342,
   "status": "built with 1 step not built",
   "volume": 44000,
   "steps": [
@@ -810,7 +810,7 @@
  {
   "id": "pocket-with-at",
   "script": "const o = box(20, 20, 5)\nconst b = box(40, 40, 20, { at: [0, 0, 0] })\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)",
-  "ms": 1253,
+  "ms": 1428,
   "status": "built with 1 step not built",
   "volume": 34000,
   "steps": [
@@ -886,7 +886,7 @@
  {
   "id": "pocket-first-shape",
   "script": "const b = box(40, 40, 20)\nconst sk = sketch('top', 10)\nsk.rect(10, 10, { at: [100, 100] })\npocket(sk, b, 5)",
-  "ms": 1165,
+  "ms": 1436,
   "status": "built with 1 step not built",
   "volume": 32000,
   "steps": [
@@ -938,7 +938,7 @@
  {
   "id": "join-three-apart",
   "script": "const a = box(10, 10, 10)\nconst b = box(10, 10, 10)\nconst c = box(10, 10, 10)\nunion(a, b, c)",
-  "ms": 1674,
+  "ms": 1924,
   "status": "built",
   "volume": 3000,
   "steps": [
@@ -997,7 +997,7 @@
  {
   "id": "join-touching",
   "script": "const a = box(20, 20, 10)\nconst b = box(20, 20, 10, { at: [15, 0, 0] })\nunion(a, b)",
-  "ms": 1591,
+  "ms": 1799,
   "status": "built",
   "volume": 7000,
   "steps": [
@@ -1039,6 +1039,286 @@
      ],
      "min": [
       -10,
+      -10,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pull-then-cylinder-join",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst c = cylinder(10, 30)\nunion(p, c)",
+  "ms": 2427,
+  "status": "built",
+  "volume": 14355.803117601443,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "cyl1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [40, 0, 0]"
+   },
+   {
+    "id": "op1",
+    "kind": "combine",
+    "status": "built",
+    "refusal": null,
+    "note": "pull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\ncyl1\tcylinder\tbuilt\tno at: given, so it was placed beside pull1; its centre is at [40, 0, 0]\nop1\tcombine\tbuilt\tpull1 and cyl1 do not touch, so this join is 2 separate pieces; give one an at: position so they overlap",
+  "card": "pieces\n2\nvolume\n14355.803 mm3\nsize\n65 x 30 x 30 mm\nfaces\n9\nsteps built\n3 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_pull1",
+    14355.803117601443,
+    9,
+    {
+     "max": [
+      44.9999227810662,
+      15,
+      15.000000000000007
+     ],
+     "min": [
+      -20,
+      -15,
+      -15.00000000000003
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "dimensioned-pull-then-box",
+  "script": "const sk = sketch('top')\nconst r = sk.rectangle([0, 0], [40, 30])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 40)\nsk.length(r.right, 30)\nconst p = extrude(sk, 10)\nconst b = box(10, 10, 10)",
+  "ms": 1812,
+  "status": "built",
+  "volume": 13000,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it is at the origin [0, 0, 0]; it may overlap pull1"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\tno at: given, so it is at the origin [0, 0, 0]; it may overlap pull1",
+  "card": "pieces\n2\nvolume\n13000.000 mm3\nsize\n45 x 35 x 15 mm\nfaces\n12\nsteps built\n2 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_pull1",
+    12000,
+    6,
+    {
+     "max": [
+      40,
+      30,
+      10
+     ],
+     "min": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   [
+    "b_box1",
+    1000,
+    6,
+    {
+     "max": [
+      5,
+      5,
+      5
+     ],
+     "min": [
+      -5,
+      -5,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "spin-then-box",
+  "script": "const s = sketch('front', 0)\ns.polygon([[5, -10], [15, -10], [15, 10], [5, 10]])\nconst t = revolve(s, 360)\nconst b = box(10, 10, 10)",
+  "ms": 1816,
+  "status": "built",
+  "volume": 13566.026683570164,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "rev1",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside rev1; its centre is at [45, 0, 0]"
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\nrev1\trevolve\tbuilt\t\nbox1\tbox\tbuilt\tno at: given, so it was placed beside rev1; its centre is at [45, 0, 0]",
+  "card": "pieces\n2\nvolume\n13566.027 mm3\nsize\n65 x 20 x 30 mm\nfaces\n10\nsteps built\n2 of 2",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_rev1",
+    12566.026683570164,
+    4,
+    {
+     "max": [
+      15.000000000000002,
+      10,
+      15
+     ],
+     "min": [
+      -15,
+      -10,
+      -15
+     ]
+    }
+   ],
+   [
+    "b_box1",
+    1000,
+    6,
+    {
+     "max": [
+      50,
+      5,
+      5
+     ],
+     "min": [
+      40,
+      -5,
+      -5
+     ]
+    }
+   ]
+  ]
+ },
+ {
+  "id": "pull-then-pocket-on-box",
+  "script": "const sk = sketch('top')\nsk.rect(40, 30)\nconst p = extrude(sk, 10)\nconst b = box(20, 20, 10)\nconst s2 = sketch('top', 5)\ns2.rect(6, 6)\npocket(s2, b, 3)",
+  "ms": 1546,
+  "status": "built with 1 step not built",
+  "volume": 16000,
+  "steps": [
+   {
+    "id": "sk1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pull1",
+    "kind": "extrude",
+    "status": "built",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "box1",
+    "kind": "box",
+    "status": "built",
+    "refusal": null,
+    "note": "no at: given, so it was placed beside pull1; its centre is at [50, 0, 0]"
+   },
+   {
+    "id": "sk2",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null,
+    "note": null
+   },
+   {
+    "id": "pocket1",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction (box1 has no at:, so it was placed beside pull1 with its centre at [50, 0, 0]).",
+    "note": null
+   }
+  ],
+  "table": "step\tkind\tresult\twhat happened\nsk1\tsketch\t\tdrawn; it is built by the step that uses it\npull1\textrude\tbuilt\t\nbox1\tbox\tbuilt\tno at: given, so it was placed beside pull1; its centre is at [50, 0, 0]\nsk2\tsketch\t\tdrawn; it is built by the step that uses it\npocket1\tpocket\tnot built\tpocket1 does not touch the part, so it cuts nothing; move the sketch onto the part, or change the depth or direction (box1 has no at:, so it was placed beside pull1 with its centre at [50, 0, 0]).",
+  "card": "pieces\n2\nvolume\n16000.000 mm3\nsize\n80 x 30 x 15 mm\nfaces\n12\nsteps built\n2 of 3",
+  "warnings": "",
+  "bodies": [
+   [
+    "b_pull1",
+    12000,
+    6,
+    {
+     "max": [
+      20,
+      15,
+      10
+     ],
+     "min": [
+      -20,
+      -15,
+      0
+     ]
+    }
+   ],
+   [
+    "b_box1",
+    4000,
+    6,
+    {
+     "max": [
+      60,
+      10,
+      5
+     ],
+     "min": [
+      40,
       -10,
       -5
      ]

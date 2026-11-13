@@ -613,8 +613,8 @@ script (owner decision).
 
 ### A shape without `at:` (owner chose "both"), and a join that joins nothing (owner chose "build it, but say so")
 
-A shape written without `at:` is not put at the origin unless it is the first: it is placed beside the rightmost shape already there, 10 apart
-(`packages/script` `newShape`; deliberate, so a second box is not hidden inside the first). The page said nothing about it. Measured in the page
+A shape written without `at:` is not put at the origin unless it is the first: it is placed beside the rightmost shape already there
+(`packages/script` `newShape`: 10 past its right edge for a shape of the default size; deliberate, so a second box is not hidden inside the first). The page said nothing about it. Measured in the page
 before the change (`followup/placement-page-before.json`): a pocket on the second box says "pocket1 does not touch the part ...", `keep()` says "The
 two shapes do not overlap ...", a groove says "the ring does not cut the part ...", none with a word about where the box is; only the cut sentence
 mentions `at:`. And `union()` of a plate and a peg that ended up 10 apart is built, one part in two lumps, with the card saying "pieces 1" and a
@@ -632,5 +632,17 @@ Now (`followup/placement-page.json`, the same scripts):
 
 Tests: `packages/solidcraft-host/test/placement.test.mjs` (6).
 
-Not changed: a shape after a **pulled sketch** goes to the origin, because only plain shapes are measured for the placement (a box after a
-pulled plate lands inside the plate, with no note). A join of three shapes that do not touch gets no note (the card still counts 3 pieces).
+A join of three shapes that do not touch gets no note (the card still counts 3 pieces).
+
+**A shape after a pulled or spun sketch** (owner chose "place it beside, same rule"). Only plain shapes were measured for the placement, so a box
+made after a pulled plate went to the origin, inside the plate, with no note. Now a part pulled or spun from a sketch counts too, when its
+reach along x is known exactly (a plain outline on a standard plane, no taper; a full spin): the box goes beside it, with the same note
+("... placed beside pull1; its centre is at [50, 0, 0]"). Where it is not known exactly (a sketch with dimensions and rules, a tapered pull) and
+there is nothing else to measure from, the shape stays at the origin and its step says "no at: given, so it is at the origin [0, 0, 0]; it may
+overlap pull1". The same rule is used by the round-trip emitter and by the studio's "add a shape", which read the same function.
+
+Does it change any existing script? Every script of twelve corpora (9066), the 56 page examples and the 19 pilot scripts was run through the
+interpreter before and after: 0 documents differ. (233 corpus scripts have both a pulled part and a plain shape; the plain shape either has an
+`at:` or stands beside an earlier plain shape that reaches further.) In the page (`followup/placement-page.json`): 15 of the 16 earlier scripts
+are unchanged, the box after a pulled plate now stands beside it, and four new scripts show the two notes, the join note for a cylinder beside a
+pulled plate, and the hint on a pocket that missed a box placed beside a pull.

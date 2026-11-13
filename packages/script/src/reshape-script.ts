@@ -81,7 +81,7 @@ import {
   newPocket,
   newMirror,
   newBlend,
-  extentAlong, rightmostShapeId,
+  extentAlong, rightmostShapeId, unmeasuredSweptId,
   throughExtentAlong,
   extentBoundAlong,
   featureRangeAlong,
@@ -186,15 +186,16 @@ export interface RunResult {
    */
   ruleLog?: RuleLogEntry[];
   /**
-   * Every shape the script gave no `at:` that was therefore placed beside an earlier one (newShape() puts it 10 past the rightmost shape; the first shape of a
-   * script goes to the origin and is not listed): its id and the id of the shape it was placed beside. A record of what the script WROTE, which the doc does
-   * not show (the doc only has the centre). The host page uses it to tell the student where the shape went.
+   * Every shape the script gave no `at:` that was therefore placed beside an earlier one (newShape() puts it past the rightmost plain, pulled or spun part; the
+   * first shape of a script goes to the origin and is not listed): its id and the id of the shape it was placed beside. A shape that stayed at the origin
+   * although a pulled or spun part exists, because that part's extent is not known exactly, is listed with `beside: null` and `unmeasured: <that part>`. A
+   * record of what the script WROTE, which the doc does not show (the doc only has the centre). The host page uses it to tell the student where the shape went.
    */
   placed?: PlacedEntry[];
 }
 
 /** One shape placed by default, see RunResult.placed. */
-export interface PlacedEntry { id: string; beside: string }
+export interface PlacedEntry { id: string; beside: string | null; unmeasured?: string }
 
 /** One applyConstraint call, see RunResult.ruleLog. */
 export interface RuleLogEntry {
@@ -931,9 +932,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const extra = readOptions(fn, allowCorner ? ['at', 'corner'] : ['at'], opts);
     // no at: and a shape already there: newShape() puts this one beside it (recorded for RunResult.placed)
     const beside = extra.at === undefined ? rightmostShapeId(docNow()) : null;
+    const unmeasured = extra.at === undefined && beside === null ? unmeasuredSweptId(docNow()) : null;
     const base = newShape(docNow(), kind);
     const id = base.id;
     if (beside !== null) placedLog.push({ id, beside });
+    else if (unmeasured !== null) placedLog.push({ id, beside: null, unmeasured });
     setDims(base, id);
     if (extra.at !== undefined) {
       const at = readVec3(fn, 'at', extra.at);
