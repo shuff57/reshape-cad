@@ -1,0 +1,23 @@
+227,229c227,229
+< else if (CORPUS === 'combined') { const { combinedDoc } = await imp(path.join(TEST, 'unified-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 600); i++) addF(`combined seed ${i}`, combinedDoc(i).features); }
+< else if (CORPUS === 'rgcombined') { const { rgCombinedDoc } = await imp(path.join(TEST, 'rg-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 400); i++) addF(`rg combined seed ${i}`, rgCombinedDoc(i).features); }
+< else if (CORPUS === 'fccombined') { const { fcCombinedDoc } = await imp(path.join(TEST, 'fc-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 400); i++) addF(`fc combined seed ${i}`, fcCombinedDoc(i).features); }
+---
+> else if (CORPUS === 'combined') { const { combinedDoc } = await imp(path.join(TEST, 'unified-docs.mjs')); for (let i = 0; i < 600; i++) addF(`combined seed ${i}`, combinedDoc(i).features); }
+> else if (CORPUS === 'rgcombined') { const { rgCombinedDoc } = await imp(path.join(TEST, 'rg-docs.mjs')); for (let i = 0; i < 400; i++) addF(`rg combined seed ${i}`, rgCombinedDoc(i).features); }
+> else if (CORPUS === 'fccombined') { const { fcCombinedDoc } = await imp(path.join(TEST, 'fc-docs.mjs')); for (let i = 0; i < 400; i++) addF(`fc combined seed ${i}`, fcCombinedDoc(i).features); }
+233c233
+< const GADGET = process.env.GADGET_SEED ? await import(new URL('gadget.mjs', import.meta.url).href) : null; // inject a block that makes a page guard fire (gadget.mjs)
+---
+> const GADGET = process.env.GADGET_SEED ? await import(new URL('./gadget.mjs', import.meta.url).href) : null; // inject a block that makes a page guard fire (gadget.mjs)
+253d252
+<       if (process.env.POP_SKETCHES) while (D.features.length && D.features[D.features.length - 1].kind === 'sketch') D.features.pop(); // a document that names two sketches alike keeps a trailing one the drop list cannot tell apart
+260,263d258
+< if (process.env.DUMP_FILE) { // dump.mjs: the cases as the page can take them: a script as written, else the raw doc (a doc-only case, or a script whose doc was patched)
+<   writeFileSync(process.env.DUMP_FILE, JSON.stringify(ready.map((it, k) => (it.script !== undefined && !it.patch ? { id: `${CORPUS}#${k} ${it.id}`, script: it.script } : { id: `${CORPUS}#${k} ${it.id}`, doc: it.raw }))));
+<   console.log('dumped ' + ready.length); process.exit(0);
+< }
+294c289
+< const RUN1 = new URL('run1.mjs', import.meta.url).pathname;
+---
+> const RUN1 = new URL('./run1.mjs', import.meta.url).pathname;

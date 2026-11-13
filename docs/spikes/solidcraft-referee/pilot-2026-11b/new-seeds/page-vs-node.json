@@ -1,0 +1,41 @@
+[
+ {
+  "id": "combined#96 combined seed 696",
+  "what": "sentence",
+  "step": "h7",
+  "page": "h7 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h7 is shown without it -- move the hole onto a flat top, or let it go all the way through.",
+  "node": "h7 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h7 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded."
+ },
+ {
+  "id": "combined#97 combined seed 697",
+  "what": "built / not built",
+  "step": "b1",
+  "page": "built",
+  "node": "refused",
+  "pageSays": null,
+  "nodeSays": "b1 (box): building this took longer than 45 seconds of computing, so it was stopped and b1 is shown without it.",
+  "guard": "G-BUDGET"
+ },
+ {
+  "id": "combined#98 combined seed 698",
+  "what": "node has no result",
+  "node": "hang"
+ },
+ {
+  "id": "combined#99 combined seed 699",
+  "what": "built / not built",
+  "step": "b1",
+  "page": "built",
+  "node": "refused",
+  "pageSays": null,
+  "nodeSays": "b1 (box): building this took longer than 45 seconds of computing, so it was stopped and b1 is shown without it.",
+  "guard": "G-BUDGET"
+ },
+ {
+  "id": "rgcombined#168 rg combined seed 568",
+  "what": "sentence",
+  "step": "d9",
+  "page": "d9 (draft): the right face of b1 could not be found on the part as it is now, so d9 is shown without it.",
+  "node": "d9: the right face cannot be found reliably after the part was turned or copied, so d9 is shown without it -- apply it before turning the part."
+ }
+]

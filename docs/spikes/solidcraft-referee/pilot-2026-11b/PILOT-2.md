@@ -391,3 +391,56 @@ failed for each one that can change an answer.
 
 Checked with the fix in: `npm test` 1109 tests, 1103 pass, 6 skipped, 0 fail; the six browser checks, the 44 sketch scripts, the 14 blocked-step
 scripts, the 13 two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).
+
+## 1500 new documents, in the page and against the oracles (owner chose "new scripts in the page", 2026-11-13)
+
+The two page-only faults above were found on documents the layer had been tuned on. Here: 1500 documents it has never seen, 500 fresh seeds of each
+of the three generators (`combinedDoc` 600 to 1099, `rgCombinedDoc` and `fcCombinedDoc` 400 to 899), run in the real page as shipped and through
+the Node host route with OCCT and brep-rs (`new-seeds/`; the harness is the rig's `host-route-x.mjs` with the seed range, `new-seeds/harness.diff`).
+
+**The page.** Every document answered; the engine never stopped. 1403 took under 5 s, 83 from 5 to 30 s, 12 from 30 to 120 s, and 2 longer: 134 s and
+330 s, both a hole drilled into a hollowed cylinder, where one replay of the script takes 20 to 40 s (`new-seeds/page-rows.jsonl`). The two runs
+without a budget that took over 20 s are the final replay of steps that had passed the budget before.
+
+**The page against Node, step by step** (`new-seeds/page-vs-node.json`): 1495 of 1500 identical in every step, sentence and recorded volume. Four
+differed only because the Node run stalled at seeds 696 to 699 (a plain box "took longer than 45 seconds", one row hung); run again in Node, the four
+are the same as the page. One gives another reason for the same refusal (`rg combined seed 568`, a draft: the page "the right face of b1 could not
+be found on the part as it is now", Node "the right face cannot be found reliably after the part was turned or copied").
+
+**Is what was built right?** The harness scores a document's last step, and in these documents the last step is usually refused: scored as they
+are, 39 documents got a RIGHT and 1455 a REFUSED, which says nothing about the steps that were built. So each document was cut down to the steps
+that were built (the refused steps and the sketches nothing was built from are dropped; the page's own route leaves the same steps out) and scored
+again: the last step is then a built one and the oracles judge the final solid. The page's final volume for the whole document equals the judged
+solid in all 1411 (1e-9); 89 documents build nothing.
+
+| 1411 final solids | count |
+|---|---|
+| RIGHT: every oracle that built agrees | 1316 |
+| one oracle agrees and the other does not: brep-rs agrees 73, OCCT agrees 2 | 75 |
+| flagged WRONG (no oracle that built agrees), and a volume worked out by hand agrees | 15 |
+| flagged WRONG: a part with a cylinder wall, the same solid within 2e-4 of the volume and 5e-4 mm of the box | 4 |
+| both oracles refuse the hollow; the step before it is RIGHT by both and the hollow equals its closed form | 1 |
+
+No wrong solid. The 95 that are not a plain RIGHT, each looked at (`new-seeds/flagged.json`: the class, both oracles' numbers and the document):
+
+- **The OCCT referee does not read four options of a pull or pocket.** In 66 of the 73 where only brep-rs agrees the document has one of them:
+  `reversed` 18, `taper` 28, `midplane` 16, `through` 8 (some have two). OCCT builds the pull without the option: the other way up, straight,
+  one-sided, or a pocket only as deep as its number. The reversed case was on record (GUARD-UNIFIED-JOIN-FULL.md, `combined seed 50`); the other
+  three were not. In the other 7 (a draft after a move, a hole after a mirror or a hollow, a hole in a prism or cylinder) OCCT is 6e-4 to 0.13
+  off and brep-rs agrees to 4e-5 or better.
+- **Sixteen solids against a volume worked out here** (`new-seeds/closed-forms.mjs`, no kernel: a closed form, or a midpoint integral where there
+  is none): the largest difference is 7.9e-5, fifteen of them under 2e-5. They are five reversed pulls with pockets, two hollows after a
+  counterbore, a counterbore after a draft, a through pocket at the rounded corner of a box, three tapered pulls of an outline with a rounded
+  corner, a pocket into the wall of a hollowed box, two boxes with pockets and a cross bore, and the hollowed mirror pair. Where a form needed
+  a reading of what the script means (which way `reversed` goes, that `through` cuts from the sketch plane to the far side, that a taper widens),
+  the reading is the one brep-rs shares with the page route wherever brep-rs builds.
+- **The engine's cylinder is not exactly round, and less so after a cut.** A plain cylinder of radius 8 measures 1.2e-4 to 2.1e-4 mm short in its
+  box and 1.1e-4 low in volume; after a pocket or a join its wall is up to 5e-4 mm inside the true one and the volume up to 1.9e-4 low. The
+  harness allows 3e-4 for both, so the volume passes and the box does not: four documents (a cylinder joined to a box, two cylinders with a
+  pocket, a cylinder turned 45 degrees). Both oracles agree with each other on all four. This is accuracy of the kernel's curved wall, known at
+  1e-4 for the volume, not a different shape.
+
+**What this run changes about the corpora.** Scoring only the last step leaves most of a generated document's built steps unjudged: on these 1500,
+39 final solids judged before the cut, 1411 after. The 1400 documents of the three generators already in the corpora have been scored the first way
+only.
+
