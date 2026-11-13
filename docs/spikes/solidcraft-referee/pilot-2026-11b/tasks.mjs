@@ -1,0 +1,91 @@
+// tasks.mjs: the second student pilot (2026-11-12). Tasks with two parts, pulled sketches, drafts and dimensioned sketches: what the changes since the first
+// pilot touch. Each task has what a student would plausibly type first (a) and, where the page refuses or notes something, what they would type after reading
+// it (b, c ...). `expect` is the closed-form volume of the whole scene the student is after, or null where none is given.
+const PI = Math.PI, T5 = Math.tan(5 * PI / 180), C5 = Math.cos(5 * PI / 180);
+export const TASKS = [
+  // 1. a box with a lid that is screwed on
+  { id: 'p1a-box-lid', title: 'Box with a lid: hollow base, a lid, a screw hole in the lid',
+    script: `// a small box and its lid\nconst base = box(60, 40, 20)\nhollow(base, { wall: 2, open: 'top' })\nconst lid = box(60, 40, 3)\nhole(lid, { across: 4 })`,
+    expect: 60 * 40 * 20 - 56 * 36 * 18 + 60 * 40 * 3 - PI * 4 * 3 },
+  // 2. a plate with a peg on it
+  { id: 'p2a-plate-peg', title: 'Plate with a peg: two shapes joined',
+    script: `// a plate with a round peg standing on it\nconst plate = box(60, 40, 5)\nconst peg = cylinder(10, 20)\nconst part = union(plate, peg)`,
+    expect: 60 * 40 * 5 + PI * 25 * 20 - PI * 25 * 2.5 /* what the student has in mind is not defined yet: the peg through the plate's middle plane */ },
+  // 3. a pulled bracket with a boss
+  { id: 'p3a-bracket-boss', title: 'Pulled L bracket with a round boss on the long leg, and a hole through the boss',
+    script: `// an L bracket 30 wide, with a boss for a bolt\nconst sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(16, 8)\nconst both = union(part, boss)\nhole(both, { across: 6 })`, expect: null },
+  // 4. a moulded cup from a pulled sketch, drafted from its bottom
+  { id: 'p4a-cup-pulled', title: 'Moulded cup from a pulled sketch: two sides drafted from the bottom, hollowed',
+    script: `// a cup pulled from a sketch, two sloped sides so it comes out of a mould\nconst sk = sketch('top')\nsk.rect(60, 40)\nconst cup = extrude(sk, 25)\ndraft(cup.face('right'), 5, { from: 'bottom' })\ndraft(cup.face('left'), 5, { from: 'bottom' })\nhollow(cup, { wall: 2, open: 'top' })`,
+    expect: 40 * (1500 - 625 * T5) - 36 * ((60 - 4 / C5) * 23 - T5 * (625 - 4)) },
+  { id: 'p4b-cup-from-top', title: 'The same cup drafted from the top (wider at the bottom)',
+    script: `const sk = sketch('top')\nsk.rect(60, 40)\nconst cup = extrude(sk, 25)\ndraft(cup.face('right'), 5, { from: 'top' })\ndraft(cup.face('left'), 5, { from: 'top' })`,
+    expect: 40 * (1500 + 625 * T5) },
+  // 5. a dimensioned plate where a dimension was forgotten
+  { id: 'p5a-plate-forgot', title: 'Dimensioned plate, one dimension forgotten, then a spacer beside it',
+    script: `// a plate drawn roughly and dimensioned\nconst sk = sketch('top')\nconst r = sk.rectangle([0.3, 0.4], [49, 31])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 50)\nconst plate = extrude(sk, 6)\nconst spacer = cylinder(12, 6)\nhole(spacer, { across: 5 })`, expect: null },
+  // 6. an enclosure with standoffs for a circuit board
+  { id: 'p6a-standoffs', title: 'Enclosure with two standoffs inside and a screw hole in each',
+    script: `// an open box with two posts inside for a circuit board\nconst b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nconst body = union(b, post1, post2)\nhole(body, { across: 3, at: [-25, 0], deep: 8 })\nhole(body, { across: 3, at: [25, 0], deep: 8 })`, expect: null },
+  // 7. cut a slot with a tool shape
+  { id: 'p7a-cut-tool', title: 'Block with a round hole cut by a cylinder tool',
+    script: `// cut a round hole with a cylinder as the tool\nconst b = box(40, 40, 20)\nconst tool = cylinder(10, 30)\nsubtract(b, tool)`, expect: 40 * 40 * 20 - PI * 25 * 20 },
+  // 8. three drilled copies in a row
+  { id: 'p8a-row', title: 'A drilled block repeated three times, then one more hole in the row',
+    script: `// a drilled block, three in a row\nconst b = box(30, 20, 10)\nhole(b, { across: 6 })\nconst row = linearPattern(b, { count: 3, step: [40, 0, 0] })\nhole(row, { across: 3, at: [10, 0] })`, expect: null },
+  // 9. a knob: spun profile on a square base
+  { id: 'p9a-knob', title: 'Knob: a spun profile, then a square base under it, joined',
+    script: `// a knob spun from a profile, on a square base\nconst sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4)\nconst part = union(knob, base)`, expect: null },
+  // ---- round 2: what the student types after reading the page -------------------------------------------------------------------------------------------
+  { id: 'p1b-lid-on-top', title: 'Lid placed on top of the box (at:), plain screw hole',
+    script: `const base = box(60, 40, 20)\nhollow(base, { wall: 2, open: 'top' })\nconst lid = box(60, 40, 3, { at: [0, 0, 11.5] })\nhole(lid, { across: 4 })`,
+    expect: 60 * 40 * 20 - 56 * 36 * 18 + 60 * 40 * 3 - PI * 4 * 3 },
+  { id: 'p1c-lid-counterbore', title: 'Lid on top, a counterbored screw hole near a corner',
+    script: `const base = box(60, 40, 20)\nhollow(base, { wall: 2, open: 'top' })\nconst lid = box(60, 40, 3, { at: [0, 0, 11.5] })\nhole(lid, { across: 4, at: [25, 15], counterbore: { across: 8, deep: 1.5 } })`,
+    expect: 60 * 40 * 20 - 56 * 36 * 18 + 60 * 40 * 3 - PI * 4 * 3 - PI * 12 * 1.5 },
+  { id: 'p1d-lid-first', title: 'Following the sentence: the lid and its hole first, then the box',
+    script: `const lid = box(60, 40, 3, { at: [0, 0, 11.5] })\nhole(lid, { across: 4, at: [25, 15], counterbore: { across: 8, deep: 1.5 } })\nconst base = box(60, 40, 20, { at: [0, 0, 0] })\nhollow(base, { wall: 2, open: 'top' })`,
+    expect: 60 * 40 * 20 - 56 * 36 * 18 + 60 * 40 * 3 - PI * 4 * 3 - PI * 12 * 1.5 },
+  { id: 'p2b-peg-at', title: 'Peg standing on the plate (at:), joined',
+    script: `const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 12.5] })\nconst part = union(plate, peg)`, expect: 60 * 40 * 5 + PI * 25 * 20 },
+  { id: 'p2c-peg-hole', title: 'The same, with a hole down through the peg and the plate',
+    script: `const plate = box(60, 40, 5)\nconst peg = cylinder(10, 20, { at: [0, 0, 12.5] })\nconst part = union(plate, peg)\nhole(part, { across: 4 })`, expect: 60 * 40 * 5 + PI * 25 * 20 - PI * 4 * 25 },
+  { id: 'p3b-boss-at', title: 'Bracket: the boss placed on the long leg, hole at the boss as the student reads at:',
+    script: `const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nconst both = union(part, boss)\nhole(both, { across: 4, at: [35, 5] })`, expect: null },
+  { id: 'p3c-boss-hole-first', title: 'Bracket: the boss drilled before it is joined',
+    script: `const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nhole(boss, { across: 4 })\nconst both = union(part, boss)`,
+    expect: 27000 + PI * 16 * 8 - PI * 4 * 8 },
+  { id: 'p5b-plate-fixed', title: 'Dimensioned plate with the missing dimension added; the spacer still without at:',
+    script: `const sk = sketch('top')\nconst r = sk.rectangle([0.3, 0.4], [49, 31])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 50)\nsk.length(r.right, 30)\nconst plate = extrude(sk, 6)\nconst spacer = cylinder(12, 6)\nhole(spacer, { across: 5 })`, expect: null },
+  { id: 'p5c-plate-spacer-at', title: 'The spacer given its place beside the plate',
+    script: `const sk = sketch('top')\nconst r = sk.rectangle([0.3, 0.4], [49, 31])\nsk.at(r.bottom.a, [0, 0])\nsk.length(r.bottom, 50)\nsk.length(r.right, 30)\nconst plate = extrude(sk, 6)\nconst spacer = cylinder(12, 6, { at: [70, 15, 3] })\nhole(spacer, { across: 5 })`,
+    expect: 50 * 30 * 6 + PI * 36 * 6 - PI * 6.25 * 6 },
+  { id: 'p6b-standoffs-drilled-first', title: 'Standoffs drilled before they are joined to the box',
+    script: `const b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nhole(post1, { across: 3, deep: 8 })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nhole(post2, { across: 3, deep: 8 })\nconst body = union(b, post1, post2)`,
+    expect: 80 * 50 * 20 - 76 * 46 * 18 + 2 * (PI * 16 * 10 - PI * 2.25 * 8) },
+  { id: 'p7b-cut-at', title: 'Cutting tool given its place',
+    script: `const b = box(40, 40, 20)\nconst tool = cylinder(10, 30, { at: [0, 0, 0] })\nsubtract(b, tool)`, expect: 40 * 40 * 20 - PI * 25 * 20 },
+  { id: 'p8b-row-then-drill', title: 'Repeat the plain block first, then drill the row',
+    script: `const b = box(30, 20, 10)\nconst row = linearPattern(b, { count: 3, step: [40, 0, 0] })\nhole(row, { across: 6 })`, expect: null },
+  { id: 'p8c-row-touching', title: 'Blocks repeated so that they touch (one piece), then drilled',
+    script: `const b = box(30, 20, 10)\nconst row = linearPattern(b, { count: 3, step: [30, 0, 0] })\nhole(row, { across: 6 })`, expect: 3 * 30 * 20 * 10 - PI * 9 * 10 },
+  { id: 'p8d-three-by-hand', title: 'Three drilled blocks written out by hand',
+    script: `const a = box(30, 20, 10)\nhole(a, { across: 6 })\nconst b = box(30, 20, 10, { at: [40, 0, 0] })\nhole(b, { across: 6 })\nconst c = box(30, 20, 10, { at: [80, 0, 0] })\nhole(c, { across: 6 })`, expect: 3 * (6000 - PI * 9 * 10) },
+  { id: 'p9b-knob-base-at', title: 'Knob: the base placed under it',
+    script: `const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)`,
+    expect: PI * 144 * 6 + PI * 8 / 3 * (144 + 72 + 36) + 3600 },
+  // ---- round 3 ---------------------------------------------------------------------------------------------------------------------------------------------
+  { id: 'p9c-knob-top-plane', title: 'Knob: the same profile drawn on the top plane, so the spun part stands upright',
+    script: `const sk = sketch('top')\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)\nconst base = box(30, 30, 4, { at: [0, 0, -2] })\nconst part = union(knob, base)`,
+    expect: PI * 144 * 6 + PI * 8 / 3 * (144 + 72 + 36) + 3600 },
+  { id: 'p9d-knob-alone-front', title: 'The spun profile alone, drawn on the front plane (which way does it stand?)',
+    script: `const sk = sketch('front', 0)\nsk.polygon([[0, 0], [12, 0], [12, 6], [6, 14], [0, 14]])\nconst knob = revolve(sk, 360)`, expect: PI * 144 * 6 + PI * 8 / 3 * (144 + 72 + 36) },
+  { id: 'p8e-holes-in-a-row', title: 'repeat of a drilled block with a small step: is it the hole that is repeated?',
+    script: `const b = box(60, 20, 10)\nhole(b, { across: 6, at: [-20, 0] })\nconst row = linearPattern(b, { count: 3, step: [20, 0, 0] })`, expect: 60 * 20 * 10 - 3 * PI * 9 * 10 },
+  { id: 'p6c-standoff-through', title: 'Standoffs, following the sentence the other way: holes all the way through',
+    script: `const b = box(80, 50, 20)\nhollow(b, { wall: 2, open: 'top' })\nconst post1 = cylinder(8, 10, { at: [-25, 0, -3] })\nconst post2 = cylinder(8, 10, { at: [25, 0, -3] })\nconst body = union(b, post1, post2)\nhole(body, { across: 3, at: [-25, 0] })\nhole(body, { across: 3, at: [25, 0] })`,
+    expect: 80 * 50 * 20 - 76 * 46 * 18 + 2 * (PI * 16 * 10 - PI * 2.25 * 12) },
+  { id: 'p3d-boss-hole-centre', title: 'Bracket: the hole placed from the middle of the part (at: [5, -15])',
+    script: `const sk = sketch('top')\nsk.polygon([[0, 0], [60, 0], [60, 10], [10, 10], [10, 40], [0, 40]])\nconst part = extrude(sk, 30)\nconst boss = cylinder(8, 8, { at: [35, 5, 34] })\nconst both = union(part, boss)\nhole(both, { across: 4, at: [5, -15] })`,
+    expect: 27000 + PI * 16 * 8 - PI * 4 * 38 },
+];
