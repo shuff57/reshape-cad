@@ -223,14 +223,29 @@ export async function budgetGate(prober, commands, budgetS, capS) {
   return { cpuMs: r.cpuMs, loadMs: r.loadMs, probeReply: r.reply };
 }
 
+/**
+ * `held` (second pilot, Q7, "run only the new steps"): the caller's statement that SolidCraft holds, from an empty design and run to the end, exactly the
+ * first `held` commands of the list. Only the rest is then run, on top of what is there. 0 (the default) starts from an empty design, as always. The bridge
+ * cannot check the statement; the caller keeps the record (reply-memory.mjs) and a wrong statement gives a wrong design, so nothing but that record passes it.
+ */
+const heldOf = (held, n) => (Number.isInteger(held) && held > 0 && held <= n ? held : 0);
+const featuresOf = (batch, n) => (Array.isArray(batch.results) && batch.results.length === n ? batch.results.map((r) => ({ feature: Number.isInteger(r?.feature) ? r.feature : null })) : undefined);
+
 export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
-  /** run `commands` from an empty design, then read faces and edges of every body: the layer's topologyOf() reply. */
-  async function topologyOf(commands) {
-    try { await sc.execute('file.new', {}); } catch (e) { return { ok: false, error: String((e && e.message) || e) }; }
-    let batch;
-    try {
-      batch = await sc.request('engine.batch', { commands: commands.map((c) => ({ command: c.command, params: c.params ?? {} })), rollback: false });
-    } catch (e) { return { ok: false, failed: { error: String((e && e.message) || e) } }; }
+  /**
+   * run `commands` from an empty design, then read faces and edges of every body: the layer's topologyOf() reply.
+   * With `held` and `heldResults` (the feature numbers of the commands SolidCraft already holds) only the commands after the first `held` are run.
+   */
+  async function topologyOf(commands, { held = 0, heldResults } = {}) {
+    const n = Array.isArray(heldResults) && heldResults.length === heldOf(held, commands.length) ? heldResults.length : 0;
+    if (!n) { try { await sc.execute('file.new', {}); } catch (e) { return { ok: false, error: String((e && e.message) || e) }; } }
+    const rest = commands.slice(n);
+    let batch = { results: [] };
+    if (rest.length) {
+      try {
+        batch = await sc.request('engine.batch', { commands: rest.map((c) => ({ command: c.command, params: c.params ?? {} })), rollback: false });
+      } catch (e) { return { ok: false, failed: { error: String((e && e.message) || e) } }; }
+    }
     if (batch.failed) return { ok: false, failed: { error: batch.failed.error } };
     let insp;
     try { insp = await sc.inspect({ measure: true }); } catch (e) { return { ok: false, error: String((e && e.message) || e) }; }
@@ -241,32 +256,43 @@ export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
       bodies.push(adaptBody(b.name, f, e));
     }
     // results[k].feature is upstream's own feature number of command k (the persistent-name check reads it); only passed when there is one answer per command
-    const res = Array.isArray(batch.results) && batch.results.length === commands.length ? batch.results.map((r) => ({ feature: Number.isInteger(r?.feature) ? r.feature : null })) : undefined;
+    const own = featuresOf(batch, rest.length);
+    const res = own ? [...(n ? heldResults : []), ...own] : undefined;
     return { ok: true, topology: { bodies }, measure: { bodies: insp.bodies ?? [] }, ...(res ? { results: res } : {}) };
   }
   return {
     topologyOf,
-    /** run `commands`; fresh starts from an empty design. rollback is off so a failure leaves the state to inspect; the next fresh run resets it. */
-    async execute(commands, { fresh = false, topology = false, budgetS } = {}) {
-      if (topology) return topologyOf(commands);
+    /**
+     * run `commands`; fresh starts from an empty design. rollback is off so a failure leaves the state to inspect; the next fresh run resets it.
+     * fresh with `held`: SolidCraft already holds the first `held` commands, so only the rest is run (the time budget still judges the whole list, and a
+     * failure is reported at its place in the whole list). With `features`, `ran` in the reply is the feature numbers of the commands this call ran, when
+     * upstream gave them (the caller's record of what SolidCraft holds needs them; without the word the reply is what it always was).
+     */
+    async execute(commands, { fresh = false, topology = false, budgetS, held = 0, heldResults, features = false } = {}) {
+      if (topology) return topologyOf(commands, { held, heldResults });
       const gate = await budgetGate(prober, commands, budgetS, capS);
       if (gate && gate.stop) return gate.stop;
+      const n = fresh ? heldOf(held, commands.length) : 0;
+      const rest = commands.slice(n);
       // probeVolume: what the scratch run measured, kept so a check can compare it with the real run (the two are different compilations of the same engine)
       const stamp = (r) => (gate ? { ...r, cpuMs: gate.cpuMs, probeLoadMs: gate.loadMs, probeVolume: (gate.probeReply?.measure?.bodies ?? []).reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) } : r);
-      if (fresh) await sc.execute('file.new', {});
-      let batch;
-      try {
-        batch = await sc.request('engine.batch', { commands: commands.map((c) => ({ command: c.command, params: c.params ?? {} })), rollback: false });
-      } catch (e) {
-        return stamp({ ok: false, failed: { command: null, error: String((e && e.message) || e) } });
+      if (fresh && !n) await sc.execute('file.new', {});
+      let batch = { completed: 0, results: [] };
+      if (rest.length) {
+        try {
+          batch = await sc.request('engine.batch', { commands: rest.map((c) => ({ command: c.command, params: c.params ?? {} })), rollback: false });
+        } catch (e) {
+          return stamp({ ok: false, failed: { command: null, error: String((e && e.message) || e) } });
+        }
       }
       const snap = await snapshot(sc);
       if (batch.failed) {
-        const f = batch.failed;
+        const f = batch.failed; const index = Number.isInteger(f.index) ? f.index + n : f.index;
         const at = snap.active_sketch ? snap.sketches.find((s) => s.name === snap.active_sketch || s.id === snap.active_sketch) : null;
-        return stamp({ ok: false, failed: { index: f.index, command: f.command, error: f.error, params: commands[f.index]?.params ?? {} }, ...snap, sketch_at_failure: at ?? null });
+        return stamp({ ok: false, failed: { index, command: f.command, error: f.error, params: commands[index]?.params ?? {} }, ...snap, sketch_at_failure: at ?? null });
       }
-      return stamp({ ok: true, completed: batch.completed, ...snap });
+      const ran = features ? featuresOf(batch, rest.length) : undefined;
+      return stamp({ ok: true, completed: Number.isInteger(batch.completed) ? batch.completed + n : batch.completed, ...(ran ? { ran } : {}), ...snap });
     },
     async inspect() { return { ok: true, ...(await snapshot(sc)) }; },
     async restorePrevious() { return { ok: false, error: 'restoring your previous design is not built on this build' }; },

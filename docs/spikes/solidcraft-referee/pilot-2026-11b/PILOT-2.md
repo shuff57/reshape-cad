@@ -217,12 +217,107 @@ Checked on the fixed page: `npm test` 1074 tests, 1068 pass, 6 skipped, 0 fail; 
 blocked-step scripts, the 13 two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).
 
 **Not done, and the larger part.** The memory only removes repeats of the *same* list. What is left is the double run of every step (worker, then
-SolidCraft) and the replay of the whole history for each step. Two ways to cut that, neither attempted:
-
-- *Continue where SolidCraft is*: when the list to run only adds commands to what SolidCraft already holds, run just the added ones. That would
-  make SolidCraft's half grow with the script, not with its square. It rests on the engine giving the same result as from an empty design, which
-  would have to be measured on the corpora first.
-- *Read the guards' numbers from the worker and run SolidCraft once at the end*: the worker is our build of the same engine source, not the build
-  the student sees, so the final result would have to be compared with the worker's before it is shown.
+SolidCraft) and the replay of the whole history for each step. Of the two ways to cut that, the first was taken up next (below); the second was not
+attempted: *read the guards' numbers from the worker and run SolidCraft once at the end* (the worker is our build of the same engine source, not the
+build the student sees, so the final result would have to be compared with the worker's before it is shown).
 
 Nothing tells the student that a long run is still working beyond the status line "translating and building in solidcraft...".
+
+## Run only the new steps (owner chose it, 2026-11-12): measured, built, off unless asked for
+
+When SolidCraft holds, from an empty design and run to the end, exactly the first commands of the list that is asked for, only the rest is run on
+top (`upstream-bridge.mjs` `held`; the record of what SolidCraft holds is kept by `reply-memory.mjs`, set only from a run that came back ok and
+dropped after anything else). The time budget still judges the whole list. The switch is `?inc=on`; without it the page is what it was.
+
+**Is a continued run the run from empty?** Measured, not assumed (`timing/inc.mjs`, mode `on`): 4845 scripts in the real page (the 4784 rows of
+the six corpora, as scripts or docs, and the 61 pilot and timing scripts) with continuation on, and a second SolidCraft in the same page as the
+reference. Every real engine run of the page was repeated on the reference from an empty design and the two replies compared field by field,
+exactly. After each script the design the page was left on was read (faces, edges, measure) and compared with the accepted commands from empty.
+
+| | count |
+|---|---|
+| scripts | 4845 |
+| engine runs compared | 19960 |
+| of those, continued (41481 commands not run again; 52506 run) | 9518 |
+| continued runs equal to the run from empty in every field, to the last digit | 9500 |
+| continued runs not exact | 18 |
+| runs from empty not exact against the reference's run from empty | 56 |
+| scripts with any difference | 44 |
+| scripts that built nothing (a script error, or the whole run refused before the engine) | 8 |
+| scripts with no answer (`fc combined seed 215`, see "A step that stops SolidCraft") | 1 |
+
+(`timing/continue/corpus-summary.json`, `corpus-rows.jsonl`.) The comparison can fail: with one number of each list's last command changed by one
+part in a million on the reference, 30 of 36 sample rows report differences (`continue/control.jsonl`). The other 6 were not looked into; the
+change is only made where the last command has a plain non-zero number among its parameters.
+
+**The 74 runs that are not exact are the engine, not the continuing.** 56 of them are a run from empty against a run from empty. All 44 scripts
+send the engine a round (20 have a round step, 24 make a box with `round:`). The 44 were
+run again three ways (mode `on3`: the page's run, the reference's run from empty, and the reference's run from empty a second time; a pair is
+"same solid" when every number agrees within 1e-9 and the faces and edges match by their geometry and names, whatever their order;
+`continue/affected-three-way.jsonl`):
+
+| 83 runs of the 44 scripts | page against reference | reference against itself |
+|---|---|---|
+| exact | 11 | 11 |
+| same solid, not exact | 72 | 72 |
+| not the same solid | 0 | 0 |
+| largest difference of a volume | 7.2e-16 | 1.5e-14 |
+
+All 20 continued runs among them are the same solid as the run from empty, and every one of the 83 lists has a round command in it: no list
+without a round was inexact. So continuing adds nothing to what the engine does by itself. The final designs: 43 of 44 the same solid in both columns; in 1 (`holes round-box-hole-37`) two readings
+from empty describe the wall of the hole with its axis up in one and down in the other (the same cylinder), and the page's reading differs from
+the reference in the same way.
+
+**Finding: the engine does not repeat a round to the last digit.** Two runs of the same commands from an empty design, in the same SolidCraft,
+give volumes that differ in the last digits (up to 1.5e-14 of the volume), the faces of the part in another order, and a hole wall's axis in
+either direction (`continue/round-four-readings.json`: a box with all twelve edges rounded, read four times: the 26 faces are the same faces, in
+four different orders; `round-hole-four-readings.json`). A box with four edges rounded gave the same volume and the same order in four readings.
+By a scan of the scripts and docs about 424 of the 4784 rows send a round or bevel; 44 showed a difference in one pass. The layer is not affected by the order: it sends a face or an edge as a point, never as a
+place in the list (`packages/layer/src`: no command carries an index). It does mean that nothing may compare two engine runs of a rounded part
+for equality, and that a recorded volume of a rounded part is good to about 1e-13, not to the last digit.
+
+**What it saves** (`continue/timing-off-on.jsonl`; the same page, continuation off and on, one run each):
+
+| | off | on | |
+|---|---|---|---|
+| the 55 pilot and timing scripts that build | 328.3 s | 289.0 s | 12% less |
+| every tenth row of the six corpora (478) | 454.3 s | 433.2 s | 4.7% less |
+| the slow join, then a second translation | 45.8 s | 35.6 s | 22% less |
+| the slow join, then both extra passes | 117.3 s | 96.4 s | 18% less |
+| the slow join alone | 13.5 s | 13.5 s | none |
+
+All 533 give the same steps, sentences and bodies, and volumes equal to the last digit. The saving is smaller than was expected when this was
+chosen, for two reasons the first timing study did not separate. The time-budget worker still replays the whole list for every budgeted step
+(47.8 s of the 117.3 s), and continuing does not touch the worker. And a guard's check leaves SolidCraft on a variant, so the step after a
+checked step starts from empty again; the slow join itself is always the new step. What would cut the rest is the worker keeping its design
+between probes, and a way to return SolidCraft to the accepted commands after a check without replaying them; neither is attempted.
+
+Tests: `packages/solidcraft-host/test/reply-memory.test.mjs` (26: among them 2000 random runs in random order against a reference that always
+starts from empty, with a fake SolidCraft that counts every untrue `held` statement: none), `upstream-bridge.test.mjs` (8 for `held`). Each rule
+was removed in turn in a copy and a test failed each time.
+
+## A step that stops SolidCraft (found by the same run; fixed on our side)
+
+The corpora had only ever been swept in Node. In the real page one row of 4784 never answered: `fc combined seed 215` (a cylinder, drafted, with
+three pockets; `continue/engine-stop-case.json`), with continuation on or off, in 600 s and in 2400 s. It is not slow. The second pocket makes
+the engine panic (`truck-geotrait-0.4.0/src/algo/curve.rs:78`, "tolerance must be no less than 1e-6"), which in the web build is a trap
+("RuntimeError: unreachable"): upstream's `request()` then never answers, nor does anything asked of SolidCraft afterwards
+(`continue/engine-stop-fc215-before.log`: no answer in 420 s; the panic's own words are in the second log below). The student would see "translating and building in solidcraft..." for ever. A pocket has no time
+budget, so the worker, which would have caught the trap, was never asked. In Node the same trap is an exception the caller catches, and the step
+is refused: "pk6: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change
+the sketch, the length or the options".
+
+Fixed in the page (`packages/solidcraft-host/src/crash-guard.mjs`; upstream is not patched): the trap shows as an uncaught error on SolidCraft's
+window. Every call that is waiting is then rejected, which the bridge already turns into a failed run and the layer into the step's own sentence;
+SolidCraft's frame is loaded again, and calls made meanwhile wait for it. Only a wasm RuntimeError counts. No sentence is new. The same row in
+the page now (`continue/engine-stop-fc215-with-guard.log`): 12 s, pk6 and pk8 refused with the sentences above, the part 13313.79584555072 mm3 with
+5 faces, in the report and in SolidCraft, which is the Node sweep's result to the last digit.
+
+Tests: `packages/solidcraft-host/test/crash-guard.test.mjs` (10, a fake frame whose engine stops answering and throws the error the page throws).
+
+Limits: an engine that hangs without a trap, in a step that has no time budget, is still a page that waits; none was seen in the 4845 scripts.
+A trap during a step costs the time to load SolidCraft again (about 2 s here).
+
+Checked with both changes in (continuation off, as shipped): `npm test` 1104 tests, 1098 pass, 6 skipped, 0 fail, and the crash guard's eleventh
+test after that run (the host package alone: 134 of 134); the six browser checks, the 44 sketch scripts, the 14 blocked-step scripts, the 13
+two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).

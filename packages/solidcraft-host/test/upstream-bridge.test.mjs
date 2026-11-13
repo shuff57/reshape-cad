@@ -216,3 +216,69 @@ test('a cone is not assumed: another name, a missing generator, a bent edge or a
   // a mouth vertex moved off the mouth circle's height (the far group is no longer in one plane)
   none(F, E.map((e) => ({ ...e, start: e.start.map((v, k) => (k === 2 && Math.abs(e.start[0] - 4.728) < 1e-2 && Math.abs(v - 5) < 1e-9 ? 4.9 : v)), end: e.end.map((v, k) => (k === 2 && Math.abs(e.end[0] - 4.728) < 1e-2 && Math.abs(v - 5) < 1e-9 ? 4.9 : v)) })));
 });
+
+// ---- held: run only the commands after the ones SolidCraft already holds (second pilot, Q7) ------------------------------------------------------------
+const three = () => [{ command: 'solid.box', params: { length: 30 } }, { command: 'solid.cylinder', params: { radius: 2 } }, { command: 'solid.fillet', params: { radius: 1 } }];
+const sent = (sc) => sc.calls.filter((c) => c[0] === 'request').map((c) => c[2].commands.map((x) => x.command));
+const news = (sc) => sc.calls.filter((c) => c[1] === 'file.new').length;
+
+test('execute with held: no file.new, only the rest is sent, and completed counts the whole list', async () => {
+  const sc = fake(); const r = await createUpstreamBridge(sc).execute(three(), { fresh: true, held: 2 });
+  assert.equal(r.ok, true);
+  assert.equal(news(sc), 0);
+  assert.deepEqual(sent(sc), [['solid.fillet']]);
+  assert.equal(r.completed, 3);
+});
+test('execute with held equal to the whole list runs nothing and reads the design', async () => {
+  const sc = fake(); const r = await createUpstreamBridge(sc).execute(three(), { fresh: true, held: 3 });
+  assert.equal(r.ok, true); assert.equal(news(sc), 0); assert.deepEqual(sent(sc), []);
+  assert.equal(r.completed, 3); assert.equal(r.measure.bodies[0].volume_mm3, 6000);
+});
+test('a failure in a continued run is reported at its place in the whole list, with that command\'s params', async () => {
+  const sc = fake({ failAt: 0 }); const r = await createUpstreamBridge(sc).execute(three(), { fresh: true, held: 2 });
+  assert.equal(r.ok, false);
+  assert.equal(r.failed.index, 2); assert.equal(r.failed.command, 'solid.fillet'); assert.deepEqual(r.failed.params, { radius: 1 });
+});
+test('held is only a statement about a fresh run, and only a whole number within the list: anything else starts from empty', async () => {
+  for (const held of [0, -1, 4, 1.5, '2', null, NaN]) {
+    const sc = fake(); await createUpstreamBridge(sc).execute(three(), { fresh: true, held });
+    assert.equal(news(sc), 1, String(held)); assert.deepEqual(sent(sc), [['solid.box', 'solid.cylinder', 'solid.fillet']], String(held));
+  }
+  const sc = fake(); await createUpstreamBridge(sc).execute(three(), { fresh: false, held: 2 }); // not fresh: the list is added to what is there, all of it
+  assert.equal(news(sc), 0); assert.deepEqual(sent(sc), [['solid.box', 'solid.cylinder', 'solid.fillet']]);
+});
+test('the time budget judges the whole list, also when only the rest is run', async () => {
+  const probed = []; const prober = { probe: async (cmds, b) => { probed.push([cmds.length, b]); return { status: 'done', cpuMs: 7, loadMs: 1, reply: { measure: { bodies: [] } } }; } };
+  const sc = fake(); const r = await createUpstreamBridge(sc, { prober }).execute(three(), { fresh: true, held: 2, budgetS: 45 });
+  assert.deepEqual(probed, [[3, 45]]); assert.deepEqual(sent(sc), [['solid.fillet']]); assert.equal(r.cpuMs, 7);
+  const stop = { probe: async () => ({ status: 'timedOut', cpuMs: 45000 }) };
+  const sc2 = fake(); const r2 = await createUpstreamBridge(sc2, { prober: stop }).execute(three(), { fresh: true, held: 2, budgetS: 45 });
+  assert.equal(r2.timedOut, true); assert.deepEqual(sc2.calls, []); // SolidCraft not touched
+});
+test('the reply is what it always was unless `features` is asked for; then `ran` is the feature numbers of the commands this call ran', async () => {
+  const cmds = three();
+  const plain = await createUpstreamBridge(topoFake()).execute(cmds, { fresh: true });
+  assert.equal('ran' in plain, false);
+  const all = await createUpstreamBridge(topoFake()).execute(cmds, { fresh: true, features: true });
+  assert.deepEqual(all.ran, [{ feature: 1 }, { feature: 2 }, { feature: 3 }]);
+  const { ran: _r, ...rest } = all; assert.deepEqual(rest, plain);
+  const some = await createUpstreamBridge(topoFake()).execute(cmds, { fresh: true, features: true, held: 2 });
+  assert.equal(some.ran.length, 1);
+  assert.deepEqual((await createUpstreamBridge(topoFake()).execute(cmds, { fresh: true, features: true, held: 3 })).ran, []);
+  assert.equal('ran' in await createUpstreamBridge(topoFake({ results: false })).execute(cmds, { fresh: true, features: true }), false);
+});
+test('topologyOf with held and the held commands\' feature numbers: only the rest is run, and the reply has a number for every command', async () => {
+  const cmds = three(); const heldResults = [{ feature: 11 }, { feature: 12 }];
+  const sc = topoFake(); const r = await createUpstreamBridge(sc).topologyOf(cmds, { held: 2, heldResults });
+  assert.equal(r.ok, true); assert.equal(news(sc), 0); assert.deepEqual(sent(sc), [['solid.fillet']]);
+  assert.deepEqual(r.results, [{ feature: 11 }, { feature: 12 }, { feature: 1 }]); // the fake numbers its own batch from 1; upstream goes on counting
+  assert.equal(r.topology.bodies[0].faces.length, 6);
+  const sc2 = topoFake(); const r2 = await createUpstreamBridge(sc2).topologyOf(cmds, { held: 3, heldResults: [...heldResults, { feature: 13 }] });
+  assert.deepEqual(sent(sc2), []); assert.equal(news(sc2), 0); assert.deepEqual(r2.results.map((x) => x.feature), [11, 12, 13]);
+});
+test('topologyOf without the held feature numbers, or with the wrong count of them, starts from empty', async () => {
+  for (const o of [{ held: 2 }, { held: 2, heldResults: [{ feature: 1 }] }, { held: 5, heldResults: [1, 2, 3, 4, 5].map((feature) => ({ feature })) }, { heldResults: [{ feature: 1 }] }]) {
+    const sc = topoFake(); const r = await createUpstreamBridge(sc).topologyOf(three(), o);
+    assert.equal(news(sc), 1, JSON.stringify(o)); assert.equal(sent(sc)[0].length, 3); assert.deepEqual(r.results.map((x) => x.feature), [1, 2, 3]);
+  }
+});

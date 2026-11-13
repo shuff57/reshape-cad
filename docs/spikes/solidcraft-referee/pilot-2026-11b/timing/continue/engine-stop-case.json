@@ -1,0 +1,109 @@
+[
+ {
+  "id": "fccombined#215 fc combined seed 215",
+  "doc": {
+   "version": 1,
+   "features": [
+    {
+     "id": "c1",
+     "kind": "cylinder",
+     "radius": 12,
+     "height": 30,
+     "center": [
+      8,
+      -5,
+      3
+     ]
+    },
+    {
+     "id": "d2",
+     "kind": "draft",
+     "target": "c1",
+     "angle": 2,
+     "pull": "z",
+     "neutral": 0,
+     "whole": true
+    },
+    {
+     "id": "sk3",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "circle",
+     "points": [
+      [
+       8,
+       8
+      ],
+      [
+       12,
+       8
+      ]
+     ]
+    },
+    {
+     "id": "pk4",
+     "kind": "pocket",
+     "target": "sk3",
+     "into": "d2",
+     "depth": 40
+    },
+    {
+     "id": "sk5",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "shape": "circle",
+     "points": [
+      [
+       2,
+       10
+      ],
+      [
+       10,
+       10
+      ]
+     ]
+    },
+    {
+     "id": "pk6",
+     "kind": "pocket",
+     "target": "sk5",
+     "into": "pk4",
+     "depth": 1
+    },
+    {
+     "id": "sk7",
+     "kind": "sketch",
+     "plane": "xy",
+     "offset": 0,
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       8,
+       0
+      ],
+      [
+       8,
+       6
+      ],
+      [
+       0,
+       6
+      ]
+     ]
+    },
+    {
+     "id": "pk8",
+     "kind": "pocket",
+     "target": "sk7",
+     "into": "pk6",
+     "depth": 40
+    }
+   ]
+  }
+ }
+]

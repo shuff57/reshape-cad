@@ -103,6 +103,10 @@ Since the 0.30.1 pin (2026-11-09) hollows send a budget too, and the kernel is t
 
 Within one run of a script the pane remembers the engine's replies (`src/reply-memory.mjs`, 2026-11-12): a command list that was already run from an empty design is answered from memory, with the time it took. A run stopped by the budget is not remembered. The final replay that puts SolidCraft on the accepted commands is skipped only when SolidCraft already holds exactly that list and a fresh reading of it shows the bodies of that reply; otherwise the list is really run. `?memo=off` switches the memory off. Measured: `docs/spikes/solidcraft-referee/pilot-2026-11b/PILOT-2.md`, "Q7".
 
+`?inc=on` (off unless asked for, 2026-11-13) runs only the new commands when SolidCraft already holds the start of the list (`execute(cmds, { fresh, held })`). Measured against a second SolidCraft that always starts from empty: 9500 of 9518 continued runs equal to the last digit, the other 18 the same solid within the engine's own run-to-run noise on rounds; 5 to 12% less time. Same write-up, "Run only the new steps".
+
+`src/crash-guard.mjs` (2026-11-13): a command that makes SolidCraft's engine trap (a wasm RuntimeError) used to leave the page waiting for ever. The calls in flight are now rejected, so the step is refused in the layer's own sentence, and SolidCraft's frame is loaded again. Same write-up, "A step that stops SolidCraft".
+
 Setup: `sh kernel/build.sh` (needs the rig's `sc-src`, cargo, wasm-bindgen; a few minutes, 8 GB or more at 0.30.1: run under `systemd-run --user --scope -p MemoryMax=6G -p MemorySwapMax=0`) makes `kernel/dist/`; serve that folder as `kernel/` next to `pane/` (the preview folder has a symlink). `npm test` has 12 unit tests for the pure parts (fake Worker and clock) and one against the real wasm if the rig is there.
 
 Real browser (one headless Chrome, 3 GB cap), against the 0.21.0 web build:

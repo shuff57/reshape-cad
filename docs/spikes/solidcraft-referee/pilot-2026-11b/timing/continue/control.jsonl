@@ -1,0 +1,36 @@
+{"id":"holes#3 g:hole-simple__along-y","runs":2,"compared":2,"notExact":2,"finalExact":false,"maxRel":9.999989999631423e-7}
+{"id":"holes#62 blind-wedge-turned","runs":4,"compared":4,"notExact":2,"finalExact":true,"maxRel":1.0000000000326323}
+{"id":"holes#121 union-hole-blind","runs":6,"compared":6,"notExact":4,"finalExact":false,"maxRel":1.043120803419265}
+{"id":"holes#180 cs-thin-plate-T3.4","runs":3,"compared":3,"notExact":3,"finalExact":false,"maxRel":1.1373567547406271}
+{"id":"holes#239 hollow-open-top-blind","runs":5,"compared":5,"notExact":4,"finalExact":false,"maxRel":1}
+{"id":"holes#298 cs-angle-173","runs":3,"compared":3,"notExact":3,"finalExact":false,"maxRel":9.999989999631423e-7}
+{"id":"sd#3 hollow-closed-sphere","runs":2,"compared":2,"notExact":1,"finalExact":true,"maxRel":0.5794829890460148}
+{"id":"sd#185 hollow-after-draft","runs":8,"compared":8,"notExact":8,"finalExact":false,"maxRel":0.00016045741457955618}
+{"id":"sd#367 fuzz-hollow-13","runs":2,"compared":2,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"sd#549 dnc-notch-left-in45","runs":9,"compared":9,"notExact":7,"finalExact":false,"maxRel":1}
+{"id":"sd#731 dw2-twice","runs":6,"compared":6,"notExact":6,"finalExact":false,"maxRel":0.00000399998399991257}
+{"id":"sd#913 hd2-back-w2-15","runs":9,"compared":9,"notExact":9,"finalExact":false,"maxRel":1.9999998888888892}
+{"id":"mt#3 k-pickguard:round1#3","runs":4,"compared":4,"notExact":2,"finalExact":true,"maxRel":1}
+{"id":"mt#324 r3-lumps:pocket-split then turn#20","runs":4,"compared":4,"notExact":2,"finalExact":false,"maxRel":1.7551622418879058}
+{"id":"mt#645 r4-conechain:copies#72","runs":1,"compared":1,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"mt#966 r6-conechain-moves:moves#96","runs":6,"compared":6,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"mt#1287 r6-fresh-a:cone#77","runs":1,"compared":1,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"mt#1608 r6-wide-a:cone#98","runs":4,"compared":4,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"combined#3 combined seed 3","runs":3,"compared":3,"notExact":1,"finalExact":true,"maxRel":1}
+{"id":"combined#103 combined seed 103","runs":5,"compared":5,"notExact":1,"finalExact":true,"maxRel":0.8265977683210733}
+{"id":"combined#203 combined seed 203","runs":4,"compared":4,"notExact":3,"finalExact":false,"maxRel":1}
+{"id":"combined#303 combined seed 303","runs":6,"compared":6,"notExact":4,"finalExact":false,"maxRel":0.000006461191083241708}
+{"id":"combined#403 combined seed 403","runs":4,"compared":4,"notExact":3,"finalExact":false,"maxRel":1}
+{"id":"combined#503 combined seed 503","runs":2,"compared":2,"notExact":0,"finalExact":true,"maxRel":0}
+{"id":"rgcombined#3 rg combined seed 3","runs":3,"compared":3,"notExact":2,"finalExact":false,"maxRel":1.4285710000004286}
+{"id":"rgcombined#69 rg combined seed 69","runs":2,"compared":2,"notExact":2,"finalExact":false,"maxRel":9.999990001444085e-7}
+{"id":"rgcombined#135 rg combined seed 135","runs":2,"compared":2,"notExact":1,"finalExact":true,"maxRel":1.0399642463370633}
+{"id":"rgcombined#201 rg combined seed 201","runs":2,"compared":2,"notExact":2,"finalExact":false,"maxRel":9.999990010532958e-7}
+{"id":"rgcombined#267 rg combined seed 267","runs":7,"compared":7,"notExact":3,"finalExact":true,"maxRel":1.5157058546880215}
+{"id":"rgcombined#333 rg combined seed 333","runs":3,"compared":3,"notExact":2,"finalExact":false,"maxRel":9.999990002427763e-7}
+{"id":"fccombined#3 fc combined seed 3","runs":3,"compared":3,"notExact":3,"finalExact":false,"maxRel":1.8533333333333333}
+{"id":"fccombined#69 fc combined seed 69","runs":9,"compared":9,"notExact":5,"finalExact":true,"maxRel":1}
+{"id":"fccombined#135 fc combined seed 135","runs":4,"compared":4,"notExact":2,"finalExact":true,"maxRel":0.000005061619611622674}
+{"id":"fccombined#201 fc combined seed 201","runs":10,"compared":10,"notExact":7,"finalExact":true,"maxRel":1}
+{"id":"fccombined#267 fc combined seed 267","runs":2,"compared":2,"notExact":2,"finalExact":false,"maxRel":0.0000015999977281742624}
+{"id":"fccombined#333 fc combined seed 333","runs":9,"compared":9,"notExact":6,"finalExact":true,"maxRel":1}

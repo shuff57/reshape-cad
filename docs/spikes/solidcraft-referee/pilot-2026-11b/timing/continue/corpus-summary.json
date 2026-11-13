@@ -1,0 +1,101 @@
+{
+ "what": "inc.mjs mode on: every real engine run of the page (continuation on) against the same list from empty on a second SolidCraft; exact comparison",
+ "byCorpus": {
+  "pilot": {
+   "rows": 61,
+   "noAnswer": 0,
+   "nothingBuilt": 2,
+   "runs": 403,
+   "continued": 194,
+   "notExact": 0,
+   "notExactContinued": 0,
+   "commandsHeld": 970,
+   "commandsRun": 1452,
+   "rowsWithADifference": 0
+  },
+  "holes": {
+   "rows": 357,
+   "noAnswer": 0,
+   "nothingBuilt": 0,
+   "runs": 1028,
+   "continued": 363,
+   "notExact": 4,
+   "notExactContinued": 2,
+   "commandsHeld": 959,
+   "commandsRun": 2593,
+   "rowsWithADifference": 2
+  },
+  "sd": {
+   "rows": 1097,
+   "noAnswer": 0,
+   "nothingBuilt": 0,
+   "runs": 5340,
+   "continued": 1889,
+   "notExact": 8,
+   "notExactContinued": 0,
+   "commandsHeld": 4089,
+   "commandsRun": 12473,
+   "rowsWithADifference": 8
+  },
+  "mt": {
+   "rows": 1930,
+   "noAnswer": 0,
+   "nothingBuilt": 6,
+   "runs": 6698,
+   "continued": 4018,
+   "notExact": 0,
+   "notExactContinued": 0,
+   "commandsHeld": 25154,
+   "commandsRun": 17868,
+   "rowsWithADifference": 0
+  },
+  "combined": {
+   "rows": 600,
+   "noAnswer": 0,
+   "nothingBuilt": 0,
+   "runs": 2628,
+   "continued": 1177,
+   "notExact": 25,
+   "notExactContinued": 6,
+   "commandsHeld": 3813,
+   "commandsRun": 7202,
+   "rowsWithADifference": 15
+  },
+  "rgcombined": {
+   "rows": 400,
+   "noAnswer": 0,
+   "nothingBuilt": 0,
+   "runs": 1889,
+   "continued": 906,
+   "notExact": 15,
+   "notExactContinued": 4,
+   "commandsHeld": 3393,
+   "commandsRun": 5955,
+   "rowsWithADifference": 9
+  },
+  "fccombined": {
+   "rows": 400,
+   "noAnswer": 1,
+   "nothingBuilt": 0,
+   "runs": 1974,
+   "continued": 971,
+   "notExact": 22,
+   "notExactContinued": 6,
+   "commandsHeld": 3103,
+   "commandsRun": 4963,
+   "rowsWithADifference": 10
+  }
+ },
+ "total": {
+  "rows": 4845,
+  "noAnswer": 1,
+  "nothingBuilt": 8,
+  "runs": 19960,
+  "continued": 9518,
+  "notExact": 74,
+  "notExactContinued": 18,
+  "commandsHeld": 41481,
+  "commandsRun": 52506,
+  "rowsWithADifference": 44
+ }
+}

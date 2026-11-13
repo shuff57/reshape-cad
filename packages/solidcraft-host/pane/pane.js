@@ -4,6 +4,7 @@
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createReplyMemory } from '../src/reply-memory.mjs';
+import { createCrashGuard } from '../src/crash-guard.mjs';
 import { createProber } from '../src/probe-client.mjs';
 import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
@@ -184,7 +185,15 @@ function markError(line) {
 // ---- the bridge: upstream window.solidcraft of the SolidCraft iframe (same origin), shaped for the translator by upstream-bridge.mjs --------
 const scFrame = () => document.getElementById('sc');
 const scApi = () => { const w = scFrame() && scFrame().contentWindow; if (!w || !w.solidcraft) throw new Error('SolidCraft is not ready'); return w.solidcraft; };
-const lazySc = { inspect: (...a) => scApi().inspect(...a), execute: (...a) => scApi().execute(...a), request: (...a) => scApi().request(...a) };
+// SolidCraft's engine can stop for good in the middle of a command (a wasm trap); its API then never answers. The guard turns that into a failed run, which the
+// layer refuses in the step's own sentence, and loads SolidCraft again (src/crash-guard.mjs). engineStops: one row per stop, for the verification scripts.
+const engineStops = [];
+const lazySc = createCrashGuard({
+  getWindow: () => (scFrame() && scFrame().contentWindow) || null,
+  reload: async () => { scFrame().contentWindow.location.reload(); },
+  isReady: async () => { const r = await Promise.race([scApi().inspect(), new Promise((_, rej) => setTimeout(() => rej(new Error('t')), 1500))]); return !!r; },
+  onStop: (e) => engineStops.push({ at: Date.now(), message: e.message }),
+});
 // ---- the time budget: probes in a terminable Worker (docs/PLAN-scripting-layer.md, Phase 3 "Kernel in a worker") --------------------------
 // The kernel is the referee wasm of the pinned 0.30.1 engine (kernel/build.sh), served at ../kernel/ (see README). Without it (or with ?probe=off) a budgeted run is NOT
 // limited and the pane says so in the status line; the layer's G-BUDGET then stays advice only.
@@ -308,8 +317,12 @@ let soups = {}; // sketch command name -> { sketchId, geoms, rules, names, notes
  */
 // ---- one run of the script: the engine's replies are remembered (src/reply-memory.mjs) --------------------------------------------------------------------------
 // `memo` lives during one run(); `?memo=off` makes none, and every list is then run every time, as before. Outside run() the bridge is called directly.
+// `?inc=on`: run only the new steps (off unless asked for; reply-memory.mjs continueRuns). Tests may set __host.shadow (a second bridge, on another SolidCraft)
+// and read __host.engineLog: one row per real engine run, with the comparison against the same list run from empty on the shadow.
 let memo = null;
 const MEMO_ON = params.get('memo') !== 'off';
+const INC_ON = params.get('inc') === 'on';
+const engineLog = [];
 const eng = {
   execute: (cmds, opts = {}) => { if (memo) return memo.execute(cmds, opts); const { replay: _r, ...pass } = opts; return bridge.execute(cmds, pass); },
   topologyOf: (cmds) => (memo ? memo.topologyOf(cmds) : bridge.topologyOf(cmds)),
@@ -619,13 +632,13 @@ async function run({ confirmed = false } = {}) {
     soups = {};
     // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8);
     // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
-    memo = MEMO_ON ? createReplyMemory(bridge) : null;
+    memo = MEMO_ON ? createReplyMemory(bridge, { continueRuns: INC_ON, shadow: window.__host.shadow ?? null, log: engineLog }) : null;
     const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds) });
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
     // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
     const held = memo ? await memo.heldReply(tr.commands) : null;
     const fin = held ?? await runSC(tr.commands, { replay: true });
-    const engineUse = memo ? { runs: memo.runs, fromMemory: memo.hits, finalReplaySkipped: !!held } : null;
+    const engineUse = memo ? { runs: memo.runs, fromMemory: memo.hits, finalReplaySkipped: !!held, ...(INC_ON ? { continued: memo.continued } : {}) } : null;
     memo = null;
     keepNext = false;
     $('cmds').textContent = JSON.stringify(tr.commands, null, 1);
@@ -751,9 +764,16 @@ async function translateRaw(docIn, names = []) {
   soups = {};
   // no script ran here: a draft the doc does not mark (DraftFeature.neutralFrom) is from-unknown, and G-FROM checks it against every `from:` word that could
   // have given its neutral (hostFromUsage recorded: false), so a stale from-bottom draft is refused here too, never built unchecked
-  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => bridge.topologyOf(cmds) };
-  const tr = await translateDoc(doc, ctx);
-  const fin = await runSC(tr.commands);
+  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => eng.topologyOf(cmds) };
+  // the engine is used as run() uses it: the replies of this one translation are remembered, and the design is left on the accepted commands
+  let tr, fin, engineUse = null;
+  try {
+    memo = MEMO_ON ? createReplyMemory(bridge, { continueRuns: INC_ON, shadow: window.__host.shadow ?? null, log: engineLog }) : null;
+    tr = await translateDoc(doc, ctx);
+    const held = memo ? await memo.heldReply(tr.commands) : null;
+    fin = held ?? await runSC(tr.commands, { replay: true });
+    engineUse = memo ? { runs: memo.runs, fromMemory: memo.hits, finalReplaySkipped: !!held, ...(INC_ON ? { continued: memo.continued } : {}) } : null;
+  } finally { memo = null; }
   const resolved = [];
   for (const n of names) {
     const r = await resolveAfter(tr, doc, n.name, ctx, n.want, n.target ?? null, n.before ?? null);
@@ -762,12 +782,12 @@ async function translateRaw(docIn, names = []) {
   return {
     features: tr.features.map((f) => ({ id: f.id, kind: f.kind, status: f.status, refusal: f.refusal ?? null, measure: f.measure ?? null, pick: f.pick ?? null, evidence: f.evidence ?? null })),
     bodies: (fin?.measure?.bodies ?? []).map((b) => ({ name: b.name, volume: b.volume_mm3, faces: b.faces })),
-    resolved,
+    resolved, commandList: tr.commands, engineUse,
   };
 }
 // Not a security boundary (this is the page's own JS): hooks for the verification scripts. `run` here never asks.
 window.__host = {
-  run, bridge, probeLog, runLog, runSC, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
+  run, bridge, probeLog, runLog, engineLog, engineStops, shadow: null, createUpstreamBridge, runSC, evaluate, validDoc, restoreTest, EXAMPLES, translateRaw, restore, refreshUndo,
   runExample: async (id, opts) => { load(id); return run({ confirmed: true, ...(opts ?? {}) }); },
   setScript: (code) => { $('src').value = code; $('src').dispatchEvent(new Event('input')); },
   runUnconfirmed: () => run({}),
