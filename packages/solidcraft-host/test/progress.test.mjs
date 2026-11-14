@@ -1,4 +1,4 @@
-// The progress line (src/progress.mjs; plan item 3). The words are a proposal and are pinned here only so that a change to them is a decision, not a slip.
+// The progress line (src/progress.mjs; plan item 3). The words are owner-approved (2026-11-14) and pinned here so that a change to them is a decision, not a slip.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createProgress, LINES, yieldToBrowser } from '../src/progress.mjs';

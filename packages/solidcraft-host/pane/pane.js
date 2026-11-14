@@ -324,8 +324,8 @@ let memo = null;
 const MEMO_ON = params.get('memo') !== 'off';
 const INC_ON = params.get('inc') === 'on';
 const engineLog = [];
-// `?progress=on`: the status line names the step being built (src/progress.mjs). OFF unless asked for: its words are a proposal, not approved text.
-const PROGRESS_ON = params.get('progress') === 'on';
+// The status line names the step being built (src/progress.mjs; the words are the owner's, 2026-11-14). `?progress=off` gives the one line it used to be.
+const PROGRESS_ON = params.get('progress') !== 'off';
 let progress = null; // alive during one run()
 const eng = {
   execute: async (cmds, opts = {}) => { if (progress) await progress.beforeEngine(); if (memo) return memo.execute(cmds, opts); const { replay: _r, ...pass } = opts; return bridge.execute(cmds, pass); },

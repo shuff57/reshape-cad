@@ -2,8 +2,8 @@
 // that into a line and gives the browser a moment to draw it before the engine is called. SolidCraft computes on the page's own thread, so the line cannot
 // change DURING one engine call, only between calls: no seconds are shown, because a count that stops while the engine works reads as a freeze.
 //
-// THE WORDS BELOW ARE A PROPOSAL, NOT APPROVED TEXT. pane.js uses this only with ?progress=on; without it the page says what it always said. When the owner
-// has approved wording, LINES is the one place to change.
+// The words are the owner's (approved 2026-11-14, "as proposed"). LINES is the one place they are written; a change to them is the owner's to make.
+// `?progress=off` switches the line off and the page says "translating and building in solidcraft..." for the whole run, as it used to.
 //   first translation        building step 4 of 9: hole1 ...
 //   a later translation      checking step 4 of 9: hole1 ...        (the page translates a script again after it left a step out, and once more to tell a
 //                                                                    blocked step its own mistake; the same steps come round again)
