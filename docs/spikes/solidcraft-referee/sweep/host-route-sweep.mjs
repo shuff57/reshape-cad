@@ -60,7 +60,7 @@
 // Verdicts (measured feature = the case's measure id, else the last feature): REFUSED; RIGHT (layer measure or scene matches every oracle that built,
 // at least one); WRONG (matches none that built); ORACLES-SPLIT (matches some, not others); BUILT-ORACLES-REFUSE (built, and OCCT and brep-rs both refuse
 // and no closed form: an open outline, a self-touching sketch... needs a human); BUILT-NO-REF (no oracle answered). --no-oracle records the host result only.
-import { writeFileSync, mkdirSync, appendFileSync, readFileSync, existsSync, readdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, appendFileSync, readFileSync, existsSync, readdirSync, writeSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
@@ -304,7 +304,10 @@ if (process.env.DUMP_FILE) { // dump.mjs: the cases as the page can take them: a
   writeFileSync(process.env.DUMP_FILE, JSON.stringify(ready.map((it, k) => (it.script !== undefined && !it.patch ? { id: `${NAME}#${k} ${it.id}`, script: it.script } : { id: `${NAME}#${k} ${it.id}`, doc: it.raw }))));
   console.log('dumped ' + ready.length); process.exit(0);
 }
-console.log('@@TOTAL@@' + ready.length);
+// The marker lines go out with a synchronous write. console.log to a pipe is queued, and a first step that keeps the engine busy in this process would hold
+// the line back: the driver then sees a child that hangs "outside a case" and gives the whole pass up (seen 2026-11-13 on a cylinder with both rims rounded).
+const mark = (line) => { try { writeSync(1, line + '\n'); } catch { console.log(line); } };
+mark('@@TOTAL@@' + ready.length);
 
 const relV = (a, b) => (typeof a === 'number' && Number.isFinite(a) ? Math.abs(a - b) / (Math.abs(b) > 0 ? Math.abs(b) : 1) : Infinity);
 function score(m, ref, curved) {
@@ -491,7 +494,7 @@ if (process.argv.includes('--detail')) {
 let n = 0;
 for (let i = FROM; i < ready.length && n < CHUNK; i++, n++) {
   const it = ready[i];
-  console.log('@@START@@' + JSON.stringify({ i, id: it.id }));
+  mark('@@START@@' + JSON.stringify({ i, id: it.id }));
   const lv = await runHost(it.doc, it.script);
   const fin = lv.feats?.find((x) => x.id === it.measureId);
   const scene = fin?.status === 'built' ? await sceneOf(lv.tr.commands) : null;
@@ -513,6 +516,6 @@ for (let i = FROM; i < ready.length && n < CHUNK; i++, n++) {
   const row = { i, id: it.id, corpus: CORPUS, others, gadget: it.gadget ?? null, cmdHash: lv.tr ? createHash('sha1').update(JSON.stringify(lv.tr.commands)).digest('hex') : null, nCmds: lv.tr?.commands.length ?? null, measureId: it.measureId, ms: lv.ms, calls: lv.calls, threw: lv.threw ?? null, feats: lv.feats?.map(({ m, ...r }) => ({ ...r, volume: m?.volume ?? null, bbox: m?.bbox ?? null, faces: m?.faces ?? null })) ?? null, scene: scene && { ok: scene.ok, volume: scene.volume, com: scene.com, nBodies: scene.nBodies, bbox: scene.bbox, apart: scene.apart }, final };
   appendFileSync(JSONL, JSON.stringify(row) + '\n');
   console.log(`${it.id}\t${final.verdict}\t${fin?.guard ?? ''}\t${lv.calls}r ${lv.ms?.toFixed(0)}ms`);
-  console.log('@@DONE@@' + i);
+  mark('@@DONE@@' + i);
 }
 process.exit(0);
