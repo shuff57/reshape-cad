@@ -496,7 +496,21 @@ for (let i = FROM; i < ready.length && n < CHUNK; i++, n++) {
   const fin = lv.feats?.find((x) => x.id === it.measureId);
   const scene = fin?.status === 'built' ? await sceneOf(lv.tr.commands) : null;
   const final = verdictOf(it, lv, it.measureId, scene);
-  const row = { i, id: it.id, corpus: CORPUS, gadget: it.gadget ?? null, cmdHash: lv.tr ? createHash('sha1').update(JSON.stringify(lv.tr.commands)).digest('hex') : null, nCmds: lv.tr?.commands.length ?? null, measureId: it.measureId, ms: lv.ms, calls: lv.calls, threw: lv.threw ?? null, feats: lv.feats?.map(({ m, ...r }) => ({ ...r, volume: m?.volume ?? null, bbox: m?.bbox ?? null, faces: m?.faces ?? null })) ?? null, scene: scene && { ok: scene.ok, volume: scene.volume, com: scene.com, nBodies: scene.nBodies, bbox: scene.bbox, apart: scene.apart }, final };
+  // THE OTHER PARTS (2026-11-14). A document can end with more than one part, and the measured step is the last built one: only ITS part is judged above
+  // (the whole scene is scored only when the parts' boxes are apart). Found on `rg combined seed 552`: a hollowed, drilled box that no oracle had looked
+  // at because a spun part came after it. Every other built step that no later built step works on is a part's final state too, and is judged the same
+  // way, without the case's stored reference (that is about the measured step).
+  const others = [];
+  if (!NO_ORACLE && lv.feats && process.env.OTHER_PARTS !== '0') {
+    const built = new Set(lv.feats.filter((x) => x.status === 'built').map((x) => x.id));
+    const usedLater = (id, at) => it.doc.features.slice(at + 1).some((g) => built.has(g.id) && !(g.kind === 'move' && g.copy) && (g.target === id || g.into === id || (Array.isArray(g.targets) && g.targets.includes(id))));
+    it.doc.features.forEach((g, at) => {
+      if (g.id === it.measureId || g.kind === 'sketch' || !built.has(g.id) || usedLater(g.id, at)) return;
+      const v = verdictOf({ ...it, measureId: g.id, ref: null, analytic: null, primaryAnalytic: false, occtStored: null, shouldRefuse: false, noRef: false, expect: undefined }, lv, g.id, null);
+      others.push({ id: g.id, kind: g.kind, verdict: v.verdict, okO: v.okO ?? null, okB: v.okB ?? null, m: v.m ?? null, occt: v.occt ?? null, brep: v.brep ?? null, sO: v.sO ?? null, sB: v.sB ?? null });
+    });
+  }
+  const row = { i, id: it.id, corpus: CORPUS, others, gadget: it.gadget ?? null, cmdHash: lv.tr ? createHash('sha1').update(JSON.stringify(lv.tr.commands)).digest('hex') : null, nCmds: lv.tr?.commands.length ?? null, measureId: it.measureId, ms: lv.ms, calls: lv.calls, threw: lv.threw ?? null, feats: lv.feats?.map(({ m, ...r }) => ({ ...r, volume: m?.volume ?? null, bbox: m?.bbox ?? null, faces: m?.faces ?? null })) ?? null, scene: scene && { ok: scene.ok, volume: scene.volume, com: scene.com, nBodies: scene.nBodies, bbox: scene.bbox, apart: scene.apart }, final };
   appendFileSync(JSONL, JSON.stringify(row) + '\n');
   console.log(`${it.id}\t${final.verdict}\t${fin?.guard ?? ''}\t${lv.calls}r ${lv.ms?.toFixed(0)}ms`);
   console.log('@@DONE@@' + i);

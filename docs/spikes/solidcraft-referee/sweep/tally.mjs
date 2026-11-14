@@ -9,7 +9,7 @@ const BOX_MM = 2.6e-3, VOL_TOL = 3e-4;
 const [DIR, ...ARGS] = process.argv.slice(2);
 const CS = ARGS.length ? ARGS : fs.readdirSync(DIR).filter((f) => /^hr-.*\.jsonl$/.test(f)).map((f) => f.slice(3, -6));
 const KNOWN = JSON.parse(fs.readFileSync(new URL('./known.json', import.meta.url), 'utf8')).rows;
-const e = (x) => (x == null ? '-' : (+x).toExponential(1)); const tot = {}; const known = {}; const fresh = [];
+const e = (x) => (x == null ? '-' : (+x).toExponential(1)); const tot = {}; const otherTot = {}; const known = {}; const fresh = [];
 export function curvedWall(f) {
   if (f.verdict !== 'WRONG' || !f.m?.curved || !f.occt || f.occt.refused || !f.brep || f.brep.refused) return null;
   if (Math.abs(f.occt.volume - f.brep.volume) > 1e-6 * Math.abs(f.occt.volume)) return null;
@@ -22,6 +22,16 @@ for (const c of CS) {
   for (const l of fs.readFileSync(`${DIR}/hr-${c}.jsonl`, 'utf8').split('\n').filter(Boolean)) {
     const r = JSON.parse(l); const f = r.final ?? {}; const k = r.hang ? 'HANG' : r.crashed ? 'CRASH' : f.verdict ?? '?';
     v[k] = (v[k] ?? 0) + 1; tot[k] = (tot[k] ?? 0) + 1;
+    // the other parts of the document (a document can end with more than one; host-route-sweep.mjs `others`), each judged like the measured one
+    for (const o of r.others ?? []) {
+      otherTot[o.verdict] = (otherTot[o.verdict] ?? 0) + 1;
+      if (o.verdict === 'RIGHT') continue;
+      if (o.verdict === 'WRONG' && curvedWall(o) !== null) { known['a curved wall (by rule)'] = (known['a curved wall (by rule)'] ?? 0) + 1; continue; }
+      const kn = KNOWN[`${c}:${r.id}#${o.id}`];
+      if (kn && kn.verdict === o.verdict && (kn.volume == null || (o.m && Math.abs(o.m.volume - kn.volume) <= 1e-6 * Math.max(1, Math.abs(kn.volume))))) { known[kn.class] = (known[kn.class] ?? 0) + 1; continue; }
+      const side = (x, s, ok) => (x?.refused ? 'refused' : x ? `${x.volume} dV ${e(s?.f?.dVol)} dBox ${e(s?.f?.dBbox)}${ok ? ' agrees' : ''}` : '-');
+      fresh.push(`  NEW ${o.verdict.padEnd(20)} ${c}:${String(r.id)}#${o.id} (another part of the document, a ${o.kind}) | page route ${o.m?.volume} | OCCT ${side(o.occt, o.sO, o.okO)} | brep-rs ${side(o.brep, o.sB, o.okB)}`);
+    }
     if (k === 'RIGHT' || k === 'REFUSED') continue;
     const mm = k === 'WRONG' ? curvedWall(f) : null;
     if (mm !== null) { known['a curved wall (by rule)'] = (known['a curved wall (by rule)'] ?? 0) + 1; continue; }
@@ -33,6 +43,7 @@ for (const c of CS) {
   console.log(`${c}: ${JSON.stringify(v)}`);
 }
 console.log(`total: ${JSON.stringify(tot)}`);
+if (Object.keys(otherTot).length) console.log(`other parts of the same documents: ${JSON.stringify(otherTot)}`);
 console.log(`known: ${JSON.stringify(known)}`);
 for (const o of fresh) console.log(o);
 console.log(`NEW: ${fresh.length}`);
