@@ -721,3 +721,51 @@ two-part scripts and both pilot runs give the same results as the last recorded 
 Still open from the measurement: the engine cuts a hole across a SOLID cylinder right, in 3 to 10 s, and the layer refuses it. Allowing it would
 need cross holes over many sizes, cones and round pads checked against hand-worked volumes first; it is not attempted.
 
+
+## The referee's hollow: two joins, and every answer checked at points (plan item 6, 2026-11-14)
+
+The plan is `../PLAN-open-2026-11.md`; this is its item 6, and it grew. It began as one row (`fc combined seed 476`, a hollow after a
+counterbore, 0.36% from the page) and ended with a referee that had been answering hollows wrongly more often than anyone had seen.
+
+**Two joins.** OCCT makes the wall of a hollow with a join type. The referee used the arc join, which rounds the new wall at an inside corner
+of the part; the mitred join keeps it sharp, which is the plane offset the layer is held to (`../remeasure-0.30.1/HALT-7.md`). On the HALT-7
+control the two give 1593.760 and 1599.527. Neither can replace the other: over the 3900 hollows of the corpora and the new documents
+(`open-items/referee-hollow/join-all.mjs`) both build and agree on 1989, both build and differ on 197 (177 by more than 1e-7), the arc alone
+builds 114, the mitre alone 173, and neither builds 1427. So the referee now asks for both: where they agree, that is the hollow; where they
+differ, it refuses by name and says nothing; where one builds, see below.
+
+**The first run of the new scoring found the rest.** The sweep now judges every final part of a document, not only the last-built one (next
+section), and the first document it was tried on came back WRONG on a part nobody had scored: `rg combined seed 552`, a 20 x 30 x 20 box with a
+through hole of radius 2, hollowed 2 with the top open. The page route 5165.391; by hand 12000 - pi 4 20 - (16 26 18 - pi 16 18) = 5165.451
+(1.2e-5 apart, the engine's cylinder); OCCT 10440.951. The wall round the hole (radius 4) touches the side wall of the cavity, the mitred join
+fails, and the arc join returns a part that is not the hollow. The page was right and the referee wrong. This is not new with the two-join
+rule: the arc join alone has always answered this way.
+
+**How often.** `open-items/referee-hollow/study.mjs` takes every hollow that at least one join builds and checks the answer at points whose
+side is certain, with no second kernel: a point of the source part further than 1.8 walls from its boundary must be hollow (a mitred corner
+reaches wall times sqrt 3), and a point half a wall in from the boundary must be wall unless the nearest face is the open one. 216 grid points
+a part. `open-items/referee-hollow/study.json`, 591 hollows:
+
+| the joins | hollows checked | fail the check | no point to ask | pass |
+|---|---|---|---|---|
+| both build and agree (every tenth) | 205 | 1 | 0 | 204 |
+| both build and differ | 187 | 27 both, 14 the arc only, 7 the mitre only | 3 | 115 both pass |
+| the arc alone builds | 98 | 43 | 11 | 44 |
+| the mitre alone builds | 122 | 43 | 5 | 74 |
+
+Four in ten of the answers that one join gives alone are not the hollow. The one failure among the agreeing joins is real too
+(`fc combined seed 932`: a blind hole that lies wholly inside the part; the hollow would leave a wall round it, floating, and both joins leave
+none).
+
+**What the referee does now** (`packages/brep-adapter/src/occt-build.ts`, `hollowPointCheck`): every hollow it is about to answer is checked
+at those points, and one that has material where the hollow must be, or none where the wall must be, is refused by name with the counts. An
+answer only one join gave is also refused when the check found no point to ask. It is a sample, not a proof: a wrong answer can still pass,
+and an arc-only answer at an inside corner passes with its rounded wall. The check costs 0.1 s on most parts and up to 1.4 s.
+
+Two things learned on the way, both about the machine and not the kernels. The check kept 4 to 6 MB a call inside OCCT's wasm heap until its
+distance objects were made once per shape and deleted (the first study ran out of memory after 300 hollows and printed 14 million lines saying
+so). And times taken while a kernel build was linking beside it were worthless: checks of 0.2 s took 570 s.
+
+Tests: `packages/brep-adapter/test/occt-sweep-options.test.mjs`, 29 of 29 (the box above refused; the same box with the hole in the middle
+answered to the hand form; the check itself on a right hollow, on the unhollowed part, on the bare cavity and on a closed hollow). The frozen
+parity and mesh gates pass 78 of 78 with it.

@@ -1964,7 +1964,12 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
             // the other cannot (arc only 114, mitre only 173), and each was seen to return a part that is plainly not the hollow (once each).
             //   both build and agree (1e-7 of the volume)  -> that is the hollow (the arc's solid, as before)
             //   both build and differ                      -> an inside corner, or one of them is wrong: refused by name, the oracle says nothing
-            //   one builds                                 -> that one, as before for the arc
+            //   one builds                                 -> that one, IF the point check below finds nothing against it
+            // THE POINT CHECK (2026-11-14, hollowPointCheck). A join that builds alone has nothing to confirm it, and what it builds is often not
+            // the hollow: of the hollows of the corpora that one join alone builds, the check finds material where the hollow must be, or none
+            // where the wall must be, in about four of ten (PILOT-2.md, "The referee's hollow, checked at points"; the first one seen: a drilled
+            // box whose hole's wall touches the side wall, 10440.95 from the arc join for a hand-worked 5165.45). So every answer is checked at
+            // points of the source part whose side is certain, and one that fails is refused by name.
             const offsetBy = (join: 'GeomAbs_Arc' | 'GeomAbs_Intersection'): { shape: any; op: any; volume: number } | null => {
               try {
                 const op = new oc.BRepOffsetAPI_MakeThickSolid();
@@ -2034,7 +2039,26 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
               } catch {
                 sane = false;
               }
+              // The point check. A check that cannot be made (it threw, or the answer holds no solid) counts against the answer; one that found no
+              // point to ask about leaves an answer both joins agree on standing, and refuses an answer only one join gave.
+              let points: HollowPoints | null = null;
               if (sane) {
+                try { points = hollowPointCheck(oc, src, openFace, f.thickness, cut); } catch { points = null; }
+              }
+              const asked = points ? points.wall[0] + points.hollow[0] : 0;
+              const against = points ? points.wall[1] + points.hollow[1] : 0;
+              const pointsOk = !!points && points.solids > 0 && against === 0 && (asked > 0 || (!!arcJoin && !!mitreJoin));
+              if (sane && !pointsOk) {
+                refusals.set(
+                  f.id,
+                  `Hollowing ${label(f.id)}: the reference kernel's answer is not the hollow at the points checked `
+                    + (points
+                      ? `(material at ${points.hollow[1]} of ${points.hollow[0]} points that must be hollow, none at ${points.wall[1]} of ${points.wall[0]} that must be wall), `
+                      : `(the check could not be made), `)
+                    + `so it is not answered here. ${label(f.id)} is shown without it.`,
+                );
+                shape = src;
+              } else if (sane) {
                 shape = cut;
                 // No boolean runs on the open-shell path (op.Shape() IS the
                 // finished result already, see the comment above) -- register
@@ -2082,6 +2106,79 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
     }
   }
   return { shapes: built, ops, sweeps, refusals };
+}
+
+/** What hollowPointCheck asked and found: [points asked, points where the answer is wrong] for each kind, and how many solids the answer holds. */
+export interface HollowPoints { wall: [number, number]; hollow: [number, number]; solids: number }
+
+/**
+ * Is `answer` the hollow of `src` (wall `t`, `open` the face left open, or null), at points whose side is certain? No second kernel is asked: only
+ * distances, measured on the SOURCE part.
+ *   - A point of the source further than 1.8 t from its whole boundary must be HOLLOW, whichever join made the wall: the rounded join removes
+ *     everything further than t from the closed faces, the mitred one reaches t * sqrt(3) at a corner of three faces.
+ *   - A point half a wall in from the boundary, taken on the way from its nearest boundary point q to a point p of the part (so that q is its
+ *     nearest boundary point too), must be WALL, unless q is on the open face.
+ * The points are a 6 x 6 x 6 grid over the part's box, off the middle of each cell (a part's planes of symmetry would put them on faces of the
+ * hollow). A sample, not a proof: a wrong answer can pass. What it buys: of 115 hollows both joins agree on, none failed.
+ * One distance object per shape, loaded once and asked for every point, and everything made here is deleted here: made per point and left to the
+ * collector, this kept 4 to 6 MB a call inside the wasm heap, and a sweep's process ran out of it.
+ */
+export function hollowPointCheck(oc: Occt, src: any, open: any, t: number, answer: any, N = 6): HollowPoints {
+  const subs = (s: any, kind: string): any[] => {
+    const out: any[] = [];
+    const e = new oc.TopExp_Explorer(s, oc.TopAbs_ShapeEnum[kind], oc.TopAbs_ShapeEnum.TopAbs_SHAPE);
+    while (e.More()) { out.push(e.Current().clone()); e.Next(); }
+    e.delete();
+    return out;
+  };
+  const box = new oc.Bnd_Box();
+  oc.BRepBndLib.Add(src, box, true);
+  const lo = box.CornerMin(), hi = box.CornerMax();
+  const L = [lo.X(), lo.Y(), lo.Z()], H = [hi.X(), hi.Y(), hi.Z()];
+  lo.delete(); hi.delete(); box.delete();
+  const made: any[] = [];
+  const ext = (s: any) => { const d = new oc.BRepExtrema_DistShapeShape(); d.SetDeflection(1e-7); d.LoadS2(s); made.push(d); return d; };
+  const srcSolids = subs(src, 'TopAbs_SOLID'), ansSolids = subs(answer, 'TopAbs_SOLID'), shells = subs(src, 'TopAbs_SHELL');
+  const eSrc = srcSolids.map(ext), eAns = ansSolids.map(ext), eBound = shells.map(ext), eOpen = open ? ext(open) : null;
+  const r: HollowPoints = { wall: [0, 0], hollow: [0, 0], solids: ansSolids.length };
+  const at = <T,>(p: number[], f: (v: any) => T): T => {
+    const g = new oc.gp_Pnt(p[0], p[1], p[2]); const mk = new oc.BRepBuilderAPI_MakeVertex(g); const v = mk.Vertex();
+    try { return f(v); } finally { v.delete(); mk.delete(); g.delete(); }
+  };
+  /** the distance from the point to this distance object's shape (0 inside a solid), and the nearest point of the shape */
+  const near = (v: any, d: any): { d: number; q: number[] | null } => {
+    d.LoadS1(v);
+    const pr = new oc.Message_ProgressRange();
+    try {
+      if (!d.Perform(pr) || d.NbSolution() < 1) return { d: NaN, q: null };
+      const g = d.PointOnShape2(1); const q = [g.X(), g.Y(), g.Z()]; g.delete();
+      return { d: d.Value(), q };
+    } finally { pr.delete(); }
+  };
+  const inside = (v: any, es: any[]) => es.some((d) => near(v, d).d < 1e-9);
+  try {
+    for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) for (let k = 0; k < N; k++) {
+      const p = [L[0] + (i + 0.37) / N * (H[0] - L[0]), L[1] + (j + 0.41) / N * (H[1] - L[1]), L[2] + (k + 0.43) / N * (H[2] - L[2])];
+      const got = at(p, (v) => {
+        if (!inside(v, eSrc)) return null;
+        let best: { d: number; q: number[] | null } = { d: Infinity, q: null };
+        for (const d of eBound) { const n = near(v, d); if (n.d < best.d) best = n; }
+        return { best, inAnswer: inside(v, eAns) };
+      });
+      if (!got || !(got.best.d > 0.05 * t) || !got.best.q) continue;
+      const dB = got.best.d, q = got.best.q;
+      if (dB > 1.8 * t) { r.hollow[0]++; if (got.inAnswer) r.hollow[1]++; }
+      if (dB >= 0.5 * t) {
+        const w = q.map((c, x) => c + (p[x] - c) * (0.5 * t / dB));
+        const isWall = at(w, (v) => ((eOpen && near(v, eOpen).d < 0.55 * t) ? null : inside(v, eAns)));
+        if (isWall !== null) { r.wall[0]++; if (!isWall) r.wall[1]++; }
+      }
+    }
+  } finally {
+    for (const d of made) d.delete();
+    for (const s of [...srcSolids, ...ansSolids, ...shells]) s.delete();
+  }
+  return r;
 }
 
 /** Volume and bounding box, straight from the kernel. Exact for curved

@@ -189,3 +189,36 @@ test('a hollow after a counterbore has one: the two joins differ (1593.760 round
   // the step before it is still answered
   near(measure(feats.slice(0, 2), 'h2').volume, 4800 - (PI * 1.5 ** 2 * 10 + PI * (3.5 ** 2 - 1.5 ** 2) * 2), 1e-7, 'the counterbored box');
 });
+
+// ---- the point check of a hollow (hollowPointCheck): PILOT-2.md, "The referee's hollow, checked at points" ----
+const drilledBox = [{ id: 'b1', kind: 'box', size: [20, 30, 20], center: [0, 0, 0] }, { id: 'h2', kind: 'hole', target: 'b1', diameter: 4, depth: 40, center: [-4, -3, 5], axis: 'z' }];
+test('a hollow only one join builds, and builds wrong, is refused: the wall round the hole touches the side wall (10440.95 for a hand-worked 5165.45)', opts, () => {
+  // by hand: the drilled box, minus the box moved in by 2 (open at the top) less the tube of radius 4 round the hole
+  const byHand = 12000 - PI * 4 * 20 - (16 * 26 * 18 - PI * 16 * 18);
+  near(byHand, 5165.4512719, 1e-9, 'the hand form');
+  const m = measure([...drilledBox, { id: 's3', kind: 'shell', target: 'h2', thickness: 2, open: face('b1', '+z') }], 's3');
+  assert.match(m.refused ?? '', /is not the hollow at the points checked \(material at \d+ of \d+ points that must be hollow/);
+});
+test('the same box with the hole clear of the wall is answered, to the hand form', opts, () => {
+  const feats = [{ id: 'b1', kind: 'box', size: [20, 30, 20], center: [0, 0, 0] }, { id: 'h2', kind: 'hole', target: 'b1', diameter: 4, depth: 40, center: [0, 0, 5], axis: 'z' }, { id: 's3', kind: 'shell', target: 'h2', thickness: 2, open: face('b1', '+z') }];
+  near(measure(feats, 's3').volume, 12000 - PI * 4 * 20 - (16 * 26 * 18 - PI * 16 * 18), 1e-7, 'bore in the middle, then hollow');
+});
+test('the point check itself: a right hollow passes, the unhollowed part and the bare cavity do not', opts, async () => {
+  const { hollowPointCheck } = await imp('packages/brep-adapter/dist/occt-build.js');
+  const { resolveNameAsUsedBy } = await imp('packages/brep-adapter/dist/topo-resolve.js');
+  const feats = [{ id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] }, { id: 's2', kind: 'shell', target: 'b1', thickness: 2, open: face('b1', '+z') },
+    { id: 'inner', kind: 'box', size: [36, 36, 18], center: [0, 0, 1] }];
+  const built = buildDoc(oc, solveDoc({ version: 1, features: feats }), arc);
+  const src = built.shapes.get('b1'); const open = resolveNameAsUsedBy(oc, feats[1].open, built, 'b1'); assert.ok(open, 'the open face resolves');
+  const right = hollowPointCheck(oc, src, open, 2, built.shapes.get('s2'));
+  assert.ok(right.wall[0] > 50 && right.hollow[0] > 50, `points of both kinds are asked: ${JSON.stringify(right)}`);
+  assert.deepEqual([right.wall[1], right.hollow[1], right.solids], [0, 0, 1]);
+  const solid = hollowPointCheck(oc, src, open, 2, src); // nothing removed: material everywhere the hollow must be
+  assert.equal(solid.hollow[1], solid.hollow[0]); assert.equal(solid.wall[1], 0);
+  const cavity = hollowPointCheck(oc, src, open, 2, built.shapes.get('inner')); // the cavity instead of the wall: wrong at every point of both kinds
+  assert.equal(cavity.wall[1], cavity.wall[0]); assert.equal(cavity.hollow[1], cavity.hollow[0]);
+  // a closed hollow: no open face, so the points under the top count as wall too
+  const closed = buildDoc(oc, solveDoc({ version: 1, features: [feats[0], { id: 's2', kind: 'shell', target: 'b1', thickness: 2 }] }), arc);
+  const c = hollowPointCheck(oc, closed.shapes.get('b1'), null, 2, closed.shapes.get('s2'));
+  assert.deepEqual([c.wall[1], c.hollow[1]], [0, 0]); assert.ok(c.wall[0] > right.wall[0], 'more wall points than with the top open');
+});
