@@ -1,0 +1,364 @@
+[
+ {
+  "id": "combined seed 853",
+  "beforeMs": 46457,
+  "afterMs": 2963,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h4 (hole): it comes after h3, which could not be built, so h4 is shown without it -- fix h3 first."
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pk6: its solid h4 was refused, so there is nothing to build on (it comes after h3, which could not be built, so h4 is shown without it -- fix h3 first.)"
+   }
+  ]
+ },
+ {
+  "id": "combined seed 889",
+  "beforeMs": 23500,
+  "afterMs": 749,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "d4",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d4 (draft): the right face of c1 could not be found on the part as it is now, so d4 is shown without it."
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 761",
+  "beforeMs": 37281,
+  "afterMs": 1131,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h4 (hole): a hole that stops short of the other side starts on the top of the part, but the part is not flat and level under this spot, so h4 is shown without it -- move the hole onto a flat top, or let it go all the way through."
+   },
+   {
+    "id": "h5",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h5 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h5 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "gz2",
+    "kind": "groove",
+    "status": "refused",
+    "refusal": "gz2 (groove): h5 was not built, so this groove has no finished part to cut; fix h5 first."
+   },
+   {
+    "id": "mz3",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "mz3 (move): its target gz2 was refused (gz2 (groove): h5 was not built, so this groove has no finished part to cut; fix h5 first.)"
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 845",
+  "beforeMs": 330046,
+  "afterMs": 1972,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "vz2",
+    "kind": "revolve",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h4 (hole): it comes after h3, which could not be built, so h4 is shown without it -- fix h3 first."
+   },
+   {
+    "id": "sk5",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pk6",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pk6: its solid h4 was refused, so there is nothing to build on (it comes after h3, which could not be built, so h4 is shown without it -- fix h3 first.)"
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "skz3",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "gz4",
+    "kind": "groove",
+    "status": "refused",
+    "refusal": "gz4 (groove): pk6 was not built, so this groove has no finished part to cut; fix pk6 first."
+   },
+   {
+    "id": "mz5",
+    "kind": "move",
+    "status": "refused",
+    "refusal": "mz5 (move): its target gz4 was refused, so there is nothing to build on (pk6 was not built, so this groove has no finished part to cut; fix pk6 first.)"
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 517",
+  "beforeMs": 133668,
+  "afterMs": 526,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "sk4",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "pk5",
+    "kind": "pocket",
+    "status": "refused",
+    "refusal": "pk5: its solid h3 was refused, so there is nothing to build on (a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape.)"
+   }
+  ]
+ },
+ {
+  "id": "rg combined seed 1229",
+  "beforeMs": 45946,
+  "afterMs": 834,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h4 (hole): the part it drills could not be found as a single piece, so h4 is shown without it -- drill one shape at a time."
+   },
+   {
+    "id": "d5",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d5 (draft): the back face of c1 could not be found on the part as it is now, so d5 is shown without it."
+   },
+   {
+    "id": "skz1",
+    "kind": "sketch",
+    "status": "noop",
+    "refusal": null
+   },
+   {
+    "id": "gz2",
+    "kind": "groove",
+    "status": "refused",
+    "refusal": "gz2 (groove): d5 was not built, so this groove has no finished part to cut; fix d5 first."
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 1129",
+  "beforeMs": 74679,
+  "afterMs": 818,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "d4",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d4 (draft): the right face of c1 could not be found on the part as it is now, so d4 is shown without it."
+   }
+  ]
+ },
+ {
+  "id": "fc combined seed 229",
+  "beforeMs": 46128,
+  "afterMs": 824,
+  "steps": [
+   {
+    "id": "c1",
+    "kind": "cylinder",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "s2",
+    "kind": "shell",
+    "status": "built",
+    "refusal": null
+   },
+   {
+    "id": "h3",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so h3 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape."
+   },
+   {
+    "id": "h4",
+    "kind": "hole",
+    "status": "refused",
+    "refusal": "h4 (hole): the part it drills could not be found as a single piece, so h4 is shown without it -- drill one shape at a time."
+   },
+   {
+    "id": "d5",
+    "kind": "draft",
+    "status": "refused",
+    "refusal": "d5 (draft): the back face of c1 could not be found on the part as it is now, so d5 is shown without it."
+   }
+  ]
+ }
+]

@@ -1,0 +1,31 @@
+rows 3000 (no earlier row 0), steps 21437
+    7 built -> refused by G-CURVED 
+        e.g. combined seed 853 h3
+             combined seed 889 h3
+    4 built -> refused, after a hole now refused 
+        e.g. combined seed 853 h4 [dependency] h4 (hole): it comes after h3, which could not be built, so h4 is shown without i
+             rg combined seed 845 h4 [dependency] h4 (hole): it comes after h3, which could not be built, so h4 is shown without i
+    1 refused [G-BUDGET] -> refused [G-CURVED] 
+        e.g. rg combined seed 1229 h3
+    2 refused [G-CROSS] -> refused [G-CURVED] 
+        e.g. rg combined seed 761 h5
+             rg combined seed 1289 h4
+    1 refused [G-NOOP] -> refused [G-CURVED] 
+        e.g. fc combined seed 1357 h4
+    2 refused [G-TANGENT] -> refused [G-CURVED] 
+        e.g. rg combined seed 1037 h3
+             fc combined seed 1069 h4
+   15 refused [G-TOP] -> refused [G-CURVED] 
+        e.g. combined seed 1249 h3
+             combined seed 1321 h3
+    1 refused [G10] -> refused [RG-CHAIN] 
+        e.g. rg combined seed 845 gz4 | gz4 (groove): pk6 was not built, so this groove has no finished part to cut; fix pk6 first
+    3 refused [dependency] -> refused [G-CURVED] 
+        e.g. combined seed 1417 h5
+             rg combined seed 557 h5
+    2 refused both, same guard [null], other words 
+        e.g. combined seed 853 pk6 | thing; move the sketch onto the part, or change the depth or direction |  which could not be built, so h4 is shown without it -- fix h3 first.)
+             rg combined seed 845 mz5 | ; move the ring edge onto that face or at least 0.25 mm away from it.) | not built, so this groove has no finished part to cut; fix pk6 first.)
+    3 refused both: the sentence now quotes the G-CURVED reason of the step it rests on 
+        e.g. combined seed 1321 pk6
+             fc combined seed 1069 pk6

@@ -392,8 +392,9 @@ function planHole(f, st, G) {
   const rootF = rootOf(f.target, G);
   if (!off.has('G-REVOLVE') && rootF?.kind === 'revolve') return refuse(SENTENCE.revolve(f), 'G-REVOLVE');
   const axis = f.axis ?? 'z'; const ai = AXI[axis]; const dir = AX[axis];
-  if (rootF && !off.has('G-CURVED')) {
-    const cv = curvedAxis(rootF, G);
+  const curvedRoot = curvedRootOf(f.target, G);
+  if (curvedRoot && !off.has('G-CURVED')) {
+    const cv = curvedAxis(curvedRoot, G);
     if (cv && Math.abs(Math.abs(cv.axis[ai]) - 1) > 1e-9) return refuse(SENTENCE.curved(f, cv.what), 'G-CURVED');
   }
   if (rootF?.kind === 'cylinder' && !off.has('G-WIDE')) {
@@ -691,6 +692,16 @@ function commonPost(f, after, before, env, { expected, recess }) {
 function rootOf(id, G) {
   let cur = G.byId[id]; const seen = new Set();
   while (cur && cur.kind === 'hole' && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target]; }
+  return cur ?? null;
+}
+// ---- G-CURVED sees through a hollow (second pilot, owner decision 2026-11-13: "refuse both, same sentence") --------------------------------------------------
+// rootOf() steps back over earlier holes only, so behind a hollow the part "started as" the hollow and G-CURVED said nothing: a hole ACROSS a hollowed
+// cylinder was cut. It is right when it is built, but that one cut takes the engine about 15 s (thirty times the same hole along the axis), every later
+// step replays it, and at the time budget the same script was built in one run and refused for time in another (pilot-2026-11b/PILOT-2.md, "A hole
+// across a hollowed cylinder"). The shape whose curved wall the hole would cross is found back over holes AND hollows; nothing else uses this walk.
+export function curvedRootOf(id, G) {
+  let cur = G.byId[id]; const seen = new Set();
+  while (cur && (cur.kind === 'hole' || cur.kind === 'shell') && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target]; }
   return cur ?? null;
 }
 // ---- G-CROSS, narrowed for an extruded outline (pilot 2026-11 F1, docs/spikes/solidcraft-referee/pilot-2026-11/PILOT.md) -------------------------------

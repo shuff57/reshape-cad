@@ -683,3 +683,41 @@ hand, radius 1 2.2e-5, radius 3 off the axis by 4 2.9e-5 (the engine's cylinder 
 So the layer refuses the faster and equally right case (a solid cylinder, 3 to 10 s) and builds the slower one (a hollowed cylinder, 15 s a cut).
 Which way to make them agree is the owner's to decide; nothing is changed here.
 
+## A hole across a hollowed cylinder is refused at once (owner decision 2026-11-13: "refuse both, same sentence")
+
+G-CURVED now finds the shape whose curved wall a hole would cross back over earlier holes AND hollows (`curvedRootOf`, `packages/layer/src/holes.ts`,
+mirrored in `contract/holes4-translate.mjs`). Nothing else uses the new walk; `rootOf`, which every other guard asks, still stops at a hollow.
+The sentence is the one a hole across a solid cylinder already gets. No wording is new.
+
+**Every document swept before and after** (the six corpora and the 3000 new documents, 7784 documents, 46154 steps, through the host route;
+`cross-hole/compare-sweeps.mjs`, `after-corpora.txt`, `after-new-documents.txt`):
+
+| | corpora | new documents |
+|---|---|---|
+| a built hole across a hollowed cylinder, now refused by G-CURVED | 0 | 7 |
+| a later step built on such a hole, now refused with it | 0 | 4 |
+| a hole refused for another reason before, by G-CURVED now (it is asked first) | 8 | 24 |
+| a later step whose sentence quotes that reason now | 3 | 3 |
+| built before and refused now for any other reason; refused before and built now; built both with another volume | 0 | 0 |
+
+(The corpora's other 46 differences are the three hole sentences approved after the baseline sweep was recorded; the new documents' other 3 are
+dependent sentences that name the step now refused.) Of the 32 holes in the third row, 15 + 4 had "starts on the top of the part, but the part is
+not flat and level", 2 had the time budget's sentence (a third, `fc combined seed 1129`, was built in one run and stopped by the budget in
+another, and is counted in the first row), the rest a crossing, a tangency, a miss or a refused step before them.
+
+The 4 later steps are holes written as drilled into the result of the refused one (`hole(h1, ...)`): the layer refuses a step that rests on a
+refused step, whatever the step.
+
+**In the page** (`cross-hole/page-times-before-after.json`): the eight scripts that were slow or stopped at the budget for this reason took
+23.5 to 330.0 s before and take 0.5 to 3.0 s now, each with the hole refused in the sentence.
+
+Tests: `packages/layer/test/curved-through-hollow.test.mjs` (4: the walk in the layer and the contract copy, the shapes it finds a curved wall
+on, the old walk unchanged, the sentence word for word); the layer's suite 235 of 235, the differential tests against the contract copy among
+them.
+
+Checked: `npm test` 1136 tests, 1130 pass, 6 skipped, 0 fail; the six browser checks, the 44 sketch scripts, the 14 blocked-step scripts, the 13
+two-part scripts and both pilot runs give the same results as the last recorded runs (examples 48 of 56).
+
+Still open from the measurement: the engine cuts a hole across a SOLID cylinder right, in 3 to 10 s, and the layer refuses it. Allowing it would
+need cross holes over many sizes, cones and round pads checked against hand-worked volumes first; it is not attempted.
+

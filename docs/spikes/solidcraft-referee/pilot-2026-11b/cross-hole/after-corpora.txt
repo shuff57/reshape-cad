@@ -1,0 +1,27 @@
+rows 4784 (no earlier row 0), steps 24717
+    1 refused [G-BUDGET] -> refused [G-CURVED] 
+        e.g. fc combined seed 229 h3
+    1 refused [G-CROSS] -> refused [G-CURVED] 
+        e.g. fc combined seed 289 h4
+    1 refused [G-TANGENT] -> refused [G-CURVED] 
+        e.g. fc combined seed 37 h3
+    4 refused [G-TOP] -> refused [G-CURVED] 
+        e.g. combined seed 421 h4
+             rg combined seed 293 h3
+    1 refused [dependency] -> refused [G-CURVED] 
+        e.g. combined seed 1 h4
+    2 refused both, same guard [G-BODIES], other words 
+        e.g. rg combined seed 49 h5 | ut it -- drill each piece before copying it, or join the pieces first. | h piece before you join them, or move the pieces so that they overlap.
+             fc combined seed 321 h5 | ut it -- drill each piece before copying it, or join the pieces first. | h piece before you join them, or move the pieces so that they overlap.
+   16 refused both, same guard [G-NOOP], other words 
+        e.g. combined seed 39 h4 | ithout it -- move the hole onto the part (check at:) or make it wider. | e part (at: is measured from the middle of the part) or make it wider.
+             combined seed 265 h5 | ithout it -- move the hole onto the part (check at:) or make it wider. | e part (at: is measured from the middle of the part) or make it wider.
+   19 refused both, same guard [G-TOP], other words 
+        e.g. combined seed 106 h7 | it -- move the hole onto a flat top, or let it go all the way through. |  let it go all the way through, or drill the piece before you join it.
+             combined seed 106 h9 | it -- move the hole onto a flat top, or let it go all the way through. |  let it go all the way through, or drill the piece before you join it.
+    9 refused both, same guard [null], other words 
+        e.g. combined seed 357 pk7 | t -- move the hole onto a flat top, or let it go all the way through.) | let it go all the way through, or drill the piece before you join it.)
+             combined seed 501 pk7 | t -- move the hole onto a flat top, or let it go all the way through.) | let it go all the way through, or drill the piece before you join it.)
+    3 refused both: the sentence now quotes the G-CURVED reason of the step it rests on 
+        e.g. combined seed 1 pk6
+             combined seed 421 pk6
