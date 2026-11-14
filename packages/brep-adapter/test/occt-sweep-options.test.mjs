@@ -170,3 +170,22 @@ test('a whole-body draft the kernel cannot do on every side face is refused, nev
   const m = measure([slab, { id: 'sk', kind: 'sketch', plane: 'xy', offset: 5, points: [[-3, -3], [3, -3], [3, 3], [-3, 3]] }, { id: 'pk', kind: 'pocket', target: 'sk', into: 'b1', depth: 4 }, draft({ whole: true }, 'pk')], 'd3');
   assert.match(m.refused ?? '', /Tilting every side/);
 });
+
+// ---- a hollow at an inside corner. The referee asks for the offset with two joins (arc and mitred). They agree except at an inside corner of the part,
+// where the arc rounds the new wall and the mitre keeps it sharp (the plane offset, the layer's reference). Where they differ the referee says nothing.
+const face = (feature, part) => ({ cause: 'primitive', feature, kind: 'face', part });
+test('a hollow of a plain box and of a cylinder is what it was (both joins agree)', opts, () => {
+  near(measure([{ id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] }, { id: 's2', kind: 'shell', target: 'b1', thickness: 2, open: face('b1', '+z') }], 's2').volume, 32000 - 36 * 36 * 18, 1e-9, 'box, top open');
+  near(measure([{ id: 'b1', kind: 'box', size: [40, 40, 20], center: [0, 0, 0] }, { id: 's2', kind: 'shell', target: 'b1', thickness: 2 }], 's2').volume, 32000 - 36 * 36 * 16, 1e-9, 'box, closed');
+  near(measure([{ id: 'c1', kind: 'cylinder', radius: 10, height: 30, center: [0, 0, 0] }, { id: 's2', kind: 'shell', target: 'c1', thickness: 3, open: face('c1', '-z') }], 's2').volume, PI * (100 * 30 - 49 * 27), 1e-7, 'cylinder, bottom open');
+});
+test('a hollow after a plain through bore has no inside corner: built, to the plane-offset form', opts, () => {
+  const m = measure([{ id: 'b1', kind: 'box', size: [24, 20, 10], center: [0, 0, 0] }, { id: 'h2', kind: 'hole', target: 'b1', diameter: 3, depth: 40, center: [0, -3, 0], axis: 'z' }, { id: 's3', kind: 'shell', target: 'h2', thickness: 1, open: face('b1', '-x') }], 's3');
+  near(m.volume, 4800 - PI * 1.5 ** 2 * 10 - (23 * 18 * 8 - PI * 2.5 ** 2 * 8), 1e-7, 'bore, then hollow');
+});
+test('a hollow after a counterbore has one: the two joins differ (1593.760 rounded, 1599.527 sharp), and the referee refuses by name', opts, () => {
+  const feats = [{ id: 'b1', kind: 'box', size: [24, 20, 10], center: [0, 0, 0] }, { id: 'h2', kind: 'hole', target: 'b1', diameter: 3, depth: 40, center: [0, -3, 0], axis: 'z', counterbore: { diameter: 7, depth: 2 } }, { id: 's3', kind: 'shell', target: 'h2', thickness: 1, open: face('b1', '-x') }];
+  assert.match(measure(feats, 's3').refused ?? '', /two ways of making the wall give different parts/);
+  // the step before it is still answered
+  near(measure(feats.slice(0, 2), 'h2').volume, 4800 - (PI * 1.5 ** 2 * 10 + PI * (3.5 ** 2 - 1.5 ** 2) * 2), 1e-7, 'the counterbored box');
+});

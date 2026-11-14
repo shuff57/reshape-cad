@@ -1957,27 +1957,51 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
             // can register it as an OpRecord after `sane` passes -- see
             // that branch's own comment.
             let shellOp: any = null;
-            try {
-              const op = new oc.BRepOffsetAPI_MakeThickSolid();
-              shellOp = op;
-              const closingFaces = new oc.NCollection_List_TopoDS_Shape();
-              if (openFace) closingFaces.Append(openFace);
-              op.MakeThickSolidByJoin(
-                src, closingFaces, -f.thickness, 1e-6,
-                oc.BRepOffset_Mode.BRepOffset_Skin, false, false,
-                oc.GeomAbs_JoinType.GeomAbs_Arc, false,
+            // TWO JOINS (2026-11-14, PILOT-2.md "The referee's hollow at an inside corner"). The offset is asked for twice: with the arc join this path
+            // always used, and with the mitred one. At an inside corner of the part (the step of a counterbore, the floor of a pocket) the arc join
+            // ROUNDS the new wall and the mitred one keeps it sharp, which is the plane offset the layer is held to (remeasure-0.30.1/HALT-7.md);
+            // everywhere else the two give the same solid. Neither is to be trusted alone: over the 3900 hollows of the corpora each builds parts
+            // the other cannot (arc only 114, mitre only 173), and each was seen to return a part that is plainly not the hollow (once each).
+            //   both build and agree (1e-7 of the volume)  -> that is the hollow (the arc's solid, as before)
+            //   both build and differ                      -> an inside corner, or one of them is wrong: refused by name, the oracle says nothing
+            //   one builds                                 -> that one, as before for the arc
+            const offsetBy = (join: 'GeomAbs_Arc' | 'GeomAbs_Intersection'): { shape: any; op: any; volume: number } | null => {
+              try {
+                const op = new oc.BRepOffsetAPI_MakeThickSolid();
+                const closingFaces = new oc.NCollection_List_TopoDS_Shape();
+                if (openFace) closingFaces.Append(openFace);
+                op.MakeThickSolidByJoin(
+                  src, closingFaces, -f.thickness, 1e-6,
+                  oc.BRepOffset_Mode.BRepOffset_Skin, false, false,
+                  oc.GeomAbs_JoinType[join], false,
+                );
+                op.Build(new oc.Message_ProgressRange());
+                if (!op.IsDone()) return null;
+                const shape = op.Shape(); const volume = measureShape(oc, shape).volume;
+                return Number.isFinite(volume) && volume > 0 ? { shape, op, volume } : null;
+              } catch {
+                // A degenerate offset -- thicker than the guard above should have let through, or some other kernel-side limit this file has not
+                // characterised -- throws a bare exception instead of reporting IsDone() false; so can measuring what came out. Either is "did not build".
+                return null;
+              }
+            };
+            const arcJoin = offsetBy('GeomAbs_Arc'), mitreJoin = offsetBy('GeomAbs_Intersection');
+            const joinsDiffer = !!arcJoin && !!mitreJoin && Math.abs(arcJoin.volume - mitreJoin.volume) > 1e-7 * Math.max(arcJoin.volume, mitreJoin.volume);
+            if (joinsDiffer) {
+              refusals.set(
+                f.id,
+                `Hollowing ${label(f.id)}: the reference kernel's two ways of making the wall give different parts `
+                  + `(at an inside corner one rounds the wall and one keeps it sharp), so it is not answered here. `
+                  + `${label(f.id)} is shown without it.`,
               );
-              op.Build(new oc.Message_ProgressRange());
-              if (op.IsDone()) inner = op.Shape();
-            } catch {
-              // A degenerate offset -- thicker than the guard above should
-              // have let through, or some other kernel-side limit this file
-              // has not characterised -- throws a bare exception instead of
-              // reporting IsDone() false. Treated the same as any other
-              // refusal.
-              inner = null;
+              shape = src;
+            } else {
+              const chosen = arcJoin ?? mitreJoin;
+              if (chosen) { inner = chosen.shape; shellOp = chosen.op; }
             }
-            if (inner) {
+            if (joinsDiffer) {
+              // refused above
+            } else if (inner) {
               // MakeThickSolidByJoin's own contract, measured directly
               // against this kernel (2026-09-03), not assumed from the
               // OCCT docs: with an EMPTY closing list, op.Shape() (= inner
