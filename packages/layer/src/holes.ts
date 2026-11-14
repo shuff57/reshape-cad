@@ -802,8 +802,19 @@ export function rootOf(id: string, G: { byId: Record<string, RootView> }): RootV
 // across a hollowed cylinder"). The shape whose curved wall the hole would cross is found back over holes AND hollows; nothing else uses this walk.
 export function curvedRootOf(id: string, G: { byId: Record<string, RootView> }): RootView | null {
   let cur: RootView | undefined = G.byId[id]; const seen = new Set<string>();
-  while (cur && (cur.kind === 'hole' || cur.kind === 'shell') && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target!]; }
+  while (cur && throughForCurved(cur) && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target!]; }
   return cur ?? null;
+}
+/**
+ * The steps the walk goes back over: an earlier hole, a hollow, and (owner decision 2026-11-14, "yes: mirror, copy, move, round") the steps that leave a
+ * curved wall and its direction as they are: a move (a copy too), a mirror (its plane is a main plane, so an axis along a main axis stays along it), a
+ * repeat in a row, a round or a bevel. NOT a turn (the wall's direction changes with it), a repeat round a centre (its copies point other ways), or a draft.
+ * In 4400 generated documents 11 holes across a cylinder were hidden behind a mirror, a repeat or a move: 6 were cut (scripts of 7 to 28 s) and 5 were
+ * stopped by the time budget (46 to 91 s).
+ */
+function throughForCurved(f: RootView): boolean {
+  if (f.kind === 'hole' || f.kind === 'shell' || f.kind === 'move' || f.kind === 'mirror' || f.kind === 'fillet') return true;
+  return f.kind === 'pattern' && (f as unknown as { mode?: string }).mode !== 'circular';
 }
 // ---- G-CROSS, narrowed for an extruded outline (pilot 2026-11 F1, docs/spikes/solidcraft-referee/pilot-2026-11/PILOT.md) -------------------------------
 // The crossing test compares the two DRILLS, which are as long as the part's bounding box. On an L, U or T bracket a hole through each leg has drills that meet
