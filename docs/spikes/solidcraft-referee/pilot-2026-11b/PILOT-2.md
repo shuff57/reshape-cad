@@ -677,9 +677,9 @@ part "started as" the hollow, so the guard says nothing and the hole is cut. In 
 behind a hollow (7 of 257 built holes).
 
 **And the engine no longer needs that guard for a plain cylinder.** Asked directly, in the page (`cross-hole/cross-solid-cylinder.mjs`, `.txt`),
-0.30.1 cuts a bore across a SOLID cylinder of radius 10 in 3 to 9 s, and right: radius 3 through the axis 3.4e-5 from the volume worked out by
+0.30.1 cuts a bore across a SOLID cylinder of radius 10 in 3 to 10 s (two runs), and right: radius 3 through the axis 3.4e-5 from the volume worked out by
 hand, radius 1 2.2e-5, radius 3 off the axis by 4 2.9e-5 (the engine's cylinder is itself 4e-5 low).
 
-So the layer refuses the faster and equally right case (a solid cylinder, 3 to 9 s) and builds the slower one (a hollowed cylinder, 15 s a cut).
+So the layer refuses the faster and equally right case (a solid cylinder, 3 to 10 s) and builds the slower one (a hollowed cylinder, 15 s a cut).
 Which way to make them agree is the owner's to decide; nothing is changed here.
 
