@@ -1,0 +1,26 @@
+[
+ {
+  "id": "rgcombined#50 rg combined seed 950",
+  "what": "sentence",
+  "step": "d6",
+  "page": "d6 (draft): that face of pt5 could not be found on the part as it is now, so d6 is shown without it.",
+  "node": "d6: that face cannot be found reliably after the part was turned or copied, so d6 is shown without it -- apply it before turning the part."
+ },
+ {
+  "id": "rgcombined#284 rg combined seed 1184",
+  "what": "sentence",
+  "step": "h4",
+  "page": "h4 (hole): a countersink is cut from the top of the part, but the part is not flat and level under this spot, so h4 is shown without it -- move the hole onto a flat top.",
+  "node": "h4 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h4 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded."
+ },
+ {
+  "id": "fccombined#229 fc combined seed 1129",
+  "what": "built / not built",
+  "step": "h3",
+  "page": "built",
+  "node": "refused",
+  "pageSays": null,
+  "nodeSays": "h3 (hole): cutting this hole took longer than 45 seconds of computing, so it was stopped and h3 is shown without it -- try a flat-sided part, a smaller hole, or drill the plain shape before it is turned or rounded.",
+  "guard": "G-BUDGET"
+ }
+]

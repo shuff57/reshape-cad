@@ -1,0 +1,256 @@
+[
+ {
+  "id": "combined seed 1306",
+  "verdict": "WRONG",
+  "class": "curved wall accuracy",
+  "measure": "pt5",
+  "host": 27068.748023209566,
+  "hostBox": [
+   -1.9988690097222068,
+   -14.999731337406429,
+   -12.000000000000009,
+   67.99984556213239,
+   4.999529426085968,
+   18.000000000000014
+  ],
+  "occt": 27074.50303086453,
+  "occtBox": [
+   -2,
+   -15,
+   -12,
+   68,
+   5,
+   18
+  ],
+  "brep": 27074.503029999414
+ },
+ {
+  "id": "combined seed 1323",
+  "verdict": "ORACLES-SPLIT",
+  "class": "OCCT agrees, brep-rs does not",
+  "measure": "h5",
+  "host": 3908.3940778209194,
+  "hostBox": [
+   -4.259848888193463e-29,
+   -9.000000000000002,
+   9,
+   20.000000000000007,
+   12.588457268119898,
+   19.00000000000002
+  ],
+  "occt": 3908.3705917813154,
+  "occtBox": [
+   -1.6653345369377348e-16,
+   -9,
+   9,
+   20,
+   12.588457268119898,
+   19
+  ],
+  "brep": 4658.628330588459
+ },
+ {
+  "id": "combined seed 1356",
+  "verdict": "WRONG",
+  "class": "curved wall accuracy",
+  "measure": "pk3",
+  "host": 2373.338549629068,
+  "hostBox": [
+   0.0004130487766673477,
+   -12.999785069925144,
+   -3.0000000000000013,
+   15.999876449705901,
+   3.0000000000000053,
+   9.000000000000005
+  ],
+  "occt": 2373.5968227762282,
+  "occtBox": [
+   0,
+   -13,
+   -3,
+   16,
+   3,
+   9
+  ],
+  "brep": 2373.5968227345934
+ },
+ {
+  "id": "combined seed 1489",
+  "verdict": "WRONG",
+  "class": "curved wall accuracy (volume 5e-6, box 8.4e-3 mm at the rim of a cross hole)",
+  "measure": "h3",
+  "host": 1860.5959274237864,
+  "hostBox": [
+   -9.708203932499375,
+   -11.412678195541845,
+   -6,
+   12,
+   11.412678195541842,
+   6.008371657287798
+  ],
+  "occt": 1860.5861767715858,
+  "occtBox": [
+   -9.70820393249937,
+   -11.412678195541844,
+   -6,
+   12.000000000000004,
+   11.412678195541842,
+   6.000000000000003
+  ],
+  "brep": "refused"
+ },
+ {
+  "id": "rg combined seed 952",
+  "verdict": "WRONG",
+  "class": "curved wall accuracy",
+  "measure": "pk3",
+  "host": 4015.977069805784,
+  "hostBox": [
+   0.0004130487766673477,
+   -12.999785069925146,
+   -7.000000000000004,
+   15.9998764497059,
+   2.9999991086698192,
+   13.000000000000009
+  ],
+  "occt": 4016.3641743394164,
+  "occtBox": [
+   0,
+   -13,
+   -7,
+   16,
+   3,
+   13
+  ],
+  "brep": 4016.3641743394182
+ },
+ {
+  "id": "rg combined seed 1215",
+  "verdict": "ORACLES-SPLIT",
+  "class": "OCCT agrees, brep-rs does not",
+  "measure": "pk4",
+  "host": 13313.79584555072,
+  "hostBox": [
+   -4.418806062637504,
+   -17.41875592729582,
+   -12.000000000039794,
+   20.41885743675282,
+   7.418749198912223,
+   18.000000000000064
+  ],
+  "occt": 13314.109919747929,
+  "occtBox": [
+   -4.419049333900973,
+   -17.419049333900972,
+   -12.000000100000129,
+   20.419049333900976,
+   7.419049333900973,
+   18.000000100000005
+  ],
+  "brep": 13549.742043013204
+ },
+ {
+  "id": "rg combined seed 1310",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees: 20 x 16 x 6 hollowed 5, bottom open = 1860",
+  "measure": "s3",
+  "host": 1860,
+  "hostBox": [
+   0,
+   0,
+   0,
+   20,
+   16,
+   6
+  ],
+  "occt": "refused: Hollowing Hollow 1 to 5 thick would collapse it -- the wall has to be under 3. Hollow 1 is shown wit",
+  "occtBox": null,
+  "brep": "refused"
+ },
+ {
+  "id": "rg combined seed 1392",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees: 30 x 24 x 10 with a cross bore 6, hollowed 1 = 2705.469",
+  "measure": "s3",
+  "host": 2705.4169176505584,
+  "hostBox": [
+   -15.000000000000007,
+   -12,
+   7,
+   15.000000000000012,
+   12,
+   17
+  ],
+  "occt": "refused: Hollowing Hollow 1 to 1 thick did not work after the steps before it -- this kernel cannot hollow a ",
+  "occtBox": null,
+  "brep": "refused"
+ },
+ {
+  "id": "fc combined seed 1009",
+  "verdict": "BUILT-ORACLES-REFUSE",
+  "class": "closed form agrees: 20 x 24 x 10 hollowed 5, top open = 4800 - 10 x 14 x 5 = 4100",
+  "measure": "s2",
+  "host": 4100,
+  "hostBox": [
+   -10,
+   -12,
+   -5,
+   10,
+   12,
+   5
+  ],
+  "occt": "refused: Hollowing Hollow 1 to 5 thick would collapse it -- the wall has to be under 5. Hollow 1 is shown wit",
+  "occtBox": null,
+  "brep": "refused"
+ },
+ {
+  "id": "fc combined seed 1210",
+  "verdict": "ORACLES-SPLIT",
+  "class": "OCCT agrees, brep-rs does not",
+  "measure": "e10",
+  "host": 5009.672832969719,
+  "hostBox": [
+   0,
+   -3.552713678800501e-15,
+   -10.000000000000005,
+   28.7,
+   18,
+   1.7763568394002505e-15
+  ],
+  "occt": 5009.759178836118,
+  "occtBox": [
+   0,
+   0,
+   -10,
+   28.7,
+   18,
+   0
+  ],
+  "brep": 142.92830538230655
+ },
+ {
+  "id": "fc combined seed 1334",
+  "verdict": "ORACLES-SPLIT",
+  "class": "OCCT agrees, brep-rs does not",
+  "measure": "e7",
+  "host": 2868.4038993994786,
+  "hostBox": [
+   0,
+   0,
+   -6.000000000000003,
+   24,
+   20,
+   0
+  ],
+  "occt": 2868.4115008265007,
+  "occtBox": [
+   0,
+   0,
+   -6,
+   24,
+   20,
+   0
+  ],
+  "brep": 2873.588499176538
+ }
+]

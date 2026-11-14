@@ -614,3 +614,34 @@ case with the wrong closed form stored. Nothing built wrong.
 relative to the coordinate (`|a - b| / max(|b|, 1)`), not a length. Measured in millimetres the eleven curved-wall rows are 3.2e-4 to 1.3e-3 off
 in the box; the three places now say so. The verdicts and the classes are unchanged.
 
+## 1500 more new documents, with the harness from the repo and the fixed referee (owner chose it, 2026-11-13)
+
+`combinedDoc` 1100 to 1599, `rgCombinedDoc` and `fcCombinedDoc` 900 to 1399, in the real page as shipped and through `../sweep/score-built.sh`
+(`fresh-seeds-2/`). The first such run found two faults of the page and five of the referee; this one looks for what is left.
+
+**The page.** Every document answered. The engine stopped once (`rg combined seed 1215`, the pocket of the first run's `fc combined seed 215` in a
+new document): the crash guard refused that pocket in its sentence and the run went on. 1407 documents took under 5 s, 76 from 5 to 30 s, 17
+from 30 to 120 s (the slowest 86 s); none longer.
+
+**The page against Node, step by step.** 1497 of 1500 identical. Two are Node at the 45 s budget: a hole into a hollowed cylinder that the page
+built in time and Node stopped (run again in Node it is built, in 44.8 s, with the page's volume to the last digit), and a countersink for which
+Node gave the budget's sentence and the page the hole's own. One is another reason for the same refused draft, as in the first run.
+
+**What was built.** 1418 final solids judged (82 documents build nothing); the page's final volume equals the judged solid in all 1418.
+
+| 1418 final solids | count |
+|---|---|
+| RIGHT: every oracle that built agrees | 1407 |
+| OCCT agrees and brep-rs does not | 4 |
+| flagged WRONG: a curved wall inside the tolerance on the volume and outside it on the box | 4 |
+| both oracles refuse a hollow, and it equals its closed form (4100, 1860, 2705.469) | 3 |
+
+No wrong solid, no new class, and nothing that rests on brep-rs alone or on a hand-worked volume except the three hollows the oracles refuse.
+Of the four curved walls, three are the cylinder with a pocket or a cut seen before (the box 4e-4 to 1.1e-3 mm off). The fourth is the largest
+box difference so far: `combined seed 1489`, a five-sided prism hollowed with its top open and a cross bore of 6 through the rim. Its volume is
+5.2e-6 from OCCT's, and its box is 8.4e-3 mm higher than the part (6.0084 for 6): the edge where the bore's wall meets the rim rises that far
+above the top face. brep-rs refuses the hole.
+
+Against the first run of new documents (1411 solids): 1316 RIGHT, 75 resting on one oracle, 19 flagged WRONG. The difference is the referee and
+the harness, not the layer: the layer and the page are the ones of that run but for the cylinder pick fix.
+
