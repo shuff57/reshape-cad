@@ -1,0 +1,5 @@
+{"what":"the part","bodies":[["b_p1",1860.5959274237866,{"max":[12.000000000000004,11.412678195541842,6.008371349182534],"min":[-9.708203932499378,-11.412678195541842,-6]}]]}
+{"what":"cut away everything above z = 6","ok":true,"failed":null,"bodies":[["b_p1",1860.5959274237866,[-6,6.008371349182534]]]}
+{"what":"cut away everything above z = 6.004","ok":true,"failed":null,"bodies":[["b_p1",1860.5959274237866,[-6,6.008371349182534]]]}
+{"what":"control: cut away above z = 5 (the rim and part of the bore)","ok":true,"failed":null,"bodies":[["b_p1",1760.3853098929524,[-6,5.000000085416547]]]}
+{"what":"control: cut away above z = 5.9","ok":true,"failed":null,"bodies":[["b_p1",1850.4874655370206,[-6,5.900000007823759]]]}

@@ -77,7 +77,7 @@
  {
   "id": "combined seed 1489",
   "verdict": "WRONG",
-  "class": "curved wall accuracy (volume 5e-6, box 8.4e-3 mm at the rim of a cross hole)",
+  "class": "the engine's measured box, not material (volume 5e-6 from OCCT; the box 8.4e-3 mm high; cutting everything above the top face removes nothing: above-the-top.txt)",
   "measure": "h3",
   "host": 1860.5959274237864,
   "hostBox": [

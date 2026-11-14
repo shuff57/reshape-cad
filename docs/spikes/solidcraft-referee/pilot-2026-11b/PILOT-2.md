@@ -639,8 +639,9 @@ Node gave the budget's sentence and the page the hole's own. One is another reas
 No wrong solid, no new class, and nothing that rests on brep-rs alone or on a hand-worked volume except the three hollows the oracles refuse.
 Of the four curved walls, three are the cylinder with a pocket or a cut seen before (the box 4e-4 to 1.1e-3 mm off). The fourth is the largest
 box difference so far: `combined seed 1489`, a five-sided prism hollowed with its top open and a cross bore of 6 through the rim. Its volume is
-5.2e-6 from OCCT's, and its box is 8.4e-3 mm higher than the part (6.0084 for 6): the edge where the bore's wall meets the rim rises that far
-above the top face. brep-rs refuses the hole.
+5.2e-6 from OCCT's, and its box is 8.4e-3 mm higher than the part (6.0084 for 6). That is the engine's measured box, not material: cutting
+away everything above z = 6 in the page leaves the volume the same to the last digit (1860.5959274237866), while cutting above 5.9 and above 5
+takes 10.11 and 100.21 off (`fresh-seeds-2/above-the-top.mjs`, `.txt`). brep-rs refuses the hole.
 
 Against the first run of new documents (1411 solids): 1316 RIGHT, 75 resting on one oracle, 19 flagged WRONG. The difference is the referee and
 the harness, not the layer: the layer and the page are the ones of that run but for the cylinder pick fix.
