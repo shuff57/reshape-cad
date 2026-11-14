@@ -118,6 +118,12 @@ export interface SoupInfo {
 /** What the caller hands translateDoc. */
 export interface TranslateCtx {
   runSC(cmds: Cmd[], opts?: { budgetS: number }): RunResult | Promise<RunResult>;
+  /**
+   * Told which step is about to be worked on, before anything is planned or run for it: its id, its kind, its place (0-based) and how many steps the
+   * document has. Awaited, so a page can draw a line before the engine is called. Nothing in the result depends on it (plan item 3, 2026-11-14: a
+   * progress line for long runs). A throw from it is the caller's fault and is not caught.
+   */
+  onStep?(step: { id: string; kind: string; index: number; count: number }): void | Promise<void>;
   topologyOf?(cmds: Cmd[]): TopologyReply | Promise<TopologyReply>;
   arc: ArcApi;
   mt?: MtApi;

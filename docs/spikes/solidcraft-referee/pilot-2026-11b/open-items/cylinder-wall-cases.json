@@ -1,0 +1,23 @@
+[
+ {"id":"cyl-round-top-rim","script":"const c = cylinder(24, 30)\nround(c.edge('top', 'side'), 2)"},
+ {"id":"cyl-bevel-top-rim","script":"const c = cylinder(24, 30)\nbevel(c.edge('top', 'side'), 2)"},
+ {"id":"cyl-round-bottom-rim","script":"const c = cylinder(24, 30)\nround(c.edge('bottom', 'side'), 2)"},
+ {"id":"cyl-round-all","script":"const c = cylinder(24, 30)\nround(c, 2)"},
+ {"id":"cyl-draft-side","script":"const c = cylinder(24, 30)\ndraft(c.face('side'), 5)"},
+ {"id":"cyl-draft-whole","script":"const c = cylinder(24, 30)\ndraft(c, 5)"},
+ {"id":"cyl-hollow-side","script":"const c = cylinder(24, 30)\nhollow(c, { wall: 2, open: 'side' })"},
+ {"id":"cyl-hollow-top","script":"const c = cylinder(24, 30)\nhollow(c, { wall: 2, open: 'top' })"},
+ {"id":"cyl-hollow-bottom-moved","script":"const c = cylinder(24, 30, { at: [15, -8, 4] })\nhollow(c, { wall: 2, open: 'bottom' })"},
+ {"id":"cyl-hole-on-cap","script":"const c = cylinder(24, 30)\nhole(c, { across: 5, at: [4, 0], deep: 10 })"},
+ {"id":"cyl-pocket-on-cap","script":"const c = cylinder(24, 30)\nconst sk = sketch('top', 15)\nsk.rect(8, 6)\npocket(sk, c, 4)"},
+ {"id":"cyl-round-rim-then-hollow","script":"const c = cylinder(24, 30)\nround(c.edge('top', 'side'), 2)\nhollow(c, { wall: 2, open: 'bottom' })"},
+ {"id":"cyl-moved-round-rim","script":"const c = cylinder(24, 30)\nmove(c, [10, 5, 0])\nround(c.edge('top', 'side'), 2)"},
+ {"id":"cyl-turned-round-rim","script":"const c = cylinder(24, 30)\nturn(c, [90, 0, 0])\nround(c.edge('top', 'side'), 2)"},
+ {"id":"cone-round-base-rim","script":"const k = cone(24, 20)\nround(k.edge('bottom', 'side'), 1)"},
+ {"id":"cone-hollow-bottom","script":"const k = cone(24, 20)\nhollow(k, { wall: 2, open: 'bottom' })"},
+ {"id":"cone-draft-side","script":"const k = cone(24, 20)\ndraft(k.face('side'), 5)"},
+ {"id":"pad-round-top-rim","script":"const sk = sketch('top')\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nround(p.edge('top', p.wall(sk, 0)), 2)"},
+ {"id":"pad-hollow-top","script":"const sk = sketch('top')\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nhollow(p, { wall: 2, open: 'top' })"},
+ {"id":"pad-draft-wall","script":"const sk = sketch('top')\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\ndraft(p.wall(sk, 0), 5)"},
+ {"id":"pad-hole-on-top","script":"const sk = sketch('top')\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nhole(p, { across: 5, at: [3, 0], deep: 8 })"}
+]

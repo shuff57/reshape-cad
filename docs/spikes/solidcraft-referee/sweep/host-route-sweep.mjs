@@ -18,6 +18,8 @@
 //   POP_SKETCHES=1           with DROP_FILE: also drop sketches left at the end of the case.
 //   DUMP_FILE                write the cases as the page can take them ({ id, script } or { id, doc }) and stop: the input of pilot-2026-11b/timing/inc.mjs.
 //   PROBE_BLOCKED=1 PROBE_STEPS=1   the page's settings (a blocked step is test-built for its own sentence); set by score-built.sh.
+//   GUARDS_OFF=G-CURVED,...  MEASURING ONLY: the named guards are switched off (the layer's ctx.guardsOff), to see what the engine does with what a
+//                            guard refuses. A run with this set says nothing about what the layer builds.
 //   GADGET_SEED              inject a block that makes one of the page's own guards fire (gadget.mjs; the three-way sweep of the first pilot).
 //
 // Two rules of the oracle side that the older harness copies do not have:
@@ -347,7 +349,7 @@ async function runHost(doc, script) {
   if (pf) return { ms: 0, calls, pf: pf.why, tr: { commands: [], features: [] }, feats: doc.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: 'refused', guard: 'PM-PREFLIGHT', refusal: pf.sentence, m: null })) };
   const runSC = async (cmds, opts) => { calls++; return opts?.budgetS ? probe(cmds, opts.budgetS) : C.runSC(cmds); };
   // pane.js run() since f0b2cd05: fromUsage: draftFromUsage(srcText) (the script text; a doc-only case has none, as translateRaw)
-  const ctx = { arc: C.arc, mt: C.mt, runSC, soups: {}, followMoves: true, fromUsage: H.hostFromUsage(doc, { recorded: typeof script === 'string' }) /* as the page: from the doc (pane.js run: recorded; translateRaw: not recorded) */, topologyOf, ...(process.env.PROBE_BLOCKED ? { probeBlocked: true } : {}), ...(process.env.PROBE_STEPS ? { probeBlockedSteps: true } : {}) };
+  const ctx = { arc: C.arc, mt: C.mt, runSC, soups: {}, followMoves: true, fromUsage: H.hostFromUsage(doc, { recorded: typeof script === 'string' }) /* as the page: from the doc (pane.js run: recorded; translateRaw: not recorded) */, topologyOf, ...(process.env.PROBE_BLOCKED ? { probeBlocked: true } : {}), ...(process.env.PROBE_STEPS ? { probeBlockedSteps: true } : {}), ...(process.env.GUARDS_OFF ? { guardsOff: process.env.GUARDS_OFF.split(',') } : {}) };
   const t0 = performance.now(); let tr;
   try { tr = await H.translateDoc(structuredClone(doc), ctx); } catch (e) { return { threw: String(e?.message ?? e), ms: performance.now() - t0, calls }; }
   return { ms: performance.now() - t0, calls, tr, feats: tr.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: f.status, guard: f.guard ?? null, refusal: f.refusal ?? null, ...(typeof f.raw === 'string' && f.raw.startsWith('blocked (') ? { probed: true } : {}), m: fm(f) })) };

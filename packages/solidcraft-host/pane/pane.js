@@ -5,6 +5,7 @@
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
 import { createReplyMemory } from '../src/reply-memory.mjs';
 import { createCrashGuard } from '../src/crash-guard.mjs';
+import { createProgress, yieldToBrowser } from '../src/progress.mjs';
 import { createProber } from '../src/probe-client.mjs';
 import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
@@ -323,9 +324,12 @@ let memo = null;
 const MEMO_ON = params.get('memo') !== 'off';
 const INC_ON = params.get('inc') === 'on';
 const engineLog = [];
+// `?progress=on`: the status line names the step being built (src/progress.mjs). OFF unless asked for: its words are a proposal, not approved text.
+const PROGRESS_ON = params.get('progress') === 'on';
+let progress = null; // alive during one run()
 const eng = {
-  execute: (cmds, opts = {}) => { if (memo) return memo.execute(cmds, opts); const { replay: _r, ...pass } = opts; return bridge.execute(cmds, pass); },
-  topologyOf: (cmds) => (memo ? memo.topologyOf(cmds) : bridge.topologyOf(cmds)),
+  execute: async (cmds, opts = {}) => { if (progress) await progress.beforeEngine(); if (memo) return memo.execute(cmds, opts); const { replay: _r, ...pass } = opts; return bridge.execute(cmds, pass); },
+  topologyOf: async (cmds) => { if (progress) await progress.beforeEngine(); return memo ? memo.topologyOf(cmds) : bridge.topologyOf(cmds); },
 };
 /** `opts.replay`: this run is the one that puts SolidCraft on `cmds` for the view, so the list itself is really run (its sketch readings may come from memory). */
 async function runSC(cmds, opts) {
@@ -633,7 +637,9 @@ async function run({ confirmed = false } = {}) {
     // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8);
     // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
     memo = MEMO_ON ? createReplyMemory(bridge, { continueRuns: INC_ON, shadow: window.__host.shadow ?? null, log: engineLog }) : null;
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds) });
+    progress = PROGRESS_ON ? createProgress({ say: status, yieldToPage: yieldToBrowser(window) }) : null;
+    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds), ...(progress ? { onStep: (s) => progress.onStep(s) } : {}) });
+    progress = null;
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
     // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
     const held = memo ? await memo.heldReply(tr.commands) : null;
@@ -690,7 +696,7 @@ async function run({ confirmed = false } = {}) {
     };
     window.__lastRun = { tr, fin, doc, summary };
   } catch (e) {
-    memo = null;
+    memo = null; progress = null;
     keepNext = false;
     failState(summary, 'error: ' + e.message, `ERROR: ${e.message}`, 'The run did not finish.');
   } finally {

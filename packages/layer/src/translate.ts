@@ -872,6 +872,7 @@ export async function translateDoc(doc: { features: Feature[] }, ctx0: Translate
   const out: FeatureResult[] = [];
   for (let idx = 0; idx < doc.features.length; idx++) {
     const f = doc.features[idx];
+    if (ctx0.onStep) await ctx0.onStep({ id: f.id, kind: f.kind, index: idx, count: doc.features.length });
     const profile = ownerOf(profileIn, f.kind); // a composition: the profile that owns this kind decides everything about the feature
     const env: LoopEnv = { doc, ctx, st, accepted, out, shapeCache, profile: profileIn };
     if (profile.step) { await profile.step(f, idx, env); continue; }
