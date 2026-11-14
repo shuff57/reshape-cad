@@ -23,7 +23,7 @@
 //   GADGET_SEED              inject a block that makes one of the page's own guards fire (gadget.mjs; the three-way sweep of the first pilot).
 //
 // Two rules of the oracle side that the older harness copies do not have:
-//   - a refusal by the OCCT referee of the measured step OR of any step it rests on is the oracle saying nothing (the referee passes a refused step's part
+//   - a refusal by the OCCT referee or by brep-rs of the measured step OR of any step it rests on is that oracle saying nothing (the referee passes a refused step's part
 //     on unchanged, so a later step would be scored on a part the document does not describe);
 //   - see DROP_FILE: score what a case BUILDS. Scored as written, a generated case ends on a refused step more often than not, and nothing it built is judged.
 //
@@ -364,14 +364,20 @@ async function runHost(doc, script) {
 // Here a feature in the referee's refusals map is a refusal.
 const { buildDoc } = await imp(path.join(WT, 'packages/brep-adapter/dist/occt-build.js'));
 const refusalOf = (rf, id) => (rf == null ? null : rf instanceof Map ? rf.get(id) ?? null : rf[id] ?? null);
+/** the oracle's refusal of step `id` or of any step it rests on (target, into, targets), in words; null when it built them all */
+function refusedUnder(doc, id, refusals) {
+  const by = new Map(doc.features.map((f) => [f.id, f])); const seen = new Set(); const todo = [id];
+  while (todo.length) { const x = todo.pop(); if (seen.has(x)) continue; seen.add(x); const r = refusalOf(refusals, x); if (r) return x === id ? r : `${x}, which ${id} rests on: ${r}`;
+    const f = by.get(x); if (!f) continue; for (const k of ['target', 'into']) if (typeof f[k] === 'string') todo.push(f[k]); if (Array.isArray(f.targets)) todo.push(...f.targets); }
+  return null;
+}
 const occtOf = (doc, id) => {
   try {
     const built = buildDoc(C.oc, doc, C.arc);
     // The referee passes a refused step's part on unchanged ("shown without it"), so a later step is built on a part that is not the one the
     // document describes. A refusal of the measured step OR of any step it rests on is the oracle saying nothing (2026-11-13: a hollowed ball,
     // refused, then moved, came back as the whole ball and was scored as OCCT's answer).
-    const by = new Map(doc.features.map((f) => [f.id, f])); const seen = new Set(); const todo = [id]; let rf = null;
-    while (todo.length && !rf) { const x = todo.pop(); if (seen.has(x)) continue; seen.add(x); const r = refusalOf(built.refusals, x); if (r) { rf = x === id ? r : `${x}, which ${id} rests on: ${r}`; break; } const f = by.get(x); if (!f) continue; for (const k of ['target', 'into']) if (typeof f[k] === 'string') todo.push(f[k]); if (Array.isArray(f.targets)) todo.push(...f.targets); }
+    const rf = refusedUnder(doc, id, built.refusals);
     if (rf) return { refused: String(rf).slice(0, 300) };
     const shape = built.shapes.get(id); if (!shape) return { refused: 'OCCT built nothing' };
     const m = C.occtMeasure(shape); return { src: 'occt', volume: m.volume, bbox: m.bbox, com: occtSolidsCom(shape) ?? m.com, comWhole: m.com, solids: m.solids, faces: m.faces };
@@ -388,7 +394,9 @@ function occtSolidsCom(shape) {
 }
 const brepOf = (doc, id) => {
   try {
-    const got = JSON.parse(C.brep.measure_doc(JSON.stringify(doc))); const rf = got.refusals?.[id];
+    // the same rule as for OCCT, since 2026-11-14: brep-rs also passes a refused step's part on unchanged (a hollow it refused, then repeated four
+    // times, came back as four solid blocks and was scored as its answer: rg combined seed 950, the repeat pt5)
+    const got = JSON.parse(C.brep.measure_doc(JSON.stringify(doc))); const rf = refusedUnder(doc, id, got.refusals);
     if (rf) return { refused: String(rf).slice(0, 300) };
     const s = got.shapes?.[id]; if (!s) return { refused: 'no shape' };
     const bbox = [...s.bbox[0], ...s.bbox[1]];

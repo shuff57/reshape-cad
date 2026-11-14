@@ -100,11 +100,11 @@
    "why": "20 x 20 x 10 box, bore 6 with a counterbore 7 x 2, hollowed 1: 1389.664 (new-seeds/closed-forms.mjs)"
   },
   "fccombined:fc combined seed 476": {
-   "class": "hollow at an inside corner",
-   "verdict": "WRONG",
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
    "measure": "s3",
    "volume": 1599.5231918544462,
-   "why": "OCCT rounds the wall at the inside corner of the counterbore; the page route is the plane offset HALT-7.md fixed as the reference (closed form 1599.527)"
+   "why": "a hollow after a counterbore. By hand 1599.527 (2.4e-6): ../pilot-2026-11b/new-seeds/closed-forms.mjs. The two joins of OCCT differ here (1593.760 rounded, 1599.527 sharp), so since 2026-11-14 the referee refuses instead of answering with the rounded one"
   },
   "fccombined:fc combined seed 712": {
    "class": "both oracles refuse, the closed form agrees",
@@ -189,6 +189,48 @@
    "measure": "pt3",
    "volume": 9582.820589869276,
    "why": "another part of the document: two copies, 25 apart, of a 24 x 20 outline with one corner rounded r 2 pulled 10 the reversed way. By hand 2 x (480 - (1 - pi/4) 4) x 10 = 9582.832; OCCT agrees with the page route; brep-rs gives 9923.835 (the reversed pull of a rounded outline again) and is archived, not changed"
+  },
+  "rgcombined:rg combined seed 552#s3": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 5165.39092482742,
+   "why": "another part of the document. By hand 5165.451 (1.2e-5): ../pilot-2026-11b/open-items/other-parts-closed-forms.mjs. OCCT builds it with one join only, wrongly (10440.95), and its point check now refuses that"
+  },
+  "combined:combined seed 766#f4": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "f4",
+   "volume": 6186.8461759106285,
+   "why": "another part of the document. By hand 6186.850 (5.5e-7): ../pilot-2026-11b/open-items/other-parts-closed-forms.mjs"
+  },
+  "combined:combined seed 862#s3": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 1188,
+   "why": "another part of the document. By hand 1188 exactly: ../pilot-2026-11b/open-items/other-parts-closed-forms.mjs. Both oracles refuse a wall of half the height, which is no collapse with the top open"
+  },
+  "rgcombined:rg combined seed 1217#s2": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s2",
+   "volume": 5000,
+   "why": "another part of the document. By hand 5000 exactly: ../pilot-2026-11b/open-items/other-parts-closed-forms.mjs"
+  },
+  "rgcombined:rg combined seed 950#pt5": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "pt5",
+   "volume": 5615.999999999999,
+   "why": "another part of the document. By hand 5616 exactly: ../pilot-2026-11b/open-items/other-parts-closed-forms.mjs. Both oracles refuse the hollow it repeats; brep-rs then repeated the solid block (6912), which the sweep counted as its answer until 2026-11-14"
+  },
+  "rgcombined:rg combined seed 885#e2": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e2",
+   "volume": 2610.1963000078645,
+   "why": "another part of the document: a reversed pull of an outline with a bulge. OCCT agrees with the page route (2.0e-5); brep-rs gives 481.47 and a box outside the part, and is archived, not changed"
   }
  }
 }

@@ -222,3 +222,14 @@ test('the point check itself: a right hollow passes, the unhollowed part and the
   const c = hollowPointCheck(oc, closed.shapes.get('b1'), null, 2, closed.shapes.get('s2'));
   assert.deepEqual([c.wall[1], c.hollow[1]], [0, 0]); assert.ok(c.wall[0] > right.wall[0], 'more wall points than with the top open');
 });
+
+// ---- a mirror through a face that is not at a round number ----
+test('a mirror goes through the part\'s own face exactly: a five-sided prism mirrored through its flat side is one piece, to the last digit of its box', opts, () => {
+  const feats = [{ id: 'p1', kind: 'prism', sides: 5, radius: 10, height: 12, center: [0, 0, 0] }, { id: 'x2', kind: 'mirror', target: 'p1', plane: 'yz' }];
+  const one = measure(feats.slice(0, 1), 'p1'); const m = measure(feats, 'x2');
+  const side = -10 * Math.cos(PI / 5); // the flat side: x = -8.0901699...
+  near(one.box[0], side, 1e-9, 'the prism\'s flat side');
+  near(m.volume, 2 * one.volume, 1e-12, 'twice the prism');
+  near(m.box[0], 2 * side - 10, 1e-9, 'the far end of the copy: -26.18034, not -26.1804');
+  near(m.box[3], 10, 1e-9, 'the part itself has not moved');
+});

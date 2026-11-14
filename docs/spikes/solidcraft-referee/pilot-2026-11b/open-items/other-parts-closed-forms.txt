@@ -1,0 +1,6 @@
+rg combined seed 552 #s3     by hand   5165.451272 | page route   5165.390925 | rel  -1.17e-5 | drilled box hollowed, the wall round the hole touching the side wall
+combined seed 766 #f4        by hand   6186.849556 | page route   6186.846176 | rel  -5.46e-7 | notched box, one 24 edge rounded r 1 (the round ends exactly at the top of the notch)
+combined seed 862 #s3        by hand   1188.000000 | page route   1188.000000 | rel   0.00e+0 | 20 x 12 x 6 pad hollowed 3, top open
+rg combined seed 1217 #s2    by hand   5000.000000 | page route   5000.000000 | rel   0.00e+0 | 20 x 30 x 10 box hollowed 5, one 20 x 30 face open
+rg combined seed 950 #pt5    by hand   5616.000000 | page route   5616.000000 | rel -1.62e-16 | four copies round z of a 24 x 12 x 6 pad hollowed 3
+5 parts; the largest difference 1.17e-5

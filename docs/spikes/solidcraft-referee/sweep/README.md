@@ -47,7 +47,12 @@ documents had 39 built final steps; cut down to their built steps (`mkdrop.mjs` 
 2. **built**: each case without its refused steps (and without sketches left at the end). The measured step is now the last built one, so the
    oracles judge the final solid. A case's stored reference goes with the step it was about.
 
-Seeds scored so far: `combined` 0 to 1099, `rgcombined` and `fccombined` 0 to 899. Use fresh ones to look at documents the layer has not met.
+Seeds scored so far: `combined` 0 to 1599, `rgcombined` and `fccombined` 0 to 1399. Use fresh ones to look at documents the layer has not met.
+
+**Every final part is judged** (since 2026-11-14). A document can end with more than one part, and the measured step is one of them. Each row
+also carries `others`: every other built step that no later built step works on, judged the same way. The tally counts them on their own line
+("other parts of the same documents") and prints one that is not RIGHT as known or NEW under `<corpus>:<case>#<step>`. `OTHER_PARTS=0` turns
+it off. Before this, 1189 of 7428 RIGHT rows ended with more than one part and 30 of those had the whole scene compared.
 
 ## Reading the verdicts
 
@@ -62,13 +67,13 @@ Seeds scored so far: `combined` 0 to 1099, `rgcombined` and `fccombined` 0 to 89
 | HANG / CRASH | no answer in the time limit (machine load does this too: run the row again) |
 
 A row that is not RIGHT is not yet a wrong solid, and a RIGHT is only as good as the oracles. The rows that have been looked at are in
-`known.json` (26, by case, with what settles each) or are recognised by a rule in `tally.mjs` (a curved wall); the tally prints those as
+`known.json` (by case, or by case and step for another part of a document, with what settles each) or are recognised by a rule in `tally.mjs` (a curved wall); the tally prints those as
 known and anything else as NEW, with its numbers. A NEW row is looked at before anything is said about it, and then either fixed or added to
 `known.json` with its reason. A listed row whose verdict or volume has changed is NEW again.
 
 On the 7468 final solids judged so far every row that was not RIGHT was one of these, and nothing was built wrong:
 
-- **brep-rs disagrees, OCCT agrees** (13): a hole or pocket after a draft, reversed pulls of an outline with a round or a bulge. brep-rs is
+- **brep-rs disagrees, OCCT agrees** (13, and one more among the other parts of a document): a hole or pocket after a draft, reversed pulls of an outline with a round or a bulge. brep-rs is
   archived and is not changed. It also REFUSES a hole across a curved wall, a pocket whose tool is not enclosed by the part, and a taper on an
   outline with a round: on those steps a RIGHT is OCCT's word alone.
 - **A curved wall, within the tolerance on the volume and just outside it on the box** (14: cylinders and three cones): both oracles agree with each
@@ -90,8 +95,14 @@ blessed without a second oracle (the repo's AGENTS.md); a form worked out by han
 - OCCT (`packages/brep-adapter/src/occt-build.ts`) reads the options of a pull and a pocket, a hole's counterbore and countersink, and tilts
   every wall of a whole-body draft, since 2026-11-13 (`packages/brep-adapter/test/occt-sweep-options.test.mjs` pins each against a hand-worked
   volume). What it does not build it refuses by name.
-- A refusal by OCCT of the measured step, or of any step it rests on, counts as OCCT saying nothing. The referee passes a refused step's part on
-  unchanged, so without this rule a later step is scored against a part the document does not describe. The rig's older harness copies do not
+- A hollow is asked of OCCT with two joins (the arc join rounds the wall at an inside corner, the mitred one keeps it sharp) and is answered
+  only where they agree, or where one builds alone; and every answer is then checked at points of the source part that must be wall or must
+  be hollow (`hollowPointCheck`). A hollow that fails either is refused by name, so OCCT says nothing on it. Before 2026-11-14 the referee
+  answered such hollows, and 86 of 220 answers that one join gave alone were not the hollow (`../pilot-2026-11b/open-items/referee-hollow/`).
+  The check is a sample: a wrong hollow can still pass it.
+- A refusal by OCCT or by brep-rs of the measured step, or of any step it rests on, counts as that oracle saying nothing. Both pass a refused
+  step's part on unchanged, so without this rule a later step is scored against a part the document does not describe (for brep-rs since
+  2026-11-14). The rig's older harness copies do not
   have this rule.
 - A stored reference (`sd`, `holes`, `ep`) is taken before the live oracles. All RIGHT rows of `sd` as written are judged by one.
 

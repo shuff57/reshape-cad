@@ -1685,9 +1685,15 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         // and the adapter owes it. Mirroring through the origin instead gave the right
         // VOLUME and a bounding box 40 units wrong, which is exactly the
         // shape of bug that passes a careless check.
-        const b = measureShape(oc, src);
-        const lo = b.bbox[0][axis];
-        const hi = b.bbox[1][axis];
+        // The face's place is read from the exact box, not from measureShape(): that one rounds to 1e-4 mm (and widens by the shape's tolerance),
+        // which put the plane up to 5e-5 mm off a face at a place that is not a round number and left the copy apart from the part (2026-11-14:
+        // a five-sided prism mirrored through its side at x = -8.09017 came back with its box at -26.1804 for -26.18034, in two pieces).
+        const exact = new oc.Bnd_Box();
+        oc.BRepBndLib.AddOptimal(src, exact, false, false);
+        const cLo = exact.CornerMin(), cHi = exact.CornerMax();
+        const lo = [cLo.X(), cLo.Y(), cLo.Z()][axis];
+        const hi = [cHi.X(), cHi.Y(), cHi.Z()][axis];
+        cLo.delete(); cHi.delete(); exact.delete();
         const at = Math.abs(lo) <= Math.abs(hi) ? lo : hi;
         const through: Vec3 = [0, 0, 0];
         through[axis] = at;
