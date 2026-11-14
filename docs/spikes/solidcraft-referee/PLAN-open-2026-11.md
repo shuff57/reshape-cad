@@ -27,7 +27,7 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 | 3 | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
 | 4 | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
 | 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
-| 6 | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
+| 6 ✓ | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
 | 7 ✓ | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
 | 8 | brep-rs's disagreements | archived; record, do not fix | with item 1 | nothing |
 
@@ -142,7 +142,11 @@ or give that kind of step the budget.
 **Done when.** Either "5000 cases, none over N s" is written down as the size of the risk, or the class has a guard or a budget and its
 family is swept.
 
-## 6. The referee's hollow at an inside corner
+## 6. The referee's hollow at an inside corner  [DONE 2026-11-14]
+
+**Done.** Neither join can be used alone, so the referee asks for both and checks every answer at points (PILOT-2.md, "The referee's
+hollow: two joins ..." and "... rescored"). `fc combined seed 476` has a silent OCCT, `440` is RIGHT, no RIGHT moved on 7468 cases, both gates
+pass 78 of 78.
 
 **Known.** OCCT's hollow rounds the wall at an inside corner (`GeomAbs_Arc` in `packages/brep-adapter/src/occt-build.ts`); the page's is
 the plane offset, sharp there, which `remeasure-0.30.1/HALT-7.md` fixed as the reference. After a counterbore the two are 0.36% apart

@@ -904,3 +904,51 @@ A way to tell the two halves of the wall apart was not worked out: nothing turne
 One thing about the run itself. The first Node pass of the variants reported a hang and stopped. It was the machine, out of memory at the
 time, and a fault in the harness: a child that was killed before its first case had announced itself ended the whole pass. The markers are
 written synchronously now, and the same cases take 4 to 5 s each.
+
+## The referee's hollow, rescored (plan item 6, closed 2026-11-14)
+
+The full sweep with the two-join rule and the point check in the referee (`~/.cache/solidcraft-0.30.1-rig/h61/all`, the tree at `9b8af141`),
+case by case against the built passes from before them (`h42`, `h43`, `h45`):
+
+| | cases | the same verdict, OCCT saying what it said | moved |
+|---|---|---|---|
+| the six corpora | 4639 | 4638 | 1 measures an earlier step now (its hole is refused by the wider guard); RIGHT before and after |
+| the 3000 new documents | 2829 | 2819 | 8 measure an earlier step, RIGHT before and after; and the two rows this item is about |
+
+- `fc combined seed 476`: was WRONG (OCCT answered with the rounded wall, 0.36% off). Now OCCT refuses, by name, and the row is "both oracles
+  refuse, the closed form agrees" (1599.527 by hand, 2.4e-6).
+- `fc combined seed 440`: was "both oracles refuse". Now RIGHT: the arc join fails there, the mitred one builds alone, passes the point check,
+  and gives 1389.6637 for a hand-worked 1389.664; the page route 1389.6572.
+
+No RIGHT moved. Both frozen gates pass 78 of 78. The plan's side question (should a hollow after a counterbore pass G-CONVEX at all, when the
+same thicker wall after a pocket is refused) is the owner's and is not touched: such a hollow is built to the plane-offset reference today.
+
+## A plain through bore across a cylinder is cut (plan item 4; owner decision 2026-11-14: "allow plain through bores")
+
+`packages/layer/src/holes.ts`, `acrossAllowed`, mirrored in the contract copy. G-CURVED lets a hole through when all of these hold, and
+refuses everything else across a curved wall at once, with the sentence it had:
+
+- the part is a cylinder, or a circle pulled plainly (no taper, direction, two-sided or reversed pull), with its axis along a main axis;
+- nothing has been done to it but earlier holes (behind a hollow, a move, a mirror, a repeat or a round the hole stays refused);
+- the hole is plain (no counterbore, no countersink, not four at the corners) and goes all the way through.
+
+One check after the cut, `G-ACROSS-BOX`: the part's measured box must not have moved outwards by more than 2.6e-3 mm (the sweep's limit for
+a curved wall; an ordinary cut moves a cylinder's box by up to 8.1e-4 mm). The one case of the family whose box came back 9.1e-3 mm past the
+cap is refused by it, with the existing sentence "this hole could not be cut cleanly into this part ...". Its volume was right; the reason to
+refuse is that the layer places a later hole by the middle of that box. No sentence is new or changed.
+
+**The family with the guard as decided** (`~/.cache/solidcraft-0.30.1-rig/h65/cross`, against the guard-off run):
+
+| | cases |
+|---|---|
+| cut, and judged RIGHT | 296 of 296 |
+| refused by G-CURVED at once (cones, blind bores, recesses), 0.24 to 0.30 s each | 43 (they took 17 to 45 s to be refused with the guard off; two cones were cut then, one outside the tolerance) |
+| refused as before by the guards beside it (two pieces 30, crossing bores 27, a tangent wall 3) | 60 |
+| refused by the new box check | 1 |
+
+One hole that hit the 45 s budget with the guard off was cut this time, in 41 s, and is RIGHT: a bore of 3 grazing the wall of a cylinder of
+radius 30. Built or refused by the clock, as the budget always is near its limit.
+
+Tests: `packages/layer/test/across-cylinder.test.mjs` (5: the rule in the layer and the contract copy, what stays refused and with which
+words, the box check). The suite: 1155 tests, 1149 pass, 6 skipped, 0 fail. The corpora before and after, and the page checks, are in the
+item 1 section.
