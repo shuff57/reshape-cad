@@ -850,6 +850,10 @@ were cut (5 over 20 s): the bore is computed twice, and a later step replays it.
 
 Nothing is changed in the layer by this section.
 
+**Owner decision, 2026-11-14: "allow plain through bores".** Only on a cylinder, a turned cylinder or a round pad with nothing done to it but
+earlier holes. Cones, blind bores, recesses, and anything behind a hollow, a move, a mirror, a repeat or a round stay refused at once, with
+the sentence they have. The change and its sweeps are in the next section about it.
+
 ## The four engine findings on the newest release (plan item 7)
 
 `../UPSTREAM-FINDINGS-2026-11.md`. The four faults measured on the pin (the panic of a pocket into a drafted cylinder, the round that does
@@ -858,3 +862,6 @@ lists, and all four are gone on v0.41.0, the newest release, whose only kernel i
 the rounded box is the closed form and the same in five readings, the cylinder is exact to 1e-11 and its box to 4e-15 mm. By the plan's rule
 nothing is reported for them. One older fault of solidcore's is still there on v0.41.0 (rounds sent one edge a call), covered on our side; a
 draft for it is in that file for the owner to change, send or drop. SolidCore's status page as of today is recorded there too.
+
+Owner decisions, 2026-11-14: "hold the draft" (it stays in the repo, not sent), and the result is added to AGENTS.md's SolidCore note as
+written. Item 7 is closed.

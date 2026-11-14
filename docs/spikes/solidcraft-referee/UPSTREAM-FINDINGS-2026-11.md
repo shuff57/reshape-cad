@@ -50,7 +50,8 @@ named. The same probe on v0.41.0 (`solidcore-0.40.0-rc.2/fillet-sequence-probe.m
 side it is covered: the layer sends the edges of one round in one call and refuses the chain it cannot (`GUARD-FILLET-CHAIN.md`). Nothing
 of ours depends on upstream fixing it; it would matter the day the pin moves to a solidcore release.
 
-This is the only draft this item produced. Every word of it is the owner's to change, and whether it is sent at all.
+This is the only draft this item produced. **Owner decision, 2026-11-14: "hold the draft".** It stays here, not sent; nothing of ours
+depends on upstream fixing it until the pin moves to a solidcore release.
 
 > **Title:** `solid.fillet`: rounding a box's four bottom edges one call at a time also rounds the vertical edges (v0.41.0)
 >

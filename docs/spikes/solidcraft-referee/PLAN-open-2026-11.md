@@ -28,7 +28,7 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 | 4 | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
 | 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
 | 6 | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
-| 7 | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
+| 7 ✓ | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
 | 8 | brep-rs's disagreements | archived; record, do not fix | with item 1 | nothing |
 
 Items 1 and 2 first because they are cheap and item 1 pays for the rest. Item 3 before 4 because it helps every long run, including the
@@ -158,7 +158,10 @@ same reason (G-CONVEX); a through hole with a counterbore passes it.
 **Worth asking while here:** whether a hollow after a counterbore should pass G-CONVEX at all, given that the layer refuses the same
 thicker wall after a pocket. It is built to the reference today, so this is a question of meaning for the owner, not a fault.
 
-## 7. What we know about the engine, for upstream
+## 7. What we know about the engine, for upstream  [DONE 2026-11-14]
+
+**Done.** `UPSTREAM-FINDINGS-2026-11.md`: all four still show on the pin and all four are gone on v0.41.0, so nothing is reported for them.
+One older solidcore fault remains on v0.41.0; its draft is held by the owner's decision. The result is in AGENTS.md with the owner's text.
 
 **Known.** Four things measured on 0.30.1 that are upstream's:
 - a pocket into a drafted cylinder panics (`truck-geotrait-0.4.0/src/algo/curve.rs:78`, "tolerance must be no less than 1e-6"), which in
