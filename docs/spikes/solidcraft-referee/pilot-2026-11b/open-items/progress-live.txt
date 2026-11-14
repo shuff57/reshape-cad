@@ -1,0 +1,12 @@
+== on (as shipped) knob: 33965 ms, sk1:noop rev1:built box1:built op1:built hole1:built, volume 7205.955461833018
+   written: [1] evaluating in the sandbox... | [913] waiting for solidcraft... | [936] ready | [938] building step 1 of 5: sk1 ... | [950] building step 2 of 5: rev1 ... | [1695] building step 3 of 5: box1 ... | [2034] building step 4 of 5: op1 ... | [15809] building step 5 of 5: hole1 ... | [33934] built
+   drawn:   [2] evaluating in the sandbox... | [921] waiting for solidcraft... | [936] ready | [948] building step 1 of 5: sk1 ... | [1177] building step 2 of 5: rev1 ... | [1698] building step 3 of 5: box1 ... | [2048] building step 4 of 5: op1 ... | [15814] building step 5 of 5: hole1 ... | [33947] built
+== on (as shipped) plate: 5352 ms, box1:built hole1:built hole2:built shell1:refused, volume 11170.442557584298
+   written: [2] evaluating in the sandbox... | [37] waiting for solidcraft... | [921] ready | [923] building step 1 of 4: box1 ... | [2166] building step 2 of 4: hole1 ... | [3666] building step 3 of 4: hole2 ... | [5329] building step 4 of 4: shell1 ... | [5336] built with 1 step not built
+   drawn:   [2] evaluating in the sandbox... | [904] waiting for solidcraft... | [922] ready | [934] building step 1 of 4: box1 ... | [2167] building step 2 of 4: hole1 ... | [3669] building step 3 of 4: hole2 ... | [5329] building step 4 of 4: shell1 ... | [5351] built with 1 step not built
+== off knob: 34212 ms, sk1:noop rev1:built box1:built op1:built hole1:built, volume 7205.955461833018
+   written: [3] evaluating in the sandbox... | [30] waiting for solidcraft... | [52] ready | [938] translating and building in solidcraft... | [34180] built
+   drawn:   [3] evaluating in the sandbox... | [30] waiting for solidcraft... | [934] ready | [945] translating and building in solidcraft... | [34194] built
+== off plate: 5656 ms, box1:built hole1:built hole2:built shell1:refused, volume 11170.442557584298
+   written: [3] evaluating in the sandbox... | [39] waiting for solidcraft... | [1006] ready | [1009] translating and building in solidcraft... | [5645] built with 1 step not built
+   drawn:   [4] evaluating in the sandbox... | [990] waiting for solidcraft... | [1007] ready | [1021] translating and building in solidcraft... | [5655] built with 1 step not built

@@ -1,0 +1,6 @@
+the part                                                   volume 5563.417273897273 z -8.009136991948175 to 8
+cut away everything below z = -8                           volume 5563.417273897273 z -8.009136991948175 to 8
+cut away everything below z = -8.004                       volume 5563.417273897273 z -8.009136991948175 to 8
+control: cut away below z = -7.9                           volume 5533.8047635332705 z -7.90000000000829 to 8
+control: cut away below z = -7                             volume 5285.99769032888 z -7.0000000000109255 to 8
+EXIT=0

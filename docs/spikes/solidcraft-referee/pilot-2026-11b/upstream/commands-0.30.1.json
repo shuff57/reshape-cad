@@ -1,0 +1,629 @@
+{
+ "panic: a pocket into a drafted cylinder": {
+  "accepted": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 12,
+     "height": 30,
+     "base": [
+      8,
+      -5,
+      -12
+     ],
+     "axis": "Z",
+     "body_name": "b_c1"
+    }
+   },
+   {
+    "command": "solid.draft",
+    "params": {
+     "faces": [
+      [
+       20,
+       -5,
+       3
+      ]
+     ],
+     "angle": 2,
+     "neutral": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "normal": [
+       0,
+       0,
+       1
+      ]
+     },
+     "pull": [
+      0,
+      0,
+      1
+     ],
+     "body": "b_c1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk3_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.circle.center",
+    "params": {
+     "center": [
+      10,
+      8
+     ],
+     "diameter": 4
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "sketch": "sk_sk3_0",
+     "operation": "cut",
+     "targets": [
+      "b_c1"
+     ],
+     "distance": 40,
+     "direction": "negative"
+    }
+   }
+  ],
+  "features": [
+   [
+    "c1",
+    "built",
+    ""
+   ],
+   [
+    "d2",
+    "built",
+    ""
+   ],
+   [
+    "sk3",
+    "noop",
+    ""
+   ],
+   [
+    "pk4",
+    "built",
+    ""
+   ],
+   [
+    "sk5",
+    "noop",
+    ""
+   ],
+   [
+    "pk6",
+    "refused",
+    "pk6: this pocket cannot be built from the sketch as drawn (the solid it makes do"
+   ],
+   [
+    "sk7",
+    "noop",
+    ""
+   ],
+   [
+    "pk8",
+    "refused",
+    "pk8: its solid pk6 was refused, so there is nothing to build on (this pocket can"
+   ]
+  ],
+  "failed": [
+   {
+    "error": "WASM TRAP: unreachable",
+    "commands": [
+     {
+      "command": "solid.cylinder",
+      "params": {
+       "radius": 12,
+       "height": 30,
+       "base": [
+        8,
+        -5,
+        -12
+       ],
+       "axis": "Z",
+       "body_name": "b_c1"
+      }
+     },
+     {
+      "command": "solid.draft",
+      "params": {
+       "faces": [
+        [
+         20,
+         -5,
+         3
+        ]
+       ],
+       "angle": 2,
+       "neutral": {
+        "origin": [
+         0,
+         0,
+         0
+        ],
+        "normal": [
+         0,
+         0,
+         1
+        ]
+       },
+       "pull": [
+        0,
+        0,
+        1
+       ],
+       "body": "b_c1"
+      }
+     },
+     {
+      "command": "sketch.create",
+      "params": {
+       "name": "sk_sk3_0",
+       "plane": {
+        "origin": [
+         0,
+         0,
+         0
+        ],
+        "x_dir": [
+         1,
+         0,
+         0
+        ],
+        "y_dir": [
+         0,
+         1,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "command": "sketch.circle.center",
+      "params": {
+       "center": [
+        10,
+        8
+       ],
+       "diameter": 4
+      }
+     },
+     {
+      "command": "sketch.finish",
+      "params": {}
+     },
+     {
+      "command": "solid.extrude",
+      "params": {
+       "sketch": "sk_sk3_0",
+       "operation": "cut",
+       "targets": [
+        "b_c1"
+       ],
+       "distance": 40,
+       "direction": "negative"
+      }
+     },
+     {
+      "command": "sketch.create",
+      "params": {
+       "name": "sk_sk5_1",
+       "plane": {
+        "origin": [
+         0,
+         0,
+         0
+        ],
+        "x_dir": [
+         1,
+         0,
+         0
+        ],
+        "y_dir": [
+         0,
+         1,
+         0
+        ]
+       }
+      }
+     },
+     {
+      "command": "sketch.circle.center",
+      "params": {
+       "center": [
+        6,
+        10
+       ],
+       "diameter": 8
+      }
+     },
+     {
+      "command": "sketch.finish",
+      "params": {}
+     },
+     {
+      "command": "solid.extrude",
+      "params": {
+       "sketch": "sk_sk5_1",
+       "operation": "cut",
+       "targets": [
+        "b_c1"
+       ],
+       "distance": 1,
+       "direction": "negative"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "round: a box with all twelve edges rounded": {
+  "accepted": [
+   {
+    "command": "solid.box",
+    "params": {
+     "length": 20,
+     "width": 20,
+     "height": 10,
+     "center": [
+      8,
+      -5,
+      3
+     ],
+     "body_name": "b_b1"
+    }
+   },
+   {
+    "command": "solid.fillet",
+    "params": {
+     "edges": [
+      [
+       8,
+       -15,
+       -2
+      ],
+      [
+       8,
+       -15,
+       8
+      ],
+      [
+       8,
+       5,
+       -2
+      ],
+      [
+       8,
+       5,
+       8
+      ],
+      [
+       -2,
+       -5,
+       -2
+      ],
+      [
+       -2,
+       -5,
+       8
+      ],
+      [
+       18,
+       -5,
+       -2
+      ],
+      [
+       18,
+       -5,
+       8
+      ],
+      [
+       -2,
+       -15,
+       3
+      ],
+      [
+       -2,
+       5,
+       3
+      ],
+      [
+       18,
+       -15,
+       3
+      ],
+      [
+       18,
+       5,
+       3
+      ]
+     ],
+     "radius": 2,
+     "body": "b_b1"
+    }
+   }
+  ],
+  "features": [
+   [
+    "b1",
+    "built",
+    ""
+   ]
+  ],
+  "failed": []
+ },
+ "cylinder: plain": {
+  "accepted": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 30,
+     "base": [
+      8,
+      -5,
+      -12
+     ],
+     "axis": "Z",
+     "body_name": "b_c1"
+    }
+   }
+  ],
+  "features": [
+   [
+    "c1",
+    "built",
+    ""
+   ]
+  ],
+  "failed": []
+ },
+ "cylinder: with a pocket": {
+  "accepted": [
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 8,
+     "height": 30,
+     "base": [
+      8,
+      -5,
+      -12
+     ],
+     "axis": "Z",
+     "body_name": "b_c1"
+    }
+   },
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_sk2_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       0
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       0,
+       0
+      ],
+      [
+       6,
+       0
+      ],
+      [
+       6,
+       4
+      ],
+      [
+       0,
+       4
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "sketch": "sk_sk2_0",
+     "operation": "cut",
+     "targets": [
+      "b_c1"
+     ],
+     "distance": 2,
+     "direction": "negative"
+    }
+   }
+  ],
+  "features": [
+   [
+    "c1",
+    "built",
+    ""
+   ],
+   [
+    "sk2",
+    "noop",
+    ""
+   ],
+   [
+    "pk3",
+    "built",
+    ""
+   ]
+  ],
+  "failed": []
+ },
+ "box: a prism hollowed, a cross bore through the rim": {
+  "accepted": [
+   {
+    "command": "sketch.create",
+    "params": {
+     "name": "sk_p1_0",
+     "plane": {
+      "origin": [
+       0,
+       0,
+       -6
+      ],
+      "x_dir": [
+       1,
+       0,
+       0
+      ],
+      "y_dir": [
+       0,
+       1,
+       0
+      ]
+     }
+    }
+   },
+   {
+    "command": "sketch.line",
+    "params": {
+     "points": [
+      [
+       12,
+       0
+      ],
+      [
+       3.7082039324993694,
+       11.412678195541842
+      ],
+      [
+       -9.708203932499368,
+       7.0534230275096785
+      ],
+      [
+       -9.70820393249937,
+       -7.053423027509677
+      ],
+      [
+       3.7082039324993668,
+       -11.412678195541844
+      ]
+     ],
+     "closed": true
+    }
+   },
+   {
+    "command": "sketch.finish",
+    "params": {}
+   },
+   {
+    "command": "solid.extrude",
+    "params": {
+     "distance": 12,
+     "sketch": "sk_p1_0",
+     "operation": "new",
+     "body_name": "b_p1"
+    }
+   },
+   {
+    "command": "solid.shell",
+    "params": {
+     "faces": [
+      [
+       -1.4164078649987377,
+       4.359255168032164,
+       6
+      ]
+     ],
+     "thickness": 2,
+     "body": "b_p1"
+    }
+   },
+   {
+    "command": "solid.cylinder",
+    "params": {
+     "radius": 3,
+     "height": 40,
+     "base": [
+      -14.854101966249685,
+      -1.7763568394002505e-15,
+      5.000000000000002
+     ],
+     "axis": "X",
+     "operation": "cut",
+     "targets": [
+      "b_p1"
+     ]
+    }
+   }
+  ],
+  "features": [
+   [
+    "p1",
+    "built",
+    ""
+   ],
+   [
+    "s2",
+    "built",
+    ""
+   ],
+   [
+    "h3",
+    "built",
+    ""
+   ]
+  ],
+  "failed": []
+ }
+}

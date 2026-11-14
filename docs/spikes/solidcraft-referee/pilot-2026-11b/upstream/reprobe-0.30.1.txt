@@ -1,0 +1,9 @@
+== SolidCraft v0.30.1 (8e2b0cd6, truck), the pin
+1 panic | as the layer sent it (10 commands): WASM TRAP: unreachable (10352 ms)
+1 panic | without the first pocket (6 commands): ok volume 13340.421358694852 (898 ms)
+1 panic | without the draft (the control): ok volume 13568.274188892226 (507 ms)
+2 round | 5 readings (4 in one engine, 1 in another process): 2 different volumes (spread 2.37e-16 of the volume), 4 different orders of the 26 faces, the same set of faces: true
+          volumes 3838.93712503138 3838.93712503138 3838.937125031381 3838.937125031381 3838.93712503138
+3 cylinder | plain: volume 6031.1062360233 (exact 6031.857894892402, -1.25e-4), box off by 2.15e-4 mm
+3 cylinder | with a pocket: volume 6016.269068072579 (by hand 6017.423776, -1.92e-4), box off by 4.57e-4 mm
+4 box | the measured box ends at z = 6.008371657287798 (the part ends at 6: 8.37e-3 mm above), volume 1860.5959274237864 (2741 ms)

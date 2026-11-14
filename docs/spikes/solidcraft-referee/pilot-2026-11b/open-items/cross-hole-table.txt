@@ -1,0 +1,68 @@
+
+A plain cylinder, one bore across it, by how wide the bore is against the cylinder
+| | cases | cut | of those RIGHT | not RIGHT | largest difference from the hand volume | script time, median / longest | not cut, and by what |
+|---|---|---|---|---|---|---|---|
+| under 10% | 27 | 25 | 25 | 0 | 2.8e-5 (25) | 6.1 / 46.3 s | 1 G-BUDGET, 1 G-TANGENT |
+| 10 to 25% | 55 | 54 | 54 | 0 | 4.2e-5 (54) | 6.3 / 24.5 s | 1 G-TANGENT |
+| 25 to 50% | 63 | 59 | 58 | WRONG r24 cyl R12 h16 bore 10 y2.25 z-4.25 | 7.3e-5 (59) | 7.1 / 13.6 s | 4 G-BODIES |
+| 50 to 75% | 65 | 53 | 53 | 0 | 1.1e-4 (53) | 9.2 / 18.6 s | 12 G-BODIES |
+| 75% and over | 36 | 24 | 24 | 0 | 1.7e-4 (24) | 8.8 / 34.1 s | 12 G-BODIES |
+
+The same cases by where the bore is: through the axis, off it, its edge just inside the wall, breaking out of the side
+| | cases | cut | of those RIGHT | not RIGHT | largest difference from the hand volume | script time, median / longest | not cut, and by what |
+|---|---|---|---|---|---|---|---|
+| axis | 68 | 57 | 57 | 0 | 1.1e-4 (57) | 7.2 / 23.0 s | 9 G-BODIES, 2 G-TANGENT |
+| off | 86 | 76 | 75 | WRONG r24 cyl R12 h16 bore 10 y2.25 z-4.25 | 5.5e-5 (76) | 7.1 / 15.3 s | 10 G-BODIES |
+| graze | 24 | 23 | 23 | 0 | 4.8e-5 (23) | 13.9 / 46.3 s | 1 G-BUDGET |
+| break | 68 | 59 | 59 | 0 | 1.7e-4 (59) | 6.9 / 34.1 s | 9 G-BODIES |
+
+The same cases by whether the bore stays clear of the caps (the second family only records this)
+| | cases | cut | of those RIGHT | not RIGHT | largest difference from the hand volume | script time, median / longest | not cut, and by what |
+|---|---|---|---|---|---|---|---|
+| clear of the caps | 70 | 70 | 70 | 0 | 9.1e-5 (70) | 7.1 / 15.0 s | - |
+| reaches a cap | 80 | 50 | 49 | WRONG r24 cyl R12 h16 bore 10 y2.25 z-4.25 | 1.7e-4 (50) | 5.8 / 23.0 s | 28 G-BODIES, 2 G-TANGENT |
+
+By the size of the cylinder (radius)
+| | cases | cut | of those RIGHT | not RIGHT | largest difference from the hand volume | script time, median / longest | not cut, and by what |
+|---|---|---|---|---|---|---|---|
+| under 8 | 65 | 64 | 64 | 0 | 1.1e-4 (64) | 8.4 / 34.1 s | 1 G-BODIES |
+| 8 to 16 | 65 | 58 | 57 | WRONG r24 cyl R12 h16 bore 10 y2.25 z-4.25 | 9.1e-5 (58) | 7.8 / 18.7 s | 6 G-BODIES, 1 G-TANGENT |
+| over 16 | 116 | 93 | 93 | 0 | 1.7e-4 (93) | 6.6 / 46.3 s | 1 G-BUDGET, 21 G-BODIES, 1 G-TANGENT |
+
+Everything else
+| | cases | cut | of those RIGHT | not RIGHT | largest difference from the hand volume | script time, median / longest | not cut, and by what |
+|---|---|---|---|---|---|---|---|
+| cone | 22 | 2 | 1 | WRONG cone R6 h24 bore 2.5 z0 y1.75 | no hand volume | 18.5 / 21.9 s | 20 G-ENGINE |
+| control | 6 | 6 | 6 | 0 | 4.1e-5 (6) | 0.6 / 0.7 s | - |
+| cylinder, axis-y | 6 | 6 | 6 | 0 | 1.0e-4 (6) | 7.9 / 9.2 s | - |
+| cylinder, blind | 11 | 0 | 0 | 0 | no hand volume | 45.3 / 45.3 s | 1 G-TOP, 10 G-BUDGET |
+| cylinder, counterbore | 5 | 0 | 0 | 0 | no hand volume | 45.3 / 45.3 s | 3 G-BUDGET, 2 G-TOP |
+| cylinder, countersink | 5 | 0 | 0 | 0 | no hand volume | 45.3 / 45.3 s | 3 G-BUDGET, 2 G-TOP |
+| cylinder, moved | 2 | 2 | 2 | 0 | 5.0e-5 (2) | 10.3 / 10.3 s | - |
+| cylinder, two | 2 | 2 | 2 | 0 | 4.6e-5 (2) | 26.9 / 26.9 s | - |
+| round pad | 20 | 18 | 18 | 0 | 7.8e-5 (18) | 6.9 / 10.4 s | 1 G-BODIES, 1 G-TANGENT |
+| turned cylinder | 40 | 39 | 39 | 0 | 9.5e-5 (39) | 6.9 / 12.7 s | 1 G-BODIES |
+| two bores, apart | 8 | 8 | 8 | 0 | 2.8e-5 (8) | 23.8 / 28.4 s | - |
+| two bores, cross | 19 | 0 | 0 | 0 | no hand volume | 6.1 / 7.5 s | 19 G-CROSS |
+| two bores, overlap | 8 | 0 | 0 | 0 | no hand volume | 6.5 / 7.2 s | 8 G-CROSS |
+
+400 cases; 298 cut; of those 296 RIGHT; OCCT agrees on 272, disagrees on 2, says nothing on 24; brep-rs agrees on 89, says nothing on 209.
+scripts over 20 s: 40
+  46.3 s  cyl R30 h30 bore 3 graze y28.25 z6.75  G-BUDGET
+  45.3 s  cyl R8 bore 3 blind 8 deep  G-BUDGET
+  45.3 s  cyl R8 bore 3 blind 4 deep  G-BUDGET
+  45.3 s  cyl R20 bore 5 counterbore wide  G-BUDGET
+  45.3 s  cyl R12 bore 5 blind 12 deep  G-BUDGET
+  45.3 s  cyl R12 bore 5 blind 18 deep  G-BUDGET
+  45.3 s  cyl R10 bore 3 counterbore  G-BUDGET
+  45.3 s  cyl R20 bore 8 blind 30 deep  G-BUDGET
+  45.3 s  cyl R20 bore 5 countersink wide  G-BUDGET
+  45.3 s  cyl R20 bore 8 blind 20 deep  G-BUDGET
+  45.3 s  cyl R10 bore 3 countersink  G-BUDGET
+  45.3 s  cyl R20 bore 8 blind 10 deep  G-BUDGET
+furthest from the hand volume:
+  -1.68e-4  r101 cyl R23 h10 bore 41 y8 z2
+  -1.14e-4  cyl R4 h30 bore 5.5 axis y0 z0
+  -1.13e-4  cyl R4 h30 bore 5.5 break y1.5 z0
+  -1.13e-4  cyl R6 h30 bore 6 axis y0 z6
+  -1.05e-4  cyl R4 h12 bore 4 axis y0 z0

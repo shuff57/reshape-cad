@@ -1,0 +1,10 @@
+== SolidCraft v0.41.0 (3c8efdb5, solidcore), the newest release
+1 panic | as the layer sent it (10 commands): ok volume 13311.488336533424 (1409 ms)
+1 panic | without the first pocket (6 commands): ok volume 13341.703866614665 (1336 ms)
+1 panic | without the draft (the control): ok volume 13569.094332082259 (549 ms)
+2 round | 5 readings (4 in one engine, 1 in another process): 1 different volumes (spread 0.00e+0 of the volume), 1 different orders of the 26 faces, the same set of faces: true
+          volumes 3839.0324050146005 3839.0324050146005 3839.0324050146005 3839.0324050146005 3839.0324050146005
+3 cylinder | plain: volume 6031.85789495551 (exact 6031.857894892402, 1.05e-11), box off by 3.55e-15 mm
+3 cylinder | with a pocket: volume 6017.42380785578 (by hand 6017.423776, 5.31e-9), box off by 3.55e-15 mm
+4 box | the measured box ends at z = 6.0000000000000036 (the part ends at 6: 3.55e-15 mm above), volume 1860.586176658001 (637 ms)
+EXIT=0

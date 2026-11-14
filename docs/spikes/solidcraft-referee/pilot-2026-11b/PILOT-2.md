@@ -769,3 +769,92 @@ so). And times taken while a kernel build was linking beside it were worthless: 
 Tests: `packages/brep-adapter/test/occt-sweep-options.test.mjs`, 29 of 29 (the box above refused; the same box with the hole in the middle
 answered to the hand form; the check itself on a right hollow, on the unhollowed part, on the bare cavity and on a closed hollow). The frozen
 parity and mesh gates pass 78 of 78 with it.
+
+## Every final part of a document is judged (2026-11-14)
+
+A gap in the scoring, found while preparing the plan's item 1. A document can end with more than one part, and the harness judged the part of
+its measured step; the whole scene only when the parts' boxes are apart. Of the 7428 rows counted RIGHT so far, 1189 end with more than one
+part, and in 30 of those the whole scene had been compared. `sweep/host-route-sweep.mjs` now judges every built step that no later built step
+works on (`others` in the row), and `sweep/tally.mjs` counts them and prints one that is not RIGHT as known or NEW, under `<case>#<step>`.
+What the first full sweep with it finds is in the item 1 section.
+
+## A progress line for long runs (plan item 3; the owner approved the words 2026-11-14, "as proposed")
+
+The layer tells its caller which step it is on (`ctx.onStep`, called before a step is planned; no result depends on it), and the page writes
+it into the status line and lets the browser draw before the engine is called: `building step 4 of 9: hole1 ...`, `checking step 4 of 9:
+hole1 ...` on a later pass over the same step, and ` (this one is slow)` once a step has taken 10 s. It is on; `?progress=off` gives the
+single line the page had. The line can only change between engine calls: SolidCraft computes on the page's own thread.
+
+In the real page (`open-items/progress-live.mjs`, output `open-items/progress-live.txt`; every text the status line was given, and every text
+a frame showed): the knob of the pilot shows five step lines and is as long as before (34.0 s with the line, 34.2 s without); a plate whose
+hollow is refused shows four and ends "built with 1 step not built"; with `?progress=off` both show "translating and building in
+solidcraft..." and nothing else. The steps, the refusal and the volumes are the same with and without. The slow mark did not appear on
+the knob: its 18 s hole is two engine calls of 9 s, and the mark is added only when a step is found over 10 s between two calls.
+
+The page checks, on the tree with the line on, against the last recorded run (`h49`, before the line): the hollow budget, the time budget,
+the fillet check, the 56 examples (25 pass, as before), the 44 sketch scripts, the 14 blocked-step scripts, the 13 two-part scripts and both
+pilot runs differ in times and port numbers and in nothing else. Two of them (`live`, the sketch scripts) timed out in the browser the first
+time, on a machine that was out of memory, and passed when run again.
+
+Tests: `packages/layer/test/on-step.test.mjs` (3), `packages/solidcraft-host/test/progress.test.mjs`. The Node sweep step for step is in the
+item 1 section.
+
+## A hole across a solid cylinder: the family (plan item 4; measured, the owner decides)
+
+**Step 0, decided.** In 4400 generated documents 11 holes across a cylinder were hidden from the guard by a mirror, a repeat or a move: 6 were
+cut (scripts of 7 to 28 s) and 5 stopped by the time budget (46 to 91 s). The owner chose "yes: mirror, copy, move, round": the guard now also
+looks back through a move (a copy too), a mirror, a repeat in a row, and a round or bevel, with the same sentence
+(`packages/layer/src/holes.ts`, `curvedRootOf`; `packages/layer/test/curved-through-hollow.test.mjs`). A bevel was taken with the round: it
+leaves the wall and its axis as a round does.
+
+**The family.** 400 documents (`open-items/cross-hole-family.mjs`, 126; `open-items/cross-hole-family-2.mjs`, 274), each a hole ACROSS a curved
+wall, run through the host route with G-CURVED switched off and every other guard as shipped. 357 have a volume worked out with no kernel (a
+midpoint integral over the footprint). Rows: `open-items/cross-hole-rows.json`; the table: `open-items/cross-hole-table.txt`
+(`cross-hole-table.mjs`).
+
+| | cases | cut | judged RIGHT | not cut, and by what |
+|---|---|---|---|---|
+| a cylinder, one through bore, clear of the caps or not | 246 | 215 | 214 | 28 it would leave two pieces, 2 touches the edge along a line, 1 the time budget |
+| the same on a cylinder turned onto another axis | 40 | 39 | 39 | 1 two pieces |
+| the same on a round pad (a pulled circle) | 20 | 18 | 18 | 1 two pieces, 1 touches the edge |
+| a moved cylinder, a bore along y, two bores that do not meet | 18 | 18 | 18 | |
+| two bores that cross or overlap | 27 | 0 | | 27 "crossing holes are not supported yet" |
+| a blind bore | 11 | 0 | | 10 the time budget (45 s each), 1 "starts on the top" |
+| a bore with a counterbore or a countersink | 10 | 0 | | 6 the time budget, 4 "starts on the top" |
+| a cone | 22 | 2 | 1 | 20 "could not be cut cleanly" (after 17 to 20 s) |
+| controls (along the axis, across a box) | 6 | 6 | 6 | |
+
+By the width of the bore against the cylinder, by where it is (through the axis, off it, its edge just inside the wall, breaking out of the
+side) and by the size of the cylinder there is no band that goes wrong: the table file has each. The largest difference from a hand volume
+is 1.7e-4, the engine's own inexact cylinder (a bore 41 wide in a cylinder of radius 23), inside the sweep's tolerance.
+
+**The two rows that are not RIGHT, neither a wrong solid.**
+- `r24 cyl R12 h16 bore 10 y2.25 z-4.25`, a bore that breaks out through the bottom cap: the volume is 2.4e-5 from OCCT and 1.8e-5 from the
+  hand volume, and the measured box ends at z = -8.0091 where the part ends at -8. It is the measured box again, not material: cutting away
+  everything below z = -8 removes nothing (`open-items/below-the-cap.mjs`, `.txt`; the controls at -7.9 and -7 remove what they should).
+- `cone R6 h24 bore 2.5 z0 y1.75`, one of the two cones the engine cut: 3.3e-4 low against OCCT, where the limit is 3e-4, and 3 faces where
+  OCCT has 4.
+
+**Who judged.** OCCT agrees on 272 of the 298 that were cut and refuses 24 ("would not fit": a bore wider than the part is tall); those 24 rest
+on the hand volume alone. brep-rs builds 89.
+
+**Time.** A script with one bore across takes 7.2 s at the median, 12.8 s at the ninetieth percentile and 41 s at the longest of the 280 that
+were cut (5 over 20 s): the bore is computed twice, and a later step replays it. The 17 stopped by the budget cost 45 s each before the sentence.
+
+**What this says for the decision.**
+- A plain through bore across a cylinder, a turned cylinder or a round pad is cut right at every size and place tried, and the guards
+  beside G-CURVED refuse what they should when it is silent (two pieces, a tangent wall, crossing bores).
+- A blind bore and a bore with a recess across a curved wall were never cut inside the budget (0 of 21). A cone was cut 2 times in 22, once
+  outside the tolerance. Whatever is decided, these stay refused, and at once rather than after 17 to 45 s.
+- The cost of allowing the first group is time: about 7 s for a script that is refused in under a second today.
+
+Nothing is changed in the layer by this section.
+
+## The four engine findings on the newest release (plan item 7)
+
+`../UPSTREAM-FINDINGS-2026-11.md`. The four faults measured on the pin (the panic of a pocket into a drafted cylinder, the round that does
+not repeat, the cylinder wall that is not round, the measured box that is higher than the part) all still show on v0.30.1 from raw command
+lists, and all four are gone on v0.41.0, the newest release, whose only kernel is solidcore: the panic's part builds to 3e-10 of OCCT's volume,
+the rounded box is the closed form and the same in five readings, the cylinder is exact to 1e-11 and its box to 4e-15 mm. By the plan's rule
+nothing is reported for them. One older fault of solidcore's is still there on v0.41.0 (rounds sent one edge a call), covered on our side; a
+draft for it is in that file for the owner to change, send or drop. SolidCore's status page as of today is recorded there too.

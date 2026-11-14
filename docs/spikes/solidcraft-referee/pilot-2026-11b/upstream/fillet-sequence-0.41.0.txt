@@ -1,0 +1,7 @@
+one call                         V=11933.6947 faces=10 {"cylinder":4,"plane":6}
+four calls                       V=11915.3462 faces=18 {"cylinder":8,"other":4,"plane":6}
+three calls (front, back, left)  V=11938.3589 faces=13 {"cylinder":5,"other":2,"plane":6}
+two calls (front, back)          V=11961.3717 faces=8 {"cylinder":2,"plane":6}
+S (four bottom edges only) = 11933.6958
+@@JSON@@{"pkg":"/home/shuff57/.cache/solidcraft-0.41.0-rig/sc-referee-pkg","S":11933.695802520697,"one call":{"volume":11933.694671392339,"faces":10,"face_types":{"cylinder":4,"plane":6},"bbox":{"max":[20,15,10],"min":[-20,-15.000000000000004,0]}},"four calls":{"volume":11915.346214340268,"faces":18,"face_types":{"cylinder":8,"other":4,"plane":6},"bbox":{"max":[20,15,10],"min":[-20,-15,0]}},"three calls (front, back, left)":{"volume":11938.358941993309,"faces":13,"face_types":{"cylinder":5,"other":2,"plane":6},"bbox":{"max":[20,15,10],"min":[-20,-15,0]}},"two calls (front, back)":{"volume":11961.371669598515,"faces":8,"face_types":{"cylinder":2,"plane":6},"bbox":{"max":[20,15,10],"min":[-20,-15,0]}}}
+EXIT=0

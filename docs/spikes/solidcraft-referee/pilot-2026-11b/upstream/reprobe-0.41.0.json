@@ -1,0 +1,79 @@
+{
+ "label": "SolidCraft v0.41.0 (3c8efdb5, solidcore), the newest release",
+ "pkg": "/home/shuff57/.cache/solidcraft-0.41.0-rig/sc-referee-pkg",
+ "panic": {
+  "as the layer sent it (10 commands)": {
+   "ms": 1409,
+   "says": "ok",
+   "volume": 13311.488336533424
+  },
+  "without the first pocket (6 commands)": {
+   "ms": 1336,
+   "says": "ok",
+   "volume": 13341.703866614665
+  },
+  "without the draft (the control)": {
+   "ms": 549,
+   "says": "ok",
+   "volume": 13569.094332082259
+  }
+ },
+ "round": {
+  "volumes": [
+   3839.0324050146005,
+   3839.0324050146005,
+   3839.0324050146005,
+   3839.0324050146005,
+   3839.0324050146005
+  ],
+  "faces": 26,
+  "distinctVolumes": 1,
+  "distinctOrders": 1,
+  "sameFaces": true,
+  "spread": 0
+ },
+ "cylinder": {
+  "plain": {
+   "volume": 6031.85789495551,
+   "rel": 1.0462451116439255e-11,
+   "boxOffMm": 3.552713678800501e-15,
+   "bbox": {
+    "max": [
+     16.000000000000004,
+     3.000000000000001,
+     18
+    ],
+    "min": [
+     -7.746465761717285e-16,
+     -13.000000000000002,
+     -12.000000000000002
+    ]
+   }
+  },
+  "pocket": {
+   "volume": 6017.42380785578,
+   "byHand": 6017.423775892403,
+   "rel": 5.311804268149821e-9,
+   "boxOffMm": 3.552713678800501e-15,
+   "bbox": {
+    "max": [
+     16.000000000000004,
+     3.000000000000001,
+     18
+    ],
+    "min": [
+     -7.746465761717285e-16,
+     -13.000000000000002,
+     -12.000000000000002
+    ]
+   }
+  }
+ },
+ "box": {
+  "zMax": 6.0000000000000036,
+  "zMin": -6,
+  "above": 3.552713678800501e-15,
+  "volume": 1860.586176658001,
+  "ms": 637
+ }
+}
