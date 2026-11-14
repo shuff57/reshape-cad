@@ -1,4 +1,6 @@
-// inc.mjs <site> <out.jsonl> <mode> <cases.json | module>...: "run only the new steps", measured in the real page.
+// page-run.mjs <site> <out.jsonl> <mode> <cases.json | module>...: cases in the REAL page, one JSON line each. Was pilot-2026-11b/timing/inc.mjs,
+// written to measure "run only the new steps"; mode `off` is the page as shipped and is what a sweep uses. <site> is a folder that serves host.html
+// with the pinned SolidCraft web build beside it (the rig's student-preview).
 //   mode on      ?inc=on. A second SolidCraft (another iframe of the same web build) is the reference: every real engine run of the page is repeated there
 //                from an empty design and the two replies are compared field by field, exactly (reply-memory.mjs compareReplies; the page's engineLog).
 //                After the run the design the page is left on is read (faces, edges, measure of every body, nothing run) and compared with the accepted
@@ -18,7 +20,7 @@
 // A case is { id, script } or { id, doc } (a ModelDoc, through the page's translateRaw). One JSON line per case; a case already in the file is skipped.
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 import { createRequire } from 'node:module'; import { pathToFileURL } from 'node:url';
-const require = createRequire('/home/shuff57/Documents/GitHub/reshape-cad/package.json');
+const require = createRequire(new URL('../../../../package.json', import.meta.url)); // the repo root's node_modules (playwright-core)
 const { chromium } = require('playwright-core');
 const [ROOT, OUT, MODE, ...SRC] = process.argv.slice(2);
 const CASES = [];
@@ -32,7 +34,7 @@ const mime = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/jav
 const srv = http.createServer((req, res) => { const p = path.join(ROOT, decodeURIComponent(new URL(req.url, 'http://x').pathname)); fs.readFile(p, (e, b) => { if (e) { res.writeHead(404); return res.end(); } res.writeHead(200, { 'content-type': mime[path.extname(p)] || 'application/octet-stream' }); res.end(b); }); }).listen(0);
 await new Promise((r) => srv.on('listening', r));
 const base = `http://127.0.0.1:${srv.address().port}/host.html${MODE === 'off' ? '' : '?inc=on'}`;
-const launch = () => chromium.launch({ executablePath: '/usr/bin/google-chrome', headless: true, args: ['--enable-unsafe-webgpu', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
+const launch = () => chromium.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', headless: true, args: ['--enable-unsafe-webgpu', '--use-angle=swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
 let browser = await launch();
 const done = new Set(fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l).id) : []);
 

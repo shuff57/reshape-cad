@@ -1,0 +1,187 @@
+{
+ "about": "Rows of the built-steps pass that are not a plain RIGHT and have been looked at. tally.mjs prints a row listed here as known when its verdict and volume are still these, and anything else as NEW. A curved wall inside the tolerance on the volume is classed by rule in tally.mjs and is not listed. Settled in ../pilot-2026-11b/PILOT-2.md.",
+ "rows": {
+  "combined:combined seed 50": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e6",
+   "volume": 2868.4038993994786,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 147": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "h4",
+   "volume": 5798.601374700539,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 178": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e10",
+   "volume": 2610.1963000078645,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 341": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e2",
+   "volume": 2874.8461769607834,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "rgcombined:rg combined seed 276": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 4780,
+   "why": "24 x 24 x 10 box hollowed 5, top open: 4780"
+  },
+  "fccombined:fc combined seed 215": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "pk4",
+   "volume": 13313.79584555072,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "fccombined:fc combined seed 217": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s2",
+   "volume": 5000,
+   "why": "20 x 30 x 10 box hollowed 5, top open: 5000"
+  },
+  "fccombined:fc combined seed 310": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 1860,
+   "why": "20 x 16 pulled 6, hollowed 5, bottom open: 1860"
+  },
+  "fccombined:fc combined seed 392": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 2705.4169176505584,
+   "why": "30 x 24 x 10 box with a cross bore 6, hollowed 1: 2705.469"
+  },
+  "combined:combined seed 603": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "h5",
+   "volume": 3182.746038278774,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 675": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "h5",
+   "volume": 13878.875931493918,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 1025": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e2",
+   "volume": 10019.345665939369,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "rgcombined:rg combined seed 469": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "pk6",
+   "volume": 2190.3076224709343,
+   "why": "a pocket into the wall of a hollowed join: 2190.301 (new-seeds/closed-forms.mjs)"
+  },
+  "fccombined:fc combined seed 440": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 1389.6572452115336,
+   "why": "20 x 20 x 10 box, bore 6 with a counterbore 7 x 2, hollowed 1: 1389.664 (new-seeds/closed-forms.mjs)"
+  },
+  "fccombined:fc combined seed 476": {
+   "class": "hollow at an inside corner",
+   "verdict": "WRONG",
+   "measure": "s3",
+   "volume": 1599.5231918544462,
+   "why": "OCCT rounds the wall at the inside corner of the counterbore; the page route is the plane offset HALT-7.md fixed as the reference (closed form 1599.527)"
+  },
+  "fccombined:fc combined seed 712": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s4",
+   "volume": 1393.5,
+   "why": "a 20 x 30 x 24 block hollowed 0.5: 1393.5"
+  },
+  "fccombined:fc combined seed 807": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "h4",
+   "volume": 6910.389909230241,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "holes:cb-seq-apart": {
+   "class": "the stored closed form is about another step",
+   "verdict": "PIPELINE-DIFF",
+   "measure": "hole2",
+   "volume": 30693.219956911304,
+   "why": "two counterbored holes; OCCT and brep-rs agree with the page route, the stored form is the part after the first hole"
+  },
+  "combined:combined seed 1323": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "h5",
+   "volume": 3908.3940778209194,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "combined:combined seed 1489": {
+   "class": "a measured box, not material",
+   "verdict": "WRONG",
+   "measure": "h3",
+   "volume": 1860.5959274237864,
+   "why": "the box is 8.4e-3 mm higher than the part; cutting away everything above the top face removes nothing (fresh-seeds-2/above-the-top.txt); OCCT agrees on the volume to 5.2e-6"
+  },
+  "rgcombined:rg combined seed 1215": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "pk4",
+   "volume": 13313.79584555072,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "rgcombined:rg combined seed 1310": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 1860,
+   "why": "20 x 16 pulled 6, hollowed 5, bottom open: 1860"
+  },
+  "rgcombined:rg combined seed 1392": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s3",
+   "volume": 2705.4169176505584,
+   "why": "30 x 24 x 10 box with a cross bore 6, hollowed 1: 2705.469"
+  },
+  "fccombined:fc combined seed 1009": {
+   "class": "both oracles refuse, the closed form agrees",
+   "verdict": "BUILT-ORACLES-REFUSE",
+   "measure": "s2",
+   "volume": 4100,
+   "why": "20 x 24 x 10 box hollowed 5, top open: 4100"
+  },
+  "fccombined:fc combined seed 1210": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e10",
+   "volume": 5009.672832969719,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "fccombined:fc combined seed 1334": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "e7",
+   "volume": 2868.4038993994786,
+   "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  }
+ }
+}

@@ -4,6 +4,7 @@
 //
 //   node host-route-sweep.mjs --corpus=<c> --out=<dir> [--no-oracle] [--only=id,id] [--timeout=S]
 //   corpora: ep bool holes sd pm rg fc sg mt prim sc halt combined rgcombined fccombined pnp
+//            file --cases=<file.json> [--name=<n>]: your own cases, [{ id, script } | { id, doc }], optionally with `analytic` and `measure`
 //
 // Environment:
 //   RIG                      where the kernels are (default ~/.cache/solidcraft-0.30.1-rig): sc-referee-pkg, sc-referee-pkg-topology, and for a few
@@ -73,12 +74,13 @@ const SG = path.join(CONTRACT, 'sketch-geometry-harness');
 for (const k of ['SOLIDCRAFT_REFEREE_PKG', 'SOLIDCRAFT_TOPOLOGY_PKG']) if (!existsSync(process.env[k])) { console.error(`FATAL: ${k} is ${process.env[k]}, which is not there (set RIG or the variable)`); process.exit(2); }
 const arg = (k) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? '').slice(k.length + 3);
 const CORPUS = arg('corpus');
-const ALL = ['ep', 'bool', 'holes', 'sd', 'pm', 'rg', 'fc', 'sg', 'mt', 'prim', 'sc', 'halt', 'combined', 'rgcombined', 'fccombined', 'pnp'];
+const ALL = ['ep', 'bool', 'holes', 'sd', 'pm', 'rg', 'fc', 'sg', 'mt', 'prim', 'sc', 'halt', 'combined', 'rgcombined', 'fccombined', 'pnp', 'file'];
 if (!ALL.includes(CORPUS)) { console.error('FATAL: --corpus=' + ALL.join('|')); process.exit(2); }
 const NO_ORACLE = process.argv.includes('--no-oracle');
 const OUT = path.resolve(arg('out') || '.');
 mkdirSync(OUT, { recursive: true });
-const JSONL = path.join(OUT, `hr-${CORPUS}.jsonl`);
+const NAME = arg('name') || CORPUS; // the name in the output files: hr-<name>.jsonl (a `file` corpus is named after its file by score-built.sh)
+const JSONL = path.join(OUT, `hr-${NAME}.jsonl`);
 const COMTOL = { planar: Number(arg('comtol-planar') || 1e-6), curved: Number(arg('comtol-curved') || 2e-4) };
 const imp = (p, q = '') => import(pathToFileURL(p).href + q);
 /** a case file the older sweeps read from the rig: the rig's copy when it is there (what those sweeps used), else the repo's */
@@ -255,6 +257,10 @@ if (CORPUS === 'ep') {
   };
   for (const [k, v] of Object.entries(cases)) addS(k, v);
 }
+else if (CORPUS === 'file') {
+  // --cases=<file.json>: [{ id, script } | { id, doc }], each optionally with `analytic` (a volume worked out by hand for the step it measures) and `measure`
+  for (const t of JSON.parse(readFileSync(path.resolve(arg('cases')), 'utf8'))) { const ex = { analytic: num(t.analytic), ...(t.measure ? { measureId: t.measure } : {}), curved: !!t.curved }; if (typeof t.script === 'string') addS(t.id, t.script, ex); else addF(t.id, (t.doc ?? t).features, ex); }
+}
 else if (CORPUS === 'combined') { const { combinedDoc } = await imp(path.join(TEST, 'unified-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 600); i++) addF(`combined seed ${i}`, combinedDoc(i).features); }
 else if (CORPUS === 'rgcombined') { const { rgCombinedDoc } = await imp(path.join(TEST, 'rg-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 400); i++) addF(`rg combined seed ${i}`, rgCombinedDoc(i).features); }
 else if (CORPUS === 'fccombined') { const { fcCombinedDoc } = await imp(path.join(TEST, 'fc-docs.mjs')); for (let i = Number(process.env.SEED_FROM ?? 0); i < Number(process.env.SEED_TO ?? 400); i++) addF(`fc combined seed ${i}`, fcCombinedDoc(i).features); }
@@ -291,9 +297,9 @@ for (const it of items) {
   if (!doc.features.length) { skipped.push({ id: it.id, why: 'no features' }); continue; }
   ready.push({ ...it, raw: { version: 1, features: raw.features }, doc, measureId: (it.measureId && doc.features.some((f) => f.id === it.measureId) ? it.measureId : null) ?? raw.features[raw.features.length - 1].id });
 }
-if (FROM === 0) writeFileSync(path.join(OUT, `hr-${CORPUS}.skipped.json`), JSON.stringify({ items: items.length, ready: ready.length, skipped }, null, 1));
+if (FROM === 0) writeFileSync(path.join(OUT, `hr-${NAME}.skipped.json`), JSON.stringify({ items: items.length, ready: ready.length, skipped }, null, 1));
 if (process.env.DUMP_FILE) { // dump.mjs: the cases as the page can take them: a script as written, else the raw doc (a doc-only case, or a script whose doc was patched)
-  writeFileSync(process.env.DUMP_FILE, JSON.stringify(ready.map((it, k) => (it.script !== undefined && !it.patch ? { id: `${CORPUS}#${k} ${it.id}`, script: it.script } : { id: `${CORPUS}#${k} ${it.id}`, doc: it.raw }))));
+  writeFileSync(process.env.DUMP_FILE, JSON.stringify(ready.map((it, k) => (it.script !== undefined && !it.patch ? { id: `${NAME}#${k} ${it.id}`, script: it.script } : { id: `${NAME}#${k} ${it.id}`, doc: it.raw }))));
   console.log('dumped ' + ready.length); process.exit(0);
 }
 console.log('@@TOTAL@@' + ready.length);

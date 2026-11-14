@@ -1,9 +1,11 @@
-// vs-node.mjs <page dir of <corpus>.jsonl (inc.mjs)> <node dir of hr-<corpus>.jsonl (the host-route sweep)> <out.json>: per step built / not built and sentence; per script the final scene volume where the Node row has one
+// page-vs-node.mjs <page dir of <corpus>.jsonl (page-run.mjs)> <node dir of hr-<corpus>.jsonl (the host-route sweep)> <out.json>: per step built / not built and sentence; per script the final scene volume where the Node row has one
 import fs from 'node:fs';
 const L = (f) => fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
 const PAGE = process.argv[2], NODE = process.argv[3];
 const tot = { rows: 0, compared: 0, nodeHang: 0, pageNoAnswer: 0, stepStatus: 0, sentence: 0, volume: 0, same: 0 }; const out = [];
-for (const c of ['holes', 'sd', 'mt', 'combined', 'rgcombined', 'fccombined']) {
+// the corpora: the ones named after the out file, else every <name>.jsonl of the page dir
+const CS = process.argv.slice(5).length ? process.argv.slice(5) : fs.readdirSync(PAGE).filter((f) => f.endsWith('.jsonl')).map((f) => f.slice(0, -6));
+for (const c of CS) {
   if (!fs.existsSync(`${PAGE}/${c}.jsonl`) || !fs.existsSync(`${NODE}/hr-${c}.jsonl`)) continue;
   const node = new Map(L(`${NODE}/hr-${c}.jsonl`).map((r) => [r.i, r]));
   for (const p of L(`${PAGE}/${c}.jsonl`)) {
