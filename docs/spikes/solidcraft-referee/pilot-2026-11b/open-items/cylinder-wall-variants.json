@@ -1,0 +1,178 @@
+[
+ {
+  "id": "cyl-round-top-r1-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r1-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-top-r1-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r1-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-top-r2-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r2-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-top-r2-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r2-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-top-r4-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r4-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-top-r4-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-top-r4-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r1-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r1-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r1-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r1-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r2-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r2-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r2-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r2-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r4-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r4-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r4-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-bottom-r4-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r1-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r1-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r1-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r1-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 1)\nround(c.edge(\"bottom\", \"side\"), 1)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r2-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r2-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r2-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r2-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 2)\nround(c.edge(\"bottom\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r4-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r4-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-round-both-r4-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-round-both-r4-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nround(c.edge(\"top\", \"side\"), 4)\nround(c.edge(\"bottom\", \"side\"), 4)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-bevel-top-hollow-w1-open-top",
+  "script": "const c = cylinder(24, 30)\nbevel(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "pad-round-hollow-w1-open-top",
+  "script": "const sk = sketch(\"top\")\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nround(p, 2)\nhollow(p, { wall: 1, open: \"top\" })"
+ },
+ {
+  "id": "cyl-bevel-top-hollow-w1-open-bottom",
+  "script": "const c = cylinder(24, 30)\nbevel(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "pad-round-hollow-w1-open-bottom",
+  "script": "const sk = sketch(\"top\")\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nround(p, 2)\nhollow(p, { wall: 1, open: \"bottom\" })"
+ },
+ {
+  "id": "cyl-bevel-top-hollow-w2-open-top",
+  "script": "const c = cylinder(24, 30)\nbevel(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "pad-round-hollow-w2-open-top",
+  "script": "const sk = sketch(\"top\")\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nround(p, 2)\nhollow(p, { wall: 2, open: \"top\" })"
+ },
+ {
+  "id": "cyl-bevel-top-hollow-w2-open-bottom",
+  "script": "const c = cylinder(24, 30)\nbevel(c.edge(\"top\", \"side\"), 2)\nhollow(c, { wall: 2, open: \"bottom\" })"
+ },
+ {
+  "id": "pad-round-hollow-w2-open-bottom",
+  "script": "const sk = sketch(\"top\")\nsk.circle(12, { at: [0, 0] })\nconst p = extrude(sk, 20)\nround(p, 2)\nhollow(p, { wall: 2, open: \"bottom\" })"
+ }
+]

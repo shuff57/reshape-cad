@@ -182,6 +182,13 @@
    "measure": "e7",
    "volume": 2868.4038993994786,
    "why": "OCCT agrees with the page route; brep-rs is archived and is not changed"
+  },
+  "rgcombined:rg combined seed 374#pt3": {
+   "class": "brep-rs disagrees",
+   "verdict": "ORACLES-SPLIT",
+   "measure": "pt3",
+   "volume": 9582.820589869276,
+   "why": "another part of the document: two copies, 25 apart, of a 24 x 20 outline with one corner rounded r 2 pulled 10 the reversed way. By hand 2 x (480 - (1 - pi/4) 4) x 10 = 9582.832; OCCT agrees with the page route; brep-rs gives 9923.835 (the reversed pull of a rounded outline again) and is archived, not changed"
   }
  }
 }

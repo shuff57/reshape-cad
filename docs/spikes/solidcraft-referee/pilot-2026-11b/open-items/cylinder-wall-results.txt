@@ -1,0 +1,37 @@
+== the 21 scripts (cylinder-wall-cases.json): page and Node
+full cylinder-wall-cases rc=0 21s
+cylinder-wall-cases: 16 cases, 0 build nothing, 0 without a result (hang or crash)
+built cylinder-wall-cases rc=0 19s
+page cylinder-wall-cases rc=0 17s
+cylinder-wall-cases: {"RIGHT":16}
+total: {"RIGHT":16}
+known: {}
+NEW: 0
+-- the page against the full pass, step by step
+{"rows":16,"compared":16,"nodeHang":0,"pageNoAnswer":0,"stepStatus":0,"sentence":1,"volume":0,"same":15,"volumeCompared":12,"verdicts":{"RIGHT":12,"REFUSED":3}}
+{ sentence: 1 }
+-- the page's final volume against the judged solid
+judged 16, compared with the page 16, not comparable 0, differ 0
+
+== the 44 variants (cylinder-wall-variants.json): page and Node
+full cyl2 rc=0 151s
+cyl2: 40 cases, 0 build nothing, 0 without a result (hang or crash)
+built cyl2 rc=0 1091s
+page cyl2 rc=0 63s
+cyl2: {"RIGHT":40}
+total: {"RIGHT":40}
+known: {}
+NEW: 0
+-- the page against the full pass, step by step
+{"rows":40,"compared":40,"nodeHang":0,"pageNoAnswer":0,"stepStatus":4,"sentence":16,"volume":0,"same":20,"verdicts":{"REFUSED":20}}
+{ sentence: 16, 'built / not built': 4 }
+{"id":"cyl2#36 cyl-bevel-top-hollow-w1-open-top","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"cyl2#37 cyl-bevel-top-hollow-w1-open-bottom","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the bottom face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"cyl2#38 cyl-bevel-top-hollow-w2-open-top","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"cyl2#39 cyl-bevel-top-hollow-w2-open-bottom","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the bottom face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+-- the page's final volume against the judged solid
+judged 40, compared with the page 40, not comparable 0, differ 4
+  cyl2:cyl-bevel-top-hollow-w1-open-top: page 13427.790766337632, judged 2591.8031665947537 (rel 4.18e+0); page: built with 1 step not built
+  cyl2:cyl-bevel-top-hollow-w1-open-bottom: page 13427.790766337632, judged 2471.304824596797 (rel 4.43e+0); page: built with 1 step not built
+  cyl2:cyl-bevel-top-hollow-w2-open-top: page 13427.790766337632, judged 4859.934099891713 (rel 1.76e+0); page: built with 1 step not built
+  cyl2:cyl-bevel-top-hollow-w2-open-bottom: page 13427.790766337632, judged 4653.321810884459 (rel 1.89e+0); page: built with 1 step not built

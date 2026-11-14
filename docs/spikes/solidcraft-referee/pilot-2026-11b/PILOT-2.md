@@ -865,3 +865,42 @@ draft for it is in that file for the owner to change, send or drop. SolidCore's 
 
 Owner decisions, 2026-11-14: "hold the draft" (it stays in the repo, not sent), and the result is added to AGENTS.md's SolidCore note as
 written. Item 7 is closed.
+
+## A cylinder's wall in the page (plan item 2): no step needs it; one page-only refusal, listed
+
+**The question.** The page gives no pick point for either half of a cylinder's wall. Does any step a student would write need one?
+
+**21 scripts** on a cylinder, a cone and a round pad (`open-items/cylinder-wall-cases.json`): `face('side')` wherever the script layer takes a
+face, rounds and bevels of the rim, a pocket and a hole on a cap, the same after a move and a turn. Five never reach the page or the layer:
+the script layer refuses them itself, in a sentence, and it is the same code on both sides (a hollow opened at `'side'`, a round or a draft of
+a cone's `'side'`, `.wall()` of a pad with no pocket). The other 16, in the page and in Node (`open-items/cylinder-wall-results.txt`): every
+step built or refused alike, 12 final solids the same and RIGHT by the oracles, and one refusal worded differently.
+
+**That one, followed up with 44 variants** (`open-items/cylinder-wall-variants.json`: the rim rounded r 1, 2 or 4 at the top, the bottom or both,
+or bevelled, then hollowed 1 or 2 thick with the top or the bottom open; the four on a round pad are refused by the script layer, which does
+not round a pulled part). Of the 40 that run:
+
+| | Node | the page |
+|---|---|---|
+| the open edge is the rounded one (20) | refused: "the open edge of cyl1 is rounded with a radius of ..." | the same sentence |
+| the rim rounded, another face opened (16) | refused: "cyl1 could not be hollowed with this wall and open side" (the hollow check) | refused sooner: "the bottom face of cyl1 could not be found on the part as it is now" |
+| the rim BEVELLED, then hollowed (4) | **built**, and RIGHT by OCCT and brep-rs | **refused**: "the top (or bottom) face of cyl1 could not be found on the part as it is now" |
+
+So no step needs the wall's pick point: every difference is at a flat cap, beside a round or a bevel. The 16 are refused on both sides and
+differ only in which reason comes first. The 4 are a page-only refusal of a part Node builds right, and it is a known limit, not a new fault:
+upstream describes a plane and a cylinder only, so on a part with any other face (the cone of a bevel, the torus of a round) the bridge has
+nothing to check a pick point against and gives none for the whole part. `../remeasure-0.30.1/HALT-8.md` worked a countersink's cone out
+from its two circles and wrote that the rest was "expected to follow from the same code, not measured". It is measured now.
+
+**The page-only refusal, and what it would need.**
+- A hollow of a cylinder whose rim is bevelled, either cap opened. It would need the bridge to work a bevel's cone out as it does a
+  countersink's (`packages/solidcraft-host/src/upstream-bridge.mjs`, `coneOfFace`, `verifiedInnerPoint`), and then the same sweeps HALT-8 ran.
+  Until then the page refuses, in a sentence, a part it could build. Refused, not wrong.
+- The sentence it uses ends "open a different face, or hollow before drafting", which fits a draft and not a bevel. Wording, for the owner
+  when someone is in that file.
+
+A way to tell the two halves of the wall apart was not worked out: nothing turned up that needs it.
+
+One thing about the run itself. The first Node pass of the variants reported a hang and stopped. It was the machine, out of memory at the
+time, and a fault in the harness: a child that was killed before its first case had announced itself ended the whole pass. The markers are
+written synchronously now, and the same cases take 4 to 5 s each.

@@ -23,7 +23,7 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 | # | item | why here | size | the owner decides |
 |---|---|---|---|---|
 | 1 | Sweep bookkeeping | makes every later check cheaper and removes the rig-only copies | half a day | nothing |
-| 2 | A cylinder's wall in the page | probably nothing to fix; cheap to prove | an hour or two | nothing, unless something turns up |
+| 2 ✓ | A cylinder's wall in the page | probably nothing to fix; cheap to prove | an hour or two | nothing, unless something turns up |
 | 3 | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
 | 4 | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
 | 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
@@ -55,7 +55,10 @@ the same rows and somebody has to recognise them again. The rig still has two ol
 **Done when.** One command over the six corpora and the 3000 new documents ends with "NEW: 0", and the same command on a tree with a fault
 put in on purpose (the old pick box, say) ends with the rows that fault makes.
 
-## 2. A cylinder's wall in the page
+## 2. A cylinder's wall in the page  [DONE 2026-11-14]
+
+**Done.** PILOT-2.md, "A cylinder's wall in the page": 21 scripts and 44 variants; no step needs the wall's pick point. One page-only
+refusal is listed with what it would need (a hollow of a cylinder with a bevelled rim: the known cone-face rule of HALT-8).
 
 **Known.** The page gives no pick point for either half of a cylinder's wall: a point on one half lies on the other half's surface, so the
 check cannot tell them apart, and it says nothing sooner than guess. But the two steps that would pick the wall are refused by the layer's
