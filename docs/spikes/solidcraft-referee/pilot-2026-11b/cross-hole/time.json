@@ -1,0 +1,863 @@
+[
+ {
+  "id": "cyl-hollow",
+  "script": "const c = cylinder(20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\n",
+  "wallMs": 2469,
+  "status": "built",
+  "volume": 5267.9744382293375,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 781,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 149,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45,
+    "ms": 851,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 330
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 576,
+    "cpuMs": 330,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "cyl-cross-6",
+  "script": "const c = cylinder(20, 30)\nhole(c, { across: 6, along: 'x' })\n",
+  "wallMs": 1757,
+  "status": "built with 1 step not built",
+  "volume": 9423.690515173834,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 597,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 183
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 411,
+    "cpuMs": 183,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "cyl-hollow-cross-6",
+  "script": "const c = cylinder(20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\nhole(c, { across: 6, along: 'x' })\n",
+  "wallMs": 30900,
+  "status": "built",
+  "volume": 5095.826240508757,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 552,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 166
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 112,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45.249,
+    "ms": 717,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 375
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":22,\"base\":[-10.999999999999986,1.1546319456101628e-14,-1.2434497875801753e-14],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "365:solid.cylinder,solid.shell,solid.cylinder",
+    "budgetS": 45.249,
+    "ms": 28353,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 15071
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 368,
+    "cpuMs": 166,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.249,
+    "status": "done",
+    "wallMs": 389,
+    "cpuMs": 375,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.249,
+    "status": "done",
+    "wallMs": 15087,
+    "cpuMs": 15071,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "cyl-hollow-cross-2",
+  "script": "const c = cylinder(20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\nhole(c, { across: 2, along: 'x' })\n",
+  "wallMs": 23151,
+  "status": "built",
+  "volume": 5249.470126594921,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 650,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 188
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 115,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45.282,
+    "ms": 676,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 366
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":1,\"height\":22,\"base\":[-10.999999999999986,1.1546319456101628e-14,-1.2434497875801753e-14],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "365:solid.cylinder,solid.shell,solid.cylinder",
+    "budgetS": 45.282,
+    "ms": 20625,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 11183
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 418,
+    "cpuMs": 188,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.282,
+    "status": "done",
+    "wallMs": 382,
+    "cpuMs": 366,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.282,
+    "status": "done",
+    "wallMs": 11196,
+    "cpuMs": 11183,
+    "loadMs": 5
+   }
+  ]
+ },
+ {
+  "id": "cyl-hollow-axial-4",
+  "script": "const c = cylinder(20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\nhole(c, { across: 4, at: [4, 0] })\n",
+  "wallMs": 2956,
+  "status": "built",
+  "volume": 5230.6386741889255,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 467,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 116
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 90,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45.174,
+    "ms": 576,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 302
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":2,\"height\":32,\"base\":[4.000000000000013,1.1546319456101628e-14,-16.000000000000014],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "359:solid.cylinder,solid.shell,solid.cylinder",
+    "budgetS": 45.174,
+    "ms": 812,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 482
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 300,
+    "cpuMs": 116,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.174,
+    "status": "done",
+    "wallMs": 312,
+    "cpuMs": 302,
+    "loadMs": 4
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.174,
+    "status": "done",
+    "wallMs": 494,
+    "cpuMs": 482,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "cyl-hollow-axial-centre-4",
+  "script": "const c = cylinder(20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\nhole(c, { across: 4 })\n",
+  "wallMs": 2992,
+  "status": "built",
+  "volume": 5230.6386741889255,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 611,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 230
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 101,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45.345,
+    "ms": 531,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 246
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":2,\"height\":32,\"base\":[1.3322676295501878e-14,1.1546319456101628e-14,-16.000000000000014],\"axis\":\"Z\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "364:solid.cylinder,solid.shell,solid.cylinder",
+    "budgetS": 45.345,
+    "ms": 739,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 407
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 429,
+    "cpuMs": 230,
+    "loadMs": 5
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.345,
+    "status": "done",
+    "wallMs": 259,
+    "cpuMs": 246,
+    "loadMs": 4
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.345,
+    "status": "done",
+    "wallMs": 423,
+    "cpuMs": 407,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "cyl16-hollow1-cross-6",
+  "script": "const c = cylinder(16, 20)\nhollow(c, { wall: 1, open: 'bottom' })\nhole(c, { across: 6, along: 'y' })\n",
+  "wallMs": 33951,
+  "status": "built",
+  "volume": 1038.643857885377,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":8,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "87:solid.cylinder",
+    "budgetS": 45,
+    "ms": 512,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 162
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":8,\"height\":20,\"base\":[0,0,-10],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "87:solid.cylinder",
+    "budgetS": null,
+    "ms": 110,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[-1.460963060192057,7.389822061909542,-10.00000000000002]],\"thickness\":1,\"body\":\"b_cyl1\"}",
+    "hash": "198:solid.cylinder,solid.shell",
+    "budgetS": 45.243,
+    "ms": 696,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 403
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":18,\"base\":[-3.552713678800501e-15,-8.999999999999988,-1.0658141036401503e-14],\"axis\":\"Y\",\"operation\":\"cut\",\"targets\":[\"b_cyl1\"]}",
+    "hash": "362:solid.cylinder,solid.shell,solid.cylinder",
+    "budgetS": 45.243,
+    "ms": 31625,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 16873
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 341,
+    "cpuMs": 162,
+    "loadMs": 3
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.243,
+    "status": "done",
+    "wallMs": 417,
+    "cpuMs": 403,
+    "loadMs": 5
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.243,
+    "status": "done",
+    "wallMs": 16883,
+    "cpuMs": 16873,
+    "loadMs": 4
+   }
+  ]
+ },
+ {
+  "id": "box-hollow-cross-6",
+  "script": "const c = box(20, 20, 30)\nhollow(c, { wall: 3, open: 'bottom' })\nhole(c, { across: 6, along: 'x' })\n",
+  "wallMs": 1967,
+  "status": "built",
+  "volume": 6538.382175532505,
+  "steps": [
+   [
+    "box1",
+    "box",
+    "built",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "built",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":20,\"width\":20,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": 45,
+    "ms": 345,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 50
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.box",
+    "params": "{\"length\":20,\"width\":20,\"height\":30,\"center\":[0,0,0],\"body_name\":\"b_box1\"}",
+    "hash": "83:solid.box",
+    "budgetS": null,
+    "ms": 69,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[4.142135623730951,-4.142135623730951,-15]],\"thickness\":3,\"body\":\"b_box1\"}",
+    "hash": "179:solid.box,solid.shell",
+    "budgetS": 45.075,
+    "ms": 166,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 54
+   },
+   {
+    "name": "execute",
+    "n": 3,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":3,\"height\":22,\"base\":[-11,0,-8.881784197001252e-16],\"axis\":\"X\",\"operation\":\"cut\",\"targets\":[\"b_box1\"]}",
+    "hash": "306:solid.box,solid.shell,solid.cylinder",
+    "budgetS": 45.075,
+    "ms": 344,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 145
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.box",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 250,
+    "cpuMs": 50,
+    "loadMs": 4
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45.075,
+    "status": "done",
+    "wallMs": 66,
+    "cpuMs": 54,
+    "loadMs": 4
+   },
+   {
+    "cmds": 3,
+    "last": "solid.cylinder",
+    "budgetS": 45.075,
+    "status": "done",
+    "wallMs": 166,
+    "cpuMs": 145,
+    "loadMs": 6
+   }
+  ]
+ },
+ {
+  "id": "cross-then-hollow",
+  "script": "const c = cylinder(20, 30)\nhole(c, { across: 6, along: 'x' })\nhollow(c, { wall: 3, open: 'bottom' })\n",
+  "wallMs": 2387,
+  "status": "built with 2 steps not built",
+  "volume": 9423.690515173834,
+  "steps": [
+   [
+    "cyl1",
+    "cylinder",
+    "built",
+    null
+   ],
+   [
+    "hole1",
+    "hole",
+    "refused",
+    null
+   ],
+   [
+    "shell1",
+    "shell",
+    "refused",
+    null
+   ]
+  ],
+  "calls": [
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": 45,
+    "ms": 497,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 138
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 87,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "topologyOf",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 96,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   },
+   {
+    "name": "execute",
+    "n": 2,
+    "last": "solid.shell",
+    "params": "{\"faces\":[[1.826203825240075,-9.237277577386928,-15.000000000000007]],\"thickness\":3,\"body\":\"b_cyl1\"}",
+    "hash": "200:solid.cylinder,solid.shell",
+    "budgetS": 45,
+    "ms": 556,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": 255
+   },
+   {
+    "name": "execute",
+    "n": 1,
+    "last": "solid.cylinder",
+    "params": "{\"radius\":10,\"height\":30,\"base\":[0,0,-15],\"axis\":\"Z\",\"body_name\":\"b_cyl1\"}",
+    "hash": "88:solid.cylinder",
+    "budgetS": null,
+    "ms": 80,
+    "ok": true,
+    "timedOut": false,
+    "cpuMs": null
+   }
+  ],
+  "probes": [
+   {
+    "cmds": 1,
+    "last": "solid.cylinder",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 325,
+    "cpuMs": 138,
+    "loadMs": 4
+   },
+   {
+    "cmds": 2,
+    "last": "solid.shell",
+    "budgetS": 45,
+    "status": "done",
+    "wallMs": 267,
+    "cpuMs": 255,
+    "loadMs": 5
+   }
+  ]
+ }
+]

@@ -1,0 +1,4 @@
+solid cylinder R 10 x 30, cross bore r 3 along X through the axis: 10166 ms, ok true, volume 8865.428611765805, by hand 8865.7260, rel -3.35e-5, faces 4
+the same, r 1: 3637 ms, ok true, volume 9361.81534893967, by hand 9362.0247, rel -2.24e-5, faces 4
+the same, r 3, off the axis by 4: 8332 ms, ok true, volume 8914.736024924743, by hand 8914.9982, rel -2.94e-5, faces 4
+solid cylinder, bore r 3 along its own axis, off centre by 4 (control): 193 ms, ok true, volume 8576.192600978115, by hand 8576.5479, rel -4.14e-5, faces 4

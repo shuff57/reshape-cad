@@ -646,3 +646,40 @@ takes 10.11 and 100.21 off (`fresh-seeds-2/above-the-top.mjs`, `.txt`). brep-rs 
 Against the first run of new documents (1411 solids): 1316 RIGHT, 75 resting on one oracle, 19 flagged WRONG. The difference is the referee and
 the harness, not the layer: the layer and the page are the ones of that run but for the cylinder pick fix.
 
+## A hole across a hollowed cylinder (owner chose it, 2026-11-13): measured, nothing changed yet
+
+The slowest documents of both runs of new documents drill a hole across a hollowed cylinder. Timed call by call in the page
+(`cross-hole/cases.mjs`, `time.json`; a cylinder 20 across and 30 tall, hollowed 3 with the bottom open):
+
+| script | time in the page | the one cut, in the worker |
+|---|---|---|
+| the hollowed cylinder alone | 2.5 s | |
+| and a hole of 4 along its axis, on or off the centre | 3.0 s | 0.5 s |
+| and a hole of 6 ACROSS it | 30.9 s | 15.1 s |
+| and a hole of 2 across it | 23.2 s | 11.7 s |
+| a cylinder 16 x 20 hollowed 1, a hole of 6 across | 34.0 s | 17.4 s |
+| a hollowed BOX with the same hole across it | 2.0 s | 0.2 s |
+
+So it is one operation: the bore meeting the two curved walls of the hollow. It takes the engine about 15 s, thirty times what the same hole
+along the axis takes, and the page computes it twice (worker, then SolidCraft). Every later step replays it, which is how a longer script
+reaches 45 to 330 s. At 45 s the time budget decides, and decides by the clock: the same script was built in one run and refused for time in
+another (`fc combined seed 1129`: the page built it, Node stopped it; run again, Node built it in 44.8 s).
+
+What is built is right: the 7 such holes built in the 4400 generated documents run in the page are RIGHT by OCCT (brep-rs refuses a hole across
+a curved wall), and 3 more were stopped by the budget.
+
+**The guard that should have spoken first does not see them.** G-CURVED refuses a hole across a cylinder at once:
+
+> hole1 (hole): a hole drilled across the cylinder would cut through its curved wall at an angle, which is not supported yet, so hole1 is shown without it -- drill along the axis of the cylinder, or use a flat-sided shape.
+
+It asks what the part started as, and its walk back (`rootOf`, `packages/layer/src/holes.ts`) only steps over earlier holes. Behind a hollow the
+part "started as" the hollow, so the guard says nothing and the hole is cut. In the 4400 documents every built hole across a curved wall is
+behind a hollow (7 of 257 built holes).
+
+**And the engine no longer needs that guard for a plain cylinder.** Asked directly, in the page (`cross-hole/cross-solid-cylinder.mjs`, `.txt`),
+0.30.1 cuts a bore across a SOLID cylinder of radius 10 in 3 to 9 s, and right: radius 3 through the axis 3.4e-5 from the volume worked out by
+hand, radius 1 2.2e-5, radius 3 off the axis by 4 2.9e-5 (the engine's cylinder is itself 4e-5 low).
+
+So the layer refuses the faster and equally right case (a solid cylinder, 3 to 9 s) and builds the slower one (a hollowed cylinder, 15 s a cut).
+Which way to make them agree is the owner's to decide; nothing is changed here.
+
