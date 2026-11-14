@@ -125,7 +125,7 @@ export const SENTENCE = {
   engineWide: (f: HoleView) => `${f.id} (hole): the hole is wider than the part, so nothing of it would be left and ${f.id} is shown without it -- make the hole narrower than the part.`,
 };
 /** every guard that can be switched off (H4_OFF / opts.off) */
-export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
+export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-ACROSS-BOX', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
 /** the narrowest hole that cuts reliably (holes4-tiny sweep: 0.001 builds, 1e-4 fails with "cannot attach a plane to a wire") */
 export const MIN_ACROSS = 0.001;
 /** the flattest countersink cone that cuts with the right faces (holes4 sweep: 170 builds 8 faces, 175 and 178 and 179 build 9) */
@@ -491,9 +491,15 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   if (!off.has('G-REVOLVE') && rootF?.kind === 'revolve') return refuse(SENTENCE.revolve(f), 'G-REVOLVE');
   const axis = f.axis ?? 'z'; const ai = AXI[axis]; const dir = AX[axis];
   const curvedRoot = curvedRootOf(f.target, G);
+  let across = false; // a plain through bore ACROSS a cylinder or a pulled circle: cut since 2026-11-14 (acrossAllowed), with its own check afterwards
   if (curvedRoot && !off.has('G-CURVED')) {
     const cv = curvedAxis(curvedRoot, G);
-    if (cv && Math.abs(Math.abs(cv.axis[ai]) - 1) > 1e-9) return refuse(SENTENCE.curved(f, cv.what), 'G-CURVED');
+    if (cv && Math.abs(Math.abs(cv.axis[ai]) - 1) > 1e-9) {
+      const mid = (m.bbox[ai] + m.bbox[ai + 3]) / 2 + f.center[ai];
+      const goesThrough = mid - f.depth / 2 <= m.bbox[ai] + 1e-9 && mid + f.depth / 2 >= m.bbox[ai + 3] - 1e-9;
+      if (!acrossAllowed(f, curvedRoot, rootF, cv, goesThrough, G)) return refuse(SENTENCE.curved(f, cv.what), 'G-CURVED');
+      across = true;
+    }
   }
   if (rootF?.kind === 'cylinder' && !off.has('G-WIDE')) {
     const cv = curvedAxis(rootF, G);
@@ -733,7 +739,11 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
     command: 'solid.cylinder',
     params: { radius: r, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[axis], operation: 'cut', targets: bs },
   }));
-  return { variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo, post: (after, before, env) => commonPost(f, after, before, env, {}) };
+  return {
+    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo,
+    post: (after, before, env) => commonPost(f, after, before, env, {})
+      ?? (across && before && !off.has('G-ACROSS-BOX') && boxOutside(after.bbox, before.bbox) > ACROSS_BOX_MM ? { guard: 'G-ACROSS-BOX', refusal: SENTENCE.engine(f) } : null),
+  };
 }
 
 
@@ -816,6 +826,35 @@ function throughForCurved(f: RootView): boolean {
   if (f.kind === 'hole' || f.kind === 'shell' || f.kind === 'move' || f.kind === 'mirror' || f.kind === 'fillet') return true;
   return f.kind === 'pattern' && (f as unknown as { mode?: string }).mode !== 'circular';
 }
+// ---- A plain through bore ACROSS a cylinder or a pulled circle is cut (owner decision 2026-11-14: "allow plain through bores") ---------------------------
+// G-CURVED refused every hole across a curved wall. With it switched off, 400 such holes were run and judged (pilot-2026-11b/PILOT-2.md, "A hole across
+// a solid cylinder: the family"): a plain through bore across a cylinder, a cylinder turned onto another main axis or a pulled circle was cut 290 times
+// and was right 289 times, at every width from a twentieth of the part to wider than it, on the axis, off it, grazing the wall and breaking out of it;
+// a blind bore or one with a recess was never cut inside the time budget (0 of 21), and a cone twice in 22. So exactly the first group is let through:
+//   - the part is a cylinder or a plainly pulled circle with its axis along a main axis, and nothing has been done to it but earlier holes (behind a
+//     hollow, a move, a mirror, a repeat or a round the hole stays refused: owner decisions 2026-11-13 and 2026-11-14);
+//   - the hole is plain (no counterbore, no countersink, not four at the corners) and goes all the way through.
+// Everything else across a curved wall is refused at once with the sentence it had. A script with one such bore takes about 7 s (41 s at the longest).
+export function acrossAllowed(f: HoleView, curvedRoot: RootView, rootF: RootView | null, cv: CurvedAxis, goesThrough: boolean, G: { byId: Record<string, RootView> }): boolean {
+  if (!rootF || rootF.id !== curvedRoot.id) return false; // something other than earlier holes was done to it
+  if (f.counterbore || f.countersink || f.corners || !goesThrough) return false;
+  if (!cv.axis.some((v) => Math.abs(Math.abs(v) - 1) <= 1e-9)) return false; // the part's axis along a main axis: the hole (along another one) is then square to it
+  if (curvedRoot.kind === 'cylinder') return true;
+  if (curvedRoot.kind === 'extrude') {
+    const sk = G.byId[curvedRoot.target!]; const e = curvedRoot as unknown as Record<string, unknown>;
+    return !!sk && sk.shape === 'circle' && !e.taper && !e.direction && !e.alongNormal && !e.midplane && !e.reversed && !e.length2 && !e.rotate;
+  }
+  return false;
+}
+/**
+ * After such a bore the part's measured box must not have moved outwards. One of the 290 came back with its box 9.1e-3 mm past the cap it broke through,
+ * with no material there (cutting that slab away removes nothing), and the layer puts a later hole by the middle of this box. The limit is the sweep's
+ * own for a curved wall (docs/spikes/solidcraft-referee/sweep/tally.mjs, BOX_MM): the engine's box of a cylinder is up to 1.3e-3 mm inside the true one
+ * and moves by up to 8.1e-4 mm when the part is cut, which is not a fault.
+ */
+export const ACROSS_BOX_MM = 2.6e-3;
+/** how far (mm) box `a` reaches outside box `b`, at most; negative when it is inside everywhere */
+export function boxOutside(a: number[], b: number[]): number { return Math.max(...[0, 1, 2].map((i) => Math.max(b[i] - a[i], a[i + 3] - b[i + 3]))); }
 // ---- G-CROSS, narrowed for an extruded outline (pilot 2026-11 F1, docs/spikes/solidcraft-referee/pilot-2026-11/PILOT.md) -------------------------------
 // The crossing test compares the two DRILLS, which are as long as the part's bounding box. On an L, U or T bracket a hole through each leg has drills that meet
 // only in the empty corner: the holes never meet in the part, and with the guard out of the way all 45 seeded cases built within 4.8e-6 in 1.5 s at most

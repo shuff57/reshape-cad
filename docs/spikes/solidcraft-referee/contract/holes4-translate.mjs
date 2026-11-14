@@ -104,7 +104,7 @@ export const SENTENCE = {
   engineWide: (f) => `${f.id} (hole): the hole is wider than the part, so nothing of it would be left and ${f.id} is shown without it -- make the hole narrower than the part.`,
 };
 /** every guard that can be switched off (H4_OFF / opts.off) */
-export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
+export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-ACROSS-BOX', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
 /** the narrowest hole that cuts reliably (holes4-tiny sweep: 0.001 builds, 1e-4 fails with "cannot attach a plane to a wire") */
 export const MIN_ACROSS = 0.001;
 /** the flattest countersink cone that cuts with the right faces (holes4 sweep: 170 builds 8 faces, 175 and 178 and 179 build 9) */
@@ -393,9 +393,15 @@ function planHole(f, st, G) {
   if (!off.has('G-REVOLVE') && rootF?.kind === 'revolve') return refuse(SENTENCE.revolve(f), 'G-REVOLVE');
   const axis = f.axis ?? 'z'; const ai = AXI[axis]; const dir = AX[axis];
   const curvedRoot = curvedRootOf(f.target, G);
+  let across = false; // a plain through bore ACROSS a cylinder or a pulled circle: cut since 2026-11-14 (acrossAllowed), with its own check afterwards
   if (curvedRoot && !off.has('G-CURVED')) {
     const cv = curvedAxis(curvedRoot, G);
-    if (cv && Math.abs(Math.abs(cv.axis[ai]) - 1) > 1e-9) return refuse(SENTENCE.curved(f, cv.what), 'G-CURVED');
+    if (cv && Math.abs(Math.abs(cv.axis[ai]) - 1) > 1e-9) {
+      const mid = (m.bbox[ai] + m.bbox[ai + 3]) / 2 + f.center[ai];
+      const goesThrough = mid - f.depth / 2 <= m.bbox[ai] + 1e-9 && mid + f.depth / 2 >= m.bbox[ai + 3] - 1e-9;
+      if (!acrossAllowed(f, curvedRoot, rootF, cv, goesThrough, G)) return refuse(SENTENCE.curved(f, cv.what), 'G-CURVED');
+      across = true;
+    }
   }
   if (rootF?.kind === 'cylinder' && !off.has('G-WIDE')) {
     const cv = curvedAxis(rootF, G);
@@ -634,7 +640,11 @@ function planHole(f, st, G) {
     command: 'solid.cylinder',
     params: { radius: r, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[axis], operation: 'cut', targets: bs },
   }));
-  return { variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo, post: (after, before, env) => commonPost(f, after, before, env, {}) };
+  return {
+    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo,
+    post: (after, before, env) => commonPost(f, after, before, env, {})
+      ?? (across && before && !off.has('G-ACROSS-BOX') && boxOutside(after.bbox, before.bbox) > ACROSS_BOX_MM ? { guard: 'G-ACROSS-BOX', refusal: SENTENCE.engine(f) } : null),
+  };
 }
 
 
@@ -689,7 +699,7 @@ function commonPost(f, after, before, env, { expected, recess }) {
 
 // ---- ROUND 4 helpers -----------------------------------------------------------------------------------------------------------------------
 /** the first feature that is not a hole, walking back from `id` through hole targets */
-function rootOf(id, G) {
+export function rootOf(id, G) {
   let cur = G.byId[id]; const seen = new Set();
   while (cur && cur.kind === 'hole' && !seen.has(cur.id)) { seen.add(cur.id); cur = G.byId[cur.target]; }
   return cur ?? null;
@@ -765,6 +775,23 @@ const rot3 = (v, rot) => { // the translator's order: x, then y, then z, about t
   return [x, y, z];
 };
 /** a root whose side wall is curved: { what, axis (unit vector of its axis; [0,0,0] when it has none that a bore could follow), radius? } or null */
+// A plain through bore ACROSS a cylinder or a pulled circle is cut (owner decision 2026-11-14: "allow plain through bores"). The layer's holes.ts has the
+// evidence and the reasons; this is the same rule, kept in step with it (packages/layer/test/across-cylinder.test.mjs compares the two).
+export function acrossAllowed(f, curvedRoot, rootF, cv, goesThrough, G) {
+  if (!rootF || rootF.id !== curvedRoot.id) return false; // something other than earlier holes was done to it
+  if (f.counterbore || f.countersink || f.corners || !goesThrough) return false;
+  if (!cv.axis.some((v) => Math.abs(Math.abs(v) - 1) <= 1e-9)) return false; // the part's axis along a main axis: the hole (along another one) is then square to it
+  if (curvedRoot.kind === 'cylinder') return true;
+  if (curvedRoot.kind === 'extrude') {
+    const sk = G.byId[curvedRoot.target]; const e = curvedRoot;
+    return !!sk && sk.shape === 'circle' && !e.taper && !e.direction && !e.alongNormal && !e.midplane && !e.reversed && !e.length2 && !e.rotate;
+  }
+  return false;
+}
+/** after such a bore the part's measured box must not have moved outwards by more than this (the sweep's limit for a curved wall) */
+export const ACROSS_BOX_MM = 2.6e-3;
+/** how far (mm) box `a` reaches outside box `b`, at most; negative when it is inside everywhere */
+export function boxOutside(a, b) { return Math.max(...[0, 1, 2].map((i) => Math.max(b[i] - a[i], a[i + 3] - b[i + 3]))); }
 export function curvedAxis(root, G) {
   if (root.kind === 'cylinder') return { what: 'the cylinder', axis: rot3([0, 0, 1], root.rotate), radius: root.radius };
   if (root.kind === 'cone') return { what: 'the cone', axis: rot3([0, 0, 1], root.rotate) };
