@@ -22,19 +22,19 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 
 | # | item | why here | size | the owner decides |
 |---|---|---|---|---|
-| 1 | Sweep bookkeeping | makes every later check cheaper and removes the rig-only copies | half a day | nothing |
+| 1 ✓ | Sweep bookkeeping | makes every later check cheaper and removes the rig-only copies | half a day | nothing |
 | 2 ✓ | A cylinder's wall in the page | probably nothing to fix; cheap to prove | an hour or two | nothing, unless something turns up |
-| 3 | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
+| 3 ✓ | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
 | 4 | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
 | 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
 | 6 ✓ | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
 | 7 ✓ | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
-| 8 | brep-rs's disagreements | archived; record, do not fix | with item 1 | nothing |
+| 8 ✓ | brep-rs's disagreements | archived; record, do not fix | with item 1 | nothing |
 
 Items 1 and 2 first because they are cheap and item 1 pays for the rest. Item 3 before 4 because it helps every long run, including the
 ones item 4 would add. Items 5 to 8 can go in any order and do not block each other.
 
-## 1. Sweep bookkeeping
+## 1. Sweep bookkeeping  [DONE 2026-11-15]
 
 **Known.** A sweep of everything leaves 40 rows that are not a plain RIGHT, each explained by hand in PILOT-2.md. The next sweep will show
 the same rows and somebody has to recognise them again. The rig still has two older harness copies (`h16/host-route-x.mjs`,
@@ -72,7 +72,7 @@ rounds and bevels of the rim, a pocket and a hole on a cap, the same after a mov
 listed with what each would need. A way to tell the two halves apart (the side of the seam the point is on) is only worked out if a step
 turns up that needs it.
 
-## 3. A progress line for long runs
+## 3. A progress line for long runs  [DONE 2026-11-15]
 
 **Known.** During a run the page says "translating and building in solidcraft..." and nothing else until the end. With the holes across a
 hollowed cylinder refused, the slowest scripts of the new documents still took 66 to 90 s in the page; the knob of the pilot takes 15 s. SolidCraft computes on the page's own thread, so
@@ -188,7 +188,7 @@ One older solidcore fault remains on v0.41.0; its draft is held by the owner's d
 **Done when.** The drafts exist and the owner has said yes, no, or changed them. The re-probe result goes into AGENTS.md's kernel note with
 the owner's wording.
 
-## 8. brep-rs's disagreements
+## 8. brep-rs's disagreements  [DONE 2026-11-15]
 
 **Known.** On 13 of the 7468 solids OCCT agrees with the page and brep-rs does not: a hole or a pocket after a draft or a move of a
 cylinder or box, and reversed pulls of an outline with a round or a bulge (once 34 times the volume). It also refuses a hole across a

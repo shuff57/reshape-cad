@@ -1,0 +1,124 @@
+node cross-hole-before-after.mjs <the final sweep, 2026-11-14/15> <the interim sweep, before the allowance>
+1. steps built now and refused before
+  corpora/holes rot-cylinder-x90-hole-z: hole1 (hole, was G-CURVED) | the document as built: hole1 RIGHT | Node 7.3 s (was 0.3)
+  corpora/holes cross-bore-through-cylinder: hole1 (hole, was G-CURVED) | the document as built: hole1 RIGHT | Node 6.9 s (was 0.3)
+  corpora/holes cross-bore-dowel-y: hole1 (hole, was G-CURVED) | the document as built: hole1 RIGHT | Node 5.5 s (was 0.3)
+  corpora/holes cross-bore-dowel-x-offset: hole1 (hole, was G-CURVED) | the document as built: hole1 RIGHT | Node 6.6 s (was 0.3)
+  corpora/holes cross-bore-round-pad: hole1 (hole, was G-CURVED) | the document as built: hole1 RIGHT | Node 7.1 s (was 0.3)
+  corpora/combined combined seed 53: h3 (hole, was G-CURVED) | the document as built: h3 RIGHT | Node 12.3 s (was 0.3)
+  corpora/combined combined seed 440: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 15.1 s (was 0.3)
+  corpora/rgcombined rg combined seed 96: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 6.1 s (was 0.6)
+  corpora/rgcombined rg combined seed 240: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 12.9 s (was 0.3)
+  new/combined combined seed 624: h3 (hole, was G-CURVED), h4 (hole, was dependency) | the document as built: h4 RIGHT | Node 81.7 s (was 1.4)
+  new/combined combined seed 670: h3 (hole, was G-CURVED) | the document as built: h3 RIGHT | Node 112.2 s (was 0.6)
+  new/combined combined seed 800: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 13.7 s (was 1.4)
+  new/combined combined seed 1148: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 7.1 s (was 0.3)
+  new/combined combined seed 1208: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 14.9 s (was 0.7)
+  new/combined combined seed 1256: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 14.9 s (was 1.0)
+  new/rgcombined rg combined seed 912: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 6.9 s (was 1.5)
+  new/rgcombined rg combined seed 975: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT, other parts vz2 RIGHT | Node 7.1 s (was 0.8)
+  new/rgcombined rg combined seed 996: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 17.4 s (was 1.0)
+  new/fccombined fc combined seed 1208: h2 (hole, was G-CURVED) | the document as built: h2 RIGHT | Node 5.6 s (was 0.3)
+  new/fccombined fc combined seed 1325: h3 (hole, was G-CURVED) | the document as built: h3 RIGHT | Node 5.5 s (was 0.3)
+  21 steps in 20 documents built now and refused before; 0 the other way round; the documents as built: {"RIGHT":20}
+
+2. the page: documents whose time moved by more than 5 s
+  195.9 s (was 0.4)  new/combined seed 670: cuts h3 now; runs in the page's engine 5, runs in the worker under the budget 3 (98.8 s)
+  71.8 s (was 1.1)  new/combined seed 624: cuts h3, h4 now; runs in the page's engine 3, runs in the worker under the budget 3 (37.4 s)
+  37.5 s (was 0.2)  new/combined seed 1117: h3, h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (17.6 s)
+  31.5 s (was 0.7)  new/combined seed 1208: cuts h2 now; runs in the page's engine 4, runs in the worker under the budget 3 (13.4 s)
+  26.0 s (was 0.3)  new/combined seed 1376: h4 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (12.2 s)
+  21.0 s (was 0.3)  corpora/combined seed 53: cuts h3 now; runs in the page's engine 2, runs in the worker under the budget 2 (11.1 s)
+  21.0 s (was 2.2)  new/combined seed 800: cuts h2 now; runs in the page's engine 4, runs in the worker under the budget 3 (6.8 s)
+  18.5 s (was 0.2)  corpora/rg combined seed 377: h5 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (8.8 s)
+  16.4 s (was 0.4)  corpora/rg combined seed 96: cuts h2 now; runs in the page's engine 4, runs in the worker under the budget 3 (5.2 s)
+  15.6 s (was 0.2)  corpora/combined seed 349: h4 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (7.3 s)
+  16.3 s (was 1.0)  corpora/fc combined seed 128: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (7.5 s)
+  15.9 s (was 0.8)  new/rg combined seed 996: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (7.6 s)
+  15.5 s (was 0.5)  new/rg combined seed 1061: h3 is refused as blocked now, after a test cut; runs in the page's engine 5, runs in the worker under the budget 2 (7.3 s)
+  15.4 s (was 0.5)  corpora/fc combined seed 61: h3 is refused as blocked now, after a test cut; runs in the page's engine 5, runs in the worker under the budget 2 (7.3 s)
+  15.3 s (was 0.5)  new/rg combined seed 984: h4 is refused as blocked now, after a test cut; runs in the page's engine 5, runs in the worker under the budget 3 (8.0 s)
+  14.3 s (was 0.2)  corpora/combined seed 440: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.8 s)
+  13.9 s (was 0.2)  new/rg combined seed 1313: h3 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (6.4 s)
+  14.6 s (was 0.9)  new/combined seed 1304: h4 is refused as blocked now, after a test cut; runs in the page's engine 6, runs in the worker under the budget 3 (6.7 s)
+  13.6 s (was 0.2)  corpora/fc combined seed 313: h3 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (6.2 s)
+  15.0 s (was 1.6)  new/rg combined seed 1128: h4 is refused as blocked now, after a test cut; runs in the page's engine 6, runs in the worker under the budget 4 (7.7 s)
+  13.4 s (was 0.2)  new/combined seed 1148: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.3 s)
+  13.1 s (was 0.2)  new/combined seed 637: h4 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (6.1 s)
+  13.6 s (was 0.7)  new/combined seed 1256: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.7 s)
+  13.5 s (was 0.9)  corpora/rg combined seed 17: h5 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (6.2 s)
+  13.0 s (was 0.6)  new/fc combined seed 589: h3 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (6.0 s)
+  13.8 s (was 1.4)  corpora/combined seed 320: h4 is refused as blocked now, after a test cut; runs in the page's engine 7, runs in the worker under the budget 4 (6.4 s)
+  12.5 s (was 0.1)  new/fc combined seed 913: h3 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (6.0 s)
+  12.5 s (was 0.2)  corpora/rot-cylinder-x90-hole-z: cuts hole1 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.6 s)
+  12.8 s (was 0.6)  new/rg combined seed 1056: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (6.6 s)
+  12.8 s (was 0.7)  new/combined seed 740: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (6.7 s)
+  12.3 s (was 0.2)  corpora/cross-bore-through-cylinder: cuts hole1 now; runs in the page's engine 2, runs in the worker under the budget 2 (5.8 s)
+  12.7 s (was 0.6)  corpora/fc combined seed 56: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (6.6 s)
+  13.6 s (was 1.8)  new/rg combined seed 975: cuts h2 now; runs in the page's engine 3, runs in the worker under the budget 3 (7.6 s)
+  13.1 s (was 1.4)  new/rg combined seed 912: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.2 s)
+  11.9 s (was 0.2)  corpora/rg combined seed 240: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (5.8 s)
+  11.7 s (was 0.2)  corpora/cross-bore-dowel-x-offset: cuts hole1 now; runs in the page's engine 2, runs in the worker under the budget 2 (5.5 s)
+  11.3 s (was 0.2)  new/fc combined seed 433: h3 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (5.4 s)
+  11.4 s (was 0.3)  corpora/cross-bore-round-pad: cuts hole1 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.0 s)
+  12.7 s (was 1.8)  corpora/combined seed 128: h4 is refused as blocked now, after a test cut; runs in the page's engine 7, runs in the worker under the budget 4 (6.2 s)
+  11.7 s (was 0.8)  new/fc combined seed 961: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (5.6 s)
+  11.4 s (was 0.6)  new/combined seed 620: h4 is refused as blocked now, after a test cut; runs in the page's engine 4, runs in the worker under the budget 3 (5.4 s)
+  10.4 s (was 0.2)  corpora/combined seed 133: h5 is refused as blocked now, after a test cut; runs in the page's engine 3, runs in the worker under the budget 2 (5.0 s)
+  10.3 s (was 0.2)  corpora/cross-bore-dowel-y: cuts hole1 now; runs in the page's engine 2, runs in the worker under the budget 2 (4.5 s)
+  10.3 s (was 0.3)  new/fc combined seed 1208: cuts h2 now; runs in the page's engine 2, runs in the worker under the budget 2 (4.9 s)
+  11.0 s (was 1.1)  new/rg combined seed 624: h4 is refused as blocked now, after a test cut; runs in the page's engine 6, runs in the worker under the budget 4 (5.7 s)
+  10.7 s (was 1.3)  new/fc combined seed 1325: cuts h3 now; runs in the page's engine 2, runs in the worker under the budget 2 (6.1 s)
+  9.6 s (was 0.7)  new/combined seed 632: h4 is refused as blocked now, after a test cut; runs in the page's engine 6, runs in the worker under the budget 3 (4.4 s)
+  8.0 s (was 14.4)  new/rg combined seed 462: no step changed; runs in the page's engine 4, runs in the worker under the budget 1 (1.8 s)
+  9.4 s (was 17.1)  new/rg combined seed 450: no step changed; runs in the page's engine 4, runs in the worker under the budget 1 (2.4 s)
+  5.1 s (was 13.3)  new/rg combined seed 416: no step changed; runs in the page's engine 10, runs in the worker under the budget 9 (2.3 s)
+  50 documents: 20 cut a bore now (9.4 to 195.5 s more), 27 test-cut a blocked bore and refuse it as blocked (8.9 to 37.3 s more), 3 with no step changed (the clock)
+
+3. the page: slow documents
+  before: 7784 documents; over 10 s 82, over 20 s 37, over 45 s 16, over 90 s 0; the five slowest: 71 s combined seed 1172; 70 s rg combined seed 1246; 69 s fc combined seed 654; 65 s fc combined seed 246; 62 s rg combined seed 1130
+  after: 7784 documents; over 10 s 121, over 20 s 44, over 45 s 18, over 90 s 1; the five slowest: 196 s combined seed 670; 72 s combined seed 624; 72 s combined seed 1172; 70 s fc combined seed 654; 66 s rg combined seed 1246
+  7784 documents; the page's time in all: 134.4 min before, 147.9 min after
+
+== sweep/compare-sweeps.mjs, the corpora (after, before)
+rows 4784 (no earlier row 0), steps 24717
+    9 REFUSED -> BUILT 
+        e.g. rot-cylinder-x90-hole-z hole1 was [G-CURVED] hole1 (hole): a hole drilled across the cylinder would cut through its curved wall at an a
+             cross-bore-through-cylinder hole1 was [G-CURVED] hole1 (hole): a hole drilled across the cylinder would cut through its curved wall at an a
+    1 refused [G-CURVED] -> refused [G-CROSS] 
+        e.g. fc combined seed 380 h4 | h4 (hole): it crosses h2, a hole drilled in another direction, and crossing holes are not 
+    1 refused [G-CURVED] -> refused [G-TANGENT] 
+        e.g. rg combined seed 120 h4 | h4 (hole): its hole would touch the edge of the part along a line, which leaves a zero-thi
+   10 refused [G-CURVED] -> refused [dependency] 
+        e.g. combined seed 128 h4 | h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s
+             combined seed 133 h5 | h5 (hole): it comes after h4, which could not be built, so h5 is shown without it -- fix h
+    1 refused [null] -> refused [G-PICK] 
+        e.g. rg combined seed 240 d5 | d5 (draft): the right face of c1 could not be found on the part as it is now, so d5 is sho
+    1 refused [null] -> refused [G-WHOLE-HISTORY] 
+        e.g. combined seed 440 d5 | d5 (draft): drafting a whole shape is only built for a plain box, prism, wedge, cylinder o
+    5 refused both, same guard [null], other words 
+        e.g. combined seed 320 pk6 | t -- drill along the axis of the cylinder, or use a flat-sided shape.) |  which could not be built, so h4 is shown without it -- fix s3 first.)
+             rg combined seed 120 pk6 | t -- drill along the axis of the cylinder, or use a flat-sided shape.) | ll, so h4 is shown without it -- move it a little or change its size.)
+
+== sweep/compare-sweeps.mjs, the 3000 new documents (after, before)
+rows 3000 (no earlier row 0), steps 21437
+   12 REFUSED -> BUILT 
+        e.g. combined seed 624 h3 was [G-CURVED] h3 (hole): a hole drilled across the cylinder would cut through its curved wall at an angl
+             combined seed 624 h4 was [dependency] h4 (hole): it comes after h3, which could not be built, so h4 is shown without it -- fix h
+    1 refused [G-CURVED] -> refused [G-CROSS] 
+        e.g. rg combined seed 1380 h4 | h4 (hole): it crosses h2, a hole drilled in another direction, and crossing holes are not 
+    1 refused [G-CURVED] -> refused [G-NOOP] 
+        e.g. rg combined seed 902 h2 | h2 (hole): it does not touch the part, so it would cut nothing and h2 is shown without it 
+   18 refused [G-CURVED] -> refused [dependency] 
+        e.g. combined seed 620 h4 | h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s
+             combined seed 632 h4 | h4 (hole): it comes after s3, which could not be built, so h4 is shown without it -- fix s
+    1 refused [G-TOP] -> refused [G-CROSS] 
+        e.g. rg combined seed 912 h4 | h4 (hole): it crosses h2, a hole drilled in another direction, and crossing holes are not 
+    1 refused [G-WHOLE-HOLLOW] -> refused [G-WHOLE-HISTORY] 
+        e.g. combined seed 1256 d5 | d5 (draft): drafting a whole shape is only built for a plain box, prism, wedge, cylinder o
+    5 refused [null] -> refused [G-HOLE] 
+        e.g. combined seed 624 s6 | s6 (hollow): not supported yet because a hole would be too close to a wall or to another h
+             combined seed 800 s3 | s3 (hollow): not supported yet because a hole would be too close to a wall or to another h
+   14 refused both, same guard [null], other words 
+        e.g. combined seed 637 pk6 | t -- drill along the axis of the cylinder, or use a flat-sided shape.) |  which could not be built, so h4 is shown without it -- fix h3 first.)
+             combined seed 670 x4 | t -- drill along the axis of the round pad, or use a flat-sided shape. | rt so a flat face points that way (a sphere has no flat face to turn).

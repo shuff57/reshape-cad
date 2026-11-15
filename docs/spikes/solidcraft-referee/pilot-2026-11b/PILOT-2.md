@@ -952,3 +952,80 @@ radius 30. Built or refused by the clock, as the budget always is near its limit
 Tests: `packages/layer/test/across-cylinder.test.mjs` (5: the rule in the layer and the contract copy, what stays refused and with which
 words, the box check). The suite: 1155 tests, 1149 pass, 6 skipped, 0 fail. The corpora before and after, and the page checks, are in the
 item 1 section.
+
+## One command over everything ends with "NEW: 0" (plan items 1 and 8, closed 2026-11-15)
+
+**The command.** `PAGE=<site folder> sh sweep/sweep-all.sh <out>` runs the six corpora (4784 documents) and the 3000 new documents three
+times each: as written, cut down to the steps that were built (the pass that is judged, against OCCT and brep-rs), and in the real page. It
+prints the tally, the page against Node step by step, and the page's final volume against the judged solid. With the page it takes six and a
+half hours on this machine. The run below is from a frozen copy of the tree at `b4c5c856`; its output is `open-items/final-sweep.txt`.
+
+| | the corpora | the 3000 new documents |
+|---|---|---|
+| documents as written | 4784 | 3000 |
+| judged on what they build | 4639 | 2829 |
+| RIGHT | 4624 | 2812 |
+| not a plain RIGHT, each one known | 15 | 17 |
+| other parts of the same documents, judged | 608: 607 RIGHT, 1 known | 698: 688 RIGHT, 10 known |
+| **NEW** | **0** | **0** |
+| no answer (hang or crash), Node or page | 0 | 0 |
+| the page against Node, step by step | 4783 of 4784 the same | 2998 of 3000 the same |
+| the page's final volume against the judged solid | 4639 compared, 2 differ | 2829 compared, 0 differ |
+
+The 43 known rows by class (`sweep/known.json` has 33 rows by case; a curved wall is classed by rule, not by list):
+
+| class | corpora | new | what settles it |
+|---|---|---|---|
+| a curved wall, by rule: both oracles agree with each other, the volume is inside 3e-4, no coordinate of the box is further than 2.6e-3 mm | 7 | 11 | the rule is in `sweep/tally.mjs`; the engine's cylinder is not exactly round ("The four engine findings", finding 3) |
+| both oracles refuse, a volume worked out by hand agrees | 4 | 11 | the closed forms in `new-seeds/` and `open-items/other-parts-closed-forms.mjs` |
+| brep-rs disagrees, OCCT agrees with the page | 4 | 4 | item 8, below |
+| the case's stored closed form is about another step | 1 | 0 | `holes`, the PIPELINE-DIFF row |
+| a measured box, not material | 0 | 1 | "The four engine findings", finding 4 |
+
+The page's differences are the ones seen before: `mt p-magnitude:turn1#33` (the page refuses a dimension over 1,000,000 mm that Node
+builds), `combined seed 452` (2.5e-9 of the volume), and two drafts that both sides refuse with another reason (`rg combined seed 568`,
+`rg combined seed 950`).
+
+**The same command on a tree with a fault.** A copy of the tree with the old pick box put back (`upstream-bridge.mjs`: a curved edge boxed
+by upstream's three points, the fault fixed on 2026-11-13), on the corpus `sd`: the Node tally is unchanged (Node does not use the page's
+bridge), and the page comparison lists the six rows the fault makes, and no others: six cylinder hollows that the page refuses ("the top
+face of cyl1 could not be found on the part as it is now") and Node builds, each with the page's volume (the cylinder, not hollowed)
+against the judged solid (up to 2.84 times it). Four more hollows are refused on both sides, by the page now with the pick sentence.
+
+**How it got to 0.** Three sweeps, each on a frozen copy.
+
+1. The interim sweep (2026-11-14, the first with every final part judged) flagged nine rows among the other parts of documents, none a
+   wrong solid. Five that no oracle confirms agree with a volume worked out by hand (`open-items/other-parts-closed-forms.txt`, the
+   largest difference 1.2e-5). Two are reversed pulls where brep-rs disagrees and OCCT agrees. One was the harness: brep-rs had refused a
+   hollow and then repeated the solid block four times, and the sweep took that for its answer; a refusal of a step the measured one
+   rests on is now silence for brep-rs too, as it was for OCCT. One was the referee: it put a mirror's plane at the part's box rounded
+   to 1e-4 mm, so a copy through a face at x = -8.09017 sat 6e-5 mm off, in two pieces; it reads the exact box now.
+2. The next full sweep stopped after five corpora: it flagged `combined seed 340`, OCCT's volume right and its box 30 mm away. My fix of
+   the mirror plane had a fault of its own. Read exactly, a box from -15.000000000000002 to 15 has its high face nearer zero, so the
+   referee's copy went to the other side. The referee now calls two faces as far from zero as each other within 1e-9 (the layer's own
+   tolerance for the same question) and takes the low one, as it did before. `open-items/mirror-plane-check.mjs` builds every mirror of
+   the 7784 documents on the referee before the change, with it and with the fix, with no engine: 468 documents, 547 mirrors; the change
+   had moved 10 copies to the other side and all 10 are back. Four others differ from the old referee and stay so: each is a curved or
+   turned part whose loosely measured box was the one that was off, and each is a step the layer refuses.
+3. Before the third sweep, only the 724 documents the two changes can touch (every one with a mirror, every one with a hole the
+   curved-wall guard had refused) were run in Node with the oracles: NEW: 0. Then the whole command, above.
+
+**The rest of item 1.** The page run, the page-against-Node comparison and the sweep comparison are in `sweep/` (`page-run.mjs`,
+`page-vs-node.mjs`, `page-vs-built.mjs`, `compare-sweeps.mjs`), and `score-built.sh` runs them with `PAGE=`. The two older harness copies
+in the rigs (`h16/host-route-x.mjs`, `next-loop/hg/host-route-com.mjs`) are replaced by a file that says where the harness is; the old
+files are kept beside them, renamed.
+
+**Item 8, brep-rs's disagreements.** `known.json` lists 15 rows under "brep-rs disagrees" (the plan counted 13; two reversed pulls came
+with the other parts): a hole or a pocket after a draft or a move, and reversed pulls of an outline with a round or a bulge. Eight of them
+are in this sweep's judged passes. `sweep/README.md` lists what brep-rs refuses (a hole across a curved wall, a pocket whose tool is not
+enclosed, a taper on a rounded outline), so that a verdict on such a step is read as one oracle's. brep-rs is archived and was not edited.
+
+## The progress line and the Node sweep (plan item 3, closed 2026-11-15)
+
+The plan asks that the Node sweep is unchanged step for step and that the page checks are otherwise unchanged. The final sweep against the
+interim one (`sweep/compare-sweeps.mjs`, in `open-items/cross-hole-before-after.txt`): 46154 steps in 7784 documents, and every step that
+differs is a hole across a cylinder or a step after one (next section). The interim sweep against the one from before the guard's reach
+and the progress line was compared on 2026-11-14 (24717 steps of the corpora: one hole that was built is refused by G-CURVED, 13 that
+another guard refused are refused by G-CURVED, one sentence quotes another step's, no built volume changed). The eleven page checks on the final tree against the last recorded run: the same
+line for line but for times, ports and load counters, and one more console warning of the browser in `live-pane` ("A valid external
+Instance reference no longer exists"). The line itself was checked live on 2026-11-14 (`open-items/progress-live.txt`).

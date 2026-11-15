@@ -3,7 +3,8 @@
 Every case of a corpus goes through the page's own route in Node (the same `translateDoc` the page calls, the same settings) and the step it
 measures is compared with two independent kernels, OCCT and brep-rs, and with a closed form or a stored reference where the case has one.
 Moved into the repo on 2026-11-13 from the rig (`~/.cache/solidcraft-0.30.1-rig/h16/host-route-x.mjs`), with the two rules the second pilot's
-sweeps added. What those sweeps found is in `../pilot-2026-11b/PILOT-2.md`, from "1500 new documents" on.
+sweeps added. What those sweeps found is in `../pilot-2026-11b/PILOT-2.md`, from "1500 new documents" on. That copy, and the older one in the
+0.21.0 rig (`next-loop/hg/host-route-com.mjs`), are replaced by a file that points here (2026-11-15); the old files are beside them, renamed.
 
 ## What it needs
 

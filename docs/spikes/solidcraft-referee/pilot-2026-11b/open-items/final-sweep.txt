@@ -1,0 +1,66 @@
+The final sweep, 2026-11-14 17:05 to 23:37, on a frozen copy of the tree at b4c5c856:
+  RIG=~/.cache/solidcraft-0.30.1-rig PAGE=<site folder> sh docs/spikes/solidcraft-referee/sweep/sweep-all.sh <out>     (23495 s)
+
+== corpora
+holes: {"RIGHT":356,"PIPELINE-DIFF":1}
+sd: {"RIGHT":1089}
+mt: {"RIGHT":1861,"WRONG":3}
+combined: {"RIGHT":558,"WRONG":4,"ORACLES-SPLIT":3}
+rgcombined: {"RIGHT":386,"BUILT-ORACLES-REFUSE":1}
+fccombined: {"RIGHT":374,"BUILT-ORACLES-REFUSE":3}
+total: {"RIGHT":4624,"PIPELINE-DIFF":1,"WRONG":7,"ORACLES-SPLIT":3,"BUILT-ORACLES-REFUSE":4}
+other parts of the same documents: {"RIGHT":607,"ORACLES-SPLIT":1}
+known: {"the stored closed form is about another step":1,"a curved wall (by rule)":7,"brep-rs disagrees":4,"both oracles refuse, the closed form agrees":4}
+NEW: 0
+-- the page against the full pass, step by step
+{"rows":4784,"compared":4784,"nodeHang":0,"pageNoAnswer":0,"stepStatus":1,"sentence":0,"volume":0,"same":4783,"volumeCompared":1416,"verdicts":{"RIGHT":1414,"REFUSED":3367,"PIPELINE-DIFF":1,"ORACLES-SPLIT":1}}
+{ 'page built nothing': 1 }
+{"id":"mt#215 p-magnitude:turn1#33","what":"page built nothing","page":"refused"}
+-- the page's final volume against the judged solid
+judged 4639, compared with the page 4639, not comparable 0, differ 2
+  mt:p-magnitude:turn1#33: page 0, judged 5874.357167733763 (rel -1.00e+0); page: refused
+  combined:combined seed 452: page 324.9935417644032, judged 324.99354259238885 (rel -2.55e-9); page: doc
+== new documents
+combined: {"RIGHT":931,"WRONG":4,"ORACLES-SPLIT":1}
+rgcombined: {"RIGHT":953,"BUILT-ORACLES-REFUSE":3,"WRONG":2}
+fccombined: {"RIGHT":928,"BUILT-ORACLES-REFUSE":3,"WRONG":2,"ORACLES-SPLIT":2}
+total: {"RIGHT":2812,"WRONG":8,"ORACLES-SPLIT":3,"BUILT-ORACLES-REFUSE":6}
+other parts of the same documents: {"RIGHT":688,"BUILT-ORACLES-REFUSE":5,"WRONG":4,"ORACLES-SPLIT":1}
+known: {"a curved wall (by rule)":11,"both oracles refuse, the closed form agrees":11,"brep-rs disagrees":4,"a measured box, not material":1}
+NEW: 0
+-- the page against the full pass, step by step
+{"rows":3000,"compared":3000,"nodeHang":0,"pageNoAnswer":0,"stepStatus":0,"sentence":2,"volume":0,"same":2998,"verdicts":{"REFUSED":2890,"RIGHT":107,"ORACLES-SPLIT":1},"volumeCompared":108}
+{ sentence: 2 }
+-- the page's final volume against the judged solid
+judged 2829, compared with the page 2829, not comparable 0, differ 0
+ALL KNOWN
+
+The passes, in seconds (full: as written; built: cut down to the built steps, the pass that is judged; page: the real page):
+  the corpora: full holes 553, built holes 435, page holes 436, full sd 293, built sd 382, page sd 646, full mt 510, built mt 314, page mt 1300, full combined 972, built combined 457, page combined 872, full rgcombined 745, built rgcombined 301, page rgcombined 593, full fccombined 780, built fccombined 323, page fccombined 686
+  the 3000 new documents: full combined 1767, built combined 878, page combined 1803, full rgcombined 1983, built rgcombined 893, page rgcombined 1570, full fccombined 1829, built fccombined 736, page fccombined 1429
+
+The same command's driver on a copy of the tree with a fault put in on purpose (upstream-bridge.mjs: a curved edge boxed by upstream's
+three points again, the pick box of before 2026-11-13), on the corpus sd:   PAGE=<site with the fault> sh sweep/score-built.sh <out> sd     (1183 s)
+
+sd: {"RIGHT":1089}
+total: {"RIGHT":1089}
+other parts of the same documents: {"RIGHT":1}
+known: {}
+NEW: 0
+-- the page against the full pass, step by step
+{"rows":1097,"compared":1097,"nodeHang":0,"pageNoAnswer":0,"stepStatus":6,"sentence":4,"volume":0,"same":1087,"volumeCompared":617,"verdicts":{"RIGHT":617,"REFUSED":470}}
+{ 'built / not built': 6, sentence: 4 }
+{"id":"sd#17 hollow-open-top-cylinder","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"sd#18 hollow-open-bottom-cylinder","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the bottom face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"sd#44 hollow-wall-11-disc60x12","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"sd#45 hollow-wall-11.9-disc60x12","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"sd#48 hollow-wall-11.9-cyl24x30","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+{"id":"sd#158 hollow-move-cylinder-top","what":"built / not built","step":"shell1","page":"refused","node":"built","pageSays":"shell1 (hollow): the top face of cyl1 could not be found on the part as it is now, so shell1 is shown without it -- open a different face, or hollow before drafting.","nodeSays":null,"guard":null}
+-- the page's final volume against the judged solid
+judged 1089, compared with the page 1089, not comparable 0, differ 6
+  sd:hollow-open-top-cylinder: page 13570.148860573327, judged 4774.728965992665 (rel 1.84e+0); page: built with 1 step not built
+  sd:hollow-open-bottom-cylinder: page 13570.148860573327, judged 4774.72896599266 (rel 1.84e+0); page: built with 1 step not built
+  sd:hollow-wall-11-disc60x12: page 33927.05534222944, judged 32793.06836568445 (rel 3.46e-2); page: built with 1 step not built
+  sd:hollow-wall-11.9-disc60x12: page 33927.05534222944, judged 33824.14523863326 (rel 3.04e-3); page: built with 1 step not built
+  sd:hollow-wall-11.9-cyl24x30: page 13570.148860573327, judged 13570.990085499789 (rel -6.20e-5); page: built with 1 step not built
+  sd:hollow-move-cylinder-top: page 13570.148860573327, judged 4774.728965992673 (rel 1.84e+0); page: built with 1 step not built
