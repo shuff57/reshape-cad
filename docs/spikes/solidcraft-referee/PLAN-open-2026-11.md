@@ -25,7 +25,7 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 | 1 ✓ | Sweep bookkeeping | makes every later check cheaper and removes the rig-only copies | half a day | nothing |
 | 2 ✓ | A cylinder's wall in the page | probably nothing to fix; cheap to prove | an hour or two | nothing, unless something turns up |
 | 3 ✓ | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
-| 4 | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
+| 4 ✓ | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
 | 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
 | 6 ✓ | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
 | 7 ✓ | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
@@ -90,7 +90,7 @@ otherwise unchanged; the Node sweep is unchanged step for step.
 
 **Not here.** Showing a spinner or a bar during one engine call needs the engine off the page's thread, which is upstream's to do.
 
-## 4. A hole across a solid cylinder
+## 4. A hole across a solid cylinder  [DONE 2026-11-15]
 
 **Known.** The layer refuses it at once (G-CURVED). Asked directly, 0.30.1 cuts a bore of radius 1 to 3 across a cylinder of radius 10 in 3
 to 10 s, within 3.4e-5 of a volume worked out by hand. That is three cases. brep-rs refuses a hole across a curved wall, so the second

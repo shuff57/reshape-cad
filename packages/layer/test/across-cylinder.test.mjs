@@ -86,3 +86,34 @@ test('through the translator: what stays refused gets the sentence it had, at on
   assert.notEqual(plain.last.guard, 'G-CURVED', 'the plain through bore goes on to the engine');
   assert.ok(plain.runs > base, 'and the engine is asked');
 });
+
+// The page test-cuts a hole that is blocked by a refused step, to tell the student the hole's own mistake too (ctx.probeBlocked). For a bore across a
+// cylinder that cut takes the real engine 3 to 30 s and is thrown away. ctx.probeBlockedNoAcrossCut (off unless set) leaves the cut out.
+test('a blocked bore across a cylinder: test-cut as any blocked hole; with probeBlockedNoAcrossCut its guards are asked and the engine is not', async () => {
+  const SKIP = { skipSketchVolume: true, skipOpenOutline: true, skipMoveTurn: true, skipPrimitives: true, skipFilletChain: true };
+  const run = async (feats, extra) => { const fa = makeFake({ sync: true }); let runs = 0;
+    const r = await L.createTranslator({ planners: 'unified' }).translateDoc({ version: 1, features: structuredClone(feats) }, { arc, ...SKIP, runSC: (c, o) => { runs++; return fa.runSC(c, o); }, topologyOf: fa.topologyOf, soups: {}, ...extra });
+    return { last: r.features.at(-1), all: r.features, runs }; };
+  const closed = shell('s2', 'c1'); delete closed.open; // a hollow with no open face is refused (G-CLOSED): the hole after it is blocked
+  const blocked = [cyl('c1', 8, 30), closed, across('h3', 's2')];
+  const plainRun = await run(blocked, {}); const probed = await run(blocked, { probeBlocked: true }); const skipped = await run(blocked, { probeBlocked: true, probeBlockedNoAcrossCut: true });
+  assert.equal(plainRun.all[1].status, 'refused', 'the hollow is refused');
+  for (const [what, r] of [['no probe', plainRun], ['probed', probed], ['probed without the cut', skipped]]) { assert.equal(r.last.status, 'refused', what); assert.equal(r.last.guard, 'dependency', what); assert.equal(r.last.refusal, plainRun.last.refusal, `${what}: the same sentence`); }
+  assert.ok(probed.runs > plainRun.runs, 'the probe asks the engine for the cut');
+  assert.equal(skipped.runs, plainRun.runs, 'with the switch the engine is not asked');
+  // the switch alone does nothing, and a blocked hole that is NOT allowed still gets its own sentence, from its guards
+  assert.equal((await run(blocked, { probeBlockedNoAcrossCut: true })).runs, plainRun.runs);
+  const blind = await run([cyl('c1', 8, 30), closed, across('h3', 's2', { depth: 6, center: [5, 0, 0] })], { probeBlocked: true, probeBlockedNoAcrossCut: true });
+  assert.equal(blind.last.guard, 'G-CURVED', 'a blind bore across: its own refusal'); assert.match(blind.last.refusal, /would cut through its curved wall/);
+  // an ordinary blocked hole (along the axis) is test-cut with or without the switch
+  const axis = [cyl('c1', 8, 30), closed, hole('h3', 's2')];
+  assert.equal((await run(axis, { probeBlocked: true, probeBlockedNoAcrossCut: true })).runs, (await run(axis, { probeBlocked: true })).runs, 'a hole along the axis: the switch changes nothing');
+  assert.ok((await run(axis, { probeBlocked: true })).runs > (await run(axis, {})).runs, 'and it is test-cut');
+  // the contract copy carries the same switch: the same answer as the layer in each setting, the test cut made with the probe and not with the switch
+  const runC = (feats, extra) => { const fa = makeFake({ sync: true }); let runs = 0;
+    const r = C.translateDocGuarded({ version: 1, features: structuredClone(feats) }, { arc, runSC: (c, o) => { runs++; return fa.runSC(c, o); }, soups: {}, ...extra });
+    return { last: r.features.at(-1), runs }; };
+  const c0 = runC(blocked, {}); const c1 = runC(blocked, { probeBlocked: true }); const c2 = runC(blocked, { probeBlocked: true, probeBlockedNoAcrossCut: true });
+  for (const [what, c, layer] of [['no probe', c0, plainRun], ['probed', c1, probed], ['probed without the cut', c2, skipped]]) assert.deepEqual([c.last.status, c.last.guard, c.last.refusal], [layer.last.status, layer.last.guard, layer.last.refusal], `contract copy, ${what}: the same answer`);
+  assert.ok(c1.runs > c0.runs, 'contract copy: the probe asks the engine for the cut'); assert.equal(c2.runs, c0.runs, 'contract copy: with the switch the engine is not asked');
+});

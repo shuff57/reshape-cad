@@ -173,6 +173,11 @@ export interface TranslateCtx {
   /** PROTOTYPE, off unless set (pilot 2026-11 F5/F8): a hole that is blocked because the step before it was refused is test-built on the part as it stands,
    *  never kept, and its OWN refusal is reported if it has one. The hole stays refused either way. Costs engine time for every blocked hole. */
   probeBlocked?: boolean;
+  /** Off unless set; only read with probeBlocked. A blocked hole that is a plain through bore ACROSS a cylinder (holes.ts, acrossAllowed) is not test-cut:
+   *  its guards are asked and the engine is not. Measured 2026-11-15: 28 of 7784 documents spent 10 to 37 s in the page on such a test cut, to show the
+   *  same "it comes after ..." sentence. With the switch on, a refusal that only the cut itself would find (the box check, the time budget) is not
+   *  shown until the step before is fixed. */
+  probeBlockedNoAcrossCut?: boolean;
   /**
    * shell-draft set only: the group's pick source. Resolve a name to a face point in the PRIMITIVE's own frame (before any move of the history; the
    * original asked brep-rs `resolve` and took `centroid`). When the host supplies it, the set runs the group's G-PICK exactly (it shifts the point by the

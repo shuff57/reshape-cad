@@ -240,7 +240,7 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
     } catch (e) { plan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); plan.raw = String(e.message); }
     // PROTOTYPE (ctx.probeBlocked, off by default; mirrors packages/layer/src/holes.ts probeBlockedHole): a hole blocked by a refused step is test-built on the part as it stands
     if (plan.refusal && plan.guard === 'dependency' && f.kind === 'hole' && ctx.probeBlocked) {
-      const own = probeBlockedHole(f, st, { ...fctx, accepted, headOf, byId, off, runB }, st.allCount);
+      const own = probeBlockedHole(f, st, { ...fctx, accepted, headOf, byId, off, runB }, st.allCount, !!ctx.probeBlockedNoAcrossCut);
       if (own) { st.refused[f.id] = own.refusal; return note({ status: 'refused', refusal: own.refusal, guard: own.guard, raw: `blocked (${plan.refusal}); own refusal found by a test build on ${own.base}`, commands: [] }); }
     }
     if (plan.refusal) { st.refused[f.id] = plan.refusal; return note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); }
@@ -292,7 +292,7 @@ export function translateDocGuarded(doc, ctx, opts = {}) {
 }
 
 /** PROTOTYPE (pilot 2026-11 F5/F8), the original-side copy of the layer's probeBlockedHole: plan the blocked hole on the last built step of its part, cut it, check it, keep nothing. */
-function probeBlockedHole(f, st, G, allCountBefore) {
+function probeBlockedHole(f, st, G, allCountBefore, noAcrossCut = false) {
   let base = G.headOf(f.target); const seen = new Set();
   while (base && st.refused[base] && !seen.has(base)) {
     seen.add(base); const x = G.byId[base];
@@ -303,6 +303,7 @@ function probeBlockedHole(f, st, G, allCountBefore) {
   let plan;
   try { plan = planHole(f2, st, G); } catch { return null; }
   if (plan.refusal) return plan.guard === 'dependency' ? null : { refusal: plan.refusal, guard: plan.guard ?? 'guard', base };
+  if (plan.across && noAcrossCut) return null; // ctx.probeBlockedNoAcrossCut, as the layer: the guards are asked, the engine is not
   let lastErr = null;
   for (const variant of plan.variants) {
     const res = G.runB([...G.accepted, ...variant], { replay: false });
@@ -641,7 +642,7 @@ function planHole(f, st, G) {
     params: { radius: r, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[axis], operation: 'cut', targets: bs },
   }));
   return {
-    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo,
+    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo, across,
     post: (after, before, env) => commonPost(f, after, before, env, {})
       ?? (across && before && !off.has('G-ACROSS-BOX') && boxOutside(after.bbox, before.bbox) > ACROSS_BOX_MM ? { guard: 'G-ACROSS-BOX', refusal: SENTENCE.engine(f) } : null),
   };

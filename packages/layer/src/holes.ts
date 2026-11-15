@@ -295,7 +295,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   } catch (e) { const r: StepPlan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); r.raw = String((e as Error).message); plan = r; }
   // PROTOTYPE (ctx.probeBlocked, off by default): a hole blocked by a refused step is test-built on the part as it stands; its own refusal, if any, is what the student is told
   if (plan.refusal && plan.guard === 'dependency' && f.kind === 'hole' && ctx.probeBlocked) {
-    const own = await probeBlockedHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB }, hs.allCount);
+    const own = await probeBlockedHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB }, hs.allCount, !!ctx.probeBlockedNoAcrossCut);
     if (own) { st.refused[f.id] = own.refusal; note({ status: 'refused', refusal: own.refusal, guard: own.guard, raw: `blocked (${plan.refusal}); own refusal found by a test build on ${own.base}`, commands: [] }); return; }
   }
   if (plan.refusal) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); return; }
@@ -377,7 +377,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
  * the usual guards, and (if they pass) cut it on the engine and run the usual after-the-build check. Nothing is kept. Returns the hole's own refusal, or null
  * when the hole would build (or the part before the refused steps cannot be found), in which case the blocked sentence stands.
  */
-async function probeBlockedHole(f: HoleView, st: TranslateState, G: HoleG, allCountBefore: number): Promise<{ refusal: string; guard: string; base: string } | null> {
+async function probeBlockedHole(f: HoleView, st: TranslateState, G: HoleG, allCountBefore: number, noAcrossCut = false): Promise<{ refusal: string; guard: string; base: string } | null> {
   let base: string | undefined = G.headOf(f.target); const seen = new Set<string>();
   while (base && st.refused[base] && !seen.has(base)) {
     seen.add(base); const x: RootView | undefined = G.byId[base];
@@ -389,6 +389,9 @@ async function probeBlockedHole(f: HoleView, st: TranslateState, G: HoleG, allCo
   try { plan = await planHole(f2, st, G); } catch { return null; }
   if ('refusal' in plan && plan.refusal) return plan.guard === 'dependency' ? null : { refusal: plan.refusal, guard: plan.guard ?? 'guard', base };
   const hp = plan as HolePlan; let lastErr: string | null = null; let errored = false;
+  // ctx.probeBlockedNoAcrossCut (off unless set): a bore across a cylinder takes the engine 3 to 30 s, and this cut is thrown away. With the switch on its
+  // guards are still asked (above) and the engine is not: the blocked sentence stands, as it does whenever the test cut comes out well.
+  if (hp.across && noAcrossCut) return null;
   for (const variant of hp.variants) {
     const res = await G.runB([...G.accepted, ...variant], { replay: false });
     if (res.timedOut) return { refusal: SENTENCE.budget(f), guard: 'G-BUDGET', base };
@@ -468,7 +471,7 @@ export const makerOf = (st: TranslateState, byId: Record<string, unknown>) => (b
 // ---- helpers ---------------------------------------------------------------------------------------------------------------------------
 const byIdOf = (G: HoleG, id: string): RootView | undefined => G.byId[id];
 /** what planHole returns when the hole may be cut: the commands, the part it consumes, and the post-check run on the result */
-export interface HolePlan { variants: Cmd[][]; produces: string[]; consumes: string[]; baseIdx: number; probe: unknown; post: PostFn }
+export interface HolePlan { variants: Cmd[][]; produces: string[]; consumes: string[]; baseIdx: number; probe: unknown; post: PostFn; /** a plain through bore across a curved wall (acrossAllowed) */ across?: boolean }
 export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promise<HolePlan | GuardRefusal> {
   const { accepted, headOf, off, runB } = G;
   const runSC = (cmds: Cmd[]) => runB(cmds, { replay: false });
@@ -740,7 +743,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
     params: { radius: r, height: f.depth, base: c.map((v, i) => v - dir[i] * f.depth / 2), axis: AXN[axis], operation: 'cut', targets: bs },
   }));
   return {
-    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo,
+    variants: [cmds], produces: bs, consumes: [f.target], baseIdx, probe: probeInfo, across,
     post: (after, before, env) => commonPost(f, after, before, env, {})
       ?? (across && before && !off.has('G-ACROSS-BOX') && boxOutside(after.bbox, before.bbox) > ACROSS_BOX_MM ? { guard: 'G-ACROSS-BOX', refusal: SENTENCE.engine(f) } : null),
   };

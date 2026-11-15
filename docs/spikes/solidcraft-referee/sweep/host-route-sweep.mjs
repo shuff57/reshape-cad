@@ -18,6 +18,8 @@
 //   POP_SKETCHES=1           with DROP_FILE: also drop sketches left at the end of the case.
 //   DUMP_FILE                write the cases as the page can take them ({ id, script } or { id, doc }) and stop: the input of pilot-2026-11b/timing/inc.mjs.
 //   PROBE_BLOCKED=1 PROBE_STEPS=1   the page's settings (a blocked step is test-built for its own sentence); set by score-built.sh.
+//   PROBE_NO_ACROSS=1               the layer's switch probeBlockedNoAcrossCut (off in the page): a blocked bore across a cylinder is not test-cut.
+//   TRACE_CALLS=1            one line on stderr before and after every engine call of the page route: how many commands, the last one, budget or not, ms.
 //   GUARDS_OFF=G-CURVED,...  MEASURING ONLY: the named guards are switched off (the layer's ctx.guardsOff), to see what the engine does with what a
 //                            guard refuses. A run with this set says nothing about what the layer builds.
 //   GADGET_SEED              inject a block that makes one of the page's own guards fire (gadget.mjs; the three-way sweep of the first pilot).
@@ -350,9 +352,15 @@ async function runHost(doc, script) {
   let calls = 0;
   const pf = typeof script === 'string' && H.preflightScript ? H.preflightScript(script) : null;
   if (pf) return { ms: 0, calls, pf: pf.why, tr: { commands: [], features: [] }, feats: doc.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: 'refused', guard: 'PM-PREFLIGHT', refusal: pf.sentence, m: null })) };
-  const runSC = async (cmds, opts) => { calls++; return opts?.budgetS ? probe(cmds, opts.budgetS) : C.runSC(cmds); };
+  // TRACE_CALLS=1: one line on stderr before and after every engine call (written at once, so a call that never comes back leaves its first line)
+  const trace = process.env.TRACE_CALLS ? (line) => { try { writeSync(2, `CALL ${line}\n`); } catch { /* the log is gone */ } } : null;
+  const runSC = async (cmds, opts) => { calls++; if (!trace) return opts?.budgetS ? probe(cmds, opts.budgetS) : C.runSC(cmds);
+    const what = `#${calls} ${cmds.length} commands, last ${cmds.at(-1)?.command ?? '-'} ${JSON.stringify(cmds.at(-1)?.params ?? {}).slice(0, 160)} ${opts?.budgetS ? `budget ${opts.budgetS} s` : 'no budget'}`;
+    trace(`start ${what}`); const t0 = performance.now(); const r = opts?.budgetS ? probe(cmds, opts.budgetS) : await C.runSC(cmds);
+    trace(`end   #${calls} ${Math.round(performance.now() - t0)} ms ${r?.timedOut ? 'STOPPED BY THE BUDGET' : r?.ok ? 'ok' : 'failed: ' + String(r?.failed?.command ?? r?.error ?? '').slice(0, 80)}`); return r; };
   // pane.js run() since f0b2cd05: fromUsage: draftFromUsage(srcText) (the script text; a doc-only case has none, as translateRaw)
-  const ctx = { arc: C.arc, mt: C.mt, runSC, soups: {}, followMoves: true, fromUsage: H.hostFromUsage(doc, { recorded: typeof script === 'string' }) /* as the page: from the doc (pane.js run: recorded; translateRaw: not recorded) */, topologyOf, ...(process.env.PROBE_BLOCKED ? { probeBlocked: true } : {}), ...(process.env.PROBE_STEPS ? { probeBlockedSteps: true } : {}), ...(process.env.GUARDS_OFF ? { guardsOff: process.env.GUARDS_OFF.split(',') } : {}) };
+  const topo = !trace ? topologyOf : async (cmds) => { trace(`start topology reading, ${cmds.length} commands, last ${cmds.at(-1)?.command ?? '-'} no budget`); const t0 = performance.now(); const r = await topologyOf(cmds); trace(`end   topology reading ${Math.round(performance.now() - t0)} ms ${r?.ok ? 'ok' : 'failed'}`); return r; };
+  const ctx = { arc: C.arc, mt: C.mt, runSC, soups: {}, followMoves: true, fromUsage: H.hostFromUsage(doc, { recorded: typeof script === 'string' }) /* as the page: from the doc (pane.js run: recorded; translateRaw: not recorded) */, topologyOf: topo, ...(process.env.PROBE_BLOCKED ? { probeBlocked: true } : {}), ...(process.env.PROBE_NO_ACROSS ? { probeBlockedNoAcrossCut: true } : {}), ...(process.env.PROBE_STEPS ? { probeBlockedSteps: true } : {}), ...(process.env.GUARDS_OFF ? { guardsOff: process.env.GUARDS_OFF.split(',') } : {}) };
   const t0 = performance.now(); let tr;
   try { tr = await H.translateDoc(structuredClone(doc), ctx); } catch (e) { return { threw: String(e?.message ?? e), ms: performance.now() - t0, calls }; }
   return { ms: performance.now() - t0, calls, tr, feats: tr.features.map((f) => ({ id: f.id, kind: f.kind, op: f.op ?? null, status: f.status, guard: f.guard ?? null, refusal: f.refusal ?? null, ...(typeof f.raw === 'string' && f.raw.startsWith('blocked (') ? { probed: true } : {}), m: fm(f) })) };

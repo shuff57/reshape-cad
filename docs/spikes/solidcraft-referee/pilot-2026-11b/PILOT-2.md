@@ -1029,3 +1029,49 @@ and the progress line was compared on 2026-11-14 (24717 steps of the corpora: on
 another guard refused are refused by G-CURVED, one sentence quotes another step's, no built volume changed). The eleven page checks on the final tree against the last recorded run: the same
 line for line but for times, ports and load counters, and one more console warning of the browser in `live-pane` ("A valid external
 Instance reference no longer exists"). The line itself was checked live on 2026-11-14 (`open-items/progress-live.txt`).
+
+## The plain through bore, before and after, and what it costs in the page (plan item 4, 2026-11-15)
+
+`open-items/cross-hole-before-after.mjs` and `.txt`: the final sweep against the interim one, which had everything but the allowance.
+
+**What is built.** 21 holes in 20 of the 7784 documents are cut now and were refused before. All 20 documents are RIGHT as built: OCCT agrees on all 20, brep-rs on 7 and says nothing on 13 (it
+refuses a hole across a curved wall). No step is refused now that was built before, and no built volume changed. The other differences are refusals that
+changed their reason because a hole before them is now cut, or because the hole is now refused by the next guard in line: 28 holes
+"it comes after ..." where G-CURVED used to answer first, 3 holes that cross an earlier one, 1 tangent, 1 that touches nothing, 5 hollows
+"a hole would be too close to a wall", 3 drafts, and 19 steps whose sentence quotes another step's. Every sentence is an existing one.
+
+**What it costs.** Measured in the real page, on the same 7784 documents:
+
+| | before | after |
+|---|---|---|
+| the page's time in all | 134.4 min | 147.9 min |
+| documents over 10 s | 82 | 121 |
+| over 20 s | 37 | 44 |
+| over 45 s | 16 | 18 |
+| over 90 s | 0 | 1 |
+
+- The 20 documents that cut a bore took 0.2 to 2.2 s in the page to be refused. Now 18 of them take 10 to 32 s, and two take longer:
+  72 s (`combined seed 624`: two bores, three steps after them) and 196 s (`combined seed 670`: one bore of 4 through a pad of radius 6
+  and height 6, seven steps after it, all refused). The page asked the engine for that last document eight times: three runs in the
+  worker under the budget (99 s together, so each under the 45 s limit) and five in the page's own engine (97 s). The family had said
+  about 7 s for a script with one hole and nothing after it, 41 s at the longest; the plan's "a 10 s hole is computed twice and replayed
+  by every later step" is what the two slow documents show.
+- 27 more documents cut nothing new and take 9 to 37 s longer. Each has a bore across a cylinder after a step that was refused. The page
+  test-cuts a blocked hole on the part as it stands, to tell the student the hole's own mistake too (`ctx.probeBlocked`); before, the
+  guard answered at once, and now the test cut is made, comes out well, is thrown away, and the hole is refused as blocked.
+- Nothing in the family's numbers predicts the slow cut. By the bore against the cylinder, by how near the wall it runs and by how near
+  a cap, every band has a median of 5 to 14 s a script and cases of 15 to 41 s; the pad of `seed 670` sits in bands whose median is 6
+  to 10 s. So the allowance cannot be narrowed to "the fast ones" by a rule on the sizes.
+
+**A switch for the second point, built and off.** `ctx.probeBlockedNoAcrossCut` (`packages/layer/src/holes.ts`, mirrored in the contract
+copy): a blocked hole that is a plain through bore across a cylinder has its guards asked and is not test-cut. On the 27 documents, in
+Node with the page's settings, with the switch and without (`~/.cache/solidcraft-0.30.1-rig/h71`): every step, sentence and volume the
+same in all 27; 244 s in all without the switch (22.7 s the longest), 21 s with it (1.8 s). What the switch gives up: a refusal that only
+the cut itself would find (the box check, the time budget) is then not shown until the student has fixed the step before. The page does
+not set it; whether it should is the owner's.
+
+Tests: `packages/layer/test/across-cylinder.test.mjs` has a sixth test for the switch, on the layer and on the contract copy. The suite:
+1158 tests, 1152 pass, 6 skipped, 0 fail (run before the contract copy's half of that test was written; the file passes 6 of 6 with it).
+
+The plan's "Done when" for this item is met (the decision is recorded, the family swept with the guard as decided with 0 wrong, the
+corpora and the new documents compared before and after, the page checks pass). The times above are new since the owner decided.
