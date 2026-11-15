@@ -233,3 +233,24 @@ test('a mirror goes through the part\'s own face exactly: a five-sided prism mir
   near(m.box[0], 2 * side - 10, 1e-9, 'the far end of the copy: -26.18034, not -26.1804');
   near(m.box[3], 10, 1e-9, 'the part itself has not moved');
 });
+
+// ---- a mirror of a part whose two faces are as far from zero as each other ----
+test('a mirror of a part that sits evenly about zero goes through its low face, whatever the last digit of the box says', opts, () => {
+  // `combined seed 340`: a 20 x 30 x 10 box turned 90 degrees about z, so from x = -15 to 15; its exact box reads -15.000000000000002 and the copy
+  // went to the +x side when the nearer face was asked for without a tolerance
+  const turned = [{ id: 'b1', kind: 'box', size: [20, 30, 10], center: [0, 0, 12], rotate: [0, 0, 90] }, { id: 'x2', kind: 'mirror', target: 'b1', plane: 'yz' }];
+  const t1 = measure(turned.slice(0, 1), 'b1'); const t2 = measure(turned, 'x2');
+  assert.notEqual(Math.abs(t1.box[0]), Math.abs(t1.box[3]), 'the case is the one meant: the two faces differ in the last digit');
+  near(t2.volume, 12000, 1e-12, 'twice the box'); near(t2.box[0], -45, 1e-9, 'the copy is on the low side'); near(t2.box[3], 15, 1e-9, 'the part itself has not moved');
+  for (const [plane, i, center] of [['yz', 0, [0, 0, 12]], ['xz', 1, [3, 0, 12]], ['xy', 2, [3, 4, 0]]]) {
+    const size = [30, 20, 10]; const feats = [{ id: 'b1', kind: 'box', size, center }, { id: 'x2', kind: 'mirror', target: 'b1', plane }];
+    const m = measure(feats, 'x2'); const half = size[i] / 2;
+    near(m.volume, 12000, 1e-12, `${plane}: twice the box`);
+    near(m.box[i], -3 * half, 1e-9, `${plane}: the copy is on the low side`); near(m.box[i + 3], half, 1e-9, `${plane}: the part itself has not moved`);
+  }
+  // not a tie: through the face nearer zero, on either side (a box from 5 to 35 gives -25 to 35; one from -35 to -5 gives -35 to 25)
+  for (const [cx, lo, hi] of [[20, -25, 35], [-20, -35, 25]]) {
+    const feats = [{ id: 'b1', kind: 'box', size: [30, 20, 10], center: [cx, 0, 0] }, { id: 'x2', kind: 'mirror', target: 'b1', plane: 'yz' }];
+    const m = measure(feats, 'x2'); near(m.box[0], lo, 1e-9, `centre ${cx}: low end`); near(m.box[3], hi, 1e-9, `centre ${cx}: high end`);
+  }
+});

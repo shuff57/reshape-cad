@@ -1,0 +1,70 @@
+corpora/combined; 71 documents with a mirror, 81 mirror steps, 74 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":67,"other face":2,"pieces differ":5,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":69,"other face":0,"pieces differ":5,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+  item4  pieces differ  corpora/combined combined#94 combined seed 94 x7: box 9.8e-5 mm, volume 2.0e-11, pieces 1 -> 2
+  item5  pieces differ  corpora/combined combined#94 combined seed 94 x7: box 9.8e-5 mm, volume 2.0e-11, pieces 1 -> 2
+  item4  pieces differ  corpora/combined combined#98 combined seed 98 x4: box 6.0e-5 mm, volume 7.0e-12, pieces 2 -> 1
+  item5  pieces differ  corpora/combined combined#98 combined seed 98 x4: box 6.0e-5 mm, volume 7.0e-12, pieces 2 -> 1
+  item4  pieces differ  corpora/combined combined#247 combined seed 247 x5: box 6.4e-5 mm, volume 7.9e-16, pieces 2 -> 1
+  item5  pieces differ  corpora/combined combined#247 combined seed 247 x5: box 6.4e-5 mm, volume 4.5e-16, pieces 2 -> 1
+  item4  pieces differ  corpora/combined combined#262 combined seed 262 x4: box 6.4e-5 mm, volume 7.5e-11, pieces 1 -> 2
+  item5  pieces differ  corpora/combined combined#262 combined seed 262 x4: box 6.4e-5 mm, volume 7.5e-11, pieces 1 -> 2
+  item4  pieces differ  corpora/combined combined#262 combined seed 262 x7: box 1.3e-4 mm, volume 1.7e-7, pieces 1 -> 2
+  item5  pieces differ  corpora/combined combined#262 combined seed 262 x7: box 1.3e-4 mm, volume 1.7e-7, pieces 1 -> 2
+  item4  other face  corpora/combined combined#340 combined seed 340 x2: box 3.0e+1 mm, volume 0.0e+0, pieces 1 -> 1
+  item4  other face  corpora/combined combined#415 combined seed 415 x4: box 2.0e+1 mm, volume 4.1e-16, pieces 2 -> 2
+corpora/fccombined; 40 documents with a mirror, 47 mirror steps, 39 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":37,"other face":0,"pieces differ":2,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":37,"other face":0,"pieces differ":2,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+  item4  pieces differ  corpora/fccombined fccombined#190 fc combined seed 190 x4: box 7.1e-5 mm, volume 3.2e-12, pieces 1 -> 2
+  item5  pieces differ  corpora/fccombined fccombined#190 fc combined seed 190 x4: box 7.1e-5 mm, volume 3.2e-12, pieces 1 -> 2
+  item4  pieces differ  corpora/fccombined fccombined#346 fc combined seed 346 x4: box 9.7e-6 mm, volume 1.3e-13, pieces 1 -> 2
+  item5  pieces differ  corpora/fccombined fccombined#346 fc combined seed 346 x4: box 9.7e-6 mm, volume 1.3e-13, pieces 1 -> 2
+corpora/holes; 0 documents with a mirror, 0 mirror steps, 0 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+corpora/mt; 0 documents with a mirror, 0 mirror steps, 0 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+corpora/rgcombined; 55 documents with a mirror, 63 mirror steps, 53 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":50,"other face":3,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":52,"other face":1,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+  item4  other face  corpora/rgcombined rgcombined#179 rg combined seed 179 x4: box 4.0e+1 mm, volume 0.0e+0, pieces 1 -> 1
+  item4  other face  corpora/rgcombined rgcombined#218 rg combined seed 218 x4: box 1.4e+0 mm, volume 0.0e+0, pieces 2 -> 2
+  item5  other face  corpora/rgcombined rgcombined#218 rg combined seed 218 x4: box 1.4e+0 mm, volume 0.0e+0, pieces 2 -> 2
+  item4  other face  corpora/rgcombined rgcombined#314 rg combined seed 314 x3: box 1.6e+1 mm, volume 1.2e-16, pieces 2 -> 2
+corpora/sd; 0 documents with a mirror, 0 mirror steps, 0 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":0,"other face":0,"pieces differ":0,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+new/combined; 98 documents with a mirror, 120 mirror steps, 108 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":105,"other face":2,"pieces differ":1,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":1}
+item5: {"same":106,"other face":1,"pieces differ":1,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":1}
+  item4  built here, refused by the reference  new/combined combined#70 combined seed 670 x6
+  item5  built here, refused by the reference  new/combined combined#70 combined seed 670 x6
+  item4  other face  new/combined combined#238 combined seed 838 x6: box 2.2e+0 mm, volume 0.0e+0, pieces 2 -> 1
+  item5  other face  new/combined combined#238 combined seed 838 x6: box 2.2e+0 mm, volume 0.0e+0, pieces 2 -> 1
+  item4  pieces differ  new/combined combined#520 combined seed 1120 x3: box 1.6e-5 mm, volume 1.0e-13, pieces 1 -> 2
+  item5  pieces differ  new/combined combined#520 combined seed 1120 x3: box 1.6e-5 mm, volume 1.0e-13, pieces 1 -> 2
+  item4  other face  new/combined combined#590 combined seed 1190 x3: box 2.4e+1 mm, volume 1.2e-16, pieces 1 -> 1
+new/fccombined; 103 documents with a mirror, 117 mirror steps, 103 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":96,"other face":5,"pieces differ":2,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":100,"other face":1,"pieces differ":2,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+  item4  other face  new/fccombined fccombined#58 fc combined seed 458 x3: box 1.5e+1 mm, volume 4.2e-16, pieces 2 -> 2
+  item4  pieces differ  new/fccombined fccombined#231 fc combined seed 631 x5: box 4.4e-5 mm, volume 2.4e-12, pieces 1 -> 2
+  item5  pieces differ  new/fccombined fccombined#231 fc combined seed 631 x5: box 4.4e-5 mm, volume 2.4e-12, pieces 1 -> 2
+  item4  pieces differ  new/fccombined fccombined#582 fc combined seed 982 x9: box 4.4e-5 mm, volume 3.9e-12, pieces 1 -> 2
+  item5  pieces differ  new/fccombined fccombined#582 fc combined seed 982 x9: box 4.4e-5 mm, volume 3.9e-12, pieces 1 -> 2
+  item4  other face  new/fccombined fccombined#606 fc combined seed 1006 x7: box 2.4e+1 mm, volume 1.1e+0, pieces 2 -> 3
+  item5  other face  new/fccombined fccombined#606 fc combined seed 1006 x7: box 2.4e+1 mm, volume 1.1e+0, pieces 2 -> 3
+  item4  other face  new/fccombined fccombined#624 fc combined seed 1024 x2: box 2.0e+1 mm, volume 0.0e+0, pieces 1 -> 1
+  item4  other face  new/fccombined fccombined#624 fc combined seed 1024 x3: box 2.0e+1 mm, volume 0.0e+0, pieces 1 -> 1
+  item4  other face  new/fccombined fccombined#930 fc combined seed 1330 x3: box 1.4e+1 mm, volume 3.6e-16, pieces 1 -> 2
+new/rgcombined; 101 documents with a mirror, 119 mirror steps, 104 built by the reference (item3); 0 documents the solver threw on
+item4: {"same":101,"other face":0,"pieces differ":3,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+item5: {"same":101,"other face":0,"pieces differ":3,"volume differs":0,"refused here, built by the reference":0,"built here, refused by the reference":0}
+  item4  pieces differ  new/rgcombined rgcombined#382 rg combined seed 782 x3: box 6.0e-5 mm, volume 1.6e-16, pieces 2 -> 1
+  item5  pieces differ  new/rgcombined rgcombined#382 rg combined seed 782 x3: box 6.0e-5 mm, volume 1.6e-16, pieces 2 -> 1
+  item4  pieces differ  new/rgcombined rgcombined#790 rg combined seed 1190 x4: box 7.1e-5 mm, volume 3.2e-12, pieces 1 -> 2
+  item5  pieces differ  new/rgcombined rgcombined#790 rg combined seed 1190 x4: box 7.1e-5 mm, volume 3.2e-12, pieces 1 -> 2
+  item4  pieces differ  new/rgcombined rgcombined#946 rg combined seed 1346 x4: box 9.7e-6 mm, volume 1.3e-13, pieces 1 -> 2
+  item5  pieces differ  new/rgcombined rgcombined#946 rg combined seed 1346 x4: box 9.7e-6 mm, volume 1.3e-13, pieces 1 -> 2

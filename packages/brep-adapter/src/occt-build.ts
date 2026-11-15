@@ -1694,7 +1694,11 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
         const lo = [cLo.X(), cLo.Y(), cLo.Z()][axis];
         const hi = [cHi.X(), cHi.Y(), cHi.Z()][axis];
         cLo.delete(); cHi.delete(); exact.delete();
-        const at = Math.abs(lo) <= Math.abs(hi) ? lo : hi;
+        // Two faces as far from zero as each other: the low one, as the app has it. With the exact box that has to be said with a tolerance (a box
+        // from -15 to 15 reads -15.000000000000002 and 15, and without one the copy went to the other side: `combined seed 340`, 2026-11-14).
+        // The tolerance is the layer's own for the same question (patterns-mirror.ts, 'measured-planar-tie').
+        const tie = Math.abs(Math.abs(lo) - Math.abs(hi)) <= 1e-9 * Math.max(1, Math.abs(lo), Math.abs(hi));
+        const at = tie || Math.abs(lo) <= Math.abs(hi) ? lo : hi;
         const through: Vec3 = [0, 0, 0];
         through[axis] = at;
         const t = new oc.gp_Trsf();
