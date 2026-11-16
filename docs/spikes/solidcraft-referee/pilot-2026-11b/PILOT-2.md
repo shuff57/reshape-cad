@@ -1075,3 +1075,66 @@ Tests: `packages/layer/test/across-cylinder.test.mjs` has a sixth test for the s
 
 The plan's "Done when" for this item is met (the decision is recorded, the family swept with the guard as decided with 0 wrong, the
 corpora and the new documents compared before and after, the page checks pass). The times above are new since the owner decided.
+
+## A step that hangs without a crash: none in 5100 documents; pockets that run for a minute with no budget (plan item 5, 2026-11-15)
+
+**The search.** `open-items/awkward-family.mjs`: 5100 documents from the three generators with every hole taken out (so that the steps
+the page runs without a time budget are the ones tried) and the numbers pushed to the edges (depths of 0.01, rounds of 0.001 and of
+nearly half a side, tapers of 25 degrees, walls near the limit). 31564 steps, 9277 built. Through the page's route in Node, where a
+document that does not answer can be killed, limit 120 s (`open-items/hang-search.txt`).
+
+| | |
+|---|---|
+| crashed | 0 |
+| answered within 120 s | 5094: median 0.24 s, 99% under 9.6 s |
+| over 20 s | 25 |
+| no answer within 120 s | 6 |
+
+**The 31 again, every engine call traced, limit 900 s** (`TRACE_CALLS=1`, new in `sweep/host-route-sweep.mjs`). All 31 answer, in 24
+to 360 s, and no engine call failed to come back. So the size of the risk, in the plan's words: **5100 cases, none hangs.** The six
+without an answer in 120 s were slow, not stuck: each has one slow step (a join of overlapping copies, 56 s; a pocket, 49 to 86 s; a
+topology reading, 63 to 69 s) that later steps run again.
+
+**What is slow, and whether it can be stopped.** In those 31 documents the page route made 331 engine calls. 170 ran under a time
+budget (joins and repeats, in the worker, where the page stays alive and the run can be stopped); 7 of them took over 45 s. 161 ran
+without one: 62 over 5 s, 22 over 20 s, the longest 96.5 s. A call's time is the time of its whole command list, so a slow step is
+paid again by every later call that has no budget: the slow calls end in a pocket (`solid.extrude` as a cut, or the join that
+finishes one), in a move, a bevel or a box after one, or are a topology reading of a list that holds a slow step (up to 69 s).
+
+**The same 31 in the real page**, as shipped (`open-items/hang-search-page.txt`): the page answers all 31. In 18 the longest run
+without a budget is over 5 s, in 10 over 20 s, in 3 over 45 s; the longest is 92 s. For that long the page's thread is the engine's:
+the status line stands still and nothing can stop the run. The page's time for a document is 13 to 537 s (the longest is slow joins
+under their budget, not a frozen page). For comparison, in the 7784 documents of the final sweep the longest run without a budget is
+20 s, and that one is the page's own replay of an accepted hole.
+
+**What in the input makes a pocket slow** (`open-items/slow-pocket-variants.txt`: seven of the slow pockets cut down to the steps
+before them, then one thing changed at a time, 28 variants):
+
+| the pocket as found | longest call without a budget | with one thing changed |
+|---|---|---|
+| 0.01 deep, corners rounded 0.001, into a ball | 96 s | sharp corners 15 s; 1 deep and sharp corners 1.3 s; the same pocket in a box 0.0 s |
+| tapered 25 degrees, corners rounded nearly to a half circle, into a ball | 38 s | no taper 5.5 s; sharp corners 2.1 s; a circle with the taper 26 s |
+| a second round pocket into a ball, meeting the first | 60 s | neither tapered 34 s; the first pocket alone 4.1 s |
+| 0.01 deep into a disc 0.02 high that was drafted | 39 s | no draft 0.1 s; a disc 12 high 0.2 s |
+| a second pocket 0.01 deep that cuts the wall of a tapered one, in a box | 21 s | 1 deep 6.0 s; the first not tapered 3.6 s; the two apart 1.3 s |
+| two tapered through pockets that meet, in a box | 35 s | the second not tapered 5.3 s; neither 2.1 s |
+| tapered, across the wall of a cylinder | 11 s | no taper 1.4 s |
+
+The cut is slow where its wall meets a curved face: a ball, or the cone that a taper or a draft leaves. A depth of 0.01 or a round of
+0.001 on top of that makes it slower again. On a flat-sided part a straight pocket took under 4 s in every variant. Five of the seven
+slow pockets are refused in the end ("this pocket cannot be built from the sketch as drawn", or the round is too small for the part);
+no oracle was asked here, this is about time.
+
+**What a budget would do** (the same 31 in the page with `BUDGET_ALL=1`, the measuring switch of `sweep/page-run.mjs` that gives every
+run without a budget one of 45 s, so that it goes through the worker first): 2906 s in all against 2623 s. The runs over 45 s
+are stopped; two of them are pockets that are built when left to run, so 124 steps are built against 127 (a stopped pocket then gets a
+wrong reason from the layer, which was not told about the budget; a real budget would have to give the existing "took longer than 45
+seconds" sentence). The slow pockets under 45 s take twice as
+long (41 s becomes 76 s, 103 s becomes 215 s), because a run that passes the budget in the worker is run again in the page, and that
+second run still holds the page's thread. So a budget on pockets turns a freeze of any length into one of at most about 45 s, at twice
+the time; it does not remove the freeze. Removing it needs the engine off the page's thread, which is upstream's, or the page taking
+the worker's result instead of running the list again, which the plan lists as not attempted.
+
+**Where this leaves the item.** The plan's first "Done when" is met: 5100 cases, none hangs, and the longest run without a budget is
+92 s in the page. No class of step that hangs was found. A class that is slow without a budget was: a pocket whose wall meets a
+curved face. Whether it gets a budget is the owner's.

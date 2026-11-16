@@ -1,0 +1,39 @@
+node hang-search-page.mjs <page.jsonl> <page-budget-all.jsonl>   (2026-11-15, sweep/page-run.mjs mode off on the frozen copy of the tree at b4c5c856)
+31 documents in the page as shipped, 31 with a 45 s budget on every run
+  as shipped: the page's time | its longest run without a budget (the last command of that run) | runs without a budget   ||   budget on every run: the page's time | steps built, against as shipped
+  awkward fc 3671            93.6 s |  92.0 s (solid.extrude) | 3   ||     46.6 s | 1 against 1
+  awkward combined 3059     216.9 s |  73.2 s (solid.combine) | 4   ||     51.6 s | 1 against 2
+  awkward fc 3431           151.5 s |  50.6 s (solid.move) | 7   ||     82.2 s | 3 against 5
+  awkward combined 2818     536.9 s |  44.2 s (solid.combine) | 1   ||    525.4 s | 6 against 6
+  awkward combined 2495      41.0 s |  39.7 s (solid.extrude) | 4   ||     75.8 s | 2 against 2
+  awkward combined 3023     103.1 s |  35.3 s (solid.move) | 4   ||    214.6 s | 3 against 3
+  awkward rg 2860            75.5 s |  32.9 s (solid.extrude) | 6   ||    147.9 s | 3 against 3
+  awkward combined 3180      89.8 s |  30.3 s (solid.extrude) | 6   ||    184.3 s | 3 against 3
+  awkward fc 3036           128.2 s |  22.0 s (solid.chamfer) | 11   ||    216.8 s | 3 against 3
+  awkward rg 3028            22.8 s |  20.1 s (solid.extrude) | 5   ||     44.4 s | 2 against 2
+  awkward fc 2746           164.5 s |  18.8 s (solid.combine) | 2   ||    157.4 s | 5 against 5
+  awkward rg 3050            54.7 s |  12.5 s (solid.extrude) | 1   ||     68.9 s | 4 against 4
+  awkward fc 2760            39.1 s |  12.5 s (solid.combine) | 6   ||     82.2 s | 3 against 3
+  awkward rg 2834            82.8 s |  10.0 s (solid.box) | 2   ||     90.9 s | 6 against 6
+  awkward rg 2692            19.2 s |   9.8 s (solid.extrude) | 8   ||     36.4 s | 2 against 2
+  awkward fc 2449            19.7 s |   7.1 s (solid.fillet) | 8   ||     35.4 s | 6 against 6
+  awkward rg 2175            16.7 s |   5.8 s (solid.extrude) | 4   ||     33.2 s | 2 against 2
+  awkward rg 2606            48.3 s |   5.3 s (solid.combine) | 12   ||     61.1 s | 11 against 11
+  awkward fc 2196            12.8 s |   4.4 s (solid.chamfer) | 9   ||     25.1 s | 3 against 3
+  awkward fc 3326            27.1 s |   4.2 s (solid.box) | 3   ||     30.9 s | 3 against 3
+  awkward fc 2546            20.1 s |   4.0 s (solid.box) | 4   ||     29.6 s | 4 against 4
+  awkward fc 2626            46.7 s |   4.0 s (solid.combine) | 11   ||     57.1 s | 8 against 8
+  awkward fc 2158            15.2 s |   3.9 s (solid.combine) | 2   ||     16.1 s | 6 against 6
+  awkward fc 2210            25.7 s |   3.9 s (solid.box) | 3   ||     31.4 s | 3 against 3
+  awkward fc 3166            47.5 s |   3.7 s (solid.box) | 1   ||     45.8 s | 7 against 7
+  awkward fc 3362            24.4 s |   3.7 s (solid.box) | 3   ||     28.2 s | 3 against 3
+  awkward rg 2204           145.6 s |   2.5 s (solid.combine) | 1   ||    141.6 s | 3 against 3
+  awkward rg 2282            25.7 s |   2.0 s (solid.extrude) | 1   ||     21.5 s | 5 against 5
+  awkward combined 3238     191.5 s |   0.4 s (solid.extrude) | 4   ||    191.3 s | 5 against 5
+  awkward combined 3082      80.6 s |   0.0 s (-) | 0   ||     80.4 s | 4 against 4
+  awkward fc 3490            55.7 s |   0.0 s (-) | 0   ||     51.5 s | 4 against 4
+as shipped: no answer 0; the page's time 2623.2 s in all, the longest 536.9 s; documents whose longest run without a budget is over 5 s 18, over 20 s 10, over 45 s 3; the longest 92.0 s
+with a budget on every run (31 documents): no answer 0; the page's time 2905.8 s in all against 2623.2 s as shipped, the longest 525.4 s; steps built 124 against 127; the longest run still made without a budget 74.3 s (solid.extrude)
+  not built with the budget: awkward combined 3059 pk3 (pocket): pk3: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change the sketch, the le
+  not built with the budget: awkward fc 3431 pk6 (pocket): pk6: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so nothing is cut; change the sketch, the le
+  not built with the budget: awkward fc 3431 m7 (move): m7 (move): its target pk6 was refused, so there is nothing to build on (this pocket cannot be built from the sketch as drawn (the solid it makes does 

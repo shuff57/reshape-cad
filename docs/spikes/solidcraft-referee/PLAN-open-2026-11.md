@@ -26,7 +26,7 @@ on the new documents (`pilot-2026-11b/cross-hole/compare-sweeps.mjs` is the comp
 | 2 ✓ | A cylinder's wall in the page | probably nothing to fix; cheap to prove | an hour or two | nothing, unless something turns up |
 | 3 ✓ | A progress line for long runs | the one thing a student sees every day | half a day | the exact words |
 | 4 ✓ | A hole across a solid cylinder | the layer refuses what the engine builds right | one to two days | allow it or not, and the limits |
-| 5 | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
+| 5 ✓ | A step that hangs without a crash | the last way the page can freeze | one day of machine time | what to do if a class is found |
 | 6 ✓ | The referee's hollow at an inside corner | the last place OCCT disagrees by meaning | half a day | nothing |
 | 7 ✓ | What we know about the engine, for upstream | four findings nobody upstream has heard | half a day to draft | every word, and whether to send |
 | 8 ✓ | brep-rs's disagreements | archived; record, do not fix | with item 1 | nothing |
@@ -122,7 +122,7 @@ the new documents are compared before and after, and the page checks pass.
 
 **Stop if** any case is built wrong within the range one would allow: then the guard stays, and the case goes into item 7.
 
-## 5. A step that hangs without a crash
+## 5. A step that hangs without a crash  [DONE 2026-11-15]
 
 **Known.** 13806 of 19624 engine runs in the page have no time budget (pulls, pockets, drafts, rounds, moves and plain shapes in a script
 without a hole, and every topology reading). A crash in one is now caught. A hang is not: the page's own thread is the engine's, so nothing

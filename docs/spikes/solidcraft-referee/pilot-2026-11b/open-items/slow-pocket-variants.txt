@@ -1,0 +1,44 @@
+node slow-pocket-variants.mjs read <trace.log> <hr-pockets.jsonl>   (2026-11-15, Node, the page's settings, every engine call traced; limit 300 s a variant)
+A call's time is the time of its whole command list. No oracle was asked: this is about time, not about whether a pocket is right.
+
+A ball r 8, an 8 x 6 pocket (fc 3671)
+  as found                                                                 script   96.9 s | longest call without a budget   96.1 s | the last pocket: refused: pk3: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so n
+  0.01 deep, sharp corners                                                 script   20.2 s | longest call without a budget   14.9 s | the last pocket: built
+  1 deep, corners rounded 0.001                                            script   15.3 s | longest call without a budget   11.7 s | the last pocket: refused: pk3: the part is about 13856 times wider than the smallest round shape in this pocket, and SolidCraft would re
+  1 deep, sharp corners                                                    script    2.5 s | longest call without a budget    1.3 s | the last pocket: built
+  3 deep, sharp corners                                                    script    2.2 s | longest call without a budget    1.1 s | the last pocket: built
+  the same 0.01 pocket in a 16 x 16 x 16 box                               script    0.1 s | longest call without a budget    0.0 s | the last pocket: built
+
+B ball r 8 off the origin, a 4 x 4 pocket 2 deep (combined 3023)
+  as found                                                                 script   73.6 s | longest call without a budget   38.5 s | the last pocket: built
+  no taper, corners rounded 1.999                                          script   10.7 s | longest call without a budget    5.5 s | the last pocket: built
+  taper 25, sharp corners                                                  script    3.8 s | longest call without a budget    2.1 s | the last pocket: built
+  no taper, sharp corners                                                  script    2.2 s | longest call without a budget    1.1 s | the last pocket: built
+  taper 25, a circle of 4                                                  script   52.9 s | longest call without a budget   26.4 s | the last pocket: built
+  the same tapered pocket in a 16 x 16 x 16 box                            script    0.1 s | longest call without a budget    0.0 s | the last pocket: refused: pk3 would leave a sealed cavity inside the part instead of opening onto a face; start the sketch on a face of 
+
+C ball r 10, two round pockets one after the other (fc 3431)
+  the first only                                                           script    8.4 s | longest call without a budget    4.1 s | the last pocket: built
+  as found                                                                 script   68.2 s | longest call without a budget   59.8 s | the last pocket: refused: pk6: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so n
+  both without taper                                                       script   68.3 s | longest call without a budget   33.7 s | the last pocket: built
+
+D a disc r 12, 0.02 high, drafted 2 degrees, a round pocket 0.01 deep (combined 2495)
+  as found                                                                 script   38.9 s | longest call without a budget   38.9 s | the last pocket: refused: pk4: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so n
+  without the draft                                                        script    0.1 s | longest call without a budget    0.1 s | the last pocket: built
+  a disc 12 high, drafted, the pocket 0.01 deep                            script    0.5 s | longest call without a budget    0.2 s | the last pocket: built
+  a disc 12 high, drafted, the pocket 1 deep                               script    0.6 s | longest call without a budget    0.3 s | the last pocket: built
+
+E a 40 x 20 x 10 box, a tapered through pocket, then a second pocket that cuts into its wall (rg 3028)
+  as found                                                                 script   23.1 s | longest call without a budget   21.2 s | the last pocket: refused: pk5: this pocket cannot be built from the sketch as drawn (the solid it makes does not close up cleanly), so n
+  the second 1 deep                                                        script   10.8 s | longest call without a budget    6.0 s | the last pocket: built
+  the first without taper, the second 0.01 deep                            script    3.9 s | longest call without a budget    3.6 s | the last pocket: built
+  the second clear of the first (its circle moved 10 along x), 0.01 deep   script    3.6 s | longest call without a budget    1.3 s | the last pocket: built
+
+F a 20 x 30 x 20 box, two tapered through pockets that meet (rg 2860)
+  as found                                                                 script   45.9 s | longest call without a budget   34.7 s | the last pocket: built
+  the second without taper                                                 script   11.0 s | longest call without a budget    5.3 s | the last pocket: built
+  both without taper                                                       script    2.9 s | longest call without a budget    2.1 s | the last pocket: built
+
+G a cylinder r 8, 12 high, an 8 x 6 pocket 5 deep across its wall (rg 2692)
+  as found                                                                 script   20.9 s | longest call without a budget   11.1 s | the last pocket: refused: pk3: the part is about 12806 times wider than the smallest round shape in this pocket, and SolidCraft would re
+  no taper                                                                 script    1.5 s | longest call without a budget    1.4 s | the last pocket: refused: pk3: the part is about 12806 times wider than the smallest round shape in this pocket, and SolidCraft would re
