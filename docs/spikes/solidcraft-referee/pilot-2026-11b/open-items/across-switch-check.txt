@@ -1,0 +1,44 @@
+node across-switch-check.mjs <the final sweep> <the 280 generated documents with the switch> <the 8 corpus scripts with the switch>   (2026-11-15, frozen copy of the tree with the page setting the switch)
+The machine restarted during the page run of the 280 (16:57); the run was resumed from the 102 documents it had finished. In the first part the
+browser was closed once, during corpora/combined seed 53 (the runner's own error, no row for the page); that document was run again three times
+afterwards (21.0, 21.2, 21.2 s, the same result) and the first of those rows is the one compared here.
+
+Node, the page's settings
+  288 documents; every step the same (status, guard, sentence, volume) in 288; differ in 0
+  time in all: 833.5 s without the switch, 671.3 s with it; 27 documents more than 3 s faster (new/combined/combined seed 1117 19.8 -> 0.3 s; new/combined/combined seed 1376 13.3 -> 0.4 s; corpora/rgcombined/rg combined seed 377 9.2 -> 0.3 s; new/rgcombined/rg combined seed 984 9.1 -> 0.7 s; ...)
+
+the real page
+  288 documents; every step, sentence and the final volume the same in 288; differ in 0
+  the page's time in all: 1144.7 s without the switch, 726.7 s with it; over 10 s: 47 -> 18, over 20 s: 8 -> 5, over 45 s: 2 -> 2
+  more than 3 s faster: 29
+    new/combined/combined seed 1117 37.5 -> 0.1 s
+    new/combined/combined seed 1376 26.0 -> 0.2 s
+    corpora/rgcombined/rg combined seed 377 18.5 -> 0.1 s
+    corpora/fccombined/fc combined seed 128 16.3 -> 0.7 s
+    corpora/combined/combined seed 349 15.6 -> 0.2 s
+    new/rgcombined/rg combined seed 1061 15.5 -> 0.4 s
+    corpora/fccombined/fc combined seed 61 15.4 -> 0.4 s
+    new/rgcombined/rg combined seed 984 15.3 -> 0.5 s
+    new/combined/combined seed 1304 14.6 -> 0.6 s
+    new/rgcombined/rg combined seed 1313 13.9 -> 0.2 s
+    corpora/fccombined/fc combined seed 313 13.6 -> 0.2 s
+    new/rgcombined/rg combined seed 1128 15.0 -> 1.7 s
+    new/combined/combined seed 637 13.1 -> 0.2 s
+    corpora/rgcombined/rg combined seed 17 13.5 -> 0.8 s
+    new/fccombined/fc combined seed 589 13.0 -> 0.5 s
+    new/fccombined/fc combined seed 913 12.5 -> 0.1 s
+    corpora/combined/combined seed 320 13.8 -> 1.5 s
+    new/rgcombined/rg combined seed 1056 12.8 -> 0.6 s
+    corpora/fccombined/fc combined seed 56 12.7 -> 0.5 s
+    new/combined/combined seed 740 12.8 -> 0.7 s
+    corpora/combined/combined seed 128 12.7 -> 1.3 s
+    new/fccombined/fc combined seed 433 11.3 -> 0.2 s
+    new/combined/combined seed 620 11.4 -> 0.7 s
+    corpora/combined/combined seed 133 10.4 -> 0.3 s
+    new/rgcombined/rg combined seed 624 11.0 -> 1.1 s
+    new/fccombined/fc combined seed 961 11.7 -> 2.0 s
+    new/combined/combined seed 632 9.6 -> 0.6 s
+    new/combined/combined seed 670 195.9 -> 187.4 s
+    new/combined/combined seed 624 71.8 -> 64.5 s
+  more than 3 s slower: 1
+    corpora/combined/combined seed 95 31.3 -> 34.5 s

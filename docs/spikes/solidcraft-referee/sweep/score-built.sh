@@ -9,7 +9,7 @@
 # Takes the rig's lock for each run. Long: a thousand generated documents take about ten minutes per Node pass and about half an hour in the page.
 set -u
 HERE=$(cd "$(dirname "$0")" && pwd); RIG=${RIG:-$HOME/.cache/solidcraft-0.30.1-rig}; OUT=$1; shift
-export RIG PROBE_BLOCKED=1 PROBE_STEPS=1
+export RIG PROBE_BLOCKED=1 PROBE_STEPS=1 PROBE_NO_ACROSS=1 # the page's settings (pane.js)
 mkdir -p "$OUT/full" "$OUT/built"; [ -n "${PAGE:-}" ] && mkdir -p "$OUT/page" "$OUT/cases"
 NAMES=""
 for spec in "$@"; do

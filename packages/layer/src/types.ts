@@ -173,7 +173,7 @@ export interface TranslateCtx {
   /** PROTOTYPE, off unless set (pilot 2026-11 F5/F8): a hole that is blocked because the step before it was refused is test-built on the part as it stands,
    *  never kept, and its OWN refusal is reported if it has one. The hole stays refused either way. Costs engine time for every blocked hole. */
   probeBlocked?: boolean;
-  /** Off unless set; only read with probeBlocked. A blocked hole that is a plain through bore ACROSS a cylinder (holes.ts, acrossAllowed) is not test-cut:
+  /** Off unless set (the page sets it, owner decision 2026-11-15); only read with probeBlocked. A blocked hole that is a plain through bore ACROSS a cylinder (holes.ts, acrossAllowed) is not test-cut:
    *  its guards are asked and the engine is not. Measured 2026-11-15: 28 of 7784 documents spent 10 to 37 s in the page on such a test cut, to show the
    *  same "it comes after ..." sentence. With the switch on, a refusal that only the cut itself would find (the box check, the time budget) is not
    *  shown until the step before is fixed. */

@@ -17,8 +17,9 @@
 //                            it was about.
 //   POP_SKETCHES=1           with DROP_FILE: also drop sketches left at the end of the case.
 //   DUMP_FILE                write the cases as the page can take them ({ id, script } or { id, doc }) and stop: the input of pilot-2026-11b/timing/inc.mjs.
-//   PROBE_BLOCKED=1 PROBE_STEPS=1   the page's settings (a blocked step is test-built for its own sentence); set by score-built.sh.
-//   PROBE_NO_ACROSS=1               the layer's switch probeBlockedNoAcrossCut (off in the page): a blocked bore across a cylinder is not test-cut.
+//   PROBE_BLOCKED=1 PROBE_STEPS=1 PROBE_NO_ACROSS=1   the page's settings, set by score-built.sh: a blocked step is test-built for its own sentence,
+//                            but a blocked plain through bore across a cylinder is not test-cut (the layer's probeBlockedNoAcrossCut; the page
+//                            sets it since 2026-11-15).
 //   TRACE_CALLS=1            one line on stderr before and after every engine call of the page route: how many commands, the last one, budget or not, ms.
 //   GUARDS_OFF=G-CURVED,...  MEASURING ONLY: the named guards are switched off (the layer's ctx.guardsOff), to see what the engine does with what a
 //                            guard refuses. A run with this set says nothing about what the layer builds.

@@ -1138,3 +1138,29 @@ the worker's result instead of running the list again, which the plan lists as n
 **Where this leaves the item.** The plan's first "Done when" is met: 5100 cases, none hangs, and the longest run without a budget is
 92 s in the page. No class of step that hangs was found. A class that is slow without a budget was: a pocket whose wall meets a
 curved face. Whether it gets a budget is the owner's.
+
+## Two owner decisions, 2026-11-15: the test cut is skipped; pockets get no budget
+
+Asked with the numbers of the two sections above.
+
+**"Keep, skip the test cut."** The allowance of the plain through bore stays, and the page sets `probeBlockedNoAcrossCut` (two places in
+`packages/solidcraft-host/pane/pane.js`; `sweep/score-built.sh` sets the same for Node, `PROBE_NO_ACROSS=1`). Checked on every case with
+a hole the curved-wall guard refused before the allowance, 288 in all, against the final sweep, which ran without the switch
+(`open-items/across-switch-check.txt`):
+
+| | Node, the page's settings | the real page |
+|---|---|---|
+| every step, sentence and volume the same | 288 of 288 | 288 of 288 |
+| time in all | 834 s, now 671 s | 1145 s, now 727 s |
+| over 10 s | | 47, now 18 |
+| over 20 s | | 8, now 5 |
+
+The 27 documents that test-cut a blocked bore take 0.1 to 2.0 s in the page again (they took 9.6 to 37.5 s). The 20 that cut a bore are
+as slow as they were: 18 between 8 and 30 s, `combined seed 624` 65 s, `combined seed 670` 187 s. The page's blocked-steps check is the
+same line for line as on the final tree, and the host package's 144 tests pass. During the page run the browser was closed once, in
+the middle of `combined seed 53`, with no row for the page; that document was run three more times afterwards and gave the same result
+each time (21 s). The machine also restarted during the run, which was resumed from the documents it had finished.
+
+**"Write it down, no budget."** Pockets keep running without a time budget. What is written down is the section above: 5100 awkward
+documents, none hangs; the longest run without a budget is 92 s in the page, a pocket 0.01 deep into a ball; in the 7784 ordinary
+documents it is 20 s. A budget would bound that freeze at about 45 s and double the time of the slow pockets under it.
