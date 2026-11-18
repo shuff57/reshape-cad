@@ -555,3 +555,11 @@
 {"ts":"2026-10-15T13:08:33.408Z","kind":"release","from":"freecad-rust","all":true}
 {"ts":"2026-10-15T13:09:42.926Z","kind":"claim","from":"freecad-rust","paths":["packages/brep-rs/src","docs/specs/census"]}
 {"ts":"2026-10-18T05:03:58.820Z","kind":"release","from":"freecad-rust","all":true}
+{"ts":"2026-11-16T04:03:17.328Z","kind":"claim","from":"codex-cad-pilot","paths":["packages/solidcraft-host/pane/pane.js"]}
+{"ts":"2026-11-16T04:15:50.618Z","kind":"release","from":"codex-cad-pilot","paths":["packages/solidcraft-host/pane/pane.js"]}
+{"ts":"2026-11-16T17:27:03.490Z","kind":"claim","from":"codex-cad-sketch","paths":["packages/solidcraft-host/pane/pane.js","packages/solidcraft-host/pane/src/sketch-only.mjs","packages/solidcraft-host/pane/lib/sketch-map.mjs","packages/solidcraft-host/test/sketch-only.test.mjs"]}
+{"ts":"2026-11-16T17:38:08.475Z","kind":"release","from":"codex-cad-sketch","paths":["packages/solidcraft-host/pane/pane.js","packages/solidcraft-host/pane/src/sketch-only.mjs","packages/solidcraft-host/pane/lib/sketch-map.mjs","packages/solidcraft-host/test/sketch-only.test.mjs"]}
+{"ts":"2026-11-16T19:25:42.485Z","kind":"claim","from":"codex-cad-feedback","paths":["packages/solidcraft-host/pane/pane.js","packages/solidcraft-host/pane/src/sketch-only.mjs"]}
+{"ts":"2026-11-16T19:45:06.088Z","kind":"release","from":"codex-cad-feedback","paths":["packages/solidcraft-host/pane/pane.js","packages/solidcraft-host/pane/src/sketch-only.mjs"]}
+{"ts":"2026-11-17T20:24:57.582Z","kind":"claim","from":"claude-cad-ui","paths":["packages/solidcraft-host/kernel"]}
+{"ts":"2026-11-18T03:44:30.135Z","kind":"release","from":"claude-cad-ui","paths":["packages/solidcraft-host/kernel"]}
