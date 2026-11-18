@@ -3,11 +3,12 @@
 // -> solveDoc -> translator (+ phase 2 sketch mapper) -> window.solidcraft (same page, no postMessage relay) -> viewport.
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
 import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
+import { translateSketchOnly } from './src/sketch-only.mjs';
 import { createReplyMemory } from '../src/reply-memory.mjs';
 import { createCrashGuard } from '../src/crash-guard.mjs';
 import { createProgress, yieldToBrowser } from '../src/progress.mjs';
 import { createProber } from '../src/probe-client.mjs';
-import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
+import { solveDoc, mt, arc, translateDoc, resolveAfter, FEATURE_KINDS, mapSketch, docProfileIndices, checkRules, hostFromUsage, hostPrepare, preflightScript, soupSolve, isSoup, sketchCheck, refusedRule, placedMap, shapeNote, spinNote, placementHint, joinApartNote, pieceCount } from './bundle/host-lib.js';
 
 const BASE = new URL('.', import.meta.url);
 const params = new URLSearchParams(location.search);
@@ -108,8 +109,8 @@ const status = (s) => { $('status').textContent = s; };
 // every script-derived string (feature ids, body names, refusal sentences) goes through esc() before it reaches innerHTML
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fmt = (n, d = 4) => (Number.isFinite(n) ? n.toFixed(d) : String(n));
-const lsGet = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
-const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage unavailable: the pane still works */ } };
+const lsGet = (k) => { if (params.get('storage') === 'off') return null; try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { if (params.get('storage') === 'off') return; try { localStorage.setItem(k, v); } catch { /* storage unavailable: the pane still works */ } };
 
 // ---- layout: resizable split, collapsible pane --------------------------------------------------------------------
 const clampW = (w) => Math.round(Math.max(300, Math.min(w, window.innerWidth * 0.7)));
@@ -370,7 +371,7 @@ function showFeatures(tr, notes = new Map()) {
     const kind = f.kind === 'fillet' ? (/^bevel/.test(f.id) ? 'bevel' : 'round') : f.kind === 'shell' ? 'hollow' : f.kind;
     const result = f.status === 'refused' ? 'not built' : f.status === 'built' ? 'built' : '';
     // a built step says nothing, except where the page has something the student should know (notes: a shape placed by default, a join that joins nothing)
-    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? esc(notes.get(f.id) ?? '') : f.kind === 'sketch' ? 'drawn; it is built by the step that uses it' : '';
+    const note = f.status === 'refused' ? esc(f.refusal) : f.status === 'built' ? esc(notes.get(f.id) ?? '') : f.kind === 'sketch' ? params.get('sketch-only') === '1' ? 'drawn as a flat sketch' : 'drawn; it is built by the step that uses it' : '';
     return `<tr><td>${esc(f.id)}</td><td>${esc(kind)}</td><td class="${esc(f.status)}" style="white-space:nowrap">${esc(result)}</td><td>${note}</td></tr>`;
   }).join('');
   $('features').innerHTML = `<table><tr><th>step</th><th>kind</th><th>result</th><th>what happened</th></tr>${rows}</table>`;
@@ -640,7 +641,7 @@ async function run({ confirmed = false } = {}) {
     // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
     memo = MEMO_ON ? createReplyMemory(bridge, { continueRuns: INC_ON, shadow: window.__host.shadow ?? null, log: engineLog }) : null;
     progress = PROGRESS_ON ? createProgress({ say: status, yieldToPage: yieldToBrowser(window) }) : null;
-    const tr = await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds), ...(progress ? { onStep: (s) => progress.onStep(s) } : {}) });
+    const tr = params.get('sketch-only') === '1' ? await translateSketchOnly(doc, { mapSketch, runSC, soups }) : await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds), ...(progress ? { onStep: (s) => progress.onStep(s) } : {}) });
     progress = null;
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
     // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
@@ -685,7 +686,7 @@ async function run({ confirmed = false } = {}) {
       ...(failedCmd ? [['refused command', `${failedCmd.command} ${JSON.stringify(failedCmd.params ?? {})}`]] : []),
       ['time', `${Math.round(performance.now() - t0)} ms`],
     ]);
-    status(refused.length ? `built with ${refused.length} step${refused.length === 1 ? '' : 's'} not built` : 'built');
+    status(params.get('sketch-only') === '1' && !refused.length ? 'Sketch updated' : refused.length ? `built with ${refused.length} step${refused.length === 1 ? '' : 's'} not built` : 'built');
     const bodies = fin?.measure?.bodies ?? [];
     summary = {
       id: ex?.id ?? null, ok: fin.ok, verdict: v.text, pass: v.pass, dofMatch: v.dofMatch ?? null, detail: v.detail ?? '',
@@ -799,4 +800,6 @@ window.__host = {
   runExample: async (id, opts) => { load(id); return run({ confirmed: true, ...(opts ?? {}) }); },
   setScript: (code) => { $('src').value = code; $('src').dispatchEvent(new Event('input')); },
   runUnconfirmed: () => run({}),
+  // shCode saves every sketch-tool edit before replacing this read-only view.
+  runSavedSketch: () => params.get('sketch-only') === '1' ? run({ confirmed: true }) : Promise.reject(new Error('This host is not a sketch-only view.')),
 };
