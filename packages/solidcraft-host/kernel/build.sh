@@ -13,7 +13,9 @@ sed "s#@SC_SRC@#$SC_SRC#g" Cargo.toml.in > Cargo.toml
 cp "$SC_SRC/Cargo.lock" Cargo.lock
 export CARGO_TARGET_DIR="$TARGET"
 PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
-cargo build --release --target wasm32-unknown-unknown --jobs "${JOBS:-4}"
-mkdir -p dist
-wasm-bindgen --target nodejs --out-dir dist "$TARGET/wasm32-unknown-unknown/release/solidcraft_referee.wasm"
-ls -l dist
+# FEATURES=session OUT=dist-session: the build with sessions kept between calls (Cargo.toml.in, "session"); the default build and dist/ are as they were.
+OUT="${OUT:-dist}"
+cargo build --release --target wasm32-unknown-unknown --jobs "${JOBS:-4}" ${FEATURES:+--features "$FEATURES"}
+mkdir -p "$OUT"
+wasm-bindgen --target nodejs --out-dir "$OUT" "$TARGET/wasm32-unknown-unknown/release/solidcraft_referee.wasm"
+ls -l "$OUT"

@@ -20,6 +20,11 @@ solidcraft-doc = { path = "@SC_SRC@/crates/doc" }
 serde_json = "1"
 wasm-bindgen = "=0.2.129"
 
+# "session": slots of sessions kept between calls (run_from, drop_slot), for shCode's incremental time budget. Off by default, so the default build is the
+# measured kernel unchanged; build it with FEATURES=session OUT=dist-session sh kernel/build.sh.
+[features]
+session = []
+
 [profile.release]
 opt-level = 3
 lto = "thin"
