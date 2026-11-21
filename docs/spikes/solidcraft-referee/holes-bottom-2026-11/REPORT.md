@@ -64,7 +64,23 @@ there, so it is an independent build of a hole from the bottom) and against the 
   from the bottom, blind and through; a counterbore along x; a counterbore from the top and one from the bottom in one part.
   A countersink from the bottom and then a hollow open at the bottom is refused by G-CSOPEN.
 
+## The sweep (`sweep-2026-11-21.txt`, `sweep-cases-2026-11-21.json`)
+
+No generator writes `from: 'bottom'`, so the holes corpus (357 scripts) was taken with `from: 'bottom'` added to every `hole()` and
+`holes()` and run through `score-built.sh` with `ALLOW_BOTTOM_HOLES=1` (Node only; the page does not set the switch). 2026-11-21, after
+the branch was merged into main (local).
+
+- **305 RIGHT; no case built where an oracle that knows `from` disagrees.** The other 52 rows are NEW only because this corpus has no
+  known rows; in every one the archived brep-rs disagrees, as it must: it does not read `from` (archive/ is not edited) and cuts
+  every recess at the top, so its volume is the same and its centre of mass is the other side's. 43 COM-OFF and 7 ORACLES-SPLIT rows:
+  OCCT, which reads `from` since step 2, agrees with the page route. 2 COM-OFF rows (a countersink whose cone is deeper than the
+  plate, `cone-deeper-than-plate-roomy` and `-angle-60`): OCCT refuses them, from either side ("a countersink whose cone is as deep
+  as the hole is not built by this reference path"), and the page's result is the top case's exactly mirrored (the same volume, the
+  centre of mass at 10 - 4.5844 = 5.4156 on the 10 mm plate), where the top case was judged RIGHT.
+- Not traced: in the sweep of 2026-11-20 the TOP version of those two rows carries an OCCT value, though `buildDoc` refuses it from
+  either side when run directly; the sweep's oracle route differs from a plain `buildDoc` there.
+
 ## Next
 
-1. A sweep with both switches on, as for copies; then the owner's decision for the page, the docs line, and shCode's writer
+1. The owner's decision for the page (then its half of the sweep), the docs line, and shCode's writer
    (`lib/solidcraft-ui-to-code.ts` writes `from: 'bottom'` instead of refusing a hole drilled up from the low face).

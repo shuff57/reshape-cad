@@ -1,0 +1,67 @@
+# score-built.sh file=holes-bottom.json with ALLOW_BOTTOM_HOLES=1 (Node only), 2026-11-21. The cases: the holes corpus with from: 'bottom' added to every hole() and holes() (sweep-cases-2026-11-21.json).
+
+full holes-bottom rc=0 556s
+holes-bottom: 357 cases, 0 build nothing, 0 without a result (hang or crash)
+built holes-bottom rc=0 456s
+holes-bottom: {"RIGHT":305,"COM-OFF":45,"ORACLES-SPLIT":7}
+total: {"RIGHT":305,"COM-OFF":45,"ORACLES-SPLIT":7}
+known: {}
+NEW: 52
+
+# every row that is not RIGHT, by which oracle agrees with the page route
+43 ('COM-OFF', 'OCCT agrees', 'brep-rs disagrees')
+7 ('ORACLES-SPLIT', 'OCCT agrees', 'brep-rs disagrees')
+2 ('COM-OFF', 'OCCT refuses', 'brep-rs disagrees')
+
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#10 g:hole-countersink__angle-90-offset
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#100 holes-countersink
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#11 g:hole-countersink__angle-120
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#12 g:hole-countersink__angle-60
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#13 g:hole-countersink__thick-block
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#176 cs-thin-plate-T2
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#177 cs-thin-plate-T3
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#178 cs-thin-plate-T3.2
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#179 cs-thin-plate-T3.3
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#180 cs-thin-plate-T3.4
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#181 cs-thin-plate-T5
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#190 cb-hex-prism-through
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#191 cb-ring-breaks-out-side
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#193 cb-ring-near-tangent-side
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#201 cb-step-join-high
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#204 cb-twice
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#21 g:hole-counterbore__in-cylinder
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#210 cs-size-M5-along-y-mouth8
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#212 holes-cb-near-tangent
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#22 g:hole-countersink__in-cylinder
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#250 cs-holes-apart-14x16
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#252 cs-seq-overlap
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#253 cs-seq-apart
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#255 cs-over-earlier-cb
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#256 cb-over-earlier-cs
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#257 bore-over-earlier-cs
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#258 cb-seq-overlap
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#259 cb-seq-overlap-deeper
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#261 cb-seq-apart
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#291 far-100000-cb
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#292 cs-angle-150
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#293 cs-angle-160
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#294 cs-angle-165
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#324 rs-cb-6-12-0.2
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#6 g:hole-counterbore__through-offset
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#7 g:hole-counterbore__deep-recess
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#70 cb-through-simple
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#71 cb-size-M6
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#72 cb-along-x
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#78 cs-90-simple
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#79 cs-120
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#9 g:hole-counterbore__wide-thin
+  COM-OFF        OCCT agrees     brep-rs disagrees  bottom#99 holes-counterbore
+  COM-OFF        OCCT refuses    brep-rs disagrees  bottom#18 g:hole-countersink__cone-deeper-than-plate-roomy
+  COM-OFF        OCCT refuses    brep-rs disagrees  bottom#19 g:hole-countersink__cone-deeper-than-plate-angle-60
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#197 cb-pocket-floor-9x7
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#198 cb-pocket-floor-9x3
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#199 cb-straddles-pocket-wall
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#200 cb-step-join-low
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#203 cb-open-hollow
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#206 cs-pocket-floor-8x90
+  ORACLES-SPLIT  OCCT agrees     brep-rs disagrees  bottom#209 cs-step-join-low
