@@ -36,18 +36,25 @@ On the pinned SolidCraft (0.30.1, `sc-referee-pkg`), `solid.move { bodies, trans
 
 ## 4. Live, against the OCCT referee (`live-copies.mjs`, `live-copies.out`)
 
-13 scripts through the layer (planners `unified`, as the page) on the pinned engine, with the switch on and off, each top-level
+15 scripts through the layer (13 at first) (planners `unified`, as the page) on the pinned engine, with the switch on and off, each top-level
 shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, so OCCT is the one referee):
 
 - **No wrong solid.** Every shape built with the switch on matches OCCT in volume, box and centre of mass (planar to 1e-9,
   curved to 3e-4): box, cylinder, sphere, wedge, a holed box, a copy then a pattern of the original (the naming case), a pattern
   of the copy, a copy of a copy, a join of a part and its overlapping copy, moving the original after copying it, turning the copy.
 - With the switch off, each copy is refused as before.
-- **Two over-refusals with the switch on** (safe, but they keep useful parts out; for a later step):
-  - a hole in the copy: "the part it drills is 2 separate pieces": the holes planner sees the copy and the original as one
-    part, since the copy's handle shares the original's root;
-  - a cut by a copied cylinder that lies inside the box: "The cutting shape does not overlap the shape being cut": the
-    boolean planner's overlap test does not see where the copy is.
+- **The two refusals found with the switch on, looked into (2026-11-20, the owner's "fix the two over-refusals"):**
+  - *A cut by a copy* was not an over-refusal. In that script `cylinder(8, 30)` had no `at:`, and reSHape puts such a shape
+    beside the one before it (x 31 to 39), so its copy (x 37 to 45) lay clear of the box and the guard was right that nothing
+    would be removed. With the cylinder placed at the origin (`at: [0, 0, 0]`), the cut by its copy builds, right against OCCT.
+  - *A hole in a copy* was one. The holes planner's G-BODIES test counted the copy as a piece of the part it was copied from,
+    since `rootsOf` walked from the copy back to the original's primitive. With copies allowed, a copying move is now a root of
+    its own (`holes.ts` `rootsOf(id, byId, copyIsRoot)`, set from `ctx.allowCopies` through the hole planner's `copyIsRoot`):
+    the copy is a part of its own, so a hole in it, in its original, or in both, is a hole in one part among others, and
+    G-OTHERS (every other body before and after) still checks the rest are untouched. Live: all three build, right against OCCT.
+    Without the switch `rootsOf` is as before: `two-parts.test.mjs` pins it to the contract copy ("a copy of b1 shares its
+    root"), which a first, unconditional version broke. Unit test: `copies.test.mjs` 7 of 7.
+- After both: 15 scripts, every shape built with the switch on right against OCCT, and none refused but by its own fault.
 
 ## New sentences (shown to a student when a copy is refused; approved by the owner as written, 2026-11-20)
 
@@ -59,8 +66,7 @@ shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, 
 
 ## Next (each the owner's to approve)
 
-1. The two over-refusals above (the holes planner's pieces, the boolean planner's overlap) with copies in mind.
-2. The sweep with the switch on (`sweep-all.sh`, about 6.5 h with the page): the `combined` corpus makes copies in about 15% of
+1. The sweep with the switch on (`sweep-all.sh`, about 6.5 h with the page): the `combined` corpus makes copies in about 15% of
    its move steps.
-3. Then the owner's decision whether the page sets `allowCopies`; the host bundle is rebuilt and copied into shCode's
+2. Then the owner's decision whether the page sets `allowCopies`; the host bundle is rebuilt and copied into shCode's
    `vendor/solidcraft-preview` only then.

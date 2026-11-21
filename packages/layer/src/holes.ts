@@ -254,6 +254,8 @@ export interface HoleG {
   byId: Record<string, RootView>;
   off: Set<string>;
   runB(cmds: Cmd[], o?: { replay?: boolean }): Promise<RunResult>;
+  /** ctx.allowCopies: a copying move is a part of its own (rootsOf) */
+  copyIsRoot?: boolean;
 }
 
 /** The sentence a closed hollow() gets. Deliberate deviation from holes4-translate.mjs, whose sentence prints the word "undefined" where a reason belongs (the holes set plans no closed hollow, so it has no reason to give); owner-approved. holes.differential.test.mjs lists it as a named exception. */
@@ -289,7 +291,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   let plan: StepPlan;
   try {
     plan = f.kind === 'hole' && !off.has('G-BUDGET') && hs.spentS > DOC_BUDGET_S ? refuse(SENTENCE.docBudget(f as unknown as HoleView), 'G-BUDGET')
-      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB }) as unknown as StepPlan
+      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB, copyIsRoot: !!ctx.allowCopies }) as unknown as StepPlan
         : f.kind === 'shell' && !f.open ? refuse(SHELL_CLOSED(f), 'G-CLOSED')
           : planFeature(f, st, fctx, BASE_PROFILE) as unknown as StepPlan;
   } catch (e) { const r: StepPlan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); r.raw = String((e as Error).message); plan = r; }
@@ -408,12 +410,18 @@ async function probeBlockedHole(f: HoleView, st: TranslateState, G: HoleG, allCo
 
 // ---- G-BODIES narrowed: other parts ---------------------------------------------------------------------------------------------------------
 const NOT_A_REF = new Set(['id', 'kind', 'name']);
-/** The features `id` is built from that have no input themselves (its primitives and sketches). A feature's inputs are read from its own fields: every string in it that is another feature's id. */
-export function rootsOf(id: string, byId: Record<string, unknown>): Set<string> {
+/**
+ * The features `id` is built from that have no input themselves (its primitives and sketches). A feature's inputs are read from its own fields: every string in it that is
+ * another feature's id. With copyIsRoot (ctx.allowCopies; plan A, 2026-11-20) a copying move is a root of its own: the copy is then built, a separate part under its
+ * own name checked by G-COPY, so a hole in it, or in its original, is a hole in one part among others, and G-OTHERS checks the rest are untouched. Without it (the
+ * default, as the contract copy has it) a copy shares its original's root.
+ */
+export function rootsOf(id: string, byId: Record<string, unknown>, copyIsRoot = false): Set<string> {
   const roots = new Set<string>(); const seen = new Set<string>();
   const walk = (cur: string): void => {
     if (seen.has(cur)) return; seen.add(cur);
     const f = byId[cur] as Record<string, unknown> | undefined; if (!f) return;
+    if (copyIsRoot && f.kind === 'move' && f.copy === true) { roots.add(cur); return; }
     const refs = new Set<string>();
     const scan = (v: unknown): void => { if (typeof v === 'string') { if (v !== cur && byId[v] !== undefined) refs.add(v); } else if (Array.isArray(v)) v.forEach(scan); else if (v && typeof v === 'object') Object.values(v).forEach(scan); };
     for (const [k, v] of Object.entries(f)) if (!NOT_A_REF.has(k)) scan(v);
@@ -424,19 +432,19 @@ export function rootsOf(id: string, byId: Record<string, unknown>): Set<string> 
 }
 /**
  * May a hole be cut although the engine holds other bodies? Only when every other body is a DIFFERENT PART: some accepted feature lists it, and none of the
- * features that list it shares a root (a primitive, a sketch) with the part being drilled. A copy, a pattern or a mirror of this part shares its root. A body no
+ * features that list it shares a root (a primitive, a sketch) with the part being drilled. A copy, a pattern or a mirror of this part shares its root (a copy not with copyIsRoot, see rootsOf). A body no
  * accepted feature lists (a piece the engine split off, a copy it named itself) has no known maker. Both stay refused, as every such hole was before.
  */
-export function otherPartsOnly(target: string, bs: string[], st: TranslateState, byId: Record<string, unknown>): boolean {
+export function otherPartsOnly(target: string, bs: string[], st: TranslateState, byId: Record<string, unknown>, copyIsRoot = false): boolean {
   const rows = st.holes!.allRows;
   if (!rows || rows.length !== st.holes!.allCount) return false;
-  const mine = rootsOf(target, byId);
+  const mine = rootsOf(target, byId, copyIsRoot);
   if (!mine.size) return false;
   for (const r of rows) {
     if (bs.includes(r.name)) continue;
     const makers = Object.keys(st.bodies).filter((id) => st.bodies[id]?.includes(r.name));
     if (!makers.length) return false;
-    for (const mk of makers) for (const x of rootsOf(mk, byId)) if (mine.has(x)) return false;
+    for (const mk of makers) for (const x of rootsOf(mk, byId, copyIsRoot)) if (mine.has(x)) return false;
   }
   return true;
 }
@@ -445,14 +453,14 @@ export function otherPartsOnly(target: string, bs: string[], st: TranslateState,
  * (copies, a pattern, a mirror) and the bodies no accepted step lists. A different part in the script is not counted (owner decision 2026-11-12; it used to count
  * every body the engine held). Where the engine's rows are not known it falls back to that old count.
  */
-export function ownPieces(target: string, bs: string[], st: TranslateState, byId: Record<string, unknown>): number {
-  const rows = st.holes!.allRows; const mine = rootsOf(target, byId);
+export function ownPieces(target: string, bs: string[], st: TranslateState, byId: Record<string, unknown>, copyIsRoot = false): number {
+  const rows = st.holes!.allRows; const mine = rootsOf(target, byId, copyIsRoot);
   if (!rows || rows.length !== st.holes!.allCount || !mine.size) return Math.max(bs.length, st.holes!.allCount);
   let n = 0;
   for (const r of rows) {
     if (bs.includes(r.name)) { n++; continue; }
     const makers = Object.keys(st.bodies).filter((id) => st.bodies[id]?.includes(r.name));
-    if (!makers.length || makers.some((mk) => [...rootsOf(mk, byId)].some((x) => mine.has(x)))) n++;
+    if (!makers.length || makers.some((mk) => [...rootsOf(mk, byId, copyIsRoot)].some((x) => mine.has(x)))) n++;
   }
   return Math.max(n, bs.length);
 }
@@ -486,7 +494,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   // The part itself in several pieces (copies of it) is refused. Other bodies in the engine used to refuse every hole too; now (owner decision 2026-11-12) they do
   // not when each of them is a DIFFERENT PART (otherPartsOnly): the cut names its body, and the after-the-cut check G-OTHERS (commonPost) requires every other
   // part to come back exactly as it was.
-  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.holes!.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId)))) return refuse((joined ? SENTENCE.multiJoin : SENTENCE.multi)(f, ownPieces(f.target, bs, st, G.byId)), 'G-BODIES');
+  if (!off.has('G-BODIES') && (bs.length !== 1 || (st.holes!.allCount > 1 && !otherPartsOnly(f.target, bs, st, G.byId, !!G.copyIsRoot)))) return refuse((joined ? SENTENCE.multiJoin : SENTENCE.multi)(f, ownPieces(f.target, bs, st, G.byId, !!G.copyIsRoot)), 'G-BODIES');
   // ---- ROUND 4 pre-checks (each exists so the student is told at once instead of after BUDGET_S seconds; the budget is the backstop)
   if (!off.has('G-BODIES') && (m.shells ?? 1) > 1) return refuse((joined ? SENTENCE.multiJoin : SENTENCE.multi)(f, m.shells!), 'G-BODIES'); // one body that is already several pieces (repeat() of copies that do not touch)
   if (!off.has('G-TINY') && !(f.diameter >= MIN_ACROSS - 1e-12)) return refuse(SENTENCE.tiny(f), 'G-TINY');

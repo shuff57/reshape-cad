@@ -29,9 +29,12 @@ const CASES = {
   'pattern of the copy': `const a = box(10, 10, 10);\nconst b = move(a, [30, 0, 0], { copy: true });\nrepeat(b, { count: 3, step: [0, 20, 0] });`,
   'copy of a copy':      `const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nconst c = move(b, [20, 0, 0], { copy: true });`,
   'join overlapping':    `const a = box(20, 10, 6);\nconst b = move(a, [10, 0, 0], { copy: true });\njoin(a, b);`,
-  'cut by a copy':       `const a = box(30, 30, 10);\nconst c = cylinder(8, 30);\nconst d = move(c, [6, 4, 0], { copy: true });\ncut(a, d);`,
+  // a primitive with no at: is put beside the one before it (reSHape), so the cylinder is placed at the origin to lie inside the box
+  'cut by a copy':       `const a = box(30, 30, 10);\nconst c = cylinder(8, 30, { at: [0, 0, 0] });\nconst d = move(c, [6, 4, 0], { copy: true });\ncut(a, d);`,
   'move the original':   `const a = box(10, 10, 10);\nconst b = move(a, [20, 0, 0], { copy: true });\nmove(a, [0, 20, 0]);`,
   'hole in the copy':    `const a = box(30, 20, 10);\nconst b = move(a, [40, 0, 0], { copy: true });\nhole(b, { across: 6 });`,
+  'hole in the original': `const a = box(30, 20, 10);\nconst b = move(a, [40, 0, 0], { copy: true });\nhole(a, { across: 6 });`,
+  'hole in both':        `const a = box(30, 20, 10);\nconst b = move(a, [40, 0, 0], { copy: true });\nhole(a, { across: 6 });\nhole(b, { across: 4, at: [5, 0] });`,
   'turn the copy':       `const a = box(20, 10, 6);\nconst b = move(a, [40, 0, 0], { copy: true });\nturn(b, [0, 0, 90]);`,
 };
 

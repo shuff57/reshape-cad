@@ -55,3 +55,12 @@ test('G-COPY is always on: the measuring switches that turn the move-turn checks
   const r = motionRefusal(f, st(), { skipMoveTurn: true, skipSketchVolume: true }, reply(body('b_box1', [0, 0, 0]), body('b_move1', [31, 0, 0])), ['b_move1'], accepted);
   assert.equal(r.guard, COPY_GUARD);
 });
+
+test('with copies allowed, a copying move starts a part of its own (rootsOf): a hole in a copy or its original is a hole in one part among others', async () => {
+  const { rootsOf } = await imp('../dist/holes.js');
+  const byId = { box1: { id: 'box1', kind: 'box' }, move1: { id: 'move1', kind: 'move', target: 'box1', offset: [40, 0, 0], copy: true },
+    move2: { id: 'move2', kind: 'move', target: 'box1', offset: [0, 5, 0], copy: false }, hole1: { id: 'hole1', kind: 'hole', target: 'move1' } };
+  assert.deepEqual([...rootsOf('move1', byId, true)], ['move1']); assert.deepEqual([...rootsOf('hole1', byId, true)], ['move1']);
+  assert.deepEqual([...rootsOf('move2', byId, true)], ['box1'], 'a plain move is the same part');
+  assert.deepEqual([...rootsOf('move1', byId)], ['box1'], 'without the switch, as the contract copy has it: the copy shares the root');
+});
