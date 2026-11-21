@@ -1,0 +1,5 @@
+no body_name         b_box1@0,0,0:1200  b_box1 (2)@30,0,0:1200
+named, then pattern  b_box1@0,0,0:1200  b_move1@30,0,0:1200  b_box1 (2)@0,20,0:1200  b_box1 (3)@0,40,0:1200
+unnamed, then pattern b_box1@0,0,0:1200  b_box1 (2)@30,0,0:1200  b_box1 (3)@0,20,0:1200  b_box1 (4)@0,40,0:1200
+copy of a copy       b_box1@0,0,0:1200  b_move1@30,0,0:1200  b_move2@60,0,0:1200
+name taken           b_box1@0,0,0:1200  b_box1 (2)@30,0,0:1200

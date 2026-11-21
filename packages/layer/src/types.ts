@@ -178,6 +178,10 @@ export interface TranslateCtx {
    *  same "it comes after ..." sentence. With the switch on, a refusal that only the cut itself would find (the box check, the time budget) is not
    *  shown until the step before is fixed. */
   probeBlockedNoAcrossCut?: boolean;
+  /** Off unless set (plan A, 2026-11-20, docs/spikes/solidcraft-referee/PLAN-copies-low-holes-2026-11.md): a copying move, move(part, d, { copy: true }), is
+   *  built (solid.move with copy and the copy's own body_name) and checked by G-COPY (move-turn.ts); off, it is refused as before. Whether the page sets it
+   *  is the owner's decision after the sweep. Face picks and shell, hollow and draft walks through a copy stay refused either way. */
+  allowCopies?: boolean;
   /**
    * shell-draft set only: the group's pick source. Resolve a name to a face point in the PRIMITIVE's own frame (before any move of the history; the
    * original asked brep-rs `resolve` and took `centroid`). When the host supplies it, the set runs the group's G-PICK exactly (it shifts the point by the

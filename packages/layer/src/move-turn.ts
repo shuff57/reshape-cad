@@ -39,6 +39,7 @@ export const MT_CUT_GUARD = 'MT-CUT-HEAD';
 export const MT_CONE_GUARD = 'MT-CONE-CHAIN';
 export const MT_INVARIANT_GUARD = 'MT-INVARIANT';
 export const MT_PRIMITIVE_GUARD = 'MT-PRIMITIVE';
+export const COPY_GUARD = 'G-COPY';
 /** the original's CONE_CHAIN_MAX (MT_CONE_CHAIN_MAX overrode it for the group's negative controls only) */
 export const CONE_CHAIN_MAX = 3;
 /** the original's INV_TOL: [planar, curved], relative (com: of the bounding-box diagonal) */
@@ -171,6 +172,7 @@ const PRIMITIVE_KINDS = ['box', 'cylinder', 'sphere', 'cone', 'torus', 'prism', 
  * A move / turn whose part before it cannot be measured (no reply of the run before, no measure of the target with these same bodies) is not checked.
  */
 export function motionRefusal(f: Feature, st: TranslateState, ctx: Pick<TranslateCtx, 'skipMoveTurn' | 'skipSketchVolume'>, res: RunResult, produces: string[], accepted: Cmd[]): { sentence: string; guard: string } | null {
+  if (f.kind === 'move' && FV(f).copy) return copyRefusal(f, st, res, produces, accepted); // always on: no switch turns G-COPY off
   if (ctx.skipMoveTurn || ctx.skipSketchVolume || !st.motion || !res.measure) return null;
   if (PRIMITIVE_KINDS.includes(f.kind)) {
     const m = measureOf(res, produces);
@@ -188,6 +190,43 @@ export function motionRefusal(f: Feature, st: TranslateState, ctx: Pick<Translat
   }
   const s = invariantSentence(f, st, x, r);
   return s ? { sentence: s, guard: MT_INVARIANT_GUARD } : null;
+}
+
+/**
+ * G-COPY, a copying move (plan A, 2026-11-20, docs/spikes/solidcraft-referee/PLAN-copies-low-holes-2026-11.md). The copy must come back under the name it
+ * was given (the pinned engine renames one whose name is taken, copies-2026-11/measure-naming-cases.out), be the original moved by the offset (volume,
+ * surface area, faces of each kind, centre of mass and box, to the move invariant's tolerances), and leave the original as it was. Else the step is
+ * refused in a sentence. The original is measured in the run before (lastRunOf) and in this one, under its own body names.
+ */
+function copyRefusal(f: Feature, st: TranslateState, res: RunResult, produces: string[], accepted: Cmd[]): { sentence: string; guard: string } | null {
+  const v = FV(f); const nm = nameOf(st, f.id); const tn = nameOf(st, v.target!);
+  let h = v.target!; const seen = new Set<string>(); while (st.head[h] && !seen.has(h)) { seen.add(h); h = st.head[h]; }
+  const src = st.bodies[h] ?? null;
+  const named = produces.length > 0 && produces.every((p) => res.measure?.bodies?.some((b) => b.name === p));
+  const x = named ? measureOf(res, produces) : null;
+  if (!src || !x) return { sentence: `${nm} is not built: the copy of ${tn} did not come back under its own name, so which body it is cannot be told, and it is shown without it.`, guard: COPY_GUARD };
+  const before = measureOf(lastRunOf(accepted), src); const after = measureOf(res, src);
+  if (!before || !after) return { sentence: `${nm} is not built: ${tn} could not be measured before and after it was copied, so the copy cannot be checked, and it is shown without it.`, guard: COPY_GUARD };
+  const k = before.curved || x.curved ? 1 : 0; const dg = diagOf(before.bbox); const off = v.offset ?? [0, 0, 0];
+  const differs = (a: MMeasure, b: MMeasure, shift: number[]): string | null => {
+    if (rel(a.volume, b.volume) > INV_TOL.vol[k]) return `volume is ${fmt(a.volume)} mm3 instead of ${fmt(b.volume)} mm3`;
+    if (a.area !== null && b.area !== null && rel(a.area, b.area) > INV_TOL.vol[k]) return `surface area is ${fmt(a.area)} mm2 instead of ${fmt(b.area)} mm2`;
+    for (const t of new Set([...Object.keys(a.faceTypes), ...Object.keys(b.faceTypes)])) {
+      if (t === 'cylinder') continue; // a cylinder may re-split at its seam
+      if ((a.faceTypes[t] ?? 0) !== (b.faceTypes[t] ?? 0)) return `${t === 'other' ? 'faces of unknown kind' : `${t} faces`} are ${a.faceTypes[t] ?? 0} instead of ${b.faceTypes[t] ?? 0}`;
+    }
+    if (a.com.every(Number.isFinite) && b.com.every(Number.isFinite)) {
+      const want = b.com.map((c, i) => c + shift[i]);
+      if (dist3(a.com, want) / dg > INV_TOL.com[k]) return `centre of mass is [${a.com.map(fmt)}] instead of [${want.map(fmt)}]`;
+    }
+    for (let i = 0; i < 6; i++) if (Math.abs(a.bbox[i] - (b.bbox[i] + shift[i % 3])) / dg > INV_TOL.com[k]) return `box is not where it should be`;
+    return null;
+  };
+  const c = differs(x, before, off);
+  if (c) return { sentence: `${nm} is not built: the copy of ${tn} would not be ${tn} moved by [${off.map(fmt)}] (its ${c}), so it is shown without it -- build the copy as a part of its own.`, guard: COPY_GUARD };
+  const o = differs(after, before, [0, 0, 0]);
+  if (o) return { sentence: `${nm} is not built: copying ${tn} would change ${tn} itself (its ${o}), so it is shown without it.`, guard: COPY_GUARD };
+  return null;
 }
 
 // ---- the round 4 chain repair, its padding half --------------------------------------------------------------------------------------------------------------

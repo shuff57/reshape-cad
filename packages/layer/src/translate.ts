@@ -513,8 +513,16 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
     case 'move': {
       const d = dep(f.target);
       if (d) return refuse(d);
-      if (f.copy) return refuse(`${f.id} (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)`);
+      if (f.copy && !ctx.allowCopies) return refuse(`${f.id} (move): a copying move is not mapped (solidcraft names the copy itself, and phase 0 does not track it)`);
       const bs = needBody(f.target);
+      if (f.copy) {
+        // a copying move (plan A, 2026-11-20): the copy is named by body_name, which the pinned engine keeps (docs/spikes/solidcraft-referee/copies-2026-11);
+        // unnamed, it would take '<name> (2)', the name the pattern planner gives a pattern's first instance. It consumes nothing: the original stays a
+        // shape of its own. G-COPY (move-turn.ts) checks the copy against the original moved, and the original against itself, after the build.
+        if (!bs || bs.length !== 1) return refuse(`${f.id} (move): a copying move of a part made of several bodies is not mapped`);
+        const name = bname(f.id);
+        return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset, copy: true, body_name: name } }]], produces: [name], consumes: [] };
+      }
       return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset } }]], produces: bs!, consumes: [f.target] };
     }
     case 'rotate': {
