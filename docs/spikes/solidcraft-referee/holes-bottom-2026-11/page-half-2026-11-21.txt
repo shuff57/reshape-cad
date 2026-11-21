@@ -1,0 +1,6 @@
+page holes-bottom rc=0 562s
+-- the page against the full pass, step by step
+{"rows":357,"compared":357,"nodeHang":0,"pageNoAnswer":0,"stepStatus":0,"sentence":0,"volume":0,"same":357,"volumeCompared":217,"verdicts":{"RIGHT":170,"COM-OFF":40,"REFUSED":140,"ORACLES-SPLIT":7}}
+{}
+-- the page's final volume against the judged solid
+judged 357, compared with the page 357, not comparable 0, differ 0

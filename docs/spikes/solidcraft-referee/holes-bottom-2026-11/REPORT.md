@@ -80,7 +80,13 @@ the branch was merged into main (local).
 - Not traced: in the sweep of 2026-11-20 the TOP version of those two rows carries an OCCT value, though `buildDoc` refuses it from
   either side when run directly; the sweep's oracle route differs from a plain `buildDoc` there.
 
+## The page half (`page-half-2026-11-21.txt`)
+
+`pane.js` sets `allowBottomHoles: true` (the owner, 2026-11-21: "yes, after its page half"); the bundle rebuilt; `sweep/page-half.sh`
+ran the 357 cases in the real page against the Node passes above: 357 of 357 the same step by step, every final volume the same as
+the judged solid (357).
+
 ## Next
 
-1. The owner's decision for the page (then its half of the sweep), the docs line, and shCode's writer
+1. Done: the page sets `allowBottomHoles` (above). Left: the docs line (the owner's wording), and shCode's writer and vendored host
    (`lib/solidcraft-ui-to-code.ts` writes `from: 'bottom'` instead of refusing a hole drilled up from the low face).
