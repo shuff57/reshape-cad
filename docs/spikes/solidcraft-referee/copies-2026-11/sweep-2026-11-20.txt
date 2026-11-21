@@ -1,0 +1,38 @@
+# sweep-all.sh with ALLOW_COPIES=1 (Node only; the page does not set allowCopies), 2026-11-20 18:27 to 23:29, out in /home/shuff57/.cache/copies-sweep-2026-11-20
+
+== corpora
+holes: {"RIGHT":356,"PIPELINE-DIFF":1}
+sd: {"RIGHT":1089}
+mt: {"RIGHT":1859,"WRONG":5}
+combined: {"RIGHT":558,"WRONG":4,"ORACLES-SPLIT":3}
+rgcombined: {"RIGHT":386,"BUILT-ORACLES-REFUSE":1}
+fccombined: {"RIGHT":374,"BUILT-ORACLES-REFUSE":3}
+total: {"RIGHT":4622,"PIPELINE-DIFF":1,"WRONG":9,"ORACLES-SPLIT":3,"BUILT-ORACLES-REFUSE":4}
+other parts of the same documents: {"RIGHT":1546,"ORACLES-SPLIT":1}
+known: {"the stored closed form is about another step":1,"a curved wall (by rule)":9,"brep-rs disagrees":4,"both oracles refuse, the closed form agrees":4}
+NEW: 0
+== new documents
+combined: {"RIGHT":931,"WRONG":4,"ORACLES-SPLIT":1}
+rgcombined: {"RIGHT":953,"BUILT-ORACLES-REFUSE":3,"WRONG":2}
+fccombined: {"RIGHT":928,"BUILT-ORACLES-REFUSE":3,"WRONG":2,"ORACLES-SPLIT":2}
+total: {"RIGHT":2812,"WRONG":8,"ORACLES-SPLIT":3,"BUILT-ORACLES-REFUSE":6}
+other parts of the same documents: {"RIGHT":744,"BUILT-ORACLES-REFUSE":5,"WRONG":4,"ORACLES-SPLIT":1}
+known: {"a curved wall (by rule)":11,"both oracles refuse, the closed form agrees":11,"brep-rs disagrees":4,"a measured box, not material":1}
+NEW: 0
+ALL KNOWN
+
+# copying moves in the full pass
+corpora {'refused, a part of several bodies': 3, 'refused by G-COPY': 48}
+  14 x r6-fresh-a: Copy # is not built: the copy of Turn # would not be Turn # moved by # (its volume is # mm# instead of # mm#),
+  5 x r6-control-nolimit: Copy # is not built: the copy of Turn # would not be Turn # moved by # (its volume is # mm# instead of # mm#),
+  5 x r6-wide-a: Copy # is not built: the copy of Turn # would not be Turn # moved by # (its volume is # mm# instead of # mm#),
+  4 x r4-conechain-control-norepair: Copy # is not built: the copy of Turn # would not be Turn # moved by # (its volume is # mm# instead of # mm#),
+  4 x r6-control-nolimit: Copy # is not built: the copy of Copy # would not be Copy # moved by # (its volume is # mm# instead of # mm#),
+  4 x r6-fresh-a: Copy # is not built: the copy of Copy # would not be Copy # moved by # (its volume is # mm# instead of # mm#),
+  4 x r6-wide-a: Copy # is not built: the copy of Copy # would not be Copy # moved by # (its volume is # mm# instead of # mm#),
+  2 x r4-conechain: Copy # is not built: the copy of Turn # would not be Turn # moved by # (its volume is # mm# instead of # mm#),
+  2 x r6-control-nolimit: Copy # is not built: the copy of Move # would not be Move # moved by # (its volume is # mm# instead of # mm#),
+  2 x r6-wide-a: Copy # is not built: the copy of Move # would not be Move # moved by # (its volume is # mm# instead of # mm#),
+  1 x r4-conechain-control-norepair: Copy # is not built: the copy of Copy # would not be Copy # moved by # (its volume is -# mm# instead of # mm#)
+  1 x r4-conechain: Copy # is not built: the copy of Copy # would not be Copy # moved by # (its volume is # mm# instead of # mm#),
+new {}

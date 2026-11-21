@@ -56,6 +56,21 @@ shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, 
     root"), which a first, unconditional version broke. Unit test: `copies.test.mjs` 7 of 7.
 - After both: 15 scripts, every shape built with the switch on right against OCCT, and none refused but by its own fault.
 
+## 5. The sweep with copies on (`sweep-2026-11-20.txt`)
+
+`sweep-all.sh` with `ALLOW_COPIES=1` (the new switch in `sweep/host-route-sweep.mjs`), Node only: the page does not set
+`allowCopies`, so its half belongs to the decision to turn copies on in the page. About 7 h on the shared box, 2026-11-20.
+
+- **NEW: 0, ALL KNOWN**, on the six corpora (4622 RIGHT) and the 3000 newer documents (2812 RIGHT). Every row that is not RIGHT is in
+  a class the sweep already knew before copies (a curved wall by rule, brep-rs disagreeing, both oracles refusing where the closed
+  form agrees). So no copy built a wrong solid.
+- **G-COPY refused 48 copies the engine got wrong**, all in the `mt` corpus's cone chains (r4-conechain, r6-*): copies of a cone
+  after several moves and turns came back with another volume (151, 152, 204 mm3, once -6.4 mm3, against 251). That is the engine
+  fault AGENTS.md records for chains of moves (the result depends on how many moves a body has been through). Without G-COPY these
+  were silently wrong solids. 3 copies of a part made of several bodies were refused in their sentence.
+- A later step could give copies the move invariant's chain repair (no-op moves appended until the result is right), which
+  builds most of these for a plain move; copies are refused instead today.
+
 ## New sentences (shown to a student when a copy is refused; approved by the owner as written, 2026-11-20)
 
 - `move1 (move): a copying move of a part made of several bodies is not mapped`
@@ -66,7 +81,5 @@ shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, 
 
 ## Next (each the owner's to approve)
 
-1. The sweep with the switch on (`sweep-all.sh`, about 6.5 h with the page): the `combined` corpus makes copies in about 15% of
-   its move steps.
-2. Then the owner's decision whether the page sets `allowCopies`; the host bundle is rebuilt and copied into shCode's
+1. The owner's decision whether the page sets `allowCopies` (then the page half of the sweep); the host bundle is rebuilt and copied into shCode's
    `vendor/solidcraft-preview` only then.
