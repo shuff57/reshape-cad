@@ -71,6 +71,19 @@ shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, 
 - A later step could give copies the move invariant's chain repair (no-op moves appended until the result is right), which
   builds most of these for a plain move; copies are refused instead today.
 
+## 6. The page half, with copies on in the page (`page-half-2026-11-21.txt`)
+
+`pane.js` sets `allowCopies: true` (2026-11-21, the owner: "prepare turning them on"); the host bundle rebuilt; `sweep/page-half.sh`
+ran every case of the sweep above in the real page (the rig's student-preview) and compared it with that sweep's Node passes.
+
+- Corpora: 4783 of 4784 rows the same step by step; the page's final volume against the judged solid: 4637 of 4639 the same.
+  The two others: `mt#215 p-magnitude:turn1#33`, built in Node and refused in the page (a far-placed turn; a refusal, safe), and
+  `combined seed 452`, 2.6e-9 apart (the engine's last-digit noise).
+- Newer documents: 2998 of 3000 the same, every final volume the same (2829); the two others are refused in both, in other words
+  (a draft's face: "cannot be found reliably after the part was turned or copied" in Node, "could not be found on the part as it
+  is now" in the page).
+- So copies are right in the page as in Node; none differs because of a copy.
+
 ## New sentences (shown to a student when a copy is refused; approved by the owner as written, 2026-11-20)
 
 - `move1 (move): a copying move of a part made of several bodies is not mapped`
@@ -81,5 +94,5 @@ shape scored against OCCT's build of the same ModelDoc (brep-rs refuses copies, 
 
 ## Next (each the owner's to approve)
 
-1. The owner's decision whether the page sets `allowCopies` (then the page half of the sweep); the host bundle is rebuilt and copied into shCode's
+1. Done: the page sets `allowCopies` and its half of the sweep agrees (section 6); the host bundle is rebuilt and copied into shCode's
    `vendor/solidcraft-preview` only then.

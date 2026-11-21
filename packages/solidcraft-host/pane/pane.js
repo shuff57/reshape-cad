@@ -635,13 +635,14 @@ async function run({ confirmed = false } = {}) {
     status('translating and building in solidcraft...');
     const t0 = performance.now();
     soups = {};
+    // allowCopies: copying moves are built, each checked by G-COPY (plan A; sweep 2026-11-20 NEW 0, copies-2026-11/REPORT.md). Turned on for the owner's review 2026-11-21.
     // probeBlocked: a hole blocked by a refused step is test-built on the part as it stands (never kept) so the student is told its own mistake too (pilot 2026-11 F5/F8);
     // probeBlockedNoAcrossCut: but a blocked plain through bore ACROSS a cylinder is not test-cut, only its guards are asked (owner decision 2026-11-15: the cut takes
     // 3 to 30 s and is thrown away; 27 of 7784 documents spent 9 to 37 s on it; pilot-2026-11b/PILOT-2.md);
     // probeBlockedSteps: the same for a hollow, draft, round or bevel, by translating once more without the steps that were not built (host-entry.mjs)
     memo = MEMO_ON ? createReplyMemory(bridge, { continueRuns: INC_ON, shadow: window.__host.shadow ?? null, log: engineLog }) : null;
     progress = PROGRESS_ON ? createProgress({ say: status, yieldToPage: yieldToBrowser(window) }) : null;
-    const tr = params.get('sketch-only') === '1' ? await translateSketchOnly(doc, { mapSketch, runSC, soups }) : await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds), ...(progress ? { onStep: (s) => progress.onStep(s) } : {}) });
+    const tr = params.get('sketch-only') === '1' ? await translateSketchOnly(doc, { mapSketch, runSC, soups }) : await translateDoc(doc, { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, allowCopies: true, fromUsage: prep.fromUsage, topologyOf: (cmds) => eng.topologyOf(cmds), ...(progress ? { onStep: (s) => progress.onStep(s) } : {}) });
     progress = null;
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
     // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
@@ -773,7 +774,7 @@ async function translateRaw(docIn, names = []) {
   soups = {};
   // no script ran here: a draft the doc does not mark (DraftFeature.neutralFrom) is from-unknown, and G-FROM checks it against every `from:` word that could
   // have given its neutral (hostFromUsage recorded: false), so a stale from-bottom draft is refused here too, never built unchecked
-  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => eng.topologyOf(cmds) };
+  const ctx = { arc, mt, runSC, soups, followMoves: true, probeBlocked: true, probeBlockedNoAcrossCut: true, probeBlockedSteps: true, allowCopies: true, fromUsage: hostFromUsage(doc, { recorded: false }), topologyOf: (cmds) => eng.topologyOf(cmds) };
   // the engine is used as run() uses it: the replies of this one translation are remembered, and the design is left on the accepted commands
   let tr, fin, engineUse = null;
   try {

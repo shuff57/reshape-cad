@@ -1,0 +1,22 @@
+page holes rc=0 432s
+page sd rc=0 640s
+page mt rc=0 1434s
+page combined rc=0 862s
+page rgcombined rc=0 575s
+page fccombined rc=0 633s
+-- the page against the full pass, step by step
+{"rows":4784,"compared":4784,"nodeHang":0,"pageNoAnswer":0,"stepStatus":1,"sentence":0,"volume":0,"same":4783,"volumeCompared":1598,"verdicts":{"RIGHT":1596,"REFUSED":3185,"PIPELINE-DIFF":1,"ORACLES-SPLIT":1}}
+{ 'page built nothing': 1 }
+{"id":"mt#215 p-magnitude:turn1#33","what":"page built nothing","page":"refused"}
+-- the page's final volume against the judged solid
+judged 4639, compared with the page 4639, not comparable 0, differ 2
+  mt:p-magnitude:turn1#33: page 0, judged 5874.357167733763 (rel -1.00e+0); page: refused
+  combined:combined seed 452: page 324.9935417644032, judged 324.99354259238885 (rel -2.55e-9); page: doc
+page combined rc=0 1714s
+page rgcombined rc=0 1514s
+page fccombined rc=0 1363s
+-- the page against the full pass, step by step
+{"rows":3000,"compared":3000,"nodeHang":0,"pageNoAnswer":0,"stepStatus":0,"sentence":2,"volume":0,"same":2998,"verdicts":{"REFUSED":2890,"RIGHT":107,"ORACLES-SPLIT":1},"volumeCompared":108}
+{ sentence: 2 }
+-- the page's final volume against the judged solid
+judged 2829, compared with the page 2829, not comparable 0, differ 0
