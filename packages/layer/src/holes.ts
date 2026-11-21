@@ -130,7 +130,6 @@ export const SENTENCE = {
 /** Holes from the bottom (plan B, 2026-11-20): kept apart from SENTENCE, which the differential tests hold to the original's (holes4-translate.mjs). */
 const BOTTOM = {
   bottomNotYet: (f: HoleView) => `${f.id} (hole): a hole drilled from the bottom is not built in this version yet, so ${f.id} is shown without it -- drill it from the top (leave out from:).`,
-  bottomRecess: (f: HoleView, recess: string) => `${f.id} (hole): a ${recess} drilled from the bottom is not built in this version yet, so ${f.id} is shown without it -- drill it from the top, or leave out the ${recess}.`,
   bottom: (f: HoleView) => `${f.id} (hole): a hole drilled from the bottom that stops short of the other side starts on the bottom of the part, but the part is not flat and level over this spot, so ${f.id} is shown without it -- move the hole under a flat bottom, or let it go all the way through.`,
 };
 export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-ACROSS-BOX', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
@@ -602,7 +601,6 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   // from: 'bottom' (plan B, 2026-11-20): a plain hole only, and only with ctx.allowBottomHoles; its mouth is at the low end of the axis (G-TOP below)
   const fromBottom = f.from === 'bottom';
   if (fromBottom && !G.allowBottom) return refuse(BOTTOM.bottomNotYet(f), 'G-BOTTOM');
-  if (fromBottom && recess) return refuse(BOTTOM.bottomRecess(f, recess), 'G-BOTTOM');
   const delta0 = 0.05; // G-TOP's probe disc depth
   const baseIdx = st.holes!.chain[head]?.baseIdx ?? accepted.length;
   const baseMeasure = st.holes!.chain[head]?.baseMeasure ?? m;
@@ -652,7 +650,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   if (!off.has('G-TOP') && (!through || recess)) {
     const top = recess ? hi : toolTop;
     // the mouth: the tool's top, or (from: 'bottom') its bottom; the probe disc is cut just inside it, on the material side, reaching 1 out into the air
-    const probeBase = fromBottom ? toolBot - 1 : top - delta0;
+    const probeBase = fromBottom ? (recess ? lo : toolBot) - 1 : top - delta0;
     const eps = Math.min(Math.max(r / 4, MIN_ACROSS / 2), r, 1); const delta = delta0; // never below the engine's smallest reliable radius (a 1.25e-4 probe died with 'cannot attach a plane to a wire')
     const want = PI * eps * eps * delta;
     const probeCmds = centres.map((c) => ({ command: 'solid.cylinder', params: { radius: eps, height: delta + 1, base: c.map((v, i) => (i === ai ? probeBase : v)), axis: AXN[axis], operation: 'cut', targets: bs } }));
@@ -712,13 +710,13 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
         if ((cur.axis ?? 'z') !== axis) continue;
         const ch = H(cur);
         const cc = [0, 1, 2].map((i) => bc[i] + ch.center[i]);
-        if (cc[ai] + ch.depth / 2 < hi - 1e-9) continue; // that tool does not reach the top
+        if (fromBottom ? cc[ai] - ch.depth / 2 > lo + 1e-9 : cc[ai] + ch.depth / 2 < hi - 1e-9) continue; // that tool does not reach the face this recess is cut from
         const rTop = Math.max(ch.diameter, ch.counterbore?.diameter ?? 0, ch.countersink?.diameter ?? 0) / 2;
         const os: V3[] = ch.corners ? [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) => [cc[0] + sx * ch.corners!.dx, cc[1] + sy * ch.corners!.dy, cc[2]]) : [cc];
         for (const o of os) for (const c of centres) if (Math.hypot(...perpN.map((k) => c[k] - o[k])) < rTop - 1e-9) return { ...refuse(SENTENCE.recessNest(f, recess, `the hole of ${cur.id}`), 'G-NEST'), probe: probeInfo };
       }
     }
-    if (!through && Math.abs(toolTop - hi) > 1e-9) return { ...refuse(SENTENCE.recessCavity(f, recess), 'G-RECESS'), probe: probeInfo };
+    if (!through && Math.abs(fromBottom ? toolBot - lo : toolTop - hi) > 1e-9) return { ...refuse(SENTENCE.recessCavity(f, recess), 'G-RECESS'), probe: probeInfo };
     const cb = f.counterbore; const cs = f.countersink;
     const D = (cb ?? cs)!.diameter;
     if (!off.has('G-RECESS') && !(D > f.diameter + 1e-12)) return { ...refuse(SENTENCE.recessNarrow(f, cb ? 'counterbore' : 'countersink'), 'G-RECESS'), probe: probeInfo };
@@ -733,7 +731,8 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
       if (!off.has('G-CSBAND') && holeDepth < need) return { ...refuse(SENTENCE.csBand(f, need, holeDepth), 'G-CSBAND'), probe: { ...probeInfo, need } };
     }
     const cmds = centres.map((c) => {
-      const params: Record<string, unknown> = { position: c.map((v, i) => (i === ai ? hi : v)), diameter: f.diameter, body: bs[0] };
+      // from: 'bottom': on the low face, drilled toward +axis (holes-bottom-2026-11/measure-recess-bottom.out: the pin drills into that face with or without it)
+      const params: Record<string, unknown> = { position: c.map((v, i) => (i === ai ? (fromBottom ? lo : hi) : v)), diameter: f.diameter, body: bs[0], ...(fromBottom ? { direction: [0, 1, 2].map((i) => (i === ai ? 1 : 0)) } : {}) };
       if (!through) params.depth = holeDepth;
       if (cb) Object.assign(params, { type: 'counterbore', cb_diameter: cb.diameter, cb_depth: cb.depth });
       else Object.assign(params, { type: 'countersink', cs_diameter: cs!.diameter, cs_angle: `${cs!.angleDeg} deg` });
@@ -748,7 +747,9 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
       const [p0, p1] = [0, 1, 2].filter((k) => k !== ai);
       const bb = baseMeasure.bbox;
       const bcB = [0, 1, 2].map((i) => (bb[i] + bb[i + 3]) / 2);
-      const toolsOf = (h: HoleView, cs: V3[]): VolTool[] => cs.map((c) => ({ cx: c[p0], cy: c[p1], prof: holeProfile(h, bb[ai + 3], bb[ai], c[ai]) }));
+      // a hole from the bottom: its profile worked out with the axis turned over, then turned back (a recess at the low face)
+      const profOf = (h: HoleView, z: number) => h.from === 'bottom' ? holeProfile(h, -bb[ai], -bb[ai + 3], -z).map(([zz, rr]) => [-zz, rr] as [number, number]).reverse() : holeProfile(h, bb[ai + 3], bb[ai], z);
+      const toolsOf = (h: HoleView, cs: V3[]): VolTool[] => cs.map((c) => ({ cx: c[p0], cy: c[p1], prof: profOf(h, c[ai]) }));
       const centresOfH = (h: HoleView): V3[] => { const cc = [0, 1, 2].map((i) => bcB[i] + h.center[i]); return h.corners ? [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) => [cc[0] + sx * h.corners!.dx, cc[1] + sy * h.corners!.dy, cc[2]]) : [cc]; };
       const olds: VolTool[] = [];
       for (let cur: RootView | undefined = G.byId[f.target], seenV = new Set<string>(); cur && cur.kind === 'hole' && !seenV.has(cur.id); cur = G.byId[cur.target!]) {

@@ -1,8 +1,8 @@
-# Holes from the bottom: plan B, step 1 (2026-11-20)
+# Holes from the bottom: plan B, steps 1 and 2 (2026-11-20)
 
 Plan: `../PLAN-copies-low-holes-2026-11.md`, part B. The owner chose the spelling `from: 'bottom'` and said to start part B in a worktree
-(branch `holes-from-bottom`) while the copies sweep runs on `main`. Step 1 is the language and **plain** holes from the bottom; a
-counterbore or countersink from the bottom is refused in a sentence and is step 2.
+(branch `holes-from-bottom`) while the copies sweep runs on `main`. Step 1 is the language and **plain** holes from the bottom;
+step 2 (below) adds a counterbore or countersink from the bottom.
 
 ## The language (`packages/script`)
 
@@ -35,7 +35,7 @@ there, so it is an independent build of a hole from the bottom) and against the 
   cylinder; a pulled sketch; a hole from the bottom and one from the top in one part; a through hole marked from the bottom. The
   centre of mass moves up as material leaves the bottom (comZ +0.057 on the box, as a top hole's is -0.057).
 - A sphere's bottom pole is refused, as its top pole is (G-TOP: the face is not flat there), now in the bottom's own words.
-- A counterbore from the bottom is refused, as it must be until step 2.
+- (Step 1) A counterbore from the bottom was refused, as it had to be until step 2.
 - With the switch off, every hole from the bottom is refused.
 
 ## New sentences (approved by the owner as written, 2026-11-20)
@@ -43,14 +43,28 @@ there, so it is an independent build of a hole from the bottom) and against the 
 - `hole's from is 'bottom', to drill from the low end of its axis; leave it out to drill from the top. You gave it {the text "top"}.`
 - `hole() cannot find where the bottom of this {box} is along {z} exactly, so a hole that stops short of the other side cannot start at the bottom. ...` (the top sentence's twin)
 - `{hole1} (hole): a hole drilled from the bottom is not built in this version yet, so {hole1} is shown without it -- drill it from the top (leave out from:).`
-- `{hole1} (hole): a {counterbore} drilled from the bottom is not built in this version yet, so {hole1} is shown without it -- drill it from the top, or leave out the {counterbore}.`
+- (step 1 only, removed in step 2: no longer said) `{hole1} (hole): a {counterbore} drilled from the bottom is not built in this version yet, ...`
 - `{hole1} (hole): a hole drilled from the bottom that stops short of the other side starts on the bottom of the part, but the part is not flat and level over this spot, so {hole1} is shown without it -- move the hole under a flat bottom, or let it go all the way through.`
 - In the base translator (not shown in the page): `{hole1} (hole): a hole drilled from the bottom is not mapped`.
 
+## Step 2: a counterbore or countersink from the bottom
+
+- **Measured first** (`measure-recess-bottom.mjs`, `.out`): native `solid.hole` with its position on a box's bottom face drills into
+  that face with or without `direction: +z`, a counterbore and a countersink, blind and through, each within 1.5e-6 to 4.6e-6 of the
+  volume worked out by hand (the engine's curved faces), the centre of mass moving up as it should.
+- **The layer** (`holes.ts`, `shell-draft.ts`): the recess is cut on the low face with `direction` +axis; G-TOP probes the low face for
+  a recess; G-NEST looks at earlier holes that reach the bottom; the cavity check (G-RECESS) compares the tool's bottom with the low
+  face; the closed-form volume check works out a hole from the bottom with the axis turned over and turns its profile back, so a
+  mix of holes from the top and the bottom on a box is still checked; G-CSOPEN (HALT-8) refuses hollowing open the face a
+  countersink from the bottom opens onto (the low side). The step-1 refusal of a recess from the bottom is gone.
+- **The OCCT referee** (`packages/brep-adapter/src/occt-build.ts`): the recess tool's mouth is measured from the part's low face and
+  the tool turned over (a half turn about its own x) for a hole from the bottom. Changed in the same step as the layer, so every
+  recess case below is also checked against the volume worked out by hand, which does not depend on either.
+- **Live** (`live-bottom-holes.mjs` now 17 scripts): no wrong solid. Right against OCCT and by hand: a counterbore and a countersink
+  from the bottom, blind and through; a counterbore along x; a counterbore from the top and one from the bottom in one part.
+  A countersink from the bottom and then a hollow open at the bottom is refused by G-CSOPEN.
+
 ## Next
 
-1. Step 2: a counterbore or countersink from the bottom: the recess at the low end (`solid.hole` with an explicit direction, checked
-   first on the pin), each recess guard mirrored (G-TOP for a recess, G-RECESS, G-NEST, `holeProfile`, G-CSOPEN), and the OCCT
-   referee's recess mirrored (`occt-build.ts`, the only part of the referee that assumes the high end).
-2. A sweep with both switches on, as for copies; then the owner's decision for the page, the docs line, and shCode's writer
+1. A sweep with both switches on, as for copies; then the owner's decision for the page, the docs line, and shCode's writer
    (`lib/solidcraft-ui-to-code.ts` writes `from: 'bottom'` instead of refusing a hole drilled up from the low face).

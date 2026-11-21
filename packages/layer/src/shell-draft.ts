@@ -80,6 +80,7 @@ export interface FView {
   /** hole: the recess at the mouth (model-types HoleFeature), read by G-HOLE for the tube radius */
   counterbore?: { diameter: number; depth: number } | null;
   countersink?: { diameter: number; angleDeg: number } | null;
+  from?: 'bottom';
   edge?: { of?: SDName[] };
   length2?: number;
 }
@@ -693,7 +694,8 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
       // G-CSOPEN (HALT-8, remeasure-0.30.1/HALT-8.md): a countersink whose mouth is on the face being opened. A hole's mouth is on the high side of its axis.
       // With the mouth 2 to 2.75 walls from two side walls truck builds 1.1 to 3.3 % low, and 2e-4 high near one wall, where no clearance rule separates
       // right from wrong; so every such hollow is refused (owner decision 2026-11-10). A counterbore there, or the same countersink with another face opened, builds right.
-      if (h.countersink && ax === O && openHi) return { ...refuse(SENTENCE.csinkOpen(f, h.id)), guard: 'G-CSOPEN' };
+      // a hole from the bottom (plan B) has its mouth on the low side: the same rule, that side
+      if (h.countersink && ax === O && openHi === (h.from !== 'bottom')) return { ...refuse(SENTENCE.csinkOpen(f, h.id)), guard: 'G-CSOPEN' };
       const r = Math.max(h.diameter!, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2; const R = r + f.thickness!;
       const bc = [0, 1, 2].map((i) => (box[i] + box[i + 3]) / 2);
       const c = [0, 1, 2].map((i) => bc[i] + h.center![i]);

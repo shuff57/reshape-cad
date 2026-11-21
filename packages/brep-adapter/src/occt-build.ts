@@ -1834,7 +1834,10 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
             const axisIndex = f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2;
             const recess = (at: Vec3): any | null => {
               if (!cb && !cs) return null;
-              const mouth = Math.min(f.depth / 2, bbox[1][axisIndex] - at[axisIndex]);
+              // from: 'bottom' (plan B, 2026-11-20): the mouth is on the -axis side, measured from the part's low face; the tool is built the same way
+              // and turned over (below) so that its +z points to -axis
+              const fromBottom = (f as { from?: string }).from === 'bottom';
+              const mouth = Math.min(f.depth / 2, fromBottom ? at[axisIndex] - bbox[0][axisIndex] : bbox[1][axisIndex] - at[axisIndex]);
               const R = (cb ? cb.diameter : cs!.diameter) / 2;
               const deep = cb ? cb.depth : (R - f.diameter / 2) / Math.tan(csHalf);
               const floor = mouth - deep, top = f.depth / 2;
@@ -1850,6 +1853,10 @@ export function buildDoc(oc: Occt, doc: ModelDoc, arc?: any): BuildResult {
               }
               const outline = new oc.BRepBuilderAPI_MakeFace(wire.Wire(), false).Face();
               let tool: any = new oc.BRepPrimAPI_MakeRevol(outline, new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(0, 0, 1)), 2 * Math.PI, true).Shape();
+              if (fromBottom) { // a half turn about local x: +z to -z (the tool is round about z, so nothing else moves)
+                const t = new oc.gp_Trsf(); t.SetRotation(new oc.gp_Ax1(new oc.gp_Pnt(0, 0, 0), new oc.gp_Dir(1, 0, 0)), Math.PI);
+                tool = new oc.BRepBuilderAPI_Transform(tool, t, false).Shape();
+              }
               if (f.axis === 'x' || f.axis === 'y') {
                 const t = new oc.gp_Trsf();
                 // +z to +x is a quarter turn about y; +z to +y is a quarter turn about x the OTHER way (the bore above is the same either way up)

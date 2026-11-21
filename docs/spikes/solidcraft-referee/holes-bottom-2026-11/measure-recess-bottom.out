@@ -1,0 +1,8 @@
+counterbore, blind     no dir  vol=23623.0596 want=23623.0089 rel=2.1e-6 comZ=0.1117 faces=10 bbox={"max":[20,15,10],"min":[-20,-15,-10.000000000000005]}
+counterbore, blind     dir +z  vol=23623.0596 want=23623.0089 rel=2.1e-6 comZ=0.1117 faces=10 bbox={"max":[20,15,10],"min":[-20,-15,-10.000000000000005]}
+counterbore, through   no dir  vol=23283.8239 want=23283.7169 rel=4.6e-6 comZ=0.0550 faces=9 bbox={"max":[20,15,10.000000000000005],"min":[-20,-15,-10.000000000000005]}
+counterbore, through   dir +z  vol=23283.8239 want=23283.7169 rel=4.6e-6 comZ=0.0550 faces=9 bbox={"max":[20,15,10.000000000000005],"min":[-20,-15,-10.000000000000005]}
+countersink, blind     no dir  vol=23660.7437 want=23660.7080 rel=1.5e-6 comZ=0.1007 faces=9 bbox={"max":[20,15,10],"min":[-20,-15,-10.000000000000005]}
+countersink, blind     dir +z  vol=23660.7437 want=23660.7080 rel=1.5e-6 comZ=0.1007 faces=9 bbox={"max":[20,15,10],"min":[-20,-15,-10.000000000000005]}
+countersink, through   no dir  vol=23321.5082 want=23321.4160 rel=4.0e-6 comZ=0.0439 faces=8 bbox={"max":[20,15,10.000000000000014],"min":[-20,-15,-10.000000000000005]}
+countersink, through   dir +z  vol=23321.5082 want=23321.4160 rel=4.0e-6 comZ=0.0439 faces=8 bbox={"max":[20,15,10.000000000000014],"min":[-20,-15,-10.000000000000005]}

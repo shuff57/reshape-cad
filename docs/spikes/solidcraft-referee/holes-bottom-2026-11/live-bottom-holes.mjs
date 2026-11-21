@@ -28,7 +28,14 @@ const CASES = {
   'through, from bottom': [`const b = box(40, 30, 20);\nhole(b, { across: 6, from: 'bottom' });`, 24000 - PI * 9 * 20],
   'sphere pole':          [`const s = sphere(30);\nhole(s, { across: 4, deep: 6, from: 'bottom' });`, null],
   'sphere, top (as before)': [`const s = sphere(30);\nhole(s, { across: 4, deep: 6 });`, null],
-  'counterbore (refused)': [`const b = box(40, 30, 20);\nhole(b, { across: 6, deep: 8, from: 'bottom', counterbore: { across: 10, deep: 3 } });`, null],
+  // step 2: a recess from the bottom (by hand: counterbore 10 x 3 on a 6 bore; 90-degree countersink 12 across, a 3 deep frustum 12 -> 6)
+  'counterbore, blind':   [`const b = box(40, 30, 20);\nhole(b, { across: 6, deep: 8, at: [5, 3], from: 'bottom', counterbore: { across: 10, deep: 3 } });`, 24000 - PI * (25 * 3 + 9 * 5)],
+  'counterbore, through': [`const b = box(40, 30, 20);\nhole(b, { across: 6, at: [5, 3], from: 'bottom', counterbore: { across: 10, deep: 3 } });`, 24000 - PI * (25 * 3 + 9 * 17)],
+  'countersink, blind':   [`const b = box(40, 30, 20);\nhole(b, { across: 6, deep: 8, at: [5, 3], from: 'bottom', countersink: { across: 12, angle: 90 } });`, 24000 - PI * 3 * (36 + 18 + 9) / 3 - PI * 9 * 5],
+  'countersink, through': [`const b = box(40, 30, 20);\nhole(b, { across: 6, at: [5, 3], from: 'bottom', countersink: { across: 12, angle: 90 } });`, 24000 - PI * 3 * (36 + 18 + 9) / 3 - PI * 9 * 17],
+  'counterbore along x':  [`const b = box(40, 30, 20);\nhole(b, { across: 6, deep: 10, along: 'x', from: 'bottom', counterbore: { across: 10, deep: 3 } });`, 24000 - PI * (25 * 3 + 9 * 7)],
+  'counterbores top and bottom': [`const b = box(40, 30, 20);\nhole(b, { across: 6, deep: 8, from: 'bottom', counterbore: { across: 10, deep: 3 } });\nhole(b, { across: 6, deep: 8, counterbore: { across: 10, deep: 3 } });`, 24000 - 2 * PI * (25 * 3 + 9 * 5)],
+  'countersink, then hollow open at the bottom (refused)': [`const b = box(40, 40, 20);\nhole(b, { across: 6, from: 'bottom', countersink: { across: 12, angle: 90 } });\nhollow(b, { wall: 2, open: 'bottom' });`, null],
 };
 
 const rel = (a, b) => Math.abs(a - b) / Math.max(Math.abs(b), 1);
@@ -36,7 +43,7 @@ const worst = (a, b) => Math.max(...b.map((w, i) => Math.abs(a[i] - w)));
 let wrong = 0;
 for (const [name, [script, hand]] of Object.entries(CASES)) {
   const r = runScript(script);
-  if (r.errors.length) { console.log(`${name.padEnd(22)} SCRIPT ERROR ${r.errors.map((e) => e.message ?? e).join('; ')}`); continue; }
+  if (r.errors.length) { console.log(`${name.padEnd(28)} SCRIPT ERROR ${r.errors.map((e) => e.message ?? e).join('; ')}`); continue; }
   const doc0 = r.doc; const id = doc0.features.at(-1).id;
   const built = buildDoc(oc, doc0, arc); const s = built.shapes.get(id); const o = s ? occtMeasure(s) : null;
   const doc = solveDoc(doc0); const cells = [];
@@ -55,7 +62,7 @@ for (const [name, [script, hand]] of Object.entries(CASES)) {
     }
     cells.push(`${allowBottomHoles ? 'on ' : 'off'} ${out}`);
   }
-  console.log(`${name.padEnd(22)} ${cells.join(' | ')}`);
+  console.log(`${name.padEnd(28)} ${cells.join(' | ')}`);
 }
 console.log(wrong ? `WRONG: ${wrong}` : 'NO WRONG SOLID (bottom holes on)');
 process.exit(wrong ? 1 : 0);
