@@ -2141,8 +2141,15 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
    *     tool that would leave a sealed cavity inside the part, so the student
    *     gets a sentence rather than a wrong solid (pinned in
    *     silent-noop-errors.test.mjs and hole-extent-extrude.test.mjs). */
-  function blindOffset(fn: string, target: SolidHandle, axis: Axis3, deep: number, center: Vec3): void {
-    const off = holeAxialOffset(docNow(), target.id, axis, deep);
+  /** hole()'s and holes()'s from: 'bottom' (owner decision 2026-11-20), or leave it out to drill from the top end of the axis. */
+  function readFrom(fn: string, v: unknown): boolean {
+    if (v === undefined) return false;
+    if (v !== 'bottom') throw new Error(`${fn}'s from is 'bottom', to drill from the low end of its axis; leave it out to drill from the top. You gave it ${describe(v)}.`);
+    return true;
+  }
+
+  function blindOffset(fn: string, target: SolidHandle, axis: Axis3, deep: number, center: Vec3, fromBottom = false): void {
+    const off = holeAxialOffset(docNow(), target.id, axis, deep, fromBottom);
     if (off != null) {
       center[axis === 'x' ? 0 : axis === 'y' ? 1 : 2] = off;
       return;
@@ -2150,7 +2157,7 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const known = extentBoundAlong(docNow(), target.id, axis);
     if (known && !known.exact) {
       throw new Error(
-        `${fn}() cannot find where the top of this ${findFeature(target.rootId).kind} is along ${axis} exactly, so a hole that stops short of the other side cannot start at the top. Make it go all the way through (leave out deep:, or give a deep: at least ${known.extent}), or drill the shape before it is cut.`,
+        `${fn}() cannot find where the ${fromBottom ? 'bottom' : 'top'} of this ${findFeature(target.rootId).kind} is along ${axis} exactly, so a hole that stops short of the other side cannot start at the ${fromBottom ? 'bottom' : 'top'}. Make it go all the way through (leave out deep:, or give a deep: at least ${known.extent}), or drill the shape before it is cut.`,
       );
     }
   }
@@ -2179,7 +2186,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function hole(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('hole() needs a shape to drill into: hole(shape, { across: 6 }).');
-    const extra = readOptions('hole', ['across', 'size', 'deep', 'at', 'along', 'counterbore', 'countersink'], opts);
+    const extra = readOptions('hole', ['across', 'size', 'deep', 'at', 'along', 'counterbore', 'countersink', 'from'], opts);
+    const fromBottom = readFrom('hole', extra.from);
     resolveHoleSize('hole', extra);
     if (extra.across === undefined) throw new Error('hole() needs { across: <number> } for the bit\'s diameter.');
     const across = positiveNumber('hole', 'across', extra.across);
@@ -2189,11 +2197,12 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('hole', 'deep', extra.deep), base.id, 'depth');
-      blindOffset('hole', target, axis, base.depth, center);
+      blindOffset('hole', target, axis, base.depth, center, fromBottom);
     } else {
       base.depth = throughDepth('hole', target, axis);
     }
     base.center = center;
+    if (fromBottom) base.from = 'bottom';
     applyRecess('hole', base, extra);
     pushFeature(base);
     mutateHandle(target, base);
@@ -2202,7 +2211,8 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
 
   function holes(target: unknown, opts?: unknown): SolidHandle {
     if (!isHandle(target)) throw new Error('holes() needs a shape to drill into: holes(shape, { across: 6, apart: [15, 10] }).');
-    const extra = readOptions('holes', ['across', 'size', 'apart', 'at', 'along', 'deep', 'counterbore', 'countersink'], opts);
+    const extra = readOptions('holes', ['across', 'size', 'apart', 'at', 'along', 'deep', 'counterbore', 'countersink', 'from'], opts);
+    const fromBottom = readFrom('holes', extra.from);
     resolveHoleSize('holes', extra);
     if (extra.across === undefined) throw new Error('holes() needs { across: <number> } for the bit\'s diameter.');
     if (extra.apart === undefined) throw new Error('holes() needs { apart: [across, up] } for the corner-to-corner spacing.');
@@ -2214,11 +2224,12 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     base.diameter = num(across, base.id, 'diameter');
     if (extra.deep !== undefined) {
       base.depth = num(positiveNumber('holes', 'deep', extra.deep), base.id, 'depth');
-      blindOffset('holes', target, axis, base.depth, center);
+      blindOffset('holes', target, axis, base.depth, center, fromBottom);
     } else {
       base.depth = throughDepth('holes', target, axis);
     }
     base.center = center;
+    if (fromBottom) base.from = 'bottom';
     base.corners = {
       dx: num(spanX, base.id, 'dx') / 2,
       dy: num(spanY, base.id, 'dy') / 2,

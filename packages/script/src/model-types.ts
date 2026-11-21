@@ -570,8 +570,12 @@ export interface HoleFeature {
    *  The component ALONG `axis` is derived, not typed: for a blind hole it is
    *  (thickness - depth) / 2 toward +axis so the bore starts at the drilled
    *  face (holeAxialOffset / withHoleDepth); 0 for a through hole. toScript
-   *  never emits it as `at:`. */
+   *  never emits it as `at:`. With from: 'bottom' it is the same toward -axis. */
   center: Vec3;
+  /** Drilled from the face at the LOW end of `axis` (hole(..., { from: 'bottom' }), owner decision 2026-11-20); absent: from the
+   *  high end, as every hole before it. Only the guarded build reads it (behind ctx.allowBottomHoles); a recess from the bottom is
+   *  refused there. Older readers that do not know it would drill from the top, so a document that has it is never sent to them. */
+  from?: 'bottom';
   /** Which way the drill points. 'z' bores straight down, matching a hole
    *  placed on a flat top face without any tilt. */
   axis: Axis3;
@@ -1634,12 +1638,13 @@ export function exactExtentAlong(doc: ModelDoc, featureId: string, axis: Axis3):
  * the axis cannot be bounded (see throughExtentAlong), so callers can say so.
  */
 export function holeAxialOffset(
-  doc: ModelDoc, target: string, axis: Axis3, depth: number
+  doc: ModelDoc, target: string, axis: Axis3, depth: number, fromBottom = false
 ): number | null {
   const e = extentBoundAlong(doc, target, axis);
   if (!e) return null;
   if (depth >= e.extent) return 0; // through, even if extent is only a bound
-  return e.exact ? (e.extent - depth) / 2 : null;
+  // flush with the face at the high end of the axis, or (from: 'bottom') at the low end
+  return e.exact ? (fromBottom ? -1 : 1) * (e.extent - depth) / 2 : null;
 }
 
 /** The hole with `depth` set AND its axial offset kept in step. The axial
@@ -1647,7 +1652,7 @@ export function holeAxialOffset(
  *  never emitted as `at:`), so every writer of depth goes through here. When the
  *  thickness is unknown the axial component is left as it was. */
 export function withHoleDepth(doc: ModelDoc, f: HoleFeature, depth: number): HoleFeature {
-  const off = holeAxialOffset(doc, f.target, f.axis, depth);
+  const off = holeAxialOffset(doc, f.target, f.axis, depth, f.from === 'bottom');
   if (off == null) return { ...f, depth };
   const center: Vec3 = [...f.center];
   center[f.axis === 'x' ? 0 : f.axis === 'y' ? 1 : 2] = off;

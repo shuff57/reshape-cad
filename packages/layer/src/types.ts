@@ -182,6 +182,9 @@ export interface TranslateCtx {
    *  built (solid.move with copy and the copy's own body_name) and checked by G-COPY (move-turn.ts); off, it is refused as before. Whether the page sets it
    *  is the owner's decision after the sweep. Face picks and shell, hollow and draft walks through a copy stay refused either way. */
   allowCopies?: boolean;
+  /** Off unless set (plan B, 2026-11-20): a plain hole drilled from the bottom, hole(part, { ..., from: 'bottom' }), is built (its mouth probed by G-TOP at
+   *  the low end); off, it is refused in a sentence (G-BOTTOM). A counterbore or countersink from the bottom is refused either way, for now. */
+  allowBottomHoles?: boolean;
   /**
    * shell-draft set only: the group's pick source. Resolve a name to a face point in the PRIMITIVE's own frame (before any move of the history; the
    * original asked brep-rs `resolve` and took `centroid`). When the host supplies it, the set runs the group's G-PICK exactly (it shifts the point by the

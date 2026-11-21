@@ -735,6 +735,8 @@ export function toScript(doc: ModelDoc, namedParams?: readonly ScriptParamRef[])
         );
       }
       if (f.axis !== 'z') opts.push(`along: '${f.axis}'`);
+      // from: 'bottom' (owner decision 2026-11-20): left out, the hole would come back drilled from the top and nothing would say so
+      if (f.from === 'bottom') opts.push(`from: 'bottom'`);
       const [ca, cb, slotA, slotB] =
         f.axis === 'z' ? [f.center[0], f.center[1], 'x', 'y']
           : f.axis === 'y' ? [f.center[0], f.center[2], 'x', 'z']

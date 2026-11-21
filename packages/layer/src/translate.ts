@@ -576,6 +576,7 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
       const d = dep(f.target);
       if (d) return refuse(d);
       if (f.counterbore || f.countersink) return refuse(`${f.id} (hole): counterbore and countersink are not mapped in phase 0`);
+      if ((f as { from?: string }).from === 'bottom' && !ctx.allowBottomHoles) return refuse(`${f.id} (hole): a hole drilled from the bottom is not mapped`);
       const bs = needBody(f.target);
       const m = st.measure[f.target];
       if (!bs || bs.length !== 1 || !m) return refuse(`${f.id} (hole): needs a single measured target body`);

@@ -36,6 +36,8 @@ export interface HoleView {
   corners?: { dx: number; dy: number } | null;
   counterbore?: { diameter: number; depth: number } | null;
   countersink?: { diameter: number; angleDeg: number } | null;
+  /** hole(..., { from: 'bottom' }): drilled from the face at the low end of the axis (plan B, 2026-11-20); only with ctx.allowBottomHoles, and without a recess */
+  from?: 'bottom';
 }
 /** the fields of any earlier feature the guards read while walking back from a hole to the part it drills */
 export interface RootView extends Partial<HoleView> {
@@ -125,6 +127,12 @@ export const SENTENCE = {
   engineWide: (f: HoleView) => `${f.id} (hole): the hole is wider than the part, so nothing of it would be left and ${f.id} is shown without it -- make the hole narrower than the part.`,
 };
 /** every guard that can be switched off (H4_OFF / opts.off) */
+/** Holes from the bottom (plan B, 2026-11-20): kept apart from SENTENCE, which the differential tests hold to the original's (holes4-translate.mjs). */
+const BOTTOM = {
+  bottomNotYet: (f: HoleView) => `${f.id} (hole): a hole drilled from the bottom is not built in this version yet, so ${f.id} is shown without it -- drill it from the top (leave out from:).`,
+  bottomRecess: (f: HoleView, recess: string) => `${f.id} (hole): a ${recess} drilled from the bottom is not built in this version yet, so ${f.id} is shown without it -- drill it from the top, or leave out the ${recess}.`,
+  bottom: (f: HoleView) => `${f.id} (hole): a hole drilled from the bottom that stops short of the other side starts on the bottom of the part, but the part is not flat and level over this spot, so ${f.id} is shown without it -- move the hole under a flat bottom, or let it go all the way through.`,
+};
 export const ALL_GUARDS = ['G-BODIES', 'G-SHELLS', 'G-NOOP', 'G-TOP', 'G-CORNERS', 'G-CROSS', 'G-TORUS', 'G-TANGENT', 'G-RECESS', 'G-CSBAND', 'G-RECESS-VOL', 'G-BUDGET', 'G-REVOLVE', 'G-CURVED', 'G-ACROSS-BOX', 'G-WIDE', 'G-CSOVERLAP', 'G-CSEDGE', 'G-TINY', 'G-CSFLAT', 'G-NEST', 'G-RECESSMIN', 'G-OTHERS'];
 /** the narrowest hole that cuts reliably (holes4-tiny sweep: 0.001 builds, 1e-4 fails with "cannot attach a plane to a wire") */
 export const MIN_ACROSS = 0.001;
@@ -256,6 +264,8 @@ export interface HoleG {
   runB(cmds: Cmd[], o?: { replay?: boolean }): Promise<RunResult>;
   /** ctx.allowCopies: a copying move is a part of its own (rootsOf) */
   copyIsRoot?: boolean;
+  /** ctx.allowBottomHoles: a plain hole drilled from the bottom (from: 'bottom') is built */
+  allowBottom?: boolean;
 }
 
 /** The sentence a closed hollow() gets. Deliberate deviation from holes4-translate.mjs, whose sentence prints the word "undefined" where a reason belongs (the holes set plans no closed hollow, so it has no reason to give); owner-approved. holes.differential.test.mjs lists it as a named exception. */
@@ -291,7 +301,7 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   let plan: StepPlan;
   try {
     plan = f.kind === 'hole' && !off.has('G-BUDGET') && hs.spentS > DOC_BUDGET_S ? refuse(SENTENCE.docBudget(f as unknown as HoleView), 'G-BUDGET')
-      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB, copyIsRoot: !!ctx.allowCopies }) as unknown as StepPlan
+      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB, copyIsRoot: !!ctx.allowCopies, allowBottom: !!ctx.allowBottomHoles }) as unknown as StepPlan
         : f.kind === 'shell' && !f.open ? refuse(SHELL_CLOSED(f), 'G-CLOSED')
           : planFeature(f, st, fctx, BASE_PROFILE) as unknown as StepPlan;
   } catch (e) { const r: StepPlan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); r.raw = String((e as Error).message); plan = r; }
@@ -589,6 +599,11 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   const toolTop = c0[ai] + f.depth / 2; const toolBot = c0[ai] - f.depth / 2;
   const through = toolBot <= lo + 1e-9 && toolTop >= hi - 1e-9;
   const recess = f.counterbore ? 'counterbore' : f.countersink ? 'countersink' : null;
+  // from: 'bottom' (plan B, 2026-11-20): a plain hole only, and only with ctx.allowBottomHoles; its mouth is at the low end of the axis (G-TOP below)
+  const fromBottom = f.from === 'bottom';
+  if (fromBottom && !G.allowBottom) return refuse(BOTTOM.bottomNotYet(f), 'G-BOTTOM');
+  if (fromBottom && recess) return refuse(BOTTOM.bottomRecess(f, recess), 'G-BOTTOM');
+  const delta0 = 0.05; // G-TOP's probe disc depth
   const baseIdx = st.holes!.chain[head]?.baseIdx ?? accepted.length;
   const baseMeasure = st.holes!.chain[head]?.baseMeasure ?? m;
   const probeInfo: Record<string, unknown> = {};
@@ -636,9 +651,11 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   //               exactly two faces per centre (wall + floor: material below, opening onto air above).
   if (!off.has('G-TOP') && (!through || recess)) {
     const top = recess ? hi : toolTop;
-    const eps = Math.min(Math.max(r / 4, MIN_ACROSS / 2), r, 1); const delta = 0.05; // never below the engine's smallest reliable radius (a 1.25e-4 probe died with 'cannot attach a plane to a wire')
+    // the mouth: the tool's top, or (from: 'bottom') its bottom; the probe disc is cut just inside it, on the material side, reaching 1 out into the air
+    const probeBase = fromBottom ? toolBot - 1 : top - delta0;
+    const eps = Math.min(Math.max(r / 4, MIN_ACROSS / 2), r, 1); const delta = delta0; // never below the engine's smallest reliable radius (a 1.25e-4 probe died with 'cannot attach a plane to a wire')
     const want = PI * eps * eps * delta;
-    const probeCmds = centres.map((c) => ({ command: 'solid.cylinder', params: { radius: eps, height: delta + 1, base: c.map((v, i) => (i === ai ? top - delta : v)), axis: AXN[axis], operation: 'cut', targets: bs } }));
+    const probeCmds = centres.map((c) => ({ command: 'solid.cylinder', params: { radius: eps, height: delta + 1, base: c.map((v, i) => (i === ai ? probeBase : v)), axis: AXN[axis], operation: 'cut', targets: bs } }));
     let removed: number | null = null; let failed: string | null = null; let dFaces: number | null = null; let ok = false; let why: string | null = null; let res_timedOut = false;
     const curvedBase = baseMeasure.curved;
     let flat: FlatTop = { ok: true };
@@ -657,11 +674,12 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
         else { const ratio = removed / (want * centres.length); ok = ratio >= 0.8 && ratio <= 1.2; why = ratio > 1.2 ? 'buried' : 'air'; }
       }
     } catch (e) { failed = String((e as Error).message); }
+    if (fromBottom) probeInfo.mouth = 'bottom';
     Object.assign(probeInfo, { top, eps, delta, curvedBase, faceProbe, wantEach: want, removed, ratio: removed === null ? null : removed / (want * centres.length), dFaces, flat: curvedBase ? flat : undefined, failed });
     if (!ok) {
       if (res_timedOut) return { ...refuse(SENTENCE.budget(f), 'G-BUDGET'), probe: probeInfo };
       const buried = (removed !== null && !curvedBase && !faceProbe && removed / (want * centres.length) > 1.2) || ((curvedBase || faceProbe) && dFaces === 3 * centres.length);
-      const s = recess ? (buried ? SENTENCE.recessCavity(f, recess) : SENTENCE.topRecess(f, recess)) : joined ? SENTENCE.topJoin(f) : SENTENCE.top(f);
+      const s = recess ? (buried ? SENTENCE.recessCavity(f, recess) : SENTENCE.topRecess(f, recess)) : fromBottom ? BOTTOM.bottom(f) : joined ? SENTENCE.topJoin(f) : SENTENCE.top(f);
       return { ...refuse(s, 'G-TOP'), probe: probeInfo };
     }
   }
