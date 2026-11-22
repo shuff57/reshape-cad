@@ -12,7 +12,7 @@ function fakeBridge({ cpuMs = () => 100, timeOutOver = Infinity } = {}) {
   const b = {
     design: [], log: [],
     volumeOf: (cmds) => cmds.reduce((v, c) => v + (c.command === 'solid.box' ? c.params.length ** 3 : -c.params.radius), 0),
-    replyOf(cmds) { return { ok: true, measure: { bodies: cmds.length ? [{ name: 'b_box1', volume_mm3: b.volumeOf(cmds), faces: 6 + cmds.length - 1 }] : [] }, sketches: [] }; },
+    replyOf(cmds) { return { ok: true, measure: { bodies: cmds.length ? [{ name: 'b_box1', volume_mm3: b.volumeOf(cmds), faces: 6 + cmds.length - 1, bbox: { min: [0, 0, 0], max: [10, 10, 10] }, center_of_mass: [5, 5, 5] }] : [] }, sketches: [] }; },
     async execute(cmds, opts = {}) {
       b.log.push(['execute', cmds.length, opts.budgetS ?? null]);
       const t = cpuMs(cmds);
@@ -155,7 +155,8 @@ test('heldReply reads SolidCraft itself: when it shows other bodies than the rem
 
 test('sameBodies is exact: one digit, one face, one name or one body more is a difference', () => {
   const r = (bodies) => ({ measure: { bodies } });
-  const a = { name: 'b', volume_mm3: 1000, faces: 6 };
+  const a = { name: 'b', volume_mm3: 1000, faces: 6, bbox: { min: [0, 0, 0], max: [20, 10, 5] }, center_of_mass: [10, 5, 2.5] };
+  assert.equal(sameBodies(r([a]), r([{ ...a, bbox: { min: [0, 0, 0], max: [10, 20, 5] } }])), false);
   assert.equal(sameBodies(r([a]), r([{ ...a }])), true);
   assert.equal(sameBodies(r([a]), r([{ ...a, volume_mm3: 1000 + 2e-13 }])), false);
   assert.equal(sameBodies(r([a]), r([{ ...a, faces: 7 }])), false);
@@ -213,7 +214,7 @@ function engineFake({ slowOver = Infinity } = {}) {
   const vol = (design) => design.reduce((v, s, i) => v + (i + 1) * s.length + (JSON.parse(s).params.radius ?? JSON.parse(s).params.length ?? 0), 0);
   const e = {
     design: [], clean: true, lies: 0, log: [],
-    replyOf: (design) => ({ measure: { bodies: design.length ? [{ name: 'b_box1', volume_mm3: vol(design), faces: 5 + design.length }] : [] }, sketches: [], dirty: design.length > 0, active_sketch: null }),
+    replyOf: (design) => ({ measure: { bodies: design.length ? [{ name: 'b_box1', volume_mm3: vol(design), faces: 5 + design.length, bbox: { min: [0, 0, 0], max: [10, 10, 10] }, center_of_mass: [5, 5, 5] }] : [] }, sketches: [], dirty: design.length > 0, active_sketch: null }),
     start(cmds, held) {
       if (!held) { e.design = []; e.clean = true; return 0; }
       if (!(e.clean && e.design.length === held && e.design.every((s, i) => s === J(cmds[i])))) e.lies++;

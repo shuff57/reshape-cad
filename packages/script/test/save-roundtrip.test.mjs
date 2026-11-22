@@ -24,6 +24,17 @@ import { withoutFeatures, firstOrderViolation } from '../dist/model-deps.js';
 const QUANT = 1e-6;
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 
+test('turning a primitive after copying it keeps the earlier copy unturned', () => {
+  const { doc, errors } = runScript('const a = box(20, 10, 6); const b = move(a, [30, 0, 0], { copy: true }); turn(a, [0, 0, 90]);');
+  assert.deepEqual(errors, []);
+  assert.deepEqual(doc.features.map((feature) => feature.kind), ['box', 'move', 'rotate']);
+  assert.equal(doc.features[1].target, doc.features[0].id);
+  assert.equal(doc.features[2].target, doc.features[0].id);
+  const reopened = runScript(toScript(doc));
+  assert.deepEqual(reopened.errors, []);
+  assert.deepEqual(reopened.doc.features, doc.features);
+});
+
 /** First difference between two JSON-like values, or null. A rotate of [0,0,0] is the same as none (the type says so). */
 function firstDiff(a, b, at = '$', tol = 0) {
   if (a === b) return null;

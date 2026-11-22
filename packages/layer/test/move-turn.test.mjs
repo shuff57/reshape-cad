@@ -19,6 +19,30 @@ const docOf = (src) => { const r = runScript(src); assert.deepStrictEqual(r.erro
 const ROWS = JSON.parse(readFileSync(new URL('../../../docs/spikes/solidcraft-referee/contract/move-turn.json', import.meta.url), 'utf8')).rows;
 const rowSentence = (re) => { const r = ROWS.find((x) => re.test(x.feature) && x.status === 'refused'); assert.ok(r, String(re)); return r.refusalSentence; };
 
+test('a quarter turn checks orientation even when volume and centroid stay fixed', () => {
+  const move = { id: 'turn1', kind: 'rotate', target: 'box1', angles: [0, 0, 90] };
+  const before = { bbox: [-10, -5, -3, 10, 5, 3], com: [0, 0, 0], volume: 1200, area: 760, faceTypes: { plane: 6 }, curved: false };
+  assert.match(mtg.invariantSentence(move, {}, before, before), /bounding box/);
+  const turned = { ...before, bbox: [-5, -10, -3, 5, 10, 3] };
+  assert.equal(mtg.invariantSentence(move, {}, turned, before), null);
+  assert.match(mtg.invariantSentence(move, {}, { ...turned, com: [0, -2, 0] }, { ...before, com: [2, 0, 0] }), /centre of mass/);
+});
+
+test('an angled turn checks its box and the direction of an off-centre centroid', () => {
+  const turn = { id: 'turn1', kind: 'rotate', target: 'box1', angles: [0, 0, 30] };
+  const before = { bbox: [-10, -5, -3, 10, 5, 3], com: [0, 0, 0], volume: 1200, area: 760, faceTypes: { plane: 6 }, curved: false };
+  const c = Math.sqrt(3) / 2;
+  const x = 10 * c + 2.5;
+  const y = 5 * c + 5;
+  const turned = { ...before, bbox: [-x, -y, -3, x, y, 3] };
+  assert.equal(mtg.invariantSentence(turn, {}, turned, before), null);
+  assert.match(mtg.invariantSentence(turn, {}, before, before), /bounding box/);
+  const offset = { ...before, com: [2, 0, 0], volume: 1170, faceTypes: { plane: 9 } };
+  const result = { ...offset, ...{ bbox: turned.bbox, com: [2 * c, 1, 0] } };
+  assert.equal(mtg.invariantSentence(turn, {}, result, offset), null);
+  assert.match(mtg.invariantSentence(turn, {}, { ...result, com: [2 * c, -1, 0] }, offset), /centre of mass/);
+});
+
 // ---- the fake engine -----------------------------------------------------------------------------------------------------------------------------------------
 const rot = (p, axis, deg) => { const a = deg * Math.PI / 180; const [x, y, z] = p; const c = Math.cos(a); const s = Math.sin(a);
   if (axis[0]) return [x, y * c - z * s, y * s + z * c]; if (axis[1]) return [x * c + z * s, y, -x * s + z * c]; return [x * c - y * s, x * s + y * c, z]; };

@@ -24,10 +24,22 @@
 
 export const keyOf = (cmds) => JSON.stringify(cmds);
 
-/** the bodies of two replies are the same bodies: names, face counts and volumes, exactly (the same engine ran the same list, so not even the last digit moves) */
-export const sameBodies = (a, b) => {
+/** Compare named body measurements before reusing a viewport result. */
+export const sameBodies = (a, b, tolerance = 0) => {
   const x = a?.measure?.bodies, y = b?.measure?.bodies;
-  return Array.isArray(x) && Array.isArray(y) && x.length === y.length && x.every((p, i) => p.name === y[i].name && p.volume_mm3 === y[i].volume_mm3 && p.faces === y[i].faces);
+  if (!Array.isArray(x) || !Array.isArray(y) || x.length !== y.length) return false;
+  const byName = new Map(y.map(body => [body.name, body]));
+  const axisValues = body => [...(body.bbox?.min ?? []), ...(body.bbox?.max ?? []), ...(body.center_of_mass ?? body.com ?? [])];
+  return byName.size === y.length && new Set(x.map(body => body.name)).size === x.length && x.every(p => {
+    const q = byName.get(p.name);
+    if (!q || p.faces !== q.faces || p.kernel?.shells !== q.kernel?.shells) return false;
+    const close = (left, right, scale) => Number.isFinite(left) && Number.isFinite(right) && Math.abs(left - right) <= tolerance * scale;
+    if (!close(p.volume_mm3, q.volume_mm3, Math.max(1, Math.abs(p.volume_mm3)))) return false;
+    const expected = axisValues(p), actual = axisValues(q);
+    const size = Math.max(1, Math.hypot(...expected.slice(0, 3).map((value, i) => expected[i + 3] - value)));
+    return expected.length === 9 && actual.length === 9
+      && expected.every((v, i) => close(v, actual[i], size));
+  });
 };
 
 /** `bridge` = { execute(cmds, opts), topologyOf(cmds), inspect() } (upstream-bridge.mjs). Its methods are looked up at each call. */
@@ -106,6 +118,11 @@ export function createReplyMemory(bridge, { continueRuns = false, shadow = null,
       if (r && r.ok) topo.set(list, structuredClone(r));
       await note('topologyOf', cmds, heldResults ? held : 0, now() - t0, r, () => shadow.topologyOf(cmds));
       return r;
+    },
+    checkedReply(cmds) {
+      const list = keyOf(cmds);
+      const reply = exec.get(list + '|b') ?? exec.get(list + '|n');
+      return reply?.ok ? structuredClone(reply) : null;
     },
     /** The reply to `cmds` when SolidCraft holds exactly that list and a fresh reading of it agrees; null otherwise (the caller then runs the list). */
     async heldReply(cmds) {

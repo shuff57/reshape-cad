@@ -33,6 +33,7 @@
 import type { Feature } from '@shuff57/reshape-script/model-types';
 import type { Cmd, RunResult, TranslateCtx } from './types.js';
 import type { TranslateState } from './translate.js';
+import { quarterTurns, rotationOf } from './follow-moves.js';
 import { lastRunOf } from './pocket-cut.js';
 
 export const MT_CUT_GUARD = 'MT-CUT-HEAD';
@@ -126,15 +127,39 @@ export function invariantSentence(f: Feature, st: TranslateState, x: MMeasure, r
     const a = r.faceTypes[t] ?? 0; const b = x.faceTypes[t] ?? 0;
     if (a !== b) return `${nm} is not built: ${move ? 'moving' : 'turning'} ${tn} would change its faces (${b} ${t === 'other' ? 'of unknown kind' : t} ${b === 1 ? 'face' : 'faces'} instead of ${a}), which a ${move ? 'move' : 'turn'} must never do, so it is shown without it -- try fewer separate ${move ? 'moves' : 'turns'}, or build the part where you want it.`;
   }
-  if (!x.com.every(Number.isFinite) || !r.com.every(Number.isFinite)) return null; // a reply with no centre of mass: the original has no such reply, nothing to compare
   const dg = diagOf(r.bbox);
-  if (move) {
-    const want = r.com.map((c, i) => c + (v.offset?.[i] ?? 0));
-    if (dist3(x.com, want) / dg > INV_TOL.com[k]) return bad('centre of mass', `[${x.com.map(fmt)}]`, `[${want.map(fmt)}]`, '');
-  } else {
-    const c = [0, 1, 2].map((i) => (r.bbox[i] + r.bbox[i + 3]) / 2);
-    const dr = dist3(r.com, c); const dx = dist3(x.com, c);
+  const angles = v.angles ?? [0, 0, 0];
+  const quarter = move ? null : quarterTurns(angles);
+  const rotation = move ? null : quarter ?? rotationOf(angles);
+  const pivot = [0, 1, 2].map(i => (r.bbox[i] + r.bbox[i + 3]) / 2);
+  // The transformed old bounding box encloses the result. It is exact for a
+  // quarter turn of any part, or for any turn of a solid axis-aligned box.
+  if (rotation) {
+    const dimensions = (box: number[]) => [0, 1, 2].map(i => box[i + 3] - box[i]);
+    const before = dimensions(r.bbox);
+    const want = rotation.map(row => row.reduce((sum, value, i) => sum + Math.abs(value) * before[i], 0));
+    const got = dimensions(x.bbox);
+    const centre = [0, 1, 2].map(i => (x.bbox[i] + x.bbox[i + 3]) / 2);
+    const fillsBox = !r.curved && r.faceTypes.plane === 6 && rel(r.volume, before[0] * before[1] * before[2]) <= INV_TOL.vol[0];
+    const exactBox = quarter || fillsBox;
+    const tolerance = dg * INV_TOL.com[k];
+    const outside = got.some((size, i) => size + 2 * Math.abs(centre[i] - pivot[i]) > want[i] + tolerance);
+    if (exactBox ? dist3(got, want) > tolerance || dist3(centre, pivot) > tolerance : outside) {
+      const expected = exactBox ? 'centred at' : 'inside a box centred at';
+      return bad('bounding box', `[${x.bbox.map(fmt)}]`, `${expected} [${pivot.map(fmt)}] with size [${want.map(fmt)}]`, '');
+    }
+  }
+  if (!x.com.every(Number.isFinite) || !r.com.every(Number.isFinite)) return null;
+  if (!move) {
+    const dr = dist3(r.com, pivot); const dx = dist3(x.com, pivot);
     if (Math.abs(dr - dx) / dg > INV_TOL.com[k]) return bad('centre of mass', `${fmt(dx)} from the pivot`, `${fmt(dr)} from the pivot`, ' mm');
+  }
+  if (move || rotation) {
+    const relative = r.com.map((value, i) => value - pivot[i]);
+    const want = rotation
+      ? rotation.map((row, i) => pivot[i] + row.reduce((sum, value, j) => sum + value * relative[j], 0))
+      : r.com.map((c, i) => c + (v.offset?.[i] ?? 0));
+    if (dist3(x.com, want) / dg > INV_TOL.com[k]) return bad('centre of mass', `[${x.com.map(fmt)}]`, `[${want.map(fmt)}]`, '');
   }
   return null;
 }
@@ -205,10 +230,13 @@ function copyRefusal(f: Feature, st: TranslateState, res: RunResult, produces: s
   const named = produces.length > 0 && produces.every((p) => res.measure?.bodies?.some((b) => b.name === p));
   const x = named ? measureOf(res, produces) : null;
   if (!src || !x) return { sentence: `${nm} is not built: the copy of ${tn} did not come back under its own name, so which body it is cannot be told, and it is shown without it.`, guard: COPY_GUARD };
-  const before = measureOf(lastRunOf(accepted), src); const after = measureOf(res, src);
+  const previous = lastRunOf(accepted);
+  const before = measureOf(previous, src); const after = measureOf(res, src);
   if (!before || !after) return { sentence: `${nm} is not built: ${tn} could not be measured before and after it was copied, so the copy cannot be checked, and it is shown without it.`, guard: COPY_GUARD };
-  const k = before.curved || x.curved ? 1 : 0; const dg = diagOf(before.bbox); const off = v.offset ?? [0, 0, 0];
+  const off = v.offset ?? [0, 0, 0];
   const differs = (a: MMeasure, b: MMeasure, shift: number[]): string | null => {
+    const k = a.curved || b.curved ? 1 : 0;
+    const dg = diagOf(b.bbox);
     if (rel(a.volume, b.volume) > INV_TOL.vol[k]) return `volume is ${fmt(a.volume)} mm3 instead of ${fmt(b.volume)} mm3`;
     if (a.area !== null && b.area !== null && rel(a.area, b.area) > INV_TOL.vol[k]) return `surface area is ${fmt(a.area)} mm2 instead of ${fmt(b.area)} mm2`;
     for (const t of new Set([...Object.keys(a.faceTypes), ...Object.keys(b.faceTypes)])) {
@@ -226,6 +254,35 @@ function copyRefusal(f: Feature, st: TranslateState, res: RunResult, produces: s
   if (c) return { sentence: `${nm} is not built: the copy of ${tn} would not be ${tn} moved by [${off.map(fmt)}] (its ${c}), so it is shown without it -- build the copy as a part of its own.`, guard: COPY_GUARD };
   const o = differs(after, before, [0, 0, 0]);
   if (o) return { sentence: `${nm} is not built: copying ${tn} would change ${tn} itself (its ${o}), so it is shown without it.`, guard: COPY_GUARD };
+  const priorNames = previous?.measure?.bodies?.map((body) => body.name) ?? [];
+  const actualNames = res.measure?.bodies?.map((body) => body.name) ?? [];
+  const expectedNames = new Set([...priorNames, ...produces]);
+  if (src.length !== produces.length || expectedNames.size !== priorNames.length + produces.length
+      || actualNames.length !== expectedNames.size || new Set(actualNames).size !== expectedNames.size
+      || actualNames.some((name) => !expectedNames.has(name))) {
+    return { sentence: `${nm} is not built: copying ${tn} did not leave exactly the original bodies and their named copies.`, guard: COPY_GUARD };
+  }
+  for (const [index, name] of src.entries()) {
+    const original = measureOf(previous, [name]);
+    const copy = measureOf(res, [produces[index]]);
+    if (!original || !copy || differs(copy, original, off)) {
+      return { sentence: `${nm} is not built: body ${index + 1} of the copy does not match the corresponding body of ${tn} after moving it.`, guard: COPY_GUARD };
+    }
+    const originalShells = previous?.measure?.bodies?.find((body) => body.name === name)?.kernel?.shells;
+    const copyShells = res.measure?.bodies?.find((body) => body.name === produces[index])?.kernel?.shells;
+    if (originalShells !== copyShells) {
+      return { sentence: `${nm} is not built: body ${index + 1} of the copy does not preserve the original's shells.`, guard: COPY_GUARD };
+    }
+  }
+  for (const name of priorNames) {
+    const original = measureOf(previous, [name]);
+    const current = measureOf(res, [name]);
+    const originalShells = previous?.measure?.bodies?.find((body) => body.name === name)?.kernel?.shells;
+    const currentShells = res.measure?.bodies?.find((body) => body.name === name)?.kernel?.shells;
+    if (!original || !current || originalShells !== currentShells || differs(current, original, [0, 0, 0])) {
+      return { sentence: `${nm} is not built: copying ${tn} would change a body already in the model.`, guard: COPY_GUARD };
+    }
+  }
   return null;
 }
 
@@ -237,7 +294,8 @@ function copyRefusal(f: Feature, st: TranslateState, res: RunResult, produces: s
 // Ported: the padded candidates, in the original's order (padded1, padded2): the feature's own commands, then n no-op translations of each body it leaves, as one
 // variant, so the commands already accepted for earlier features are never rewritten. Not ported: the folded candidates (simplifyChain), because a fold rewrites
 // commands that earlier features own, and this layer keeps each feature's prefix of the accepted list (st.accLen, lastRunOf, resolveAfter) fixed once accepted.
-// Only an MT-INVARIANT refusal is repaired (the original repairs MT-PRIMITIVE too; no primitive was over-refused by it, so it stays a refusal as before).
+// Only an MT-INVARIANT refusal is repaired (the original repairs MT-PRIMITIVE too; no primitive was over-refused by it, so it stays a refusal as before), and,
+// since 2026-11-21, a G-COPY refusal of a copying move: the sweep of 2026-11-20 had 48 copies of a cone after a chain of moves refused by it (copies-2026-11).
 // Off with ctx.skipMoveTurnRepair (measuring only: the before/after runs of GUARD-OVERREFUSAL.md); never set in production.
 /** the original's padList(base, n) without base: n no-op translations of every body in `names` */
 export function padCommands(names: string[], n: number): Cmd[] {
@@ -251,7 +309,10 @@ export async function motionRepair(
   f: Feature, st: TranslateState, ctx: Pick<TranslateCtx, 'skipMoveTurn' | 'skipSketchVolume' | 'skipMoveTurnRepair'>, first: { guard: string },
   produces: string[], accepted: Cmd[], variant: Cmd[], run: (cmds: Cmd[]) => RunResult | Promise<RunResult>,
 ): Promise<{ variant: Cmd[]; res: RunResult; pads: number } | null> {
-  if (ctx.skipMoveTurnRepair || first.guard !== MT_INVARIANT_GUARD || !isStep(f.kind) || FV(f).copy || !produces.length) return null;
+  // a copying move refused by G-COPY is repaired the same way (2026-11-21): the no-op moves go on the copy, and G-COPY checks it again
+  const copy = f.kind === 'move' && !!FV(f).copy;
+  if (ctx.skipMoveTurnRepair || !produces.length) return null;
+  if (copy ? first.guard !== COPY_GUARD : (first.guard !== MT_INVARIANT_GUARD || !isStep(f.kind))) return null;
   for (const n of [1, 2]) {
     const v2 = [...variant, ...padCommands(produces, n)];
     let res: RunResult;

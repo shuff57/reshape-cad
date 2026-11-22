@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const imp = (p) => import(pathToFileURL(path.join(here, p)).href);
 await imp('../dist/index.js'); // the layer's modules import each other: load them in the order the layer does
-const { motionRefusal, COPY_GUARD } = await imp('../dist/move-turn.js');
+const { motionRefusal, motionRepair, COPY_GUARD } = await imp('../dist/move-turn.js');
 const { rememberRun } = await imp('../dist/pocket-cut.js');
 
 const body = (name, at, { volume = 1200, area = 760, faces = { plane: 6 } } = {}) => ({
@@ -54,6 +54,47 @@ test('G-COPY is always on: the measuring switches that turn the move-turn checks
   const accepted = [{ command: 'solid.box', params: {} }]; rememberRun(accepted, reply(body('b_box1', [0, 0, 0])));
   const r = motionRefusal(f, st(), { skipMoveTurn: true, skipSketchVolume: true }, reply(body('b_box1', [0, 0, 0]), body('b_move1', [31, 0, 0])), ['b_move1'], accepted);
   assert.equal(r.guard, COPY_GUARD);
+});
+
+test('a multi-body copy preserves each named member and the other bodies', () => {
+  const state = st();
+  state.bodies.box1 = ['a', 'b'];
+  const a = body('a', [0, 0, 0]);
+  const b = body('b', [0, 20, 0]);
+  const other = body('other', [0, -20, 0]);
+  const aCopy = body('copy1', [30, 0, 0]);
+  const bCopy = body('copy2', [30, 20, 0]);
+  const accepted = [{ command: 'solid.box', params: {} }];
+  rememberRun(accepted, reply(a, b, other));
+  const check = (...bodies) => motionRefusal(f, state, ctx, reply(...bodies), ['copy1', 'copy2'], accepted);
+  assert.equal(check(a, b, other, aCopy, bCopy), null);
+  assert.match(check(a, b, other, { ...aCopy, name: 'copy2' }, { ...bCopy, name: 'copy1' }).sentence, /corresponding body/);
+  assert.match(check(a, b, other, aCopy, bCopy, body('extra', [100, 0, 0])).sentence, /exactly the original bodies/);
+  assert.match(check(a, b, body('other', [0, -21, 0]), aCopy, bCopy).sentence, /change a body already in the model/);
+});
+
+test('a copy of a closed hollow preserves the shells of both bodies', () => {
+  const original = { ...body('b_box1', [0, 0, 0]), kernel: { faces: 12, shells: 2 } };
+  const copy = { ...body('b_move1', [30, 0, 0]), kernel: { faces: 12, shells: 2 } };
+  const collapsed = (value) => ({ ...value, kernel: { ...value.kernel, shells: 1 } });
+  assert.equal(check(reply(original, copy), reply(original)), null);
+  assert.match(check(reply(original, collapsed(copy)), reply(original)).sentence, /does not preserve the original's shells/);
+  assert.match(check(reply(collapsed(original), copy), reply(original)).sentence, /change a body already in the model/);
+});
+
+test('copy repair pads only the copy and reruns the shell guard', async () => {
+  const original = { ...body('b_box1', [0, 0, 0]), kernel: { faces: 12, shells: 2 } };
+  const copy = { ...body('b_move1', [30, 0, 0]), kernel: { faces: 12, shells: 2 } };
+  const accepted = [{ command: 'solid.box', params: {} }];
+  rememberRun(accepted, reply(original));
+  const variant = [{ command: 'solid.move', params: { copy: true } }];
+  const repair = (run) => motionRepair(f, st(), ctx, { guard: COPY_GUARD }, ['b_move1'], accepted, variant, run);
+  const result = await repair((commands) => {
+    assert.deepEqual(commands.at(-1).params, { bodies: ['b_move1'], translate: [0, 0, 0] });
+    return reply(original, copy);
+  });
+  assert.equal(result.pads, 1);
+  assert.equal(await repair(() => reply(original, { ...copy, kernel: { faces: 12, shells: 1 } })), null);
 });
 
 test('with copies allowed, a copying move starts a part of its own (rootsOf): a hole in a copy or its original is a hole in one part among others', async () => {

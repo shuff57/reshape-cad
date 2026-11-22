@@ -8,7 +8,7 @@
 import type { Feature, SketchFeature } from '@shuff57/reshape-script/model-types';
 import type { TopoName } from '@shuff57/reshape-script/topo-name';
 import type { Frame, OutlineLike, TopoEdge, TopoFace, V3 } from './types.js';
-import { quarterTurns } from './follow-moves.js';
+import { quarterTurns, rotationOf } from './follow-moves.js';
 
 const dot = (a: V3, b: V3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 const sub = (a: V3, b: V3): V3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
@@ -84,7 +84,7 @@ export interface ResolveEnv {
   shapeOf(featureId: string): Promise<ShapeResult>;
   sketchFrame(sk: SketchFeature): Frame;
   outline(sk: SketchFeature): OutlineLike;
-  /** ctx.followMoves: a primitive turned by whole quarter turns is resolved (its face part is a LOCAL direction, carried by the turn) instead of refused. Default off. */
+  /** ctx.followMoves: follow a box's local planar faces through turns and other supported primitives through quarter turns. Default off. */
   followTurns?: boolean;
 }
 
@@ -191,8 +191,8 @@ async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: Res
   const part = name.part;
   const isPrim = ['box', 'cylinder', 'prism'].includes(f.kind);
   // a primitive's `rotate` turns it about the origin (x, then y, then z) BEFORE it is placed at `center`; its face part is a local direction that the turn carries along
-  // (solidcraft's persistent labels turn with the body: F1:+x stays the local +x face). Only with followTurns, and only by whole quarter turns.
-  const turn = isPrim && rotated(f) && env.followTurns ? quarterTurns(f.rotate!) : null;
+  // (solidcraft's persistent labels turn with the body: F1:+x stays the local +x face).
+  const turn = isPrim && rotated(f) && env.followTurns ? (f.kind === 'box' && !world ? rotationOf(f.rotate!) : quarterTurns(f.rotate!)) : null;
   if (world) {
     if (!turn || part === 'side' || !AXV[part]) return fail(`${t}: no world-frame reading`);
     const shape = await shapeFor(env, f.id, t);
@@ -221,7 +221,7 @@ async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: Res
     return { ok: true, kind: 'faceset', faces: curved, shape, evidence: { name: t, candidates: curved.length, engineFaces: curved.map((x) => x.name), rule: 'every non-planar face of the cylinder primitive' } };
   }
   const dirLocal = AXV[part];
-  const dir: V3 = turn ? turn.map((row) => Math.round(row[0] * dirLocal[0] + row[1] * dirLocal[1] + row[2] * dirLocal[2])) : dirLocal; // exact: a quarter turn maps an axis to an axis
+  const dir: V3 = turn ? turn.map((row) => dot(row, dirLocal)) : dirLocal;
   // rule 1 (geometry only): planar, outward normal == dir, centroid extreme along dir
   const planar = shape.faces.filter((x) => x.plane_normal && parallel(x.plane_normal, dir));
   const best = planar.length ? Math.max(...planar.map((x) => dot(x.centroid, dir))) : null;
@@ -229,10 +229,9 @@ async function primitiveFace(name: NameOf<'primitive'>, f: FeatureView, env: Res
   const checks: unknown[] = [];
   if (cands.length === 1 && isPrim) {
     // rule 2 (the doc alone): the plane the primitive's own parameters put there
-    const axis = dir.findIndex((v) => v !== 0);
-    const axisLocal = dirLocal.findIndex((v) => v !== 0); // the half extent is along the LOCAL axis; the plane lies along the world one
+    const axisLocal = dirLocal.findIndex((v) => v !== 0);
     const half = f.kind === 'box' ? f.size![axisLocal] / 2 : f.height! / 2; // box has size, cylinder / prism have height
-    const docOffset = (c[axis] + Math.sign(dir[axis]) * half) * Math.sign(dir[axis]);
+    const docOffset = dot(c, dir) + half;
     const got = dot(cands[0].centroid, dir);
     const okDoc = Math.abs(got - docOffset) <= 1e-6 * Math.max(1, Math.abs(docOffset));
     checks.push({ check: 'doc plane', expected: docOffset, got, agree: okDoc });
@@ -446,6 +445,9 @@ async function turnedFrameClash(name: NameOf<'between'>, env: ResolveEnv, A: Fac
     const n = name.of[i];
     const raw = n?.cause === 'primitive' ? env.features.find((x) => x.id === n.feature) : undefined;
     const f = raw ? view(raw) : null;
+    if (f?.kind === 'box' && rotated(f) && !quarterTurns(f.rotate!)) {
+      return fail(`${t}: ${f.id} is rotated by an angle that this build cannot verify for an edge; nothing is picked`);
+    }
     if (!f || n.cause !== 'primitive' || !['box', 'cylinder', 'prism'].includes(f.kind) || !rotated(f) || !quarterTurns(f.rotate!)) { world.push(own[i]); continue; }
     turned = f;
     if (n.part === 'side') { world.push(own[i]); continue; }

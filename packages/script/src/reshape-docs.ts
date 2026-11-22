@@ -272,7 +272,7 @@ move(b, [40, 0, 0])`,
       },
       {
         title: 'turn: rotating in place',
-        body: `turn(b, [0, 0, 45]) rotates 45 degrees around z-axis. Angles are degrees. Rotates around the shape's own middle. It turns a shape you have drilled, rounded, joined, cut or mirrored too, about the middle of its bounding box: turn(v, [0, 90, 0]) after a hole stands the whole part on its side. A ball looks the same however it is turned, so turning one changes nothing.`,
+        body: `turn(b, [0, 0, 45]) rotates 45 degrees around the z-axis. Angles are degrees. It turns a shape you have drilled, rounded, joined, cut or mirrored too, about the centre of its current bounding box. In the SolidCraft studio, the face words of a plain box travel with it through a move, copy or turn. For example, hollow(b, { wall: 2, open: 'right' }) still opens the box's original right face after that turn. A draft on a turned box needs a side face that runs along the pull direction. A ball looks the same however it is turned, so turning one changes nothing.`,
         code: `const b = cuboid(30, 20, 10, { at: [0, 0, 5] })
 turn(b, [0, 0, 45])`,
       },
@@ -506,7 +506,7 @@ groove(sk, b, 360)`,
       },
       {
         title: 'loft: transitioning between sketches',
-        body: `loft(sk1, sk2, 30) transitions from one sketch to another over 30 mm. This kernel lofts between two straight-sided outlines with the same number of corners, such as a 40 x 40 square at the bottom and a 20 x 20 square 30 mm above it. That is a frustum, whose volume is h/3 x (A1 + A2 + sqrt(A1 x A2)) = 10 x (1600 + 400 + 800) = 28000 mm^3. Two circles are not matched this way: a loft between circles stops with "only blend two matching straight outlines".`,
+        body: `The SolidCraft studio currently refuses loft. In the legacy workspace, loft(sk1, sk2, 30) transitions from one sketch to another over 30 mm. This kernel lofts between two straight-sided outlines with the same number of corners, such as a 40 x 40 square at the bottom and a 20 x 20 square 30 mm above it. That is a frustum, whose volume is h/3 x (A1 + A2 + sqrt(A1 x A2)) = 10 x (1600 + 400 + 800) = 28000 mm^3. Two circles are not matched this way: a loft between circles stops with "only blend two matching straight outlines".`,
         code: `const sk1 = sketch('top')
 sk1.rect(40, 40)
 const sk2 = sketch('top', 30)

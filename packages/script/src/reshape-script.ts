@@ -3082,9 +3082,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     if (f.kind === 'sketch' || f.kind === 'datum') {
       throw new Error(`turn() needs a solid shape, and a ${f.kind} is flat. Pull or spin it into a shape first, then turn that.`);
     }
-    if (!canRotate(f)) {
+    const alreadyCopied = docNow().features.some((feature) => feature.kind === 'move' && feature.copy && feature.target === f.id);
+    if (!canRotate(f) || alreadyCopied) {
       // A shape built up from others (a hole, a round, a join or cut, a mirror, a pull) turns in place about the centre of its
       // bounding box, as its own step, the way move() shifts one.
+      // Keep a separate step for an already copied primitive too, since the earlier copy reads its original orientation.
       const step = newRotate(docNow(), target.id, [0, 0, 0]);
       step.angles = [num(rx, step.id, 'rx'), num(ry, step.id, 'ry'), num(rz, step.id, 'rz')];
       pushFeature(step);
@@ -3165,6 +3167,18 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
       pull = FACE_AXIS[extra.from];
       const dir: 'lo' | 'hi' = extra.from === 'bottom' || extra.from === 'front' || extra.from === 'left' ? 'lo' : 'hi';
       neutral = primitiveExtreme(owner.rootId, pull, dir);
+      // A translated copy keeps its source's root ID for face names. When the
+      // path to that root is all translations, its neutral plane travels too.
+      const axis = pull === 'x' ? 0 : pull === 'y' ? 1 : 2;
+      let current = findFeature(owner.id);
+      let shift = 0;
+      let copied = false;
+      while (current.id !== owner.rootId && current.kind === 'move') {
+        shift += current.offset[axis];
+        copied ||= current.copy === true;
+        current = findFeature(current.target);
+      }
+      if (copied && current.id === owner.rootId) neutral += shift;
     }
     if (extra.neutral !== undefined) neutral = requiredNumber('draft', 'neutral', extra.neutral) as number;
     const id = nextId(docNow(), 'draft');

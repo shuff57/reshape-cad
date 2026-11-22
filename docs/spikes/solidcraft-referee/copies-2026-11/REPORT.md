@@ -96,3 +96,11 @@ ran every case of the sweep above in the real page (the rig's student-preview) a
 
 1. Done: the page sets `allowCopies` and its half of the sweep agrees (section 6); the host bundle is rebuilt and copied into shCode's
    `vendor/solidcraft-preview` only then.
+
+## Follow-up on 2026-11-21
+
+Copies now track every body by name and compare each duplicate with its source. The guard also checks that the copy leaves the other bodies and their shell counts intact. If the first result fails the copy guard, the repair can add one or two zero-distance moves to the copy and run the same checks again. The focused sweep recovered all 48 earlier cone-chain copy refusals and found no new discrepancies against OCCT. The cone-chain length limit still applies.
+
+Planar face picks, open and closed hollows, and drafts now follow a translated copy. A draft from a named side carries its neutral plane along a chain of translated copies. The hole and hollow preflight checks follow earlier holes through translations, and recess nesting uses the radius of the earlier hole on the face being drilled. The live run checks the final replayed bodies and discards results where the oracle refused a dependency. [Live results](live-copies.out).
+
+The pinned host page and Node agreed on all 29 focused workflows, including four expected refusals. All 29 replayed models agreed with their oracle after refused steps were removed. This follow-up used the focused workflow and cone-chain cases. The full corpus figures in sections 5 and 6 belong to the earlier run.

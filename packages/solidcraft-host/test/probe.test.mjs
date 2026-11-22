@@ -108,6 +108,42 @@ test('bridge.execute with a budget: finished in time -> applied in SolidCraft, c
   assert.equal(r2.cpuMs, undefined);
 });
 
+test('pocket screening applies to fresh replay, topology and the cut verifier without touching the live document on failure', async () => {
+  const calls = [];
+  const sc = {
+    execute: async (c) => calls.push(c), request: async (c) => calls.push(c),
+    inspect: async () => { calls.push('inspect'); return {}; },
+  };
+  const probes = [];
+  const prober = { probe: async (commands, budget) => {
+    probes.push({ commands, budget });
+    return { status: 'timedOut', cpuMs: 5000 };
+  } };
+  const bridge = createUpstreamBridge(sc, { prober, pocketBudgetS: 5 });
+  const box = { command: 'solid.box', params: {} };
+  const cut = { command: 'solid.extrude', params: { operation: 'cut' } };
+  const intersect = { command: 'solid.combine', params: { operation: 'intersect', tools: ['tmp_tool_pocket1'] } };
+  for (const result of [
+    await bridge.execute([box, cut], { fresh: true, budgetS: 45 }),
+    await bridge.topologyOf([box, cut]),
+    await bridge.execute([box, intersect], { fresh: true }),
+  ]) {
+    assert.equal(result.pocketScreened, true);
+    assert.equal(result.timedOut, true);
+  }
+  assert.deepEqual(probes.map(p => p.budget), [5, 5, 5]);
+  assert.deepEqual(calls, []);
+  await bridge.execute([box, cut], { fresh: true, held: 2 });
+  assert.deepEqual(calls, ['inspect']);
+  const failedProbe = createUpstreamBridge(sc, {
+    prober: { probe: async () => ({ status: 'done', reply: { ok: false } }) }, pocketBudgetS: 5,
+  });
+  const result = await failedProbe.execute([box, cut], { fresh: true });
+  assert.equal(result.pocketScreened, true);
+  assert.equal(result.probeError, true);
+  assert.deepEqual(calls, ['inspect']);
+});
+
 // The real kernel glue, against the real wasm, if this box has the rig (skipped otherwise).
 const PKG = process.env.SOLIDCRAFT_REFEREE_PKG || path.join(os.homedir(), '.cache/solidcraft-0.30.1-rig/sc-referee-pkg');
 const WASM = path.join(PKG, 'solidcraft_referee_bg.wasm');

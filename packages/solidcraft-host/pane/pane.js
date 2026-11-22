@@ -2,9 +2,9 @@
 // `?pane=on` (index.html in the patch). reSHape script -> sandboxed iframe (the only place the interpreter runs) -> ModelDoc
 // -> solveDoc -> translator (+ phase 2 sketch mapper) -> window.solidcraft (same page, no postMessage relay) -> viewport.
 // Built by build.sh into bundle/; served same-origin by serve.mjs under /pane/.
-import { createUpstreamBridge } from '../src/upstream-bridge.mjs';
+import { createUpstreamBridge, POCKET_PREVIEW_BUDGET_S } from '../src/upstream-bridge.mjs';
 import { translateSketchOnly } from './src/sketch-only.mjs';
-import { createReplyMemory } from '../src/reply-memory.mjs';
+import { sameBodies, createReplyMemory } from '../src/reply-memory.mjs';
 import { createCrashGuard } from '../src/crash-guard.mjs';
 import { createProgress, yieldToBrowser } from '../src/progress.mjs';
 import { createProber } from '../src/probe-client.mjs';
@@ -206,7 +206,7 @@ const getModule = () => (kernelModule ??= WebAssembly.compileStreaming(fetch(KER
 const rawProber = createProber({ makeWorker: () => new Worker(new URL('../src/probe-worker.mjs', import.meta.url), { type: 'module' }), getModule });
 const prober = params.get('probe') === 'off' ? null : { async probe(cmds, b) { const t0 = performance.now(); const r = await rawProber.probe(cmds, b); probeLog.push({ cmds: cmds.length, last: cmds.length ? cmds[cmds.length - 1].command : null, budgetS: b, status: r.status, wallMs: Math.round(performance.now() - t0), cpuMs: r.cpuMs ?? null, loadMs: r.loadMs ?? null, vol: r.reply && r.reply.measure ? r.reply.measure.bodies.reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) : null }); return r; } };
 const capS = params.get('budgetCapS') ? Number(params.get('budgetCapS')) : undefined;
-const bridge = createUpstreamBridge(lazySc, { prober, capS });
+const bridge = createUpstreamBridge(lazySc, { prober, capS, pocketBudgetS: prober ? POCKET_PREVIEW_BUDGET_S : undefined });
 let keepNext = false; // kept so the run logic reads unchanged; this build has no stash, so it is never acted on
 async function waitForBridge() {
   for (let i = 0; i < 240; i++) {
@@ -648,7 +648,19 @@ async function run({ confirmed = false } = {}) {
     // Leave the viewport on exactly the accepted commands (the last attempt may have been a refused variant). When SolidCraft already holds exactly that list
     // and a fresh reading of it shows the bodies of that reply (heldReply), nothing is run again; otherwise the list is really run, never answered from memory.
     const held = memo ? await memo.heldReply(tr.commands) : null;
+    const expected = memo?.checkedReply(tr.commands);
     const fin = held ?? await runSC(tr.commands, { replay: true });
+    const displayed = fin?.ok && await bridge.inspect().catch(() => null);
+    if (!displayed?.ok || !sameBodies(fin, displayed, 1e-7) || (expected && !sameBodies(expected, displayed, 1e-7))) {
+      memo = null;
+      keepNext = false;
+      const previous = manual ? null : window.__lastRun;
+      const restored = previous?.fin?.ok && await runSC(previous.tr.commands, { replay: true }).catch(() => null);
+      const restoredDisplay = restored?.ok && await bridge.inspect().catch(() => null);
+      const restoredView = restoredDisplay?.ok && sameBodies(previous.fin, restoredDisplay, 1e-7);
+      return failState(summary, 'model check failed', 'The preview did not match the checked build.',
+        restoredView ? 'The last checked model was restored.' : 'Run again to rebuild the preview.');
+    }
     const engineUse = memo ? { runs: memo.runs, fromMemory: memo.hits, finalReplaySkipped: !!held, ...(INC_ON ? { continued: memo.continued } : {}) } : null;
     memo = null;
     keepNext = false;

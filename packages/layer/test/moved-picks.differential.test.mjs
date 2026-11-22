@@ -146,7 +146,7 @@ test('quarterTurns: whole quarter turns only, right-handed, x then y then z', ()
   assert.ok(quarterTurns([360, -90, 270]));
 });
 
-test('the base set: a moved box is refused with the flag off and shelled with it on; a copy, a non-quarter turn and a join after a move are refused in a sentence', async () => {
+test('the base set follows moved and turned box faces, but refuses a disabled copy or an intervening join', async () => {
   const box = { id: 'b1', kind: 'box', size: [20, 10, 6], center: [0, 0, 0], rotate: [0, 0, 0] };
   const shell = (target) => ({ id: 's1', kind: 'shell', target, thickness: 1, open: { cause: 'primitive', feature: 'b1', kind: 'face', part: '+z' } });
   const run = async (features, flag) => {
@@ -166,6 +166,8 @@ test('the base set: a moved box is refused with the flag off and shelled with it
   const face = { ok: true, kind: 'face', area: 1, shape: { featureId: 'b1' }, faces: [], plane: { n: [0, 0, 1], d: 3 }, evidence: { name: 'b1.face[+z]' } };
   const cp = followMoves(face, { features: [box, { ...mv, copy: true }], bboxOf: () => undefined, targetId: 'm1' });
   assert.equal(cp.ok, false); assert.match(cp.sentence, /copying move, so which copy the name means is not known; nothing is picked$/);
+  const followedCopy = followMoves(face, { features: [box, { ...mv, copy: true }], bboxOf: () => undefined, targetId: 'm1', copies: true });
+  assert.deepStrictEqual(followedCopy.plane, { n: [0, 0, 1], d: 5 });
   const mvd = followMoves(face, { features: [box, mv], bboxOf: () => undefined, targetId: 'm1' });
   assert.deepStrictEqual(mvd.plane, { n: [0, 0, 1], d: 5 });
   const none = followMoves(face, { features: [box], bboxOf: () => undefined, targetId: 'b1' });
@@ -173,7 +175,9 @@ test('the base set: a moved box is refused with the flag off and shelled with it
   const turned = followMoves(face, { features: [box, { id: 'r1', kind: 'rotate', target: 'b1', angles: [90, 0, 0] }], bboxOf: () => [-10, -5, -3, 10, 5, 3], targetId: 'r1' });
   assert.deepStrictEqual(turned.plane.n.map((v) => v + 0), [0, -1, 0]); // +z turned 90 about x (right-handed) lies along -y
   assert.equal(turned.plane.d, 3); // the plane z = 3 becomes y = -3
-  assert.match(await sentence([box, { id: 'r1', kind: 'rotate', target: 'b1', angles: [0, 0, 45] }, shell('r1')]), /whole quarter turns \(90, 180 or 270 degrees\)/);
+  const angled = await run([box, { id: 'r1', kind: 'rotate', target: 'b1', angles: [0, 0, 45] }, shell('r1')], true);
+  assert.equal(angled.status, 'built', angled.refusal);
+  assert.ok(Math.abs(angled.pick.faces[0][2] - 3) < 1e-9);
   assert.match(await sentence([box, mv, { id: 'x1', kind: 'mirror', target: 'm1', plane: 'yz' }, shell('x1')]), /moved or turned and then x1 is a mirror/);
 });
 

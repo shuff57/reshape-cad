@@ -298,15 +298,16 @@ export async function holesStep(f: Feature, idx: number, env: LoopEnv): Promise<
   const note = (o: Omit<FeatureResult, 'id' | 'kind'>) => { out.push({ id: f.id, kind: f.kind, ...o }); };
   if (f.kind === 'sketch') st.sketches[f.id] = f;
   let plan: StepPlan;
+  const holeContext: HoleG = { accepted, headOf, byId, off, runB, copyIsRoot: !!ctx.allowCopies, allowBottom: !!ctx.allowBottomHoles };
   try {
     plan = f.kind === 'hole' && !off.has('G-BUDGET') && hs.spentS > DOC_BUDGET_S ? refuse(SENTENCE.docBudget(f as unknown as HoleView), 'G-BUDGET')
-      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB, copyIsRoot: !!ctx.allowCopies, allowBottom: !!ctx.allowBottomHoles }) as unknown as StepPlan
+      : f.kind === 'hole' ? await planHole(f as unknown as HoleView, st, holeContext) as unknown as StepPlan
         : f.kind === 'shell' && !f.open ? refuse(SHELL_CLOSED(f), 'G-CLOSED')
           : planFeature(f, st, fctx, BASE_PROFILE) as unknown as StepPlan;
   } catch (e) { const r: StepPlan = refuse(`${f.id} (${f.kind}): this step could not be built, so ${f.id} is shown without it.`, 'translator-error'); r.raw = String((e as Error).message); plan = r; }
   // PROTOTYPE (ctx.probeBlocked, off by default): a hole blocked by a refused step is test-built on the part as it stands; its own refusal, if any, is what the student is told
   if (plan.refusal && plan.guard === 'dependency' && f.kind === 'hole' && ctx.probeBlocked) {
-    const own = await probeBlockedHole(f as unknown as HoleView, st, { accepted, headOf, byId, off, runB }, hs.allCount, !!ctx.probeBlockedNoAcrossCut);
+    const own = await probeBlockedHole(f as unknown as HoleView, st, holeContext, hs.allCount, !!ctx.probeBlockedNoAcrossCut);
     if (own) { st.refused[f.id] = own.refusal; note({ status: 'refused', refusal: own.refusal, guard: own.guard, raw: `blocked (${plan.refusal}); own refusal found by a test build on ${own.base}`, commands: [] }); return; }
   }
   if (plan.refusal) { st.refused[f.id] = plan.refusal; note({ status: 'refused', refusal: plan.refusal, guard: plan.guard, raw: plan.raw, probe: plan.probe, commands: [] }); return; }
@@ -489,6 +490,19 @@ export const makerOf = (st: TranslateState, byId: Record<string, unknown>) => (b
 const byIdOf = (G: HoleG, id: string): RootView | undefined => G.byId[id];
 /** what planHole returns when the hole may be cut: the commands, the part it consumes, and the post-check run on the result */
 export interface HolePlan { variants: Cmd[][]; produces: string[]; consumes: string[]; baseIdx: number; probe: unknown; post: PostFn; /** a plain through bore across a curved wall (acrossAllowed) */ across?: boolean }
+/** Hole centres are relative to the part's bounds, so a translation carries
+ * the previously drilled tools with it without changing their local centres. */
+function earlierHoles(target: string, G: HoleG): RootView[] {
+  const seen = new Set<string>();
+  const holes: RootView[] = [];
+  for (let current = byIdOf(G, target); current && !seen.has(current.id); current = byIdOf(G, current.target!)) {
+    seen.add(current.id);
+    if (current.kind === 'hole') holes.push(current);
+    else if (current.kind !== 'move' || !G.copyIsRoot) break;
+  }
+  return holes;
+}
+
 export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promise<HolePlan | GuardRefusal> {
   const { accepted, headOf, off, runB } = G;
   const runSC = (cmds: Cmd[]) => runB(cmds, { replay: false });
@@ -510,6 +524,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
   const rootF = rootOf(f.target, G);
   if (!off.has('G-REVOLVE') && rootF?.kind === 'revolve') return refuse(SENTENCE.revolve(f), 'G-REVOLVE');
   const axis = f.axis ?? 'z'; const ai = AXI[axis]; const dir = AX[axis];
+  const priorHoles = earlierHoles(f.target, G);
   const curvedRoot = curvedRootOf(f.target, G);
   let across = false; // a plain through bore ACROSS a cylinder or a pulled circle: cut since 2026-11-14 (acrossAllowed), with its own check afterwards
   if (curvedRoot && !off.has('G-CURVED')) {
@@ -558,8 +573,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
       }
     }
     // earlier bores along the same axis
-    for (let cur: RootView | undefined = G.byId[f.target], seenT = new Set<string>(); cur && cur.kind === 'hole' && !seenT.has(cur.id); cur = G.byId[cur.target!]) {
-      seenT.add(cur.id);
+    for (const cur of priorHoles) {
       if ((cur.axis ?? 'z') !== axis) continue;
       const cc = [bcT[0] + cur.center![0], bcT[1] + cur.center![1], bcT[2] + cur.center![2]];
       const others: V3[] = cur.corners ? [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) => [cc[0] + sx * cur!.corners!.dx, cc[1] + sy * cur!.corners!.dy, cc[2]]) : [cc];
@@ -579,8 +593,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
       const cs: V3[] = h.corners ? [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) => [c[0] + sx * h.corners!.dx, c[1] + sy * h.corners!.dy, c[2]]) : [c];
       return cs.map((cc) => ({ a: AXI[a], c: cc, L: h.depth / 2, r: Math.max(h.diameter, h.counterbore?.diameter ?? 0, h.countersink?.diameter ?? 0) / 2 })); }; // a recess is wider than the bore: it can meet a bore the bore itself would miss
     const mine = toolsOf({ ...f, axis });
-    for (let cur = byIdOf(G, f.target), seen = new Set<string>(); cur && cur.kind === 'hole' && !seen.has(cur.id); cur = byIdOf(G, cur.target!)) {
-      seen.add(cur.id);
+    for (const cur of priorHoles) {
       if ((cur.axis ?? 'z') === axis) continue;
       for (const A of toolsOf(H(cur))) for (const B of mine) {
         const k = [0, 1, 2].find((i) => i !== A.a && i !== B.a)!;
@@ -620,8 +633,7 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
     if (f.countersink) {
       for (let a = 0; a < mineC.length; a++) for (let b = a + 1; b < mineC.length; b++) if (dist(mineC[a], mineC[b]) < 2 * rn + 1e-6) return refuse(SENTENCE.csOverlap(f, 'the countersink of another hole in this holes() call'), 'G-CSOVERLAP');
     }
-    for (let cur: RootView | undefined = G.byId[f.target], seenO = new Set<string>(); cur && cur.kind === 'hole' && !seenO.has(cur.id); cur = G.byId[cur.target!]) {
-      seenO.add(cur.id);
+    for (const cur of priorHoles) {
       if ((cur.axis ?? 'z') !== axis) continue;
       if (!f.countersink && !cur.countersink) continue;
       const ro = footprint(H(cur));
@@ -705,15 +717,22 @@ export async function planHole(f: HoleView, st: TranslateState, G: HoleG): Promi
     // cannot see it because it probes the part as it was before the first hole. Pre-check: the axis of a recess hole must not lie inside an earlier hole on the same axis that reaches the top.
     if (!off.has('G-NEST')) {
       const perpN = [0, 1, 2].filter((k) => k !== ai);
-      for (let cur: RootView | undefined = G.byId[f.target], seenN = new Set<string>(); cur && cur.kind === 'hole' && !seenN.has(cur.id); cur = G.byId[cur.target!]) {
-        seenN.add(cur.id);
+      for (const cur of priorHoles) {
         if ((cur.axis ?? 'z') !== axis) continue;
         const ch = H(cur);
         const cc = [0, 1, 2].map((i) => bc[i] + ch.center[i]);
         if (fromBottom ? cc[ai] - ch.depth / 2 > lo + 1e-9 : cc[ai] + ch.depth / 2 < hi - 1e-9) continue; // that tool does not reach the face this recess is cut from
-        const rTop = Math.max(ch.diameter, ch.counterbore?.diameter ?? 0, ch.countersink?.diameter ?? 0) / 2;
+        let mouthRadius = Math.max(ch.diameter, ch.counterbore?.diameter ?? 0, ch.countersink?.diameter ?? 0) / 2;
+        if (fromBottom !== (ch.from === 'bottom')) {
+          mouthRadius = ch.diameter / 2;
+          if (ch.counterbore && ch.counterbore.depth >= T - 1e-9) mouthRadius = ch.counterbore.diameter / 2;
+          if (ch.countersink) {
+            const slope = Math.tan(ch.countersink.angleDeg * Math.PI / 360);
+            mouthRadius = Math.max(mouthRadius, ch.countersink.diameter / 2 - T * slope);
+          }
+        }
         const os: V3[] = ch.corners ? [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) => [cc[0] + sx * ch.corners!.dx, cc[1] + sy * ch.corners!.dy, cc[2]]) : [cc];
-        for (const o of os) for (const c of centres) if (Math.hypot(...perpN.map((k) => c[k] - o[k])) < rTop - 1e-9) return { ...refuse(SENTENCE.recessNest(f, recess, `the hole of ${cur.id}`), 'G-NEST'), probe: probeInfo };
+        for (const o of os) for (const c of centres) if (Math.hypot(...perpN.map((k) => c[k] - o[k])) < mouthRadius - 1e-9) return { ...refuse(SENTENCE.recessNest(f, recess, `the hole of ${cur.id}`), 'G-NEST'), probe: probeInfo };
       }
     }
     if (!through && Math.abs(fromBottom ? toolBot - lo : toolTop - hi) > 1e-9) return { ...refuse(SENTENCE.recessCavity(f, recess), 'G-RECESS'), probe: probeInfo };

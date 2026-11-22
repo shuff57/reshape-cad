@@ -19,6 +19,7 @@ import { resolveName, pickPoint } from './resolve-names.js';
 import { followMoves } from './follow-moves.js';
 import { SKETCH_VOLUME_GUARD, sketchVolumeRefusal } from './sketch-volume.js';
 import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js';
+import { pocketScreenSentence } from './extrude-pocket.js';
 import { hollowRefusal } from './hollow-check.js';
 import { OPEN_OUTLINE_GUARD, openOutlineRefusal } from './open-outline.js';
 import { MT_CONE_GUARD, MT_CUT_GUARD, coneChainRefusal, cutHeadRefusal, motionInfo, motionRefusal, motionRepair } from './move-turn.js';
@@ -519,9 +520,11 @@ function planFeatureOf(f: Feature, st: TranslateState, ctx: PlanCtx, profileIn: 
         // a copying move (plan A, 2026-11-20): the copy is named by body_name, which the pinned engine keeps (docs/spikes/solidcraft-referee/copies-2026-11);
         // unnamed, it would take '<name> (2)', the name the pattern planner gives a pattern's first instance. It consumes nothing: the original stays a
         // shape of its own. G-COPY (move-turn.ts) checks the copy against the original moved, and the original against itself, after the build.
-        if (!bs || bs.length !== 1) return refuse(`${f.id} (move): a copying move of a part made of several bodies is not mapped`);
-        const name = bname(f.id);
-        return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset, copy: true, body_name: name } }]], produces: [name], consumes: [] };
+        if (!bs || !bs.length) return refuse(`${f.id} (move): a copying move needs a part with a body`);
+        // a part of several bodies (2026-11-21): body_names names each copy in the order of `bodies` (copies-2026-11/measure-multi-body.out)
+        const names = bs.length === 1 ? [bname(f.id)] : bs.map((_, k) => `${bname(f.id)}_${k + 1}`);
+        const naming = bs.length === 1 ? { body_name: names[0] } : { body_names: names };
+        return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset, copy: true, ...naming } }]], produces: names, consumes: [] };
       }
       return { variants: [[{ command: 'solid.move', params: { bodies: bs, translate: f.offset } }]], produces: bs!, consumes: [f.target] };
     }
@@ -730,7 +733,7 @@ export async function confirmOnTarget(rr: Resolved, { st, accepted, ctx, targetI
   // same geometric plane. The OPPOSITE orientation counts only when the name's shape is not the target itself (a subtracted
   // tool's wall is a wall of the cavity with its normal flipped); on the target's own shape a face on the far side of a
   // slab with the opposite normal (the bottom of the part) is a different face.
-  const allowFlip = fr.shape.featureId !== targetId && fr.shape.featureId !== headId(targetId);
+  const allowFlip = !fr.evidence.followed && fr.shape.featureId !== targetId && fr.shape.featureId !== headId(targetId);
   const on = body.faces.filter((x) => x.plane_normal && Math.abs(dot(x.centroid, n) - d) <= tol
     && (dot(x.plane_normal, n) >= 1 - 1e-6 || (allowFlip && dot(x.plane_normal, n) <= -1 + 1e-6)));
   if (on.length === 0) return { ok: false, sentence: `${nm} resolves on ${fr.shape.featureId}, but no face of ${tb[0]} lies on that plane any more; nothing is picked` };
@@ -839,7 +842,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
     const menv = makeEnv(st, accepted, prefix, ctx, shapeCache);
     let rr = await resolveName(nameVal, menv, nameField === 'edge' ? 'edge' : 'face');
     const targetId = (f as { target: string }).target;
-    if (ctx.followMoves) rr = followMoves(rr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
+    if (ctx.followMoves) rr = followMoves(rr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId, copies: !!ctx.allowCopies });
     rr = await confirmOnTarget(rr, { st, accepted, ctx, targetId, features: prefix });
     if (rr.ok && rr.kind === 'faceset') resolved.set(nameVal, { ok: false, sentence: `${rr.evidence.name} is ${rr.faces.length} faces in solidcraft (${rr.evidence.engineFaces.join(', ')}; a cylinder's wall is split at its seam); a face pick of it would choose one half silently, so nothing is picked` });
     else resolved.set(nameVal, rr);
@@ -854,7 +857,7 @@ export async function resolveNamesFor(f: Feature, prefix: Feature[], env: { st: 
           const nm = (m as unknown as { edge?: TopoName }).edge;
           if (!nm || typeof nm !== 'object') return null;
           let mr = await resolveName(nm, makeEnv(st, accepted, prefix, ctx, shapeCache), 'edge');
-          if (ctx.followMoves) mr = followMoves(mr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId });
+          if (ctx.followMoves) mr = followMoves(mr, { features: prefix, bboxOf: (id) => st.measure[id]?.bbox, targetId, copies: !!ctx.allowCopies });
           mr = await confirmOnTarget(mr, { st, accepted, ctx, targetId, features: prefix });
           return edgeOf(mr);
         }, 1);
@@ -920,6 +923,12 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     let repaired: FeatureResult['repaired'];
     let res: RunResult;
     try { res = await ctx.runSC([...accepted, ...variant]); } catch (e) { res = { ok: false, failed: { error: `bridge error: ${(e as Error).message}` } }; }
+    if (res.pocketScreened) {
+      const refusal = pocketScreenSentence(f, res);
+      st.refused[f.id] = refusal;
+      note({ status: 'refused', refusal, guard: res.timedOut ? 'G-BUDGET' : 'POCKET-PREVIEW', commands: variant });
+      return;
+    }
     if (!res.ok && res.erroredBody) errored = true;
     if (!res.ok) { lastErr = res.failed ? `${res.failed.command}: ${res.failed.error}` : String(res.rejected ?? res.error ?? 'unknown'); lastFail = res; continue; }
     let m = aggregate(res, plan.produces, profile.verifies);
@@ -978,6 +987,6 @@ export async function resolveAfter(tr: TranslateResult, doc: { features: Feature
     accepted = all.slice(0, len);
   }
   let rr = await resolveName(name, makeEnv(st, accepted, doc.features, ctx, shapeCache), want);
-  if (targetId && ctx.followMoves) rr = followMoves(rr, { features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features, bboxOf: (id) => st.measure[id]?.bbox, targetId });
+  if (targetId && ctx.followMoves) rr = followMoves(rr, { features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features, bboxOf: (id) => st.measure[id]?.bbox, targetId, copies: !!ctx.allowCopies });
   return targetId ? confirmOnTarget(rr, { st, accepted, ctx, targetId, features: beforeId ? doc.features.slice(0, doc.features.findIndex((x) => x.id === beforeId)) : doc.features }) : rr;
 }

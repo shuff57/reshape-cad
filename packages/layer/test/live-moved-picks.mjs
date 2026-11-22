@@ -201,7 +201,16 @@ for (let i = 0; i < 30; i++) {
 const REF = (id, planners, doc) => addCase({ id: `x-${id}`, planners, doc, mustRefuse: true });
 for (const planners of ['shell-draft', 'base']) {
   const b = box('box1', [20, 12, 8], [0, 0, 0], { rotate: [0, 0, 0] });
-  REF(`turn45-${planners}`, planners, { features: [b, rotate('turn1', 'box1', [0, 0, 45]), shell('shell1', 'turn1', prim('box1', '+z'), 1)] });
+  const centre = [11, -6, 5];
+  const angle = Math.PI / 4;
+  const side = (20 + 12) * Math.cos(angle);
+  const tiltedHollow = (sign) => {
+    const form = boxHollow([20, 12, 8], [0, 0, 0], 0, sign, 1);
+    return { ...form, com: add3(centre, [form.com[0] * Math.cos(angle), form.com[0] * Math.sin(angle), 0]), bbox: bboxOfCenter(centre, [side, side, 8]) };
+  };
+  addCase({ id: `turn45-${planners}`, planners, turn: true,
+    doc: { features: [box('box1', [20, 12, 8], centre), rotate('turn1', 'box1', [0, 0, 45]), shell('shell1', 'turn1', prim('box1', '+x'), 1)] },
+    exp: tiltedHollow(1), alts: [tiltedHollow(-1)] });
   REF(`copy-${planners}`, planners, { features: [b, move('move1', 'box1', [30, 0, 0], true), shell('shell1', 'move1', prim('box1', '+z'), 1)] });
   REF(`mirror-${planners}`, planners, { features: [b, move('move1', 'box1', [30, 0, 0]), { id: 'mirror1', kind: 'mirror', target: 'move1', plane: 'yz' }, shell('shell1', 'mirror1', prim('box1', '+z'), 1)] });
   REF(`join-${planners}`, planners, { features: [b, box('box2', [6, 6, 6], [30, 0, 0], { rotate: [0, 0, 0] }), move('move1', 'box1', [5, 0, 0]), combine('join1', 'union', ['move1', 'box2']), shell('shell1', 'join1', prim('box1', '+z'), 1)] });

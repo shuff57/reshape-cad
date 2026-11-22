@@ -87,7 +87,7 @@ export function hollowModel(f: Feature, byId: Record<string, Feature>): Covered 
   const blends: Blend[] = []; const holes: HollowModel['holes'] = [];
   let turned = false;
   for (const v of chain.slice(0, -1).reverse()) { // root first
-    if (v.kind === 'move') { if (v.copy) return no('a copy'); continue; }
+    if (v.kind === 'move') continue; // a copy is the original moved (G-COPY)
     if (v.kind === 'rotate') { turned = true; continue; }
     if (v.kind === 'fillet') {
       const e = v.edge;

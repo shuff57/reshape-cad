@@ -49,6 +49,7 @@ export type ModelCheckResult = {
 };
 
 const DEFAULT_TOLERANCE = 0.01;
+type Point2 = [number, number];
 
 function isTopoNameObj(v: unknown): v is TopoName {
   return typeof v === 'object' && v !== null && typeof (v as { cause?: unknown }).cause === 'string';
@@ -84,6 +85,38 @@ function soupPoints(f: Extract<Feature, { kind: 'sketch' }>): Array<[number, num
   return out;
 }
 
+/** Bounds of one closed, axis-aligned rectangle in a named sketch plane. */
+function rectangleBounds(f: Extract<Feature, { kind: 'sketch' }>): number[] | null {
+  if (f.frame) return null;
+  const geometry = (f.geoms?.length ? f.geoms : f.geom)?.filter(g => !g.construction && g.k !== 'point');
+  let edges: [Point2, Point2][];
+  if (geometry?.length) {
+    if (geometry.length !== 4 || !geometry.every(g => g.k === 'line')) return null;
+    edges = geometry.map(g => [g.a, g.b]);
+  } else {
+    if (f.points?.length !== 4 || f.shape === 'circle' || [f.bulges, f.rounds, f.chamfers].some(values => Object.values(values ?? {}).some(Boolean))) return null;
+    edges = f.points.map((p, i) => [p, f.points[(i + 1) % 4]]);
+  }
+  const points = edges.flat();
+  if (!points.flat().every(Number.isFinite)) return null;
+  const xs = points.map(([x]) => x), ys = points.map(([, y]) => y);
+  const bounds = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+  const tol = 1e-6;
+  if (bounds[2] - bounds[0] <= tol || bounds[3] - bounds[1] <= tol) return null;
+  const corner = ([x, y]: Point2) => {
+    const col = Math.abs(x - bounds[0]) <= tol ? 0 : Math.abs(x - bounds[2]) <= tol ? 1 : -1;
+    const row = Math.abs(y - bounds[1]) <= tol ? 0 : Math.abs(y - bounds[3]) <= tol ? 2 : -1;
+    return col < 0 || row < 0 ? -1 : col + row;
+  };
+  const sides = new Set<number>();
+  for (const edge of edges) {
+    const [a, b] = edge.map(corner);
+    if (a < 0 || b < 0 || a === b || (a ^ b) === 3) return null;
+    sides.add(Math.min(a, b) * 4 + Math.max(a, b));
+  }
+  return sides.size === 4 ? bounds : null;
+}
+
 /** A feature's value for `name`, resolving the aliases and derived fields
  *  documented in the file header. `found: false` means the field genuinely
  *  is not there (a straight sketch has no `across`), which a match must
@@ -97,7 +130,16 @@ function resolveField(f: Feature, name: string): { value: unknown; found: boolea
   if (f.kind === 'hole' && name === 'across') {
     return { value: f.diameter, found: true };
   }
+  if ((f.kind === 'extrude' || f.kind === 'pocket') && name === 'plainSweep') {
+    const options = f as unknown as Record<string, unknown>;
+    const plain = ['reversed', 'through', 'midplane', 'length2', 'taper', 'direction'].every(key => !options[key]);
+    return { value: plain, found: true };
+  }
   if (f.kind === 'sketch') {
+    if (name === 'rectangleBounds') {
+      const value = rectangleBounds(f);
+      return { value, found: value !== null };
+    }
     if (name === 'width' || name === 'depth') {
       // A sketch drawn on the canvas carries its SOLVED soup rows (`geoms`),
       // and `points` is only the legacy outline it was migrated from: once the
@@ -182,6 +224,8 @@ function describeFeature(kind: string, get: (name: string) => unknown): string {
       return across !== undefined ? `a hole across ${fmtNum(across)}` : 'a hole';
     }
     case 'sketch': {
+      const bbox = get('rectangleBounds');
+      if (Array.isArray(bbox)) return `a ${fmtNum(bbox[2] - bbox[0])} x ${fmtNum(bbox[3] - bbox[1])} rectangle`;
       const across = get('across');
       if (across !== undefined) return `a circle sketch across ${fmtNum(across)}`;
       const w = get('width');
@@ -189,6 +233,8 @@ function describeFeature(kind: string, get: (name: string) => unknown): string {
       if (w !== undefined || d !== undefined) return `a sketch ${fmtNum(w)} x ${fmtNum(d)}`;
       return 'a sketch';
     }
+    case 'extrude': return get('height') === undefined ? 'a pull' : `a ${fmtNum(get('height'))} mm pull`;
+    case 'pocket': return get('depth') === undefined ? 'a pocket' : `a ${fmtNum(get('depth'))} mm pocket`;
     case 'shell': {
       const t = get('thickness');
       return t !== undefined ? `a hollow with a ${fmtNum(t)} wall` : 'a hollow';
@@ -227,16 +273,24 @@ export function checkModel(
   const used = new Set<string>();
   const missing: ModelExpect[] = [];
   const refused = refusals ?? {};
+  const byId = new Map(doc.features.map(f => [f.id, f]));
+  // A nested expectation on target or into follows the recipe's reference.
+  // Raw id expectations keep their ordinary string matching.
+  const matches = (f: Feature, { kind, ...fields }: ModelExpect): boolean =>
+    f.kind === kind && refused[f.id] === undefined && Object.entries(fields).every(([name, expected]) => {
+      if ((name === 'target' || name === 'into') && expected && typeof expected === 'object' && 'kind' in expected) {
+        const { value } = resolveField(f, name);
+        const dependency = typeof value === 'string' ? byId.get(value) : undefined;
+        return !!dependency && matches(dependency, expected as ModelExpect);
+      }
+      return matchField(f, name, expected, tolerance);
+    });
 
   for (const entry of expect) {
-    const { kind, ...fields } = entry;
-    const fieldNames = Object.keys(fields);
     let matchedId: string | null = null;
     for (const f of doc.features) {
-      if (f.kind !== kind) continue;
       if (used.has(f.id)) continue;
-      if (refused[f.id] !== undefined) continue;
-      if (fieldNames.every((name) => matchField(f, name, fields[name], tolerance))) {
+      if (matches(f, entry)) {
         matchedId = f.id;
         break;
       }

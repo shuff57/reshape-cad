@@ -34,6 +34,8 @@ export interface RunResult {
   failed?: { index?: number; command?: string | null; error?: string; params?: unknown } | null;
   /** holes set only: set by a bridge that ran the commands under an execution budget (opts.budgetS) and ran out of it. */
   timedOut?: boolean;
+  /** The host stopped a pocket or its check before replaying it into the preview. */
+  pocketScreened?: true;
   /** holes set only: CPU milliseconds the run used, when the bridge measures it. */
   cpuMs?: number;
   /** patterns-mirror set only: wall milliseconds the set measured around the run. */

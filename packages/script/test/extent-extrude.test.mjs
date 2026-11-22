@@ -166,3 +166,13 @@ test('draft from: on a plain box or cylinder is unchanged, and a number still wi
   const n = draftOf(`${PULL} draft(p.face('right'), 5, { from: 'top', neutral: 3 });`);
   near(n.neutral, 3); assert.equal(n.neutralFrom, undefined);
 });
+
+test('draft from: on a copy follows its translation from the named root', () => {
+  const copied = `const a = box(30, 20, 14);
+    const b = move(a, [40, 3, 7], { copy: true });
+    const c = move(b, [60, 0, 10], { copy: true });`;
+  near(draftOf(`${copied} draft(c.face('right'), 5, { from: 'bottom' });`).neutral, 10);
+  near(draftOf(`${copied} draft(c, 5, { from: 'top' });`).neutral, 24);
+  near(draftOf(`${copied} draft(b, 5, { from: 'bottom', neutral: 3 });`).neutral, 3);
+  near(draftOf(`${copied} draft(a, 5, { from: 'bottom' });`).neutral, -7);
+});

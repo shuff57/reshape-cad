@@ -272,13 +272,34 @@ export async function budgetGate(prober, commands, budgetS, capS) {
 const heldOf = (held, n) => (Number.isInteger(held) && held > 0 && held <= n ? held : 0);
 const featuresOf = (batch, n) => (Array.isArray(batch.results) && batch.results.length === n ? batch.results.map((r) => ({ feature: Number.isInteger(r?.feature) ? r.feature : null })) : undefined);
 
-export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
+export const POCKET_PREVIEW_BUDGET_S = 5;
+
+function runsPocket(commands) {
+  return commands.some(({ command, params }) =>
+    ((command === 'solid.extrude' || command === 'solid.loft') && params?.operation === 'cut')
+    || (command === 'solid.combine' && params?.operation === 'intersect'
+      && Array.isArray(params.tools) && params.tools.some(name => String(name).startsWith('tmp_tool_'))));
+}
+
+export function createUpstreamBridge(sc, { prober = null, capS, pocketBudgetS } = {}) {
+  async function screen(commands, start, budgetS) {
+    const pocket = Number.isFinite(pocketBudgetS) && runsPocket(commands.slice(start));
+    if (!pocket) return budgetGate(prober, commands, budgetS, capS);
+    const unavailable = { ok: false, probeError: true, pocketScreened: true, failed: { error: 'The pocket preview check did not complete.' } };
+    if (!prober) return { stop: unavailable };
+    const gate = await budgetGate(prober, commands, Math.min(clampBudgetS(budgetS) ?? Infinity, pocketBudgetS), capS);
+    if (gate?.stop) return { stop: { ...gate.stop, pocketScreened: true } };
+    return gate?.probeReply?.ok === true ? gate : { stop: unavailable };
+  }
+
   /**
    * run `commands` from an empty design, then read faces and edges of every body: the layer's topologyOf() reply.
    * With `held` and `heldResults` (the feature numbers of the commands SolidCraft already holds) only the commands after the first `held` are run.
    */
   async function topologyOf(commands, { held = 0, heldResults } = {}) {
     const n = Array.isArray(heldResults) && heldResults.length === heldOf(held, commands.length) ? heldResults.length : 0;
+    const gate = await screen(commands, n);
+    if (gate?.stop) return { ...gate.stop, error: gate.stop.failed?.error };
     if (!n) { try { await sc.execute('file.new', {}); } catch (e) { return { ok: false, error: String((e && e.message) || e) }; } }
     const rest = commands.slice(n);
     let batch = { results: [] };
@@ -311,9 +332,9 @@ export function createUpstreamBridge(sc, { prober = null, capS } = {}) {
      */
     async execute(commands, { fresh = false, topology = false, budgetS, held = 0, heldResults, features = false } = {}) {
       if (topology) return topologyOf(commands, { held, heldResults });
-      const gate = await budgetGate(prober, commands, budgetS, capS);
-      if (gate && gate.stop) return gate.stop;
       const n = fresh ? heldOf(held, commands.length) : 0;
+      const gate = await screen(commands, n, budgetS);
+      if (gate?.stop) return gate.stop;
       const rest = commands.slice(n);
       // probeVolume: what the scratch run measured, kept so a check can compare it with the real run (the two are different compilations of the same engine)
       const stamp = (r) => (gate ? { ...r, cpuMs: gate.cpuMs, probeLoadMs: gate.loadMs, probeVolume: (gate.probeReply?.measure?.bodies ?? []).reduce((a, b) => a + (b.volume_mm3 ?? 0), 0) } : r);

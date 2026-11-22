@@ -7,7 +7,7 @@
 // What the group's mapping guarantees is in contract/extrude-pocket.json; this file only reproduces the mapping and its guards.
 // No kernel is named: everything that touches an engine comes in through the context object, exactly as in the base.
 import type { ExtrudeFeature, Feature, PocketFeature, CombineFeature, SketchFeature } from '@shuff57/reshape-script/model-types';
-import type { Cmd, Frame, TranslateCtx, V3 } from './types.js';
+import type { Cmd, Frame, RunResult, TranslateCtx, V3 } from './types.js';
 import { frameWithMt, isSoup, refuse } from './translate.js';
 import type { Aggregate, InSketch, PlanCtx, PlanHelpers, Plan, Profile, SceneEntry, TranslateState, VerifyEnv } from './translate.js';
 import { evenOddPicks, soupLoops } from './soup-regions.js';
@@ -367,6 +367,11 @@ async function verifyPull(f: Feature, m: Aggregate, sk: SketchFeature, ctx: Tran
 
 const total = (res: { measure?: { bodies: Array<{ volume_mm3: number }> } }) => res.measure!.bodies.reduce((a, b) => a + b.volume_mm3, 0);
 
+export function pocketScreenSentence(f: Feature, reply: RunResult): string {
+  const problem = reply.timedOut ? 'the pocket took too long to check for the preview' : 'the preview could not finish checking the pocket';
+  return `${f.id}: ${problem}, so this step was left out; try a simpler outline or split the cut into smaller steps.`;
+}
+
 export interface Tool {
   pieces: string[];
   build(body: Body, only?: number): Sweep;
@@ -411,6 +416,7 @@ export async function cutConsistency(f: Feature, m: Aggregate, before: Aggregate
       const one = nTool > 1 ? tool.build({ operation: 'new', body_name: t }, rg) : made;
       if ('refusal' in one) { inconclusive = true; continue; }
       const r2 = await env.runSC([...env.accepted, ...one.cmds, { command: 'solid.combine', params: { target: piece, tools: [t], operation: 'intersect' } }]);
+      if (r2.pocketScreened) return { refusal: pocketScreenSentence(f, r2), removed };
       if (!r2.ok) { inconclusive = true; continue; }
       const leftover = r2.measure!.bodies.filter((b) => b.name === t).reduce((a, b) => a + b.volume_mm3, 0);
       removed += total(r2) - leftover - (sceneTotal - sceneExact(piece));

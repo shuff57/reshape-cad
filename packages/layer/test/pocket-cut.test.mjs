@@ -104,3 +104,20 @@ test('an inconclusive check accepts the pocket, as in the group: a scratch run t
     for (const set of SEVEN) assert.equal(pocketOf(await run(set, doc, { runSC })).status, 'built', `${set} ${mode}`);
   }
 });
+
+test('a pocket whose preview check timed out is left out of the accepted command list', async () => {
+  const doc = docOf(SRC(1.2e-4));
+  const engine = fake(MEASURED[1.2e-4]);
+  for (const command of ['solid.extrude', 'solid.combine']) {
+    const runSC = async (cmds) => {
+      if (cmds.at(-1)?.command === command && (command === 'solid.combine' || cmds.at(-1).params.operation === 'cut')) {
+        return { ok: false, timedOut: true, pocketScreened: true };
+      }
+      return engine.runSC(cmds);
+    };
+    const result = await run('unified', doc, { runSC });
+    assert.equal(pocketOf(result).status, 'refused');
+    assert.match(pocketOf(result).refusal, /took too long/);
+    assert.deepEqual(result.commands.map(c => c.command), ['solid.box']);
+  }
+});

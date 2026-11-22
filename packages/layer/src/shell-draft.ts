@@ -26,6 +26,7 @@ import { POCKET_CUT_GUARD, pocketCutRefusal, rememberRun } from './pocket-cut.js
 import { hollowRefusal, openAxisEngineSentence } from './hollow-check.js';
 import { partName, partNameOf, setPartName } from './part-name.js';
 import { motionRefusal, motionRepair } from './move-turn.js';
+import type { Resolved } from './resolve-names.js';
 import { beforeOf, blendOf, blendRefusal, chainsOn, groupRun } from './fillet-chain.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence } from './errored-body.js';
 import { BUDGET_S, budgetSentenceOther } from './holes.js';
@@ -201,7 +202,7 @@ type MtLike = TranslateCtx['mt'];
  * Walks the ModelDoc history. Through-holes are the one cut allowed: their edges are all 90-degree outside edges and the offset of a
  * cylindrical wall is another cylinder (measured: hollow after a through hole off-centre, truck 9520.16 vs OCCT 9520.23, 7e-6).
  */
-export function convexity(id: string, byId: Record<string, FView>, arc: ArcLike, holeExt: Record<string, number[]> = {}): Convex {
+export function convexity(id: string, byId: Record<string, FView>, arc: ArcLike, holeExt: Record<string, number[]> = {}, allowCopies = false): Convex {
   const seen = new Set<string>();
   const go = (cur: string): Convex => {
     if (seen.has(cur)) return { convex: false, why: 'a loop in the history' };
@@ -211,7 +212,7 @@ export function convexity(id: string, byId: Record<string, FView>, arc: ArcLike,
     switch (f.kind) {
       case 'box': case 'cylinder': case 'sphere': case 'cone': case 'prism': case 'wedge': return { convex: true };
       case 'torus': return { convex: false, why: 'a ring has a hole through its middle' };
-      case 'move': return f.copy ? { convex: false, why: 'a copy' } : go(f.target!);
+      case 'move': return f.copy && !allowCopies ? { convex: false, why: 'a copy' } : go(f.target!);
       case 'rotate': case 'draft': return go(f.target!);
       case 'fillet': return go(f.target!);
       case 'extrude': {
@@ -426,7 +427,7 @@ export function voidedDep(f: FView, st: TranslateState): string | null {
 
 /** What a post-check answers when it refuses. */
 export interface SDBad { guard: string; refusal: string; sweep?: string; expected?: number }
-export interface SDPostEnv { accepted: Cmd[]; variant: Cmd[]; runSC: TranslateCtx['runSC'] }
+export interface SDPostEnv { accepted: Cmd[]; variant: Cmd[]; runSC: TranslateCtx['runSC']; result?: RunResult }
 export type SDPost = (after: Aggregate, before: Aggregate | undefined, env?: SDPostEnv) => SDBad | null | Promise<SDBad | null>;
 /** A plan as the loop reads it (the base planners' plans and this file's, read loosely as the original reads them). */
 export interface SDPlan {
@@ -457,7 +458,7 @@ export interface SDG {
   /** the pick base of a name: the group's brep-rs-style resolver when the host has one, else the base's topology resolution. */
   pickAt(name: SDName): Promise<{ r: PickBase | null; raw?: string }>;
 }
-export interface PickBase { kind: string; centroid: V3; /** true: the point is where the part is NOW (topology path), so the moves of the history must not be added */ current?: true }
+export interface PickBase { kind: string; centroid: V3; /** true: the point is where the part is NOW (topology path), so the moves of the history must not be added */ current?: true; normal?: V3 }
 type SDCtx = TranslateCtx;
 
 function aggregateOf(res: RunResult, names: string[] | null): Aggregate | null {
@@ -482,7 +483,7 @@ export { aggregateOf as aggregateOfShellDraft };
 const NO_PICK_POINT = /but there is no safe pick point/;
 // ---- pick: where is the face NOW --------------------------------------------------------------------------------------
 interface PickOpts { gridOnHole: boolean; boxResult?: boolean }
-interface PickOk { pts: V3[]; shift: V3; root: FView | null; current: boolean }
+interface PickOk { pts: V3[]; shift: V3; root: FView | null; current: boolean; normal?: V3 }
 interface PickErr { err: string; raw?: string }
 /**
  * G-PICK. Candidate 3D points for a named primitive face, in the part's current position.
@@ -510,9 +511,16 @@ async function pickPoints(f: FView, name: SDName, st: TranslateState, G: SDG, { 
     return withRaw(SENTENCE.noFace(f, word));
   }
   if (!chain) return withRaw(SENTENCE.stale(f, `${WORD_OF[name.part] ?? 'chosen'} face`));
+  // A checked topology pick can carry the local face of a rigid, plain box.
+  // The axis-aligned grid and extent checks below do not apply to that face.
+  const turnedBox = r.current && r.normal && rigidTurnedBox(f.target!, name, G);
+  if (turnedBox) return { pts: [r.centroid], shift: [0, 0, 0], root, current: true, normal: r.normal };
+  if (r.current && root?.rotate?.some(a => a % 90 !== 0)) {
+    return withRaw(SENTENCE.stale(f, `${WORD_OF[name.part] ?? 'chosen'} face`));
+  }
   let shift: V3 = [0, 0, 0];
   for (const h of chain) {
-    if (h.kind === 'move') { if (h.copy) return withRaw(SENTENCE.stale(f, `${WORD_OF[name.part]} face`)); shift = shift.map((v, i) => v + h.offset![i]); }
+    if (h.kind === 'move') { shift = shift.map((v, i) => v + h.offset![i]); } // a copy is the original moved by its offset (G-COPY), so it shifts the same
     else if (['shell', 'draft', 'hole', 'fillet'].includes(h.kind)) continue;
     else if (opts_boxResult && (h.kind === 'mirror' || (h.kind === 'combine' && h.op === 'union'))) continue; // the root stays where it is; the extreme-face check below guards the pick
     else return withRaw(SENTENCE.stale(f, `${WORD_OF[name.part]} face`));
@@ -545,6 +553,15 @@ async function pickPoints(f: FView, name: SDName, st: TranslateState, G: SDG, { 
 }
 const byId0 = (G: SDG, id: string): FView | null => rootOf(id, G.byId);
 
+/** Local dimensions are preserved only along a rigid history from this plain box. */
+function rigidTurnedBox(target: string, name: SDName, G: SDG): V3 | null {
+  const root = G.byId[name.feature];
+  if (root?.kind !== 'box' || root.round || !root.size || !DIRV[name.part]) return null;
+  const chain = hops(name.feature, target, G.byId);
+  if (!chain || chain.some(h => h.kind !== 'move' && h.kind !== 'rotate')) return null;
+  return !isZero3(root.rotate) || chain.some(h => h.kind === 'rotate') ? root.size : null;
+}
+
 // ---- closed hollow (no open face): outer solid minus an inner copy of the same primitive, smaller by the wall --------------------------------
 /** result measured as a plain axis-aligned box: 6 plane faces and volume equal to the bounding-box volume */
 export function isPlainBox(m: Aggregate | undefined): boolean {
@@ -553,13 +570,13 @@ export function isPlainBox(m: Aggregate | undefined): boolean {
   return Math.abs(m.volume - bv) <= 1e-9 * Math.max(bv, 1);
 }
 /** the history of `id` is a box, mirrors, unions and (non-copy) moves only */
-export function onlyBoxJoins(id: string, byId: Record<string, FView>): boolean {
+export function onlyBoxJoins(id: string, byId: Record<string, FView>, allowCopies = false): boolean {
   const seen = new Set<string>();
   for (let cur: string | undefined = id; cur && !seen.has(cur); ) {
     seen.add(cur);
     const h: FView | undefined = byId[cur]; if (!h) return false;
     if (h.kind === 'box') return !h.round;
-    if (h.kind === 'mirror' || (h.kind === 'move' && !h.copy)) cur = h.target;
+    if (h.kind === 'mirror' || (h.kind === 'move' && (!h.copy || allowCopies))) cur = h.target;
     else if (h.kind === 'combine' && h.op === 'union') cur = h.targets?.[0];
     else return false;
   }
@@ -577,7 +594,7 @@ function planClosedShell(f: FView, st: TranslateState, ctx: PlanCtx, G: SDG, bs:
   if (!['box', 'cylinder', 'sphere', 'prism'].includes(root.kind)) return why(`${partName(f)} is made from ${/^[aeiou]/.test(KIND_NAME[root.kind] ?? root.kind) ? 'an' : 'a'} ${KIND_NAME[root.kind] ?? root.kind}`);
   const chain = hops(root.id, f.target, G.byId);
   if (!chain) return why(`${partName(f)} has a history this cannot follow`);
-  const bad = chain.find((h) => !(h.kind === 'move' && !h.copy));
+  const bad = chain.find((h) => h.kind !== 'move');
   if (bad) return why(`${partName(f)} has been changed by ${HOP_NAME[bad.kind] ?? `a ${bad.kind}`}`);
   if (root.round) return { ...refuse(root.kind === 'cylinder' && root.roundStyle === 'chamfer' ? SENTENCE.chamferCyl(f) : SENTENCE.closed(f, `${partName(f)} has rounded or bevelled edges`)), guard: 'G-CLOSED' };
   const t = f.thickness!;
@@ -634,7 +651,7 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   const bs = st.bodies[G.headOf(f.target!)];
   if (!bs || bs.length !== 1) return refuse(`${f.id} (hollow): ${partName(f)} is not a single solid, so ${f.id} is shown without it.`);
   if (!f.open) return planClosedShell(f, st, ctx, G, bs);
-  let cv = convexity(G.headOf(f.target!), G.byId, ctx.arc, G.holeExt);
+  let cv = convexity(G.headOf(f.target!), G.byId, ctx.arc, G.holeExt, ctx.allowCopies);
   // G-CONVEX over-refusal fix: a mirror or a join whose RESULT is measured to be a plain axis-aligned box (6 plane faces, volume = bounding-box volume) has no inside
   // edge at all, so the hollow is the hollow of that box. The open face is still picked from the root primitive (it stays where it is), and pickPoints
   // refuses unless that face lies on the box's bounding-box extreme, so a face that the mirror swallowed is never opened.
@@ -642,7 +659,7 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   if (!cv.convex && /^a (mirror|join)$/.test(cv.why!)) {
     const m0 = st.measure[G.headOf(f.target!)];
     const root0 = rootOf(f.open.feature, G.byId);
-    if (m0 && root0?.kind === 'box' && isZero3(root0.rotate) && isPlainBox(m0) && onlyBoxJoins(G.headOf(f.target!), G.byId)) { cv = { convex: true, boxResult: true }; boxResult = true; }
+    if (m0 && root0?.kind === 'box' && isZero3(root0.rotate) && isPlainBox(m0) && onlyBoxJoins(G.headOf(f.target!), G.byId, ctx.allowCopies)) { cv = { convex: true, boxResult: true }; boxResult = true; }
   }
   if (!cv.convex && /^it is already hollow/.test(cv.why!)) return { ...refuse(SENTENCE.shellTwice(f)), guard: 'G-TWICE' };
   if (!cv.convex && /^a blind hole/.test(cv.why!)) return { ...refuse(SENTENCE.blindHole(f)), guard: 'G-BLIND' };
@@ -669,9 +686,10 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   // G-THICK pre-check for a plain box: cavity depth along the open axis and half the narrowest lateral width
   const rootT = rootOf(f.target, G.byId);
   const dirv = DIRV[part];
-  if (dirv && rootT?.kind === 'box' && m && !(rootT.rotate && rootT.rotate.some((a) => a % 90 !== 0)) && !rootT.round) {
+  const turnedBoxSize = ctx.followMoves && !ctx.resolveAt ? rigidTurnedBox(f.target!, f.open, G) : null;
+  if (dirv && rootT?.kind === 'box' && m && (turnedBoxSize || !(rootT.rotate && rootT.rotate.some((a) => a % 90 !== 0))) && !rootT.round) {
     const ax = dirv.findIndex((v) => v !== 0);
-    const e = [0, 1, 2].map((i) => m.bbox[i + 3] - m.bbox[i]);
+    const e = turnedBoxSize ?? [0, 1, 2].map((i) => m.bbox[i + 3] - m.bbox[i]);
     const limit = Math.min(e[ax], ...[0, 1, 2].filter((i) => i !== ax).map((i) => e[i] / 2));
     if (f.thickness! >= limit - 1e-9) return { ...refuse(SENTENCE.thickBox(f, limit)), guard: 'G-THICK' };
   }
@@ -681,14 +699,23 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   // alone a recess whose mouth sits 1 to 2 walls from a side wall passed and built 2.3 to 5.5 % off (v-01396-centre, v-01024-one, v-00872-wall2), on both pins.
   // The recess is only at the mouth but the check runs the tube's whole length: that over-refuses a recess on the closed side, which is safe.
   if (cv.holes) {
-    const holes: FView[] = []; for (let cur: string | undefined = G.headOf(f.target!), seen = new Set<string>(); cur && !seen.has(cur); ) { seen.add(cur); const h: FView | undefined = G.byId[cur]; if (!h) break; if (h.kind === 'hole') holes.push(h); cur = h.kind === 'combine' ? h.targets?.[0] : h.target; }
+    const holes: Array<{ hole: FView; offset: V3 }> = [];
+    let offset: V3 = [0, 0, 0];
+    for (let cur: string | undefined = G.headOf(f.target!), seen = new Set<string>(); cur && !seen.has(cur); ) {
+      seen.add(cur);
+      const h: FView | undefined = G.byId[cur];
+      if (!h) break;
+      if (h.kind === 'hole') holes.push({ hole: h, offset });
+      if (ctx.allowCopies && h.kind === 'move') offset = offset.map((value, i) => value + h.offset![i]);
+      cur = h.kind === 'combine' ? h.targets?.[0] : h.target;
+    }
     const rt = rootOf(f.target, G.byId);
     const bad = (why: string): SDPlan => ({ ...refuse(SENTENCE.holeNear(f, why)), guard: 'G-HOLE' });
     if (!rt || rt.kind !== 'box' || (rt.rotate && rt.rotate.some((a) => a % 90 !== 0))) return bad('the hole is in a part that is not a plain box');
-    if (new Set(holes.map((h) => h.axis ?? 'z')).size > 1) return bad('the holes run in different directions');
+    if (new Set(holes.map(({ hole }) => hole.axis ?? 'z')).size > 1) return bad('the holes run in different directions');
     const O = dirv ? dirv.findIndex((v) => v !== 0) : -1; const openHi = dirv ? dirv[O] > 0 : true;
     const tubes: Array<{ c: number[]; ax: number; R: number }> = [];
-    for (const h of holes) {
+    for (const { hole: h, offset } of holes) {
       const box = G.holeBox[h.id]; if (!box) return bad('the part was measured before the hole');
       const ax = AXI[h.axis ?? 'z'];
       // G-CSOPEN (HALT-8, remeasure-0.30.1/HALT-8.md): a countersink whose mouth is on the face being opened. A hole's mouth is on the high side of its axis.
@@ -704,7 +731,7 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
         const loLim = box[i] + (openSide && !openHi ? 0 : f.thickness!); const hiLim = box[i + 3] - (openSide && openHi ? 0 : f.thickness!);
         if (c[i] - R < loLim - 1e-9 || c[i] + R > hiLim + 1e-9) return bad(`the hole's wall allowance of ${fmt(R)} reaches the side wall`);
       }
-      tubes.push({ c, ax, R });
+      tubes.push({ c: c.map((value, i) => value + offset[i]), ax, R });
     }
     for (let a = 0; a < tubes.length; a++) for (let b = a + 1; b < tubes.length; b++) {
       const d2 = Math.hypot(...[0, 1, 2].filter((k) => k !== tubes[a].ax).map((k) => tubes[a].c[k] - tubes[b].c[k]));
@@ -729,12 +756,25 @@ async function planShell(f: FView, st: TranslateState, ctx: SDCtx & PlanCtx, G: 
   return {
     variants, produces: bs, consumes: [f.target!], pickedFrom: pk.current ? 'solidcraft topology (browser) + moves in the history' : 'brep-rs resolve + moves in the history',
     plain: (raw) => plainEngineText(raw, f, { drafted }),
-    post: (after, before) => {
+    post: (after, before, env) => {
       if (!before) return null;
       // a hollow must lose volume and gain faces; the unhollowed block comes back with neither
       // planar: the volume must drop; curved volumes are tessellation-derived (about 1e-4), so only 'identical' counts as unhollowed
       const dropped = after.curved || before.curved ? Math.abs(after.volume - before.volume) > 1e-9 * before.volume && after.volume < before.volume * (1 + 5e-4) : after.volume < before.volume * (1 - 1e-9);
       if (!dropped || !(after.faces > before.faces)) return { guard: 'G-THICK', refusal: SENTENCE.thickGeneric(f) };
+      if (pk.normal && turnedBoxSize && dirv) {
+        const axis = dirv.findIndex(v => v !== 0);
+        const cavityVolume = turnedBoxSize.reduce((vol, size, i) => vol * (size - f.thickness! * (i === axis ? 1 : 2)), 1);
+        const expected = turnedBoxSize.reduce((vol, size) => vol * size, 1) - cavityVolume;
+        const output = env?.result?.measure?.bodies.find(b => b.name === bs[0]);
+        const tolerance = 1e-8 * Math.max(1, Math.hypot(...turnedBoxSize));
+        const centre = [0, 1, 2].map(i => (before.bbox[i] + before.bbox[i + 3]) / 2);
+        const com = centre.map((value, i) => value - pk.normal![i] * cavityVolume * f.thickness! / (2 * expected));
+        if (output?.kernel?.shells !== 1 || Math.abs(after.volume - expected) > 1e-8 * Math.max(1, expected)
+          || !after.com?.every(Number.isFinite) || after.com.some((value, i) => Math.abs(value - com[i]) > tolerance)) {
+          return { guard: 'G-TURNED-HOLLOW', refusal: `${f.id} (hollow): the hollow of the turned box could not be verified, so it is shown without the hollow; try hollowing before turning the box.` };
+        }
+      }
       return null;
     },
   };
@@ -804,7 +844,7 @@ function critCoords(id: string, G: SDG, st: TranslateState, ctx: SDCtx, seen: Se
   switch (f.kind) {
     case 'box': case 'cylinder': case 'sphere': case 'cone': case 'prism': case 'wedge': return own;
     case 'extrude': { const c = sketchC(f.target!, [0, f.height!]); return c && own ? mergeC(c, own) : null; }
-    case 'move': return f.copy ? null : shiftC(critCoords(f.target!, G, st, ctx, seen), f.offset!);
+    case 'move': return shiftC(critCoords(f.target!, G, st, ctx, seen), f.offset!);
     case 'draft': case 'shell': case 'fillet': { const c = critCoords(f.target!, G, st, ctx, seen); return c && own ? mergeC(c, own) : c; }
     case 'combine': { const cs = f.targets!.map((t) => critCoords(t, G, st, ctx, new Set(seen))); return mergeC(...cs, own ?? [[], [], []]); }
     case 'hole': {
@@ -950,7 +990,7 @@ function planWholeDraft(f: FView, st: TranslateState, ctx: SDCtx, G: SDG, bs: st
   if (!chain) return refuse(SENTENCE.wholeChanged(f, 'a step this cannot follow'));
   let shift: V3 = [0, 0, 0];
   for (const h of chain) {
-    if (h.kind === 'move' && !h.copy) { shift = shift.map((v, i) => v + h.offset![i]); continue; }
+    if (h.kind === 'move') { shift = shift.map((v, i) => v + h.offset![i]); continue; }
     if (h.kind === 'shell') return { ...refuse(SENTENCE.wholeHollow(f)), guard: 'G-WHOLE-HOLLOW' };
     if (h.kind === 'draft') return { ...refuse(SENTENCE.wholeDrafted(f)), guard: 'G-TWICE' };
     return { ...refuse(SENTENCE.wholeChanged(f, HOP_NAME[h.kind] ?? `a ${h.kind}`)), guard: 'G-WHOLE-HISTORY' };
@@ -1021,7 +1061,8 @@ async function planDraft(f: FView, st: TranslateState, ctx: SDCtx, G: SDG): Prom
   const rootFace = rootOf(f.face.feature, G.byId);
   if (rootFace?.kind === 'sphere') return { ...refuse(SENTENCE.sphereFace(f)), guard: 'G-FLAT' };
   const useEarly = G.fromUsage?.[G.draftIds.indexOf(f.id)];
-  if (dirv && dirv[AXI[f.pull ?? 'z']] !== 0) return { ...refuse(SENTENCE.cap(f, WORD_OF[part], { pull: f.pull ?? 'z', fromWord: useEarly?.from ?? null })), guard: 'G-CAP' };
+  const turnedBox = ctx.followMoves && !ctx.resolveAt && rigidTurnedBox(f.target!, f.face, G);
+  if (!turnedBox && dirv && dirv[AXI[f.pull ?? 'z']] !== 0) return { ...refuse(SENTENCE.cap(f, WORD_OF[part], { pull: f.pull ?? 'z', fromWord: useEarly?.from ?? null })), guard: 'G-CAP' };
   // same face drafted before in this history
   const prior = hops(f.face.feature, f.target, G.byId) ?? [];
   if (prior.some((h) => h.kind === 'draft' && h.face?.feature === f.face!.feature && h.face?.part === part)) return { ...refuse(SENTENCE.twice(f)), guard: 'G-TWICE' };
@@ -1031,9 +1072,12 @@ async function planDraft(f: FView, st: TranslateState, ctx: SDCtx, G: SDG): Prom
   // G-FROM
   const m = st.measure[G.headOf(f.target!)] ?? st.measure[f.target!];
   const fg = fromGuard(f, m, G); if (fg) return fg;
-  const cv = convexity(G.headOf(f.target!), G.byId, ctx.arc, G.holeExt);
+  const cv = convexity(G.headOf(f.target!), G.byId, ctx.arc, G.holeExt, ctx.allowCopies);
   const pk = await pickPoints(f, f.face, st, G, { gridOnHole: cv.holes === true || !cv.convex });
   if ('err' in pk) return { ...refuse(pk.err), guard: 'G-PICK', ...(pk.raw === undefined ? {} : { raw: pk.raw }) };
+  if (pk.normal && Math.abs(pk.normal[AXI[f.pull ?? 'z']]) > 1e-6) {
+    return { ...refuse(`${f.id} (draft): the selected face of the turned box does not run along the pull direction, so it is shown without the draft; pick a side parallel to the pull direction or draft before turning.`), guard: 'G-CAP' };
+  }
   if ((!cv.convex || cv.holes === true) && !G.off?.includes('G-REACH')) {
     const dv = DIRV[part];
     const axi = dv ? dv.findIndex((v) => v !== 0) : -1;
@@ -1141,11 +1185,11 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
       if (ctx.resolveAt) { const r = await ctx.resolveAt(prefix, name); return { r: r as PickBase | null }; }
       // no primitive-frame resolver: the base's name resolution, from the engine's own topology (resolve-names.ts, unchanged)
       if (!resolvedMap) resolvedMap = await resolveNamesFor(f, prefix, env);
-      const rr = resolvedMap.get(name) as { ok: boolean; kind?: string; point?: V3 | null; sentence?: string } | undefined;
+      const rr = resolvedMap.get(name) as Resolved | undefined;
       if (!rr) return { r: null, raw: 'no resolution (the name was not resolved: no topology reply, or not a name)' };
       if (rr.ok === false) return { r: null, raw: rr.sentence };
       if (rr.kind !== 'face' || !rr.point) return { r: null, raw: `it names ${rr.kind}` };
-      return { r: { kind: 'face', centroid: rr.point, current: true } };
+      return { r: { kind: 'face', centroid: rr.point, current: true, ...(ctx.followMoves && rr.plane ? { normal: rr.plane.n } : {}) } };
     },
   };
   // the base's planners read ctx.resolve for a fillet's edge. Path A (the host supplies ctx.resolveAt, the group's pick source) when filletEdgeAt
@@ -1174,8 +1218,12 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
         : planFeature(f, st, fctx, BASE_PROFILE) as unknown as SDPlan;
     if (edgeAt && plan.variants) plan.pickedFrom = PICKED_AT;
     if (vd && ['move', 'rotate'].includes(f.kind) && !plan.refusal && !plan.noop) {
-      if (f.kind === 'move' && fv.copy) plan = { ...refuse(SENTENCE.afterClosedHollow(fv, vd)), guard: 'G-VOID' };
-      else { plan.voided = true; plan.post = (after, before) => (before && (Math.abs(after.volume - before.volume) > 3e-4 * Math.max(1, before.volume) || after.faces !== before.faces) ? { guard: 'G-VOID', refusal: SENTENCE.afterClosedHollow(fv, vd) } : null); }
+      plan.voided = true;
+      plan.post = (after, before) => {
+        if (!before) return null;
+        const volumeChanged = Math.abs(after.volume - before.volume) > 3e-4 * Math.max(1, before.volume);
+        return volumeChanged || after.faces !== before.faces ? { guard: 'G-VOID', refusal: SENTENCE.afterClosedHollow(fv, vd) } : null;
+      };
     }
   } catch (e) { plan = refuse(`${f.id} (${f.kind}): this step could not be built (${String((e as Error).message).replace(/[\[\]`]/g, '')}), so it is shown without it.`); }
   if (plan.refusal) { const s = sanitize(plan.refusal, byId); st.refused[f.id] = s; note({ status: (plan.status ?? 'refused') as 'refused', refusal: s, guard: plan.guard, ...(plan.raw === undefined ? {} : { raw: plan.raw }), commands: [] }); return; }
@@ -1220,7 +1268,7 @@ export async function shellDraftStep(f: Feature, idx: number, env: LoopEnv): Pro
     // a blend of one straight edge between two planar faces adds exactly one face (fillet-chain.ts)
     const bl = blendRefusal(f, blendOf(plan), beforeOf(st, fv.target), m, ctx);
     if (bl) { st.refused[f.id] = bl.sentence; note({ status: 'refused', refusal: bl.sentence, guard: bl.guard, unguarded: { volume: m.volume, faces: m.faces, bbox: m.bbox, com: m.com }, commands: variant }); return; }
-    const bad = await plan.post?.(m, st.measure[headOf(fv.target!)] ?? st.measure[fv.target!], { accepted: [...accepted], variant, runSC: ctx.runSC });
+    const bad = await plan.post?.(m, st.measure[headOf(fv.target!)] ?? st.measure[fv.target!], { accepted: [...accepted], variant, runSC: ctx.runSC, result: res });
     if (bad) {
       const s = sanitize(bad.refusal, byId);
       st.refused[f.id] = s;

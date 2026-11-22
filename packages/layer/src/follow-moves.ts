@@ -1,14 +1,14 @@
-// Opt-in (ctx.followMoves): carry a resolved FACE name through the moves and quarter turns of the part between the feature the name was
+// Opt-in (ctx.followMoves): carry a resolved planar face name through rigid moves and turns between the feature the name was
 // resolved on and the target it is used on, by applying the SAME rigid transform the translator's commands apply (planFeature 'move' /
 // 'rotate') to the named plane. The base resolver (resolve-names.ts) reads a name on the own shape of the feature it names; without this the
 // target's plane is looked up where the primitive was BUILT, so a part that was moved or turned afterwards is refused ("no face of b lies on
 // that plane any more"). With this, confirmOnTarget (translate.ts) looks for the moved plane on the target's own topology, and still picks
 // the point from that topology with the engine's own pick-hit test, still requires exactly one face, and still refuses otherwise.
 //
-// What is followed: a non-copy `move` (a translation by `offset`), a `rotate` whose angles are all multiples of 90 degrees (the translator
+// What is followed: a `move` (including a copy when allowed, as a translation by `offset`), a finite `rotate` (the translator
 // moves the part's bounding-box centre to the origin, turns about x then y then z, moves it back: p' = R (p - c) + c, R right-handed,
 // verified on the kernel), and the features that change a body without placing it (shell, draft, hole, fillet, pocket, groove).
-// What is refused, in one sentence, never approximated: a copying move, a rotate by any other angle, and any other feature (join or cut,
+// What is refused, in one sentence: a copying move when copies are disabled and any other feature (join or cut,
 // mirror, pattern, extrude...) standing between a moved or turned part and the target. A chain with no move and no turn is returned
 // UNCHANGED, so switching the flag on changes nothing for a part that was never placed.
 import type { Feature } from '@shuff57/reshape-script/model-types';
@@ -29,6 +29,10 @@ const SIN = [0, 1, 0, -1]; const COS = [1, 0, -1, 0];
 /** Right-handed rotation about axis 0 (x), 1 (y) or 2 (z) by k quarter turns, exact entries. */
 function quarter(axis: 0 | 1 | 2, k: number): Mat {
   const q = ((k % 4) + 4) % 4; const c = COS[q]; const s = SIN[q];
+  return axisRotation(axis, c, s);
+}
+
+function axisRotation(axis: number, c: number, s: number): Mat {
   if (axis === 0) return [[1, 0, 0], [0, c, -s], [0, s, c]];
   if (axis === 1) return [[c, 0, s], [0, 1, 0], [-s, 0, c]];
   return [[c, -s, 0], [s, c, 0], [0, 0, 1]];
@@ -45,12 +49,29 @@ export function quarterTurns(angles: V3): Mat | null {
   return R;
 }
 
+/** Compose the command's rotations, about global X, Y and Z in that order. */
+export function rotationOf(angles: V3): Mat | null {
+  const exact = quarterTurns(angles);
+  if (exact) return exact;
+  let result = I3;
+  for (let axis = 0; axis < 3; axis++) {
+    const degrees = angles[axis] ?? 0;
+    if (!Number.isFinite(degrees)) return null;
+    const radians = (degrees % 360) * Math.PI / 180;
+    result = mul(axisRotation(axis, Math.cos(radians), Math.sin(radians)), result);
+  }
+  return result;
+}
+
 export interface FollowEnv {
   /** the features before the one that uses the name */
   features: Feature[];
   /** the bounding box [minx, miny, minz, maxx, maxy, maxz] the translator measured for a feature (what planFeature 'rotate' reads) */
   bboxOf(featureId: string): number[] | undefined;
   targetId: string;
+  /** ctx.allowCopies: a copying move is followed as a move (2026-11-21). Walking back from the target, a copy on the way means the target IS that copy
+   *  (a body of its own under its own name, checked by G-COPY), so the name means its face, moved by the copy's offset. */
+  copies?: boolean;
 }
 
 const PASS_TARGET = ['shell', 'draft', 'hole', 'fillet'];
@@ -70,14 +91,14 @@ export function followMoves(rr: Resolved, env: FollowEnv): Resolved {
     const g = byId.get(cur);
     if (!g) { blocker = null; break; }
     if (g.kind === 'move') {
-      if (g.copy) return fail(`${nm} names a face of ${root}, but ${g.id} is a copying move, so which copy the name means is not known; nothing is picked`);
+      if (g.copy && !env.copies) return fail(`${nm} names a face of ${root}, but ${g.id} is a copying move, so which copy the name means is not known; nothing is picked`);
       back.push({ kind: 'move', t: g.offset ?? [0, 0, 0] }); cur = g.target ?? ''; continue;
     }
     if (g.kind === 'rotate') {
-      const R = quarterTurns(g.angles ?? [0, 0, 0]);
-      if (!R) return fail(`${nm} names a face of ${root}, but ${g.id} turns the part by ${(g.angles ?? []).join(', ')} degrees, and a name is carried only through a turn of whole quarter turns (90, 180 or 270 degrees) about x, y or z; nothing is picked`);
+      const R = rotationOf(g.angles ?? [0, 0, 0]);
+      if (!R) return fail(`${nm} names a face of ${root}, but ${g.id} does not give finite angles; nothing is picked`);
       const bb = env.bboxOf(g.target ?? '');
-      if (!bb) return fail(`${nm} names a face of ${root}, but there is no measured bounding box for ${g.target} to turn ${g.id} about; nothing is picked`);
+      if (bb?.length !== 6 || !bb.every(Number.isFinite)) return fail(`${nm} names a face of ${root}, but there is no measured bounding box for ${g.target} to turn ${g.id} about; nothing is picked`);
       back.push({ kind: 'turn', R, c: [0, 1, 2].map((i) => (bb[i] + bb[i + 3]) / 2), id: g.id }); cur = g.target ?? ''; continue;
     }
     if (PASS_TARGET.includes(g.kind)) { cur = g.target ?? ''; continue; }
@@ -88,7 +109,7 @@ export function followMoves(rr: Resolved, env: FollowEnv): Resolved {
   if (!back.length) return rr; // never placed, or a history this does not read: the base behaviour, unchanged
   if (cur !== root || blocker) {
     const why = blocker ? `${blocker.id} is a ${blocker.kind}` : 'the history between them cannot be read';
-    return fail(`${nm} names a face of ${root}, but the part was moved or turned and then ${why}; a name is carried through a move or a quarter turn only, so nothing is picked`);
+    return fail(`${nm} names a face of ${root}, but the part was moved or turned and then ${why}; nothing is picked`);
   }
   // apply in build order: the first transform applied is the one nearest the named feature = the last pushed
   let n = rr.plane.n; let d = rr.plane.d; let pt: V3 | null | undefined = rr.point;

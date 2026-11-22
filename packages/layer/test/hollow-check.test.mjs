@@ -154,11 +154,13 @@ test('what the closed form covers', () => {
   assert.ok(!('why' in cfw([box(), blend('r1', 'b1', between('+x', '+y'), 3), hollow('r1', 2)])));
   assert.ok(!('why' in cfw([box(), blend('r1', 'b1', between('+z', '+y'), 1), hollow('r1', 2)])));
   assert.match(cfw([box(), blend('r1', 'b1', between('+z', '+y'), 3), hollow('r1', 2)]).why, /rim/);
-  // not covered: another root, a whole-shape round, a copy, a pocket, a blind or a crossing hole, the same edge twice, a blend named on another feature
+  const round = blend('r1', 'b1', between('-z', '-y'), 1);
+  const copied = [box(), round, { id: 'm1', kind: 'move', target: 'r1', offset: [50, 0, 0], copy: true }, hollow('m1', 1)];
+  assert.deepEqual(cfw(copied), cfw([box(), round, hollow('r1', 1)]));
+  // not covered: another root, a whole-shape round, a pocket, a blind or a crossing hole, the same edge twice, a blend named on another feature
   assert.equal(cov([{ id: 'c1', kind: 'cylinder', radius: 5, height: 10 }, blend('r1', 'c1', between('+z', 'side', 'c1'), 1), hollow('r1', 1)]).ok, false);
   assert.match(cov([box([40, 30, 10], { round: 1 }), hollow('b1', 2)]).why, /whole-shape round/);
   assert.equal(cov([box([40, 30, 10], { round: 1 }), hollow('b1', 2)]).rounds, true);
-  assert.match(cov([box(), blend('r1', 'b1', between('-z', '-y'), 1), { id: 'm1', kind: 'move', target: 'r1', offset: [1, 0, 0], copy: true }, hollow('m1', 1)]).why, /copy/);
   assert.match(cov([box(), blend('r1', 'b1', between('-z', '-y'), 1), { id: 'h1', kind: 'hole', target: 'r1', diameter: 4, depth: 5, center: [0, 0, 2.5], axis: 'z' }, hollow('h1', 1)]).why, /blind/);
   assert.match(cfw([box(), blend('r1', 'b1', between('-z', '-y'), 1), { id: 'h1', kind: 'hole', target: 'r1', diameter: 4, depth: 50, center: [0, 0, 0], axis: 'x' }, hollow('h1', 1)]).why, /across the open axis/);
   assert.match(cfw([box(), blend('r1', 'b1', between('-z', '-y'), 3), { id: 'h1', kind: 'hole', target: 'r1', diameter: 4, depth: 20, center: [0, -11, 0], axis: 'z' }, hollow('h1', 1)]).why, /reaches a blend/);
