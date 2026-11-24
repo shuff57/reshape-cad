@@ -232,6 +232,14 @@ export function toolSurfaces(sk: SketchFeature, arc: OutlineApi): { kinds: strin
   return { kinds: [...kinds] };
 }
 
+/**
+ * How far out of square (relative) a cylinder's bounding box may be across its two round directions and still count as round. DEVIATION from the spike original
+ * (contract/revolve-groove.guard.mjs, which says 1e-6 and stays untouched): SolidCraft 0.30.1 reports a cylinder's box from its tessellation, out of square by 8.2e-6 to 1.14e-5
+ * at every size measured (d 2 to 600 mm, along z and x, at and off the origin; its volume stays within 1.22e-4 of the closed form). At 1e-6 no SolidCraft cylinder was ever
+ * certified, so every full-turn groove into one, its own axis included, was refused as "not on the part's own axis" (G8, S_FULL), and G9 / G10 judged it by its box.
+ * 1e-4 is nine times the worst measured; the volume check (3e-4) still has to hold. test/certified-cylinder.test.mjs pins both sides.
+ */
+export const ROUND_TOL = 1e-4;
 /** A part the guard can PROVE is a plain box or a plain cylinder, from its measure alone (volume equals the bounding box's, or the cylinder's closed form). */
 export type Certified = { kind: 'box'; bbox: number[] } | { kind: 'cylinder'; axis: number; R: number; centre: number[]; bbox: number[] };
 export function certifiedShape(meas: Aggregate | undefined): Certified | null {
@@ -243,7 +251,7 @@ export function certifiedShape(meas: Aggregate | undefined): Certified | null {
     for (let k = 0; k < 3; k++) {
       const o1 = (k + 1) % 3; const o2 = (k + 2) % 3;
       const R = d[o1] / 2;
-      if (Math.abs(d[o1] - d[o2]) <= 1e-6 * d[o1] && Math.abs(V - Math.PI * R * R * d[k]) <= 3e-4 * V) return { kind: 'cylinder', axis: k, R, centre: [(b[0] + b[3]) / 2, (b[1] + b[4]) / 2, (b[2] + b[5]) / 2], bbox: b };
+      if (Math.abs(d[o1] - d[o2]) <= ROUND_TOL * d[o1] && Math.abs(V - Math.PI * R * R * d[k]) <= 3e-4 * V) return { kind: 'cylinder', axis: k, R, centre: [(b[0] + b[3]) / 2, (b[1] + b[4]) / 2, (b[2] + b[5]) / 2], bbox: b };
     }
   }
   return null;
