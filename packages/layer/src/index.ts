@@ -48,3 +48,6 @@ export type { PrimF, PrimVerdict } from './primitives.js';
 export type { SketchArea } from './sketch-volume.js';
 export { guardLegacySketches, intendedRules as legacyIntendedRules, checkAll as legacyCheckAll, polish as legacyPolish, plainRule as legacyPlainRule, refuseSentence as legacyRefuseSentence, refuseSentenceWith as legacyRefuseSentenceWith, refuseShapeSentence as legacyRefuseShapeSentence, shapeProblem as legacyShapeProblem } from './legacy-guard.js';
 export type { RuleLogEntry, LegacyGuardResult, LegacySolver, LegacySketchReport } from './legacy-guard.js';
+export { BL_KINDS, BL_VOLUME_GUARD, blendLoftStep, blendLoftGuard } from './blend-loft.js';
+export { guardBlend, guardDoc as guardBlends, postCheckBlend, prismatoidVolume, NEEDLE_MAX } from './blend-loft-guard.js';
+export type { BlendVerdict, BlendGuardCtx } from './blend-loft-guard.js';

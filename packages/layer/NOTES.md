@@ -545,3 +545,16 @@ Original (translate-fc.mjs with `ctx.fc` on, refusals mapped as fc-page.mjs maps
 - No built solid is shown right: the fake has no kernel, and there is no 0.21.0 measurement. `test/live-replay-fillet-chamfer.mjs` (original vs layer on the real kernel, plus a score against the cases' closed forms, which is the only second oracle) and the `fc` / `fccombined` corpora of `live-replay-unified.mjs` are WRITTEN, `node --check` clean, NOT RUN (the rig is busy).
 - The missing-measure fix is shown on the fake only; on a real kernel it will refuse any planar blend the kernel builds with no new face, which is the point, but how often is unmeasured.
 - The pane's bridge cannot report topology, so none of this is reachable in the pane until a host-side adapter exists (the lead's).
+
+## Fold 8: blend-loft (`src/blend-loft-guard.ts`, `src/blend-loft.ts`; 2026-11-24)
+
+The group's guard (contract/blend-loft.guard.mjs, accepted) ported as it is, plus NEEDLE (a straight-sided loft longer than 1000 x its width) and
+PRISMATOID (a straight-sided loft against h/6 (A1 + A2 + 4 Am) after the build). Only the 'unified' set runs it: routeOf sends every `blend` to
+blendLoftStep, which refuses before the engine (BL-<code>) and turns on postCheckBlend in genericStep (ctx.blendLoftCheck, BL-volume). The page passes
+no `neutral` / `argOrder`, so the guard's conservative rule holds and the script refuses the 'datum' case itself (reshape-script.ts blend()).
+Differential and step tests: test/blend-loft.test.mjs (every check mutation-checked). Page sweep against OCCT, 721 cases, no wrong solid:
+docs/spikes/solidcraft-referee/blend-loft-fold/BLEND-LOFT-FOLD.md. The host's NOT_YET list is empty.
+Unified invariant 2 (test/unified.test.mjs): a document with a loft in another group's domain is no longer equal to that group's set by definition, because only
+unified runs the loft guard. The test accepts, counts and prints exactly two causes: the first difference is a BL refusal, or every difference is a loft
+whose status, sentence, commands and measure agree (the generic step's note adds checks / evidence, lacks wallMs, and its measure counts shells).
+A loft in a patterns-mirror document keeps that loop's time budget (unified.ts wrap). Full run 2026-11-24: 88 + 22 runs in these classes, 0 other differences.

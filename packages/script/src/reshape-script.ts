@@ -2016,6 +2016,11 @@ export function runScript(source: string, opts: RunOptions = {}): RunResult {
     const sa = findFeature(a.id) as SketchFeature;
     let sb = findFeature(b.id) as SketchFeature;
     const nextOffset = num(gap, b.id, 'offset') + sa.offset;
+    // The blend-loft guard's 'datum' case (docs/spikes/solidcraft-referee/contract/blend-loft.guard.mjs): a second sketch the student placed at a height
+    // of its own, which the gap would silently move. The layer sees only the moved sketch, so the script says it here, in the guard's words.
+    if (Math.abs(sb.offset) > 1e-12 && Math.abs(sb.offset - nextOffset) > 1e-12 && sb.id !== sa.id) {
+      throw new Error(`The second sketch was placed at height ${+sb.offset.toFixed(4)}, but the loft's gap puts it at ${+nextOffset.toFixed(4)}, so make the two agree by changing the gap or the height the sketch was drawn at.`);
+    }
     if (sb.offset !== nextOffset) {
       sb = { ...sb, offset: nextOffset };
       replaceFeature(b.id, sb);

@@ -40,6 +40,7 @@ import { PM_PROFILE, PM_KINDS, cutGuard, pmStep } from './patterns-mirror.js';
 import { BOOL_PROFILE, BOOL_KINDS, boolStep } from './booleans.js';
 import { RG_PROFILE, RG_KINDS, rgStep } from './revolve-groove.js';
 import { FC_PROFILE, FC_KINDS, FC_PRIMITIVES, fcStep } from './fillet-chamfer.js';
+import { BL_KINDS, blendLoftStep } from './blend-loft.js';
 import { guardPrimitiveRound } from './fc-guard.js';
 import type { RoundFeature } from './fc-guard.js';
 import type { FView } from './shell-draft.js';
@@ -60,7 +61,8 @@ export const EP_COMBINE_SAFETY = [
 export const EP_COMBINE_CONSISTENCY = [/^\S+: the joined part and the sum of its pieces do not add up/];
 /** Which loop runs the kinds no group lists. */
 export type UnifiedStyle = 'extrude-pocket' | 'holes' | 'shell-draft' | 'patterns-mirror' | 'booleans' | 'revolve-groove' | 'fillet-chamfer';
-export type Route = UnifiedStyle;
+/** A route is a style, or the blend-loft step (blend-loft.ts), which owns the loft whatever the document's style. */
+export type Route = UnifiedStyle | 'blend-loft';
 export interface UnifiedDomain {
   /** the document has an extrude, a pocket or a combine */
   ep: boolean;
@@ -121,6 +123,7 @@ export function routeOf(f: Feature, st: TranslateState, ctx?: Pick<TranslateCtx,
   if (EP_KINDS.includes(f.kind)) return 'extrude-pocket';
   if (BOOL_KINDS.includes(f.kind)) return 'booleans';
   if (RG_KINDS.includes(f.kind)) return 'revolve-groove';
+  if (BL_KINDS.includes(f.kind)) return 'blend-loft';
   return st.unified!.domain.style;
 }
 
@@ -168,12 +171,13 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   const route = routeOf(f, st, env.ctx);
   const dom = st.unified!.domain;
   const mixed = Number(dom.ep) + Number(dom.holes) + Number(dom.sd) + Number(dom.pm) + Number(dom.bool) + Number(dom.rg) + Number(dom.fc) >= 2;
-  const wrap = mixed || (dom.holes && route !== 'holes');
+  // a loft runs in the blend-loft step whatever the style, so in a document of the holes or patterns-mirror style it is given that loop's time budget here (the loop would have given it)
+  const wrap = mixed || (dom.holes && route !== 'holes') || (route === 'blend-loft' && dom.pm);
   const seen: Seen = [];
   const env2: LoopEnv = wrap ? { ...env, ctx: wrapped(env.ctx, st, seen, dom.holes, dom.pm) } : env;
   // the measure of the kind this step reads
   // (a spin / groove reads the measure of kind E: pieces counted, as its own aggregate counts them)
-  const kind: 'E' | 'P' = route === 'extrude-pocket' || route === 'revolve-groove' ? 'E' : 'P';
+  const kind: 'E' | 'P' = route === 'extrude-pocket' || route === 'revolve-groove' || route === 'blend-loft' ? 'E' : 'P';
   const maps = st.unified!.maps;
   if (mixed) { st.measure = maps[kind].measure; st.bodies = maps[kind].bodies; }
   const before = st.accLen[f.id];
@@ -184,6 +188,7 @@ export async function unifiedStep(f: Feature, idx: number, env: LoopEnv): Promis
   else if (route === 'booleans') await boolStep(f, idx, env2);
   else if (route === 'revolve-groove') await rgStep(f, idx, env2);
   else if (route === 'fillet-chamfer') await fcStep(f, idx, env2);
+  else if (route === 'blend-loft') await blendLoftStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
   else await genericStep(f, idx, env2, EXTRUDE_POCKET_PROFILE);
   if (route === 'fillet-chamfer') {
     // the fillet-chamfer step keeps the RAW text of a refusal in st.refused (as its original does); in unified a feature of another group that depends on a refused blend is worded from the plain sentence

@@ -1,0 +1,401 @@
+nearpar-0      built    page 280246.5690 occt 280245.4660 faces page/occt 5/5 d 3.94e-6  
+rrc-1          refused  page - occt 67975.5526 faces page/occt -/11 d -  
+rrc-2          built    page 94949.0328 occt 94950.2178 faces page/occt 3/11 d 1.25e-5  
+scaled-3       refused  page - occt 11285.0514 faces page/occt -/6 d - POSTCHECK 1 
+rect-4         built    page 65971.2381 occt 65971.2381 faces page/occt 6/6 d 8.82e-16  
+scaled-5       built    page 27970.5400 occt 27970.5415 faces page/occt 6/6 d 5.45e-8  
+nearpar-6      built    page 278181.3502 occt 278181.2779 faces page/occt 5/5 d 2.60e-7  
+random-7       refused  page - occt 183821.7938 faces page/occt -/6 d - POSTCHECK 1 
+scaled-8       refused  page - occt 3530.8035 faces page/occt -/10 d - POSTCHECK 1 
+rrc-9          refused  page - occt 58221.1028 faces page/occt -/11 d -  
+rc-10          refused  page - occt 807.5398 faces page/occt -/7 d -  
+scaled-11      built    page 858843.2097 occt 858844.2258 faces page/occt 6/6 d 1.18e-6  
+scaled-12      built    page 144902.4539 occt 144902.5339 faces page/occt 8/8 d 5.52e-7  
+random-13      refused  page - occt 2849.9220 faces page/occt -/5 d - POSTCHECK 1 
+nearpar-14     refused  page - occt 142534.5092 faces page/occt -/8 d - POSTCHECK 1 
+scaled-15      built    page 561972.7263 occt 561972.7207 faces page/occt 6/6 d 9.93e-9  
+nearpar-16     built    page 330325.7303 occt 330325.5503 faces page/occt 8/8 d 5.45e-7  
+rrc-17         refused  page - occt 22817.3515 faces page/occt -/11 d -  
+scaled-18      refused  page - occt 44431.8357 faces page/occt -/10 d - POSTCHECK 1 
+scaled-19      built    page 436808.9177 occt 436808.8315 faces page/occt 8/8 d 1.97e-7  
+rc-20          refused  page - occt 76872.1800 faces page/occt -/6 d -  
+random-21      refused  page - occt 24291.6517 faces page/occt -/7 d - POSTCHECK 1 
+nearpar-22     built    page 39.8800 occt 39.8800 faces page/occt 6/6 d 3.27e-7  
+rrc-23         built    page 18778.7767 occt 18779.0044 faces page/occt 3/11 d 1.21e-5  
+nearpar-24     built    page 170852.6145 occt 170852.4818 faces page/occt 6/6 d 7.77e-7  
+rc-25          refused  page - occt 6302.8341 faces page/occt -/7 d -  
+cc-26          built    page 3533.9193 occt 3534.0944 faces page/occt 4/3 d 4.96e-5  
+rect-27        built    page 725.0280 occt 725.0280 faces page/occt 6/6 d 1.65e-14  
+nearpar-28     built    page 1994.0310 occt 1994.0306 faces page/occt 9/10 d 2.13e-7  
+rrc-29         refused  page - occt 5226.8577 faces page/occt -/11 d -  
+scaled-30      refused  page - occt 17109.2704 faces page/occt -/8 d - POSTCHECK 1 
+rrc-31         refused  page - occt 14560.5471 faces page/occt -/11 d -  
+rc-32          refused  page - occt 61822.3648 faces page/occt -/7 d -  
+rrc-33         refused  page - occt 36745.4640 faces page/occt -/11 d -  
+random-34      refused  page - occt 21995.3203 faces page/occt -/10 d - POSTCHECK 1 
+scaled-35      built    page 642219.8117 occt 642219.7931 faces page/occt 8/8 d 2.90e-8  
+regc-36        refused  page - occt 20462.6942 faces page/occt -/10 d -  
+cc-37          refused  page - occt 2226.1684 faces page/occt -/3 d - POSTCHECK 1 
+rrc-38         built    page 5899.3210 occt 5899.3644 faces page/occt 3/11 d 7.36e-6  
+scaled-39      refused  page - occt 17995.5154 faces page/occt -/6 d - POSTCHECK 1 
+scaled-40      built    page 30012.4156 occt 30012.4078 faces page/occt 8/8 d 2.58e-7  
+nearpar-41     built    page 230383.2020 occt 230383.1203 faces page/occt 10/10 d 3.55e-7  
+regc-42        built    page 97561.4180 occt 97562.5436 faces page/occt 8/9 d 1.15e-5  
+scaled-43      refused  page - occt 28847.2914 faces page/occt -/10 d - POSTCHECK 1 
+scaled-44      refused  page - occt 82474.4474 faces page/occt -/8 d - POSTCHECK 1 
+cc-45          built    page 48456.1506 occt 48459.2525 faces page/occt 4/3 d 6.40e-5  
+scaled-46      refused  page - occt 3717.1513 faces page/occt -/8 d - POSTCHECK 1 
+cc-47          built    page 106591.1715 occt 106596.4580 faces page/occt 4/3 d 4.96e-5  
+regc-48        built    page 104424.1711 occt 104426.5829 faces page/occt 6/6 d 2.31e-5  
+rc-49          refused  page - occt 5328.4876 faces page/occt -/7 d -  
+scaled-50      built    page 16950.4147 occt 16950.4147 faces page/occt 6/6 d 3.86e-15  
+rect-51        built    page 49230.4902 occt 49230.4902 faces page/occt 6/6 d 1.93e-13  
+rect-52        built    page 234866.1924 occt 234866.1924 faces page/occt 6/6 d 1.36e-15  
+scaled-53      built    page 86497.0929 occt 86497.0490 faces page/occt 8/8 d 5.07e-7  
+scaled-54      built    page 178543.3547 occt 178543.3547 faces page/occt 7/7 d 1.47e-15  
+scaled-55      built    page 949400.1581 occt 949400.4396 faces page/occt 10/10 d 2.97e-7  
+rrc-56         refused  page - occt 6965.5036 faces page/occt -/11 d -  
+rect-57        built    page 67674.4549 occt 67674.4549 faces page/occt 6/6 d 3.23e-15  
+scaled-58      built    page 585602.1738 occt 585602.1860 faces page/occt 10/10 d 2.08e-8  
+rect-59        built    page 53016.8009 occt 53016.8009 faces page/occt 6/6 d 8.92e-15  
+scaled-60      built    page 535920.5448 occt 535920.9364 faces page/occt 6/6 d 7.31e-7  
+scaled-61      built    page 514439.4757 occt 514439.4541 faces page/occt 6/6 d 4.18e-8  
+nearpar-62     built    page 898101.3313 occt 898101.2640 faces page/occt 8/8 d 7.50e-8  
+regc-63        refused  page - occt 88135.8774 faces page/occt -/10 d -  
+rrc-64         refused  page - occt 48276.7717 faces page/occt -/11 d -  
+scaled-65      built    page 317155.0013 occt 317154.8109 faces page/occt 7/7 d 6.00e-7  
+rect-66        built    page 6709.9431 occt 6709.9431 faces page/occt 6/6 d 2.13e-14  
+scaled-67      refused  page - occt 7537.6091 faces page/occt -/10 d - POSTCHECK 1 
+rc-68          refused  page - occt 40001.0521 faces page/occt -/7 d -  
+cc-69          built    page 10609.7307 occt 10610.7870 faces page/occt 3/3 d 9.95e-5  
+nearpar-70     built    page 7961.0655 occt 7961.0719 faces page/occt 7/7 d 8.09e-7  
+cc-71          built    page 94420.6854 occt 94430.0713 faces page/occt 4/3 d 9.94e-5  
+nearpar-72     built    page 257175.4409 occt 257175.4084 faces page/occt 6/6 d 1.26e-7  
+cc-73          built    page 39910.0560 occt 39914.0125 faces page/occt 3/3 d 9.91e-5  
+nearpar-74     built    page 254199.6029 occt 254199.5707 faces page/occt 8/8 d 1.26e-7  
+nearpar-75     built    page 244276.7724 occt 244277.1625 faces page/occt 7/7 d 1.60e-6  
+rc-76          refused  page - occt 66186.5039 faces page/occt -/7 d -  
+regc-77        built    page 37593.4719 occt 37594.0246 faces page/occt 6/6 d 1.47e-5  
+rc-78          refused  page - occt 83662.7859 faces page/occt -/7 d -  
+nearpar-79     built    page 719319.6717 occt 719319.7399 faces page/occt 8/8 d 9.47e-8  
+nearpar-80     refused  page - occt 10187.4840 faces page/occt -/5 d - POSTCHECK 1 
+rrc-81         refused  page - occt 39247.3224 faces page/occt -/11 d -  
+scaled-82      built    page 28304.3967 occt 28304.3926 faces page/occt 6/6 d 1.42e-7  
+nearpar-83     refused  page - occt 7026.1562 faces page/occt -/8 d - POSTCHECK 1 
+scaled-84      refused  page - occt 27299.5252 faces page/occt -/6 d - POSTCHECK 1 
+scaled-85      built    page 37146.5057 occt 37146.5077 faces page/occt 6/6 d 5.44e-8  
+rc-86          refused  page - occt 65975.8924 faces page/occt -/6 d -  
+scaled-87      built    page 443488.2555 occt 443488.3661 faces page/occt 7/7 d 2.49e-7  
+regc-88        refused  page - occt 9963.1969 faces page/occt -/10 d -  
+scaled-89      built    page 84896.8176 occt 84896.8520 faces page/occt 10/10 d 4.05e-7  
+rc-90          built    page 78695.9640 occt 78697.4972 faces page/occt 6/7 d 1.95e-5  
+nearpar-91     built    page 8329.3112 occt 8329.3138 faces page/occt 6/6 d 3.22e-7  
+scaled-92      refused  page - occt 41476.3169 faces page/occt -/8 d - POSTCHECK 1 
+regc-93        refused  page - occt 21111.6609 faces page/occt -/9 d -  
+rrc-94         built    page 77015.4441 occt 77015.7701 faces page/occt 3/11 d 4.23e-6  
+random-95      refused  page - occt 63819.1527 faces page/occt -/5 d - POSTCHECK 1 
+rect-96        built    page 23547.0383 occt 23547.0383 faces page/occt 6/6 d 3.87e-13  
+rect-97        built    page 5620.7050 occt 5620.7050 faces page/occt 6/6 d 1.35e-13  
+nearpar-98     refused  page - occt 9856.7446 faces page/occt -/6 d - POSTCHECK 1 
+rc-99          refused  page - occt 2774.8571 faces page/occt -/7 d -  
+cc-100         refused  page - occt 680.0642 faces page/occt -/3 d - POSTCHECK 1 
+rrc-101        refused  page - occt 93095.2654 faces page/occt -/11 d -  
+random-102     refused  page - occt 48359.8837 faces page/occt -/5 d - POSTCHECK 1 
+rrc-103        built    page 15577.7671 occt 15578.0620 faces page/occt 3/11 d 1.89e-5  
+rc-104         refused  page - occt 14964.7805 faces page/occt -/7 d -  
+rc-105         refused  page - occt 7340.8895 faces page/occt -/7 d -  
+nearpar-106    built    page 122547.4719 occt 122547.4864 faces page/occt 7/7 d 1.18e-7  
+cc-107         built    page 62490.5360 occt 62490.7843 faces page/occt 3/3 d 3.97e-6  
+random-108     refused  page - occt 55284.9045 faces page/occt -/8 d - POSTCHECK 1 
+scaled-109     built    page 156429.6241 occt 156429.4997 faces page/occt 7/7 d 7.95e-7  
+scaled-110     built    page 205265.9025 occt 205265.9624 faces page/occt 5/5 d 2.92e-7  
+scaled-111     refused  page - occt 288817.0815 faces page/occt -/10 d - POSTCHECK 1 
+scaled-112     refused  page - occt 2410.5131 faces page/occt -/7 d - POSTCHECK 1 
+nearpar-113    built    page 366222.5907 occt 366222.6563 faces page/occt 8/8 d 1.79e-7  
+cc-114         built    page 390.6054 occt 390.6200 faces page/occt 3/3 d 3.73e-5  
+scaled-115     built    page 13199.1080 occt 13199.1144 faces page/occt 6/6 d 4.85e-7  
+rect-116       built    page 103786.3809 occt 103786.3809 faces page/occt 6/6 d 7.71e-15  
+regc-117       built    page 72490.3400 occt 72490.7725 faces page/occt 10/10 d 5.97e-6  
+rc-118         refused  page - occt 25088.9886 faces page/occt -/7 d -  
+regc-119       built    page 40916.6880 occt 40917.1281 faces page/occt 8/8 d 1.08e-5  
+rrc-120        refused  page - occt 13460.9154 faces page/occt -/11 d -  
+scaled-121     refused  page - occt 3148.2857 faces page/occt -/8 d - POSTCHECK 1 
+random-122     refused  page - occt 138768.7325 faces page/occt -/5 d - POSTCHECK 1 
+cc-123         built    page 9076.9240 occt 9077.8363 faces page/occt 3/3 d 1.00e-4  
+random-124     refused  page - occt 124823.4138 faces page/occt -/10 d - POSTCHECK 1 
+rc-125         refused  page - occt 1489.6627 faces page/occt -/7 d -  
+regc-126       built    page 4944.7154 occt 4944.8123 faces page/occt 8/8 d 1.96e-5  
+rect-127       built    page 13239.9844 occt 13239.9844 faces page/occt 6/6 d 7.42e-15  
+random-128     refused  page - occt 86782.6210 faces page/occt -/8 d - POSTCHECK 1 
+rrc-129        built    page 36110.3264 occt 36110.9491 faces page/occt 3/11 d 1.72e-5  
+rrc-130        built    page 79966.2955 occt 79967.7038 faces page/occt 3/11 d 1.76e-5  
+regc-131       refused  page - occt 20613.6198 faces page/occt -/6 d -  
+rc-132         refused  page - occt 29332.3076 faces page/occt -/7 d -  
+rc-133         refused  page - occt 30846.7492 faces page/occt -/7 d -  
+scaled-134     refused  page - occt 157484.4888 faces page/occt -/8 d - POSTCHECK 1 
+random-135     refused  page - occt 32500.9744 faces page/occt -/5 d - POSTCHECK 1 
+scaled-136     built    page 25997.8155 occt 25997.8418 faces page/occt 5/5 d 1.01e-6  
+rc-137         refused  page - occt 17180.1037 faces page/occt -/7 d -  
+scaled-138     built    page 312463.6314 occt 312463.7174 faces page/occt 8/8 d 2.75e-7  
+scaled-139     built    page 229073.5284 occt 229073.5284 faces page/occt 5/5 d 2.54e-16  
+regc-140       built    page 285895.2736 occt 285900.6266 faces page/occt 10/10 d 1.87e-5  
+rrc-141        refused  page - occt 106154.6102 faces page/occt -/11 d -  
+scaled-142     built    page 47515.3914 occt 47515.4383 faces page/occt 5/5 d 9.86e-7  
+rect-143       built    page 2129.4574 occt 2129.4574 faces page/occt 6/6 d 7.05e-15  
+cc-144         built    page 8123.4975 occt 8123.9009 faces page/occt 3/3 d 4.96e-5  
+rrc-145        refused  page - occt 6071.8450 faces page/occt -/11 d -  
+scaled-146     built    page 1670287.1177 occt 1670286.7915 faces page/occt 7/7 d 1.95e-7  
+random-147     refused  page - occt 188086.1650 faces page/occt -/8 d - POSTCHECK 1 
+rrc-148        built    page 111316.6788 occt 111318.0733 faces page/occt 3/11 d 1.25e-5  
+rrc-149        refused  page - occt 18065.9312 faces page/occt -/11 d -  
+scaled-150     refused  page - occt 5865.9533 faces page/occt -/10 d - POSTCHECK 1 
+rect-151       built    page 76238.1784 occt 76238.1784 faces page/occt 6/6 d 5.54e-15  
+rc-152         built    page 52910.3850 occt 52911.5947 faces page/occt 6/7 d 2.29e-5  
+regc-153       built    page 126712.3699 occt 126714.0278 faces page/occt 8/8 d 1.31e-5  
+regc-154       built    page 109936.2212 occt 109939.1548 faces page/occt 6/6 d 2.67e-5  
+scaled-155     refused  page - occt 10869.0768 faces page/occt -/8 d - POSTCHECK 1 
+nearpar-156    built    page 79119.0350 occt 79119.0186 faces page/occt 8/8 d 2.08e-7  
+rect-157       built    page 27510.6426 occt 27510.6426 faces page/occt 6/6 d 4.50e-15  
+rrc-158        refused  page - occt 185602.7607 faces page/occt -/11 d -  
+scaled-159     built    page 307847.7389 occt 307847.5585 faces page/occt 5/5 d 5.86e-7  
+rc-160         built    page 58299.3462 occt 58300.7317 faces page/occt 6/7 d 2.38e-5  
+cc-161         built    page 195415.3652 occt 195428.9367 faces page/occt 3/3 d 6.94e-5  
+cc-162         built    page 159622.6161 occt 159638.4729 faces page/occt 4/3 d 9.93e-5  
+rect-163       built    page 17992.8652 occt 17992.8652 faces page/occt 6/6 d 1.50e-14  
+nearpar-164    built    page 418697.4835 occt 418697.3280 faces page/occt 7/7 d 3.71e-7  
+cc-165         built    page 91886.4151 occt 91890.9748 faces page/occt 3/3 d 4.96e-5  
+rrc-166        built    page 15519.7823 occt 15519.9485 faces page/occt 3/11 d 1.07e-5  
+random-167     refused  page - occt 11877.5902 faces page/occt -/8 d - POSTCHECK 1 
+regc-168       refused  page - occt 46254.4794 faces page/occt -/8 d -  
+scaled-169     refused  page - occt 24363.6982 faces page/occt -/8 d - POSTCHECK 1 
+random-170     refused  page - occt 8394.0309 faces page/occt -/5 d - POSTCHECK 1 
+cc-171         built    page 4580.3033 occt 4580.7594 faces page/occt 3/3 d 9.96e-5  
+rrc-172        refused  page - occt 9514.1249 faces page/occt -/11 d -  
+nearpar-173    refused  page - occt 201846.5256 faces page/occt -/10 d - POSTCHECK 1 
+rect-174       built    page 7561.8526 occt 7561.8526 faces page/occt 6/6 d 1.38e-14  
+random-175     refused  page - occt 105536.3417 faces page/occt -/6 d - POSTCHECK 1 
+scaled-176     built    page 11746.0119 occt 11746.0261 faces page/occt 7/7 d 1.21e-6  
+rect-177       built    page 3933.2224 occt 3933.2224 faces page/occt 6/6 d 4.74e-15  
+nearpar-178    built    page 214560.7658 occt 214560.6639 faces page/occt 8/8 d 4.75e-7  
+rc-179         refused  page - occt 653.1986 faces page/occt -/7 d -  
+scaled-180     built    page 1702741.0481 occt 1702740.2925 faces page/occt 7/7 d 4.44e-7  
+scaled-181     built    page 95434.9006 occt 95434.9006 faces page/occt 5/5 d 2.59e-15  
+cc-182         built    page 116955.5867 occt 116967.1945 faces page/occt 3/3 d 9.92e-5  
+nearpar-183    built    page 326030.4876 occt 326030.6088 faces page/occt 8/8 d 3.72e-7  
+rect-184       built    page 57004.1099 occt 57004.1099 faces page/occt 6/6 d 1.28e-15  
+random-185     refused  page - occt 123535.2720 faces page/occt -/8 d - POSTCHECK 1 
+scaled-186     built    page 45123.1499 occt 45123.2109 faces page/occt 5/5 d 1.35e-6  
+scaled-187     refused  page - occt 53148.4374 faces page/occt -/6 d - POSTCHECK 1 
+regc-188       built    page 61297.1377 occt 61298.6919 faces page/occt 10/10 d 2.54e-5  
+rect-189       built    page 66334.9531 occt 66334.9531 faces page/occt 6/6 d 2.19e-16  
+scaled-190     refused  page - occt 322.6181 faces page/occt -/10 d - POSTCHECK 1 
+rrc-191        built    page 40098.8743 occt 40099.5178 faces page/occt 3/11 d 1.60e-5  
+rect-192       built    page 80603.2253 occt 80603.2253 faces page/occt 6/6 d 5.78e-15  
+cc-193         built    page 14392.7358 occt 14394.1733 faces page/occt 4/3 d 9.99e-5  
+cc-194         built    page 20704.4852 occt 20705.4137 faces page/occt 3/3 d 4.48e-5  
+nearpar-195    built    page 62577.8328 occt 62577.8579 faces page/occt 6/6 d 4.01e-7  
+nearpar-196    built    page 4622.8012 occt 4622.8012 faces page/occt 7/7 d 7.48e-15  
+regc-197       built    page 78085.2924 occt 78077.6563 faces page/occt 7/8 d 9.78e-5  
+scaled-198     refused  page - occt 288759.7525 faces page/occt -/8 d - POSTCHECK 1 
+scaled-199     built    page 466903.8680 occt 466903.6294 faces page/occt 6/6 d 5.11e-7  
+rect-200       built    page 26927.3562 occt 26927.3562 faces page/occt 6/6 d 3.65e-15  
+scaled-201     refused  page - occt 176422.7138 faces page/occt -/10 d - POSTCHECK 1 
+rect-202       built    page 138119.5416 occt 138119.5416 faces page/occt 6/6 d 1.83e-14  
+rrc-203        refused  page - occt 28440.7626 faces page/occt -/11 d -  
+cc-204         built    page 56400.1738 occt 56400.8821 faces page/occt 3/3 d 1.26e-5  
+scaled-205     built    page 204398.5043 occt 204398.5321 faces page/occt 5/5 d 1.36e-7  
+scaled-206     built    page 413.8605 occt 413.8598 faces page/occt 5/5 d 1.54e-6  
+random-207     refused  page - occt 123653.4730 faces page/occt -/7 d - POSTCHECK 1 
+scaled-208     built    page 108934.8767 occt 108934.9478 faces page/occt 5/5 d 6.53e-7  
+cc-209         built    page 6744.9124 occt 6745.5903 faces page/occt 4/3 d 1.00e-4  
+scaled-210     refused  page - occt 81.7959 faces page/occt -/10 d - POSTCHECK 1 
+random-211     refused  page - occt 12566.7907 faces page/occt -/7 d - POSTCHECK 1 
+nearpar-212    refused  page - occt 36785.5816 faces page/occt -/5 d - POSTCHECK 1 
+rc-213         refused  page - occt 22357.6575 faces page/occt -/7 d -  
+scaled-214     built    page 86121.4172 occt 86121.4443 faces page/occt 10/10 d 3.14e-7  
+scaled-215     built    page 191197.0052 occt 191197.0496 faces page/occt 10/10 d 2.32e-7  
+regc-216       built    page 131385.9564 occt 131388.1685 faces page/occt 7/7 d 1.68e-5  
+rc-217         refused  page - occt 61939.3750 faces page/occt -/7 d -  
+scaled-218     built    page 889324.6292 occt 889324.6799 faces page/occt 10/10 d 5.70e-8  
+scaled-219     built    page 23724.3666 occt 23724.3662 faces page/occt 8/8 d 1.64e-8  
+scaled-220     refused  page - occt 2225.4280 faces page/occt -/6 d - POSTCHECK 1 
+scaled-221     refused  page - occt 18540.3048 faces page/occt -/5 d - POSTCHECK 1 
+rrc-222        built    page 101770.3693 occt 101771.8112 faces page/occt 3/11 d 1.42e-5  
+random-223     refused  page - occt 9173.7920 faces page/occt -/5 d - POSTCHECK 1 
+nearpar-224    refused  page - occt 27332.0657 faces page/occt -/8 d - POSTCHECK 1 
+scaled-225     built    page 670179.5861 occt 670179.2768 faces page/occt 7/7 d 4.62e-7  
+random-226     refused  page - occt 44487.9226 faces page/occt -/6 d - POSTCHECK 1 
+scaled-227     refused  page - occt 148500.1950 faces page/occt -/10 d - POSTCHECK 1 
+scaled-228     built    page 461376.7762 occt 461376.7886 faces page/occt 6/6 d 2.69e-8  
+cc-229         built    page 103226.6284 occt 103230.8607 faces page/occt 3/3 d 4.10e-5  
+scaled-230     refused  page - occt 1793.5574 faces page/occt -/7 d - POSTCHECK 1 
+scaled-231     built    page 41993.7308 occt 41993.7086 faces page/occt 7/7 d 5.27e-7  
+cc-232         built    page 64811.9097 occt 64818.3334 faces page/occt 3/3 d 9.91e-5  
+random-233     refused  page - occt 33841.6955 faces page/occt -/8 d - POSTCHECK 1 
+rc-234         built    page 180130.9472 occt 180135.2264 faces page/occt 6/7 d 2.38e-5  
+random-235     refused  page - occt 21857.2807 faces page/occt -/8 d - POSTCHECK 1 
+scaled-236     built    page 93484.1247 occt 93484.0900 faces page/occt 5/5 d 3.71e-7  
+random-237     refused  page - occt 74463.8192 faces page/occt -/10 d - POSTCHECK 1 
+random-238     refused  page - occt 17016.9670 faces page/occt -/7 d - POSTCHECK 1 
+random-239     refused  page - occt 364.9965 faces page/occt -/5 d - POSTCHECK 1 
+rc-240         refused  page - occt 39693.1864 faces page/occt -/7 d -  
+cc-241         built    page 774.2159 occt 774.2543 faces page/occt 3/3 d 4.96e-5  
+regc-242       refused  page - occt 7938.1104 faces page/occt -/10 d -  
+rc-243         refused  page - occt 18968.5001 faces page/occt -/7 d -  
+scaled-244     built    page 486423.9702 occt 486423.3279 faces page/occt 5/5 d 1.32e-6  
+scaled-245     refused  page - occt 4431.9008 faces page/occt -/6 d - POSTCHECK 1 
+scaled-246     built    page 10663.9490 occt 10663.9468 faces page/occt 7/7 d 2.13e-7  
+random-247     refused  page - occt 211670.9065 faces page/occt -/6 d - POSTCHECK 1 
+random-248     refused  page - occt 44523.7089 faces page/occt -/7 d - POSTCHECK 1 
+scaled-249     built    page 285976.3721 occt 285976.3867 faces page/occt 7/7 d 5.10e-8  
+scaled-250     built    page 137982.3704 occt 137982.3266 faces page/occt 8/8 d 3.18e-7  
+scaled-251     refused  page - occt 3410.2859 faces page/occt -/7 d - POSTCHECK 1 
+scaled-252     refused  page - occt 2708.9883 faces page/occt -/7 d - POSTCHECK 1 
+random-253     refused  page - occt 40103.9690 faces page/occt -/8 d - POSTCHECK 1 
+cc-254         built    page 36957.5311 occt 36959.3656 faces page/occt 3/3 d 4.96e-5  
+scaled-255     refused  page - occt 103750.6032 faces page/occt -/7 d - POSTCHECK 1 
+random-256     refused  page - occt 224157.4176 faces page/occt -/5 d - POSTCHECK 1 
+rrc-257        built    page 22374.9720 occt 22375.2186 faces page/occt 3/11 d 1.10e-5  
+regc-258       refused  page - occt 45914.3895 faces page/occt -/6 d -  
+nearpar-259    built    page 210395.5618 occt 210395.6364 faces page/occt 6/6 d 3.55e-7  
+rect-260       built    page 4209.9441 occt 4209.9441 faces page/occt 6/6 d 7.11e-14  
+nearpar-261    built    page 107639.6855 occt 107639.8022 faces page/occt 7/7 d 1.08e-6  
+rrc-262        refused  page - occt 46388.2347 faces page/occt -/11 d -  
+regc-263       built    page 32262.5302 occt 32263.2651 faces page/occt 8/8 d 2.28e-5  
+random-264     refused  page - occt 22235.7695 faces page/occt -/5 d - POSTCHECK 1 
+scaled-265     refused  page - occt 288292.0625 faces page/occt -/10 d - POSTCHECK 1 
+rect-266       built    page 49585.8347 occt 49585.8347 faces page/occt 6/6 d 4.70e-15  
+random-267     refused  page - occt 11185.3495 faces page/occt -/5 d - POSTCHECK 1 
+cc-268         built    page 66247.7263 occt 66251.0116 faces page/occt 3/3 d 4.96e-5  
+random-269     refused  page - occt 355848.4658 faces page/occt -/8 d - POSTCHECK 1 
+rc-270         refused  page - occt 3306.7085 faces page/occt -/7 d -  
+rc-271         refused  page - occt 8114.4824 faces page/occt -/7 d -  
+regc-272       built    page 34875.5695 occt 34876.3239 faces page/occt 8/8 d 2.16e-5  
+rect-273       built    page 140795.0925 occt 140795.0925 faces page/occt 6/6 d 1.86e-15  
+nearpar-274    refused  page - occt 7028.3599 faces page/occt -/10 d - POSTCHECK 1 
+scaled-275     built    page 79986.7811 occt 79986.8080 faces page/occt 8/8 d 3.36e-7  
+scaled-276     built    page 250546.2315 occt 250546.2315 faces page/occt 6/6 d 2.09e-15  
+nearpar-277    built    page 9956.9858 occt 9956.9735 faces page/occt 6/6 d 1.23e-6  
+rc-278         refused  page - occt 45562.5242 faces page/occt -/7 d -  
+nearpar-279    built    page 227941.3531 occt 227941.4129 faces page/occt 7/7 d 2.62e-7  
+rect-280       built    page 577.5786 occt 577.5786 faces page/occt 6/6 d 1.77e-15  
+scaled-281     built    page 365201.5970 occt 365201.4196 faces page/occt 10/10 d 4.86e-7  
+cc-282         built    page 83150.5535 occt 83151.0650 faces page/occt 3/3 d 6.15e-6  
+nearpar-283    built    page 426115.9008 occt 426115.9108 faces page/occt 8/8 d 2.35e-8  
+rrc-284        refused  page - occt 110795.1609 faces page/occt -/11 d -  
+rect-285       built    page 80564.4705 occt 80564.4705 faces page/occt 6/6 d 4.70e-15  
+scaled-286     built    page 249727.9594 occt 249727.9594 faces page/occt 6/6 d 1.40e-15  
+nearpar-287    built    page 564581.2712 occt 564581.0383 faces page/occt 7/7 d 4.13e-7  
+regc-288       built    page 88773.7158 occt 88775.1646 faces page/occt 8/8 d 1.63e-5  
+rect-289       built    page 262128.5661 occt 262128.5661 faces page/occt 6/6 d 4.22e-15  
+cc-290         built    page 4021.7237 occt 4021.7857 faces page/occt 3/3 d 1.54e-5  
+cc-291         built    page 4748.2383 occt 4748.3162 faces page/occt 3/3 d 1.64e-5  
+rect-292       built    page 121600.0771 occt 121600.0771 faces page/occt 6/6 d 2.87e-15  
+nearpar-293    built    page 227612.0745 occt 227611.9667 faces page/occt 6/6 d 4.73e-7  
+rc-294         built    page 50477.3902 occt 50478.5696 faces page/occt 6/7 d 2.34e-5  
+scaled-295     built    page 55176.9107 occt 55176.8793 faces page/occt 7/7 d 5.68e-7  
+cc-296         built    page 12071.7781 occt 12072.9755 faces page/occt 3/3 d 9.92e-5  
+regc-297       built    page 48620.7592 occt 48621.2938 faces page/occt 8/9 d 1.10e-5  
+rc-298         refused  page - occt 18195.4086 faces page/occt -/7 d -  
+rect-299       built    page 70070.3542 occt 70070.3542 faces page/occt 6/6 d 1.04e-15  
+rect-300       built    page 18857.1433 occt 18857.1433 faces page/occt 6/6 d 3.47e-15  
+cc-301         built    page 3556.7399 occt 3556.8739 faces page/occt 4/3 d 3.77e-5  
+rrc-302        refused  page - occt 17686.2115 faces page/occt -/11 d -  
+regc-303       refused  page - occt 74945.1516 faces page/occt -/8 d -  
+rrc-304        built    page 11578.1227 occt 11578.2251 faces page/occt 3/11 d 8.84e-6  
+nearpar-305    refused  page - occt 21602.1038 faces page/occt -/8 d - POSTCHECK 1 
+rrc-306        refused  page - occt 23730.1715 faces page/occt -/11 d -  
+rrc-307        refused  page - occt 20435.9397 faces page/occt -/11 d -  
+nearpar-308    refused  page - occt 136892.1269 faces page/occt -/10 d - POSTCHECK 1 
+rrc-309        refused  page - occt 114089.0875 faces page/occt -/11 d -  
+random-310     refused  page - occt 123488.9330 faces page/occt -/7 d - POSTCHECK 1 
+nearpar-311    built    page 563896.9855 occt 563896.8854 faces page/occt 10/10 d 1.78e-7  
+random-312     refused  page - occt 68312.4644 faces page/occt -/5 d - POSTCHECK 1 
+random-313     refused  page - occt 12643.7267 faces page/occt -/6 d - POSTCHECK 1 
+regc-314       built    page 19314.8936 occt 19315.2040 faces page/occt 7/7 d 1.61e-5  
+nearpar-315    refused  page - occt 2278.1923 faces page/occt -/6 d - POSTCHECK 1 
+cc-316         built    page 182981.3084 occt 182999.5084 faces page/occt 3/3 d 9.95e-5  
+nearpar-317    built    page 375294.1682 occt 375294.0142 faces page/occt 10/10 d 4.10e-7  
+nearpar-318    built    page 888037.3825 occt 888037.3352 faces page/occt 6/6 d 5.32e-8  
+cc-319         built    page 59987.3116 occt 59993.2874 faces page/occt 3/3 d 9.96e-5  
+rect-320       built    page 81741.9265 occt 81741.9265 faces page/occt 6/6 d 1.51e-14  
+regc-321       built    page 122192.5958 occt 122195.5089 faces page/occt 6/6 d 2.38e-5  
+scaled-322     built    page 50345.0916 occt 50345.0884 faces page/occt 10/10 d 6.45e-8  
+regc-323       refused  page - occt 12886.8591 faces page/occt -/10 d -  
+regc-324       refused  page - occt 9044.2726 faces page/occt -/10 d -  
+random-325     refused  page - occt 57412.6809 faces page/occt -/7 d - POSTCHECK 1 
+cc-326         built    page 229101.6939 occt 229124.7195 faces page/occt 3/3 d 1.00e-4  
+rc-327         refused  page - occt 14134.0296 faces page/occt -/7 d -  
+scaled-328     built    page 9255.3486 occt 9255.3444 faces page/occt 6/6 d 4.47e-7  
+regc-329       built    page 47242.4067 occt 47243.2393 faces page/occt 6/6 d 1.76e-5  
+regc-330       built    page 66399.6455 occt 66401.1635 faces page/occt 6/6 d 2.29e-5  
+rc-331         refused  page - occt 586.3524 faces page/occt -/7 d -  
+nearpar-332    refused  page - occt 4487.3633 faces page/occt -/6 d - POSTCHECK 1 
+regc-333       built    page 84541.7748 occt 84543.3612 faces page/occt 8/8 d 1.88e-5  
+nearpar-334    refused  page - occt 10331.6947 faces page/occt -/6 d - POSTCHECK 1 
+rrc-335        refused  page - occt 5907.9057 faces page/occt -/11 d -  
+rect-336       built    page 121140.7982 occt 121140.7982 faces page/occt 6/6 d 3.60e-16  
+nearpar-337    built    page 518635.6406 occt 518635.6548 faces page/occt 8/8 d 2.74e-8  
+rrc-338        built    page 55205.8408 occt 55206.3061 faces page/occt 3/11 d 8.43e-6  
+regc-339       built    page 67755.9115 occt 67757.7790 faces page/occt 6/6 d 2.76e-5  
+rc-340         refused  page - occt 29875.8186 faces page/occt -/7 d -  
+nearpar-341    built    page 177004.2098 occt 177004.1868 faces page/occt 6/6 d 1.30e-7  
+scaled-342     refused  page - occt 14409.9032 faces page/occt -/10 d - POSTCHECK 1 
+cc-343         built    page 5513.4100 occt 5513.4583 faces page/occt 3/3 d 8.76e-6  
+scaled-344     built    page 4536.3548 occt 4536.3353 faces page/occt 5/5 d 4.30e-6  
+regc-345       built    page 5554.2862 occt 5554.3606 faces page/occt 7/7 d 1.34e-5  
+rrc-346        refused  page - occt 13116.6834 faces page/occt -/11 d -  
+scaled-347     refused  page - occt 5616.5420 faces page/occt -/8 d - POSTCHECK 1 
+scaled-348     built    page 1807154.9987 occt 1807155.5224 faces page/occt 8/8 d 2.90e-7  
+rrc-349        refused  page - occt 106112.5647 faces page/occt -/11 d -  
+nearpar-350    refused  page - occt 46527.3020 faces page/occt -/6 d - POSTCHECK 1 
+scaled-351     refused  page - occt 37403.7635 faces page/occt -/7 d - POSTCHECK 1 
+rc-352         refused  page - occt 38671.9297 faces page/occt -/7 d -  
+rect-353       built    page 130371.7106 occt 130371.7106 faces page/occt 6/6 d 2.68e-15  
+cc-354         built    page 150222.5075 occt 150237.6055 faces page/occt 3/3 d 1.00e-4  
+cc-355         built    page 114475.7391 occt 114481.4161 faces page/occt 3/3 d 4.96e-5  
+regc-356       built    page 20408.2644 occt 20406.6044 faces page/occt 7/8 d 8.13e-5  
+random-357     refused  page - occt 338498.3354 faces page/occt -/10 d - POSTCHECK 1 
+scaled-358     refused  page - occt 51882.7874 faces page/occt -/8 d - POSTCHECK 1 
+scaled-359     refused  page - occt 1749.9631 faces page/occt -/8 d - POSTCHECK 1 
+regc-360       built    page 190019.3041 occt 190023.3994 faces page/occt 6/6 d 2.16e-5  
+rrc-361        refused  page - occt 11048.4825 faces page/occt -/11 d -  
+scaled-362     built    page 28274.7880 occt 28274.7900 faces page/occt 5/5 d 7.33e-8  
+nearpar-363    built    page 259193.7546 occt 259193.8991 faces page/occt 10/10 d 5.58e-7  
+scaled-364     built    page 29244.1626 occt 29244.1509 faces page/occt 7/7 d 4.03e-7  
+scaled-365     built    page 201373.8467 occt 201374.0424 faces page/occt 10/10 d 9.72e-7  
+rrc-366        refused  page - occt 43225.4267 faces page/occt -/11 d -  
+scaled-367     built    page 197052.2491 occt 197052.2727 faces page/occt 8/8 d 1.20e-7  
+random-368     refused  page - occt 33416.5089 faces page/occt -/5 d - POSTCHECK 1 
+rc-369         refused  page - occt 44397.8045 faces page/occt -/7 d -  
+scaled-370     refused  page - occt 1041.1878 faces page/occt -/5 d - POSTCHECK 1 
+scaled-371     built    page 346926.4221 occt 346926.4734 faces page/occt 8/8 d 1.48e-7  
+rrc-372        built    page 25250.1667 occt 25250.4769 faces page/occt 3/11 d 1.23e-5  
+rect-373       built    page 52381.9542 occt 52381.9542 faces page/occt 6/6 d 3.06e-15  
+rrc-374        refused  page - occt 16499.7029 faces page/occt -/11 d -  
+scaled-375     built    page 18401.3647 occt 18401.3777 faces page/occt 7/7 d 7.09e-7  
+rc-376         refused  page - occt 45525.9257 faces page/occt -/7 d -  
+scaled-377     refused  page - occt 24104.1833 faces page/occt -/7 d - POSTCHECK 1 
+scaled-378     built    page 26164.6419 occt 26164.6228 faces page/occt 5/5 d 7.28e-7  
+cc-379         built    page 62740.9367 occt 62744.0513 faces page/occt 3/3 d 4.96e-5  
+scaled-380     refused  page - occt 18185.0336 faces page/occt -/6 d - POSTCHECK 1 
+rc-381         built    page 117367.5150 occt 117370.0580 faces page/occt 6/7 d 2.17e-5  
+rect-382       built    page 42020.1580 occt 42020.1580 faces page/occt 6/6 d 5.19e-16  
+nearpar-383    built    page 24056.6596 occt 24056.6572 faces page/occt 5/5 d 1.02e-7  
+nearpar-384    built    page 150021.5138 occt 150021.4671 faces page/occt 5/5 d 3.11e-7  
+rc-385         refused  page - occt 47479.1968 faces page/occt -/7 d -  
+rc-386         refused  page - occt 4610.3783 faces page/occt -/7 d -  
+rc-387         refused  page - occt 26252.9661 faces page/occt -/7 d -  
+scaled-388     refused  page - occt 12838.9078 faces page/occt -/5 d - POSTCHECK 1 
+cc-389         refused  page - occt 16454.8095 faces page/occt -/3 d - POSTCHECK 1 
+scaled-390     built    page 228777.3476 occt 228777.2724 faces page/occt 8/8 d 3.29e-7  
+cc-391         built    page 55487.6580 occt 55490.4100 faces page/occt 3/3 d 4.96e-5  
+random-392     refused  page - occt 14683.0246 faces page/occt -/5 d - POSTCHECK 1 
+scaled-393     built    page 409038.6811 occt 409039.4918 faces page/occt 6/6 d 1.98e-6  
+rc-394         refused  page - occt 25770.8640 faces page/occt -/7 d -  
+regc-395       built    page 19106.0343 occt 19106.3060 faces page/occt 8/8 d 1.42e-5  
+cc-396         built    page 85952.7511 occt 85958.0553 faces page/occt 3/3 d 6.17e-5  
+regc-397       refused  page - occt 38134.6084 faces page/occt -/8 d -  
+cc-398         built    page 20672.2350 occt 20672.5769 faces page/occt 3/3 d 1.65e-5  
+rc-399         refused  page - occt 8892.3670 faces page/occt -/7 d -  
+no built loft is off the OCCT volume

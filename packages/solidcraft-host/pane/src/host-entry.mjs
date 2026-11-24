@@ -49,10 +49,9 @@ const layer = createTranslator({ planners: 'unified' });
 // caller's ctx, so every translation the page makes runs at this level.
 export const HOST_EP_JOIN_CHECKS = 'full';
 const hostCtx = (ctx) => ({ ...ctx, unifiedEpJoinChecks: HOST_EP_JOIN_CHECKS });
-// Student pilot: kinds whose guards are not folded in yet (Phase 2 "rest": blend-loft) are refused here in one sentence, not built.
-const NOT_YET = {
-  blend: 'a loft between two sketches is not available in this version yet, so {id} is shown without it.',
-};
+// Student pilot: kinds whose guards are not folded in yet are refused here in one sentence, not built. Empty since the blend-loft guard was folded into the
+// layer (packages/layer/src/blend-loft.ts, 2026-11-24): a loft is guarded and built like every other kind.
+const NOT_YET = {};
 // Host-route guards the layer does not run (host-guards.mjs; audit SG-13, PNP-7), and the pilot's NOT_YET kinds. A NOT_YET feature is left out of the doc the
 // layer translates and reported refused, as before. The two guards judge a feature the layer BUILT, as the contract's own guards do (r3-guard.mjs refuses a
 // stale pick only when the page built it; a sketch's rules matter only to a feature that pulled or cut it): the doc is translated once; when a feature these

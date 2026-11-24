@@ -27,6 +27,8 @@ import type { MotionInfo } from './move-turn.js';
 import { PRIMITIVES_GUARD, primitiveEffects, primitiveRefusal } from './primitives.js';
 import { ERRORED_BODY_GUARD, erroredBodySentence, withErroredBodies } from './errored-body.js';
 import { beforeOf, blendRefusal, chainsOn, groupRun, isStraight } from './fillet-chain.js';
+import { postCheckBlend } from './blend-loft-guard.js';
+const BL_VOLUME_GUARD = 'BL-volume';
 import type { BlendInfo, ChainEdge, ChainInfo } from './fillet-chain.js';
 import type { PrimF } from './primitives.js';
 import type { UnifiedDomain } from './unified.js';
@@ -953,6 +955,9 @@ export async function genericStep(f: Feature, idx: number, env: LoopEnv, profile
     // the sets with no after-the-build check of a pocket: the cut against the tool that made it (pocket-cut.ts, the extrude-pocket group's check and sentence)
     const pc = !profile.verifies && f.kind === 'pocket' ? await pocketCutRefusal(f, ctx, res, accepted, variant, plan.produces, ctx.runSC) : null;
     if (pc) { verifyRefusal = pc; verifyGuard = POCKET_CUT_GUARD; lastErr = null; continue; }
+    // the blend-loft step of the 'unified' set only (blend-loft.ts sets ctx.blendLoftCheck): the loft against its closed form (blend-loft-guard.ts postCheckBlend)
+    const lv = f.kind === 'blend' && ctx.blendLoftCheck && !ctx.skipSketchVolume ? postCheckBlend(doc, f, { kernelVolume: m.volume, outlineOf: ctx.arc.outlineOf }) : null;
+    if (lv) { verifyRefusal = lv.sentence; verifyGuard = BL_VOLUME_GUARD; lastErr = null; continue; }
     // every set: the hollow of a part with rounded or bevelled edges against its closed form (hollow-check.ts)
     const hc = f.kind === 'shell' ? hollowRefusal(f, doc.features, st, ctx, res, plan.produces, accepted) : null;
     if (hc) { verifyRefusal = hc.sentence; verifyGuard = hc.guard; lastErr = null; continue; }

@@ -140,6 +140,8 @@ export interface TranslateCtx {
    * group's two checks after the build (move-turn.ts: a move or turn against the part it started from, a primitive against its closed-form volume). Never set in production.
    */
   skipSketchVolume?: boolean;
+  /** Set only by the blend-loft step (blend-loft.ts) of the 'unified' set: run the after-the-build volume check of a loft (blend-loft-guard.ts postCheckBlend) in genericStep. */
+  blendLoftCheck?: boolean;
   /**
    * Every set: switch OFF the open-outline pre-flight of a pull or pocket of a soup (open-outline.ts). For measuring only (the before/after runs of
    * GUARD-OPEN-OUTLINE.md, the differential tests' originals have no such check). Never set in production.

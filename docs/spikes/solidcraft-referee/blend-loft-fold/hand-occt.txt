@@ -1,0 +1,22 @@
+rr-similar     built    page 28000.0000 occt 28000.0000 faces page/occt 6/6 d 3.77e-15  
+rr-nonsimilar  built    page 22500.0000 occt 22500.0000 faces page/occt 6/6 d 2.59e-15  
+rr-offset      built    page 14000.0000 occt 14000.0000 faces page/occt 6/6 d 3.64e-15  
+rr-grow        built    page 11000.0000 occt 11000.0000 faces page/occt 6/6 d 1.04e-14  
+rr-neg-gap     built    page 28000.0000 occt 28000.0000 faces page/occt 6/6 d 2.47e-15  
+hex-hex        built    page 15155.4445 occt 15155.4445 faces page/occt 8/8 d 3.12e-15  
+tri-tri        built    page 5250.0000 occt 5250.0000 faces page/occt 5/5 d 0.00e+0  
+trap           built    page 8400.0000 occt 8400.0000 faces page/occt 6/6 d 2.82e-15  
+cc             built    page 21990.0573 occt 21991.1486 faces page/occt 3/3 d 4.96e-5  
+cc-shift       built    page 21990.0573 occt 21991.1486 faces page/occt 3/3 d 4.96e-5  
+rect-circ      built    page 45162.3441 occt 45163.1724 faces page/occt 6/7 d 1.83e-5  
+rect-circ2     built    page 50136.8929 occt 50137.9959 faces page/occt 6/7 d 2.20e-5  
+hex-circ       built    page 26054.9487 occt 26055.2552 faces page/occt 8/8 d 1.18e-5  
+oct-circ       built    page 27332.1080 occt 27332.4499 faces page/occt 10/10 d 1.25e-5  
+rsq-circ       built    page 33301.6170 occt 33301.9451 faces page/occt 3/11 d 9.85e-6  
+R-count        refused  page - occt 25133.9746 faces page/occt -/12 d -  
+R-twist        refused  page - occt 27236.7522 faces page/occt -/6 d - POSTCHECK 1 
+R-needle       refused  page - occt 1750.0000 faces page/occt -/6 d - POSTCHECK 1 
+R-sliver       refused  page - occt 93.3333 faces page/occt -/6 d - POSTCHECK 1 
+R-tri-circ     refused  page - occt 13733.8981 faces page/occt -/6 d -  
+R-shared       refused  page 8000.0000 occt 28000.0000 faces page/occt 6/6 d 7.14e-1 POSTCHECK 0.7142857142857143 
+no built loft is off the OCCT volume
